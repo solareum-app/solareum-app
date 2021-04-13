@@ -10,7 +10,6 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@types/redux-logger": "3.0.8",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-redux": "7.2.3",
@@ -24,6 +23,7 @@
     "@types/jest": "^25.2.3",
     "@types/react-native": "^0.63.2",
     "@types/react-test-renderer": "^16.9.2",
+    "@types/redux-logger": "3.0.8",
     "babel-jest": "^25.1.0",
     "eslint": "^6.5.1",
     "jest": "^25.1.0",
