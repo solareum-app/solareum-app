@@ -2,9 +2,10 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/AntDesign';
 
+import Cash from '../screens/Cash';
 import DEX from '../screens/DEX';
-import Settings from '../screens/Settings';
 import Wallet from '../screens/Wallet';
 
 const Tab = createBottomTabNavigator();
@@ -17,8 +18,8 @@ const TabNavigator = () => {
         name="Wallet"
         component={Wallet}
         options={{
-          tabBarIcon: () => {
-            return null;
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="wallet" color={color} size={size} />;
           },
         }}
       />
@@ -26,17 +27,17 @@ const TabNavigator = () => {
         name="DEX"
         component={DEX}
         options={{
-          tabBarIcon: () => {
-            return null;
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="retweet" color={color} size={size} />;
           },
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={Settings}
+        name="Cash"
+        component={Cash}
         options={{
-          tabBarIcon: () => {
-            return null;
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="rocket1" color={color} size={size} />;
           },
         }}
       />

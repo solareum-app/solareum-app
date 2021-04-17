@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { StatusBar } from 'react-native';
+import { ThemeProvider } from 'react-native-elements';
 import {
   SafeAreaProvider,
   initialWindowMetrics,
@@ -13,8 +14,10 @@ const App: React.FC = () => {
   return (
     <StoreProvider>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <StatusBar barStyle="dark-content" />
-        <MainNavigator />
+        <ThemeProvider>
+          <StatusBar barStyle="dark-content" />
+          <MainNavigator />
+        </ThemeProvider>
       </SafeAreaProvider>
     </StoreProvider>
   );
