@@ -23,7 +23,7 @@ export default function configureStore(staticReducers = {}) {
     ),
     {
       injectedReducers: staticReducers,
-    }
+    },
   );
 
   return store;

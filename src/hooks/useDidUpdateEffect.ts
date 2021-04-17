@@ -8,7 +8,7 @@ import React, { useEffect, useRef } from 'react';
  */
 const useDidUpdateEffect = (
   fn: React.EffectCallback,
-  inputs: React.DependencyList,
+  inputs: React.DependencyList = [],
 ): void => {
   const didMountRef = useRef(false);
 
@@ -18,6 +18,7 @@ const useDidUpdateEffect = (
     } else {
       didMountRef.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, inputs);
 };
 

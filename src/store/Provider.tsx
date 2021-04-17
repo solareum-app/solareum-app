@@ -8,7 +8,7 @@ type Props = {};
 const StoreProvider = ({ children }: React.PropsWithChildren<Props>) => {
   const store = React.useMemo(() => configureStore(), []);
 
-  return <Provider store={store}>{children}</Provider>
+  return <Provider store={store}>{children}</Provider>;
 };
 
 export default StoreProvider;
