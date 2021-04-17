@@ -61,3 +61,9 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# please use yarn
+package-lock.json
+
+# disable temporary
+/src/utils
