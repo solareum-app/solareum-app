@@ -1167,6 +1167,13 @@
   dependencies:
     type-detect "4.0.8"
 
+"@solana/spl-token-registry@0.2.60":
+  version "0.2.60"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token-registry/-/spl-token-registry-0.2.60.tgz#28ea3d970dc31792145a432146bb4f334ec66304"
+  integrity sha512-lVL664IYMRy21SwVkoN8FU4OpdtLwKdimSwXC0sr4UWFbGGzLiuf0cEO+ly69O/kxibv8niGQfzy+THVPaVJTA==
+  dependencies:
+    cross-fetch "3.0.6"
+
 "@types/babel__core@^7.1.7":
   version "7.1.14"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.14.tgz#faaeefc4185ec71c389f4501ee5ec84b170cc402"
@@ -2343,6 +2350,13 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     is-directory "^0.3.1"
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
+
+cross-fetch@3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.0.6.tgz#3a4040bc8941e653e0e9cf17f29ebcd177d3365c"
+  integrity sha512-KBPUbqgFjzWlVcURG+Svp9TlhA5uliYtiNx/0r8nv0pdypeQCRJ9IaSIc3q/x3q8t3F75cHuwxVql1HFGHCNJQ==
+  dependencies:
+    node-fetch "2.6.1"
 
 cross-fetch@^3.0.4:
   version "3.1.4"

@@ -17,6 +17,7 @@
     "@react-navigation/bottom-tabs": "5.11.9",
     "@react-navigation/native": "5.9.4",
     "@react-navigation/stack": "5.14.4",
+    "@solana/spl-token-registry": "0.2.60",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-elements": "3.3.2",
