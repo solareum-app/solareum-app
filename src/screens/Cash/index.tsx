@@ -6,16 +6,16 @@ import { Layout } from '../../components/Layout/Layout';
 import { Header } from '../../components/Header/Header';
 import { Button } from '../../components/Button/Button';
 
-import { AlwaysOpen } from '../../components/Modals/AlwaysOpen';
 import { FixedContent } from '../../components/Modals/FixedContent';
-// import { AbsoluteHeader } from '../../components/Modals/AbsoluteHeader';
-// import { SimpleContent } from '../../components/Modals/SimpleContent';
-// import { SnappingList } from '../../components/Modals/SnappingList';
-// import { FlatList } from '../../components/Modals/FlatList';
-// import { SectionList } from '../../components/Modals/SectionList';
-// import { AppleMusicPlayer } from '../../components/Modals/AppleMusicPlayer';
-// import { FacebookWebView } from '../../components/Modals/FacebookWebView';
-// import { SlackTabView } from '../../components/Modals/SlackTabView';
+import { AbsoluteHeader } from '../../components/Modals/AbsoluteHeader';
+import { SimpleContent } from '../../components/Modals/SimpleContent';
+import { SnappingList } from '../../components/Modals/SnappingList';
+import { FlatList } from '../../components/Modals/FlatList';
+import { SectionList } from '../../components/Modals/SectionList';
+import { AppleMusicPlayer } from '../../components/Modals/AppleMusicPlayer';
+import { FacebookWebView } from '../../components/Modals/FacebookWebView';
+import { SlackTabView } from '../../components/Modals/SlackTabView';
+// import { AlwaysOpen } from '../../components/Modals/AlwaysOpen';
 
 const CashScreen = () => {
   const modals = Array.from({ length: 8 }).map(_ => useRef(null).current);
@@ -43,27 +43,27 @@ const CashScreen = () => {
 
         {renderButtons([
           'Fixed content',
-          // 'Simple content',
-          // 'Snapping list',
-          // 'Absolute header',
-          // 'Flat List',
-          // 'Section List',
-          // 'Apple Music Player',
-          // 'Facebook WebView',
-          // 'Slack TabView',
+          'Absolute header',
+          'Simple content',
+          'Snapping list',
+          'Flat List',
+          'Section List',
+          'Apple Music Player',
+          'Facebook WebView',
+          'Slack TabView',
         ])}
 
         <Portal>
           <FixedContent ref={el => (modals[0] = el)} />
-          {/* <SimpleContent ref={el => (modals[0] = el)} />
-          <SnappingList ref={el => (modals[2] = el)} />
-          <AbsoluteHeader ref={el => (modals[3] = el)} />
+          <AbsoluteHeader ref={el => (modals[1] = el)} />
+          <SimpleContent ref={el => (modals[2] = el)} />
+          <SnappingList ref={el => (modals[3] = el)} />
           <FlatList ref={el => (modals[4] = el)} />
           <SectionList ref={el => (modals[5] = el)} />
           <AppleMusicPlayer ref={el => (modals[6] = el)} animated={animated} />
           <FacebookWebView ref={el => (modals[7] = el)} />
-          <SlackTabView ref={el => (modals[8] = el)} /> */}
-          <AlwaysOpen />
+          <SlackTabView ref={el => (modals[8] = el)} />
+          {/* <AlwaysOpen /> */}
         </Portal>
       </Layout>
     </View>

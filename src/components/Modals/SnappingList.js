@@ -4,7 +4,7 @@ import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
-import { Button } from '../button/Button';
+import { Button } from '../Button/Button';
 
 export const SnappingList = forwardRef((_, ref) => {
   const modalizeRef = useRef(null);
