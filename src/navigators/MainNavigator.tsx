@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import Cash from '../screens/Cash';
+import Fiat from '../screens/Fiat';
 import DEX from '../screens/DEX';
 import Notifications from '../screens/Notifications';
 import Receive from '../screens/Receive';
@@ -42,8 +42,8 @@ const TabNavigator: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name={Routes.Cash}
-        component={Cash}
+        name={Routes.Fiat}
+        component={Fiat}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Icon name="bank" color={color} size={size} />;
