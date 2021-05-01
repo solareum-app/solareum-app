@@ -1,4 +1,22 @@
 PODS:
+  - appcenter-analytics (4.1.0):
+    - AppCenter/Analytics (~> 4.0)
+    - AppCenterReactNativeShared (~> 4.0)
+    - React-Core
+  - appcenter-core (4.1.0):
+    - AppCenterReactNativeShared (~> 4.0)
+    - React-Core
+  - appcenter-crashes (4.1.0):
+    - AppCenter/Crashes (~> 4.0)
+    - AppCenterReactNativeShared (~> 4.0)
+    - React-Core
+  - AppCenter/Analytics (4.1.0):
+    - AppCenter/Core
+  - AppCenter/Core (4.1.0)
+  - AppCenter/Crashes (4.1.0):
+    - AppCenter/Core
+  - AppCenterReactNativeShared (4.0.2):
+    - AppCenter/Core (= 4.1.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.63.4)
@@ -291,6 +309,9 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
+  - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
+  - appcenter-core (from `../node_modules/appcenter/ios`)
+  - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
@@ -330,9 +351,17 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppCenter
+    - AppCenterReactNativeShared
     - boost-for-react-native
 
 EXTERNAL SOURCES:
+  appcenter-analytics:
+    :path: "../node_modules/appcenter-analytics/ios"
+  appcenter-core:
+    :path: "../node_modules/appcenter/ios"
+  appcenter-crashes:
+    :path: "../node_modules/appcenter-crashes/ios"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -403,6 +432,11 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppCenter: 8832b158d17e54845c3b88a91076218f0b07174d
+  appcenter-analytics: aa074250b2cb182d6f7d67d9c236dd4606673ab5
+  appcenter-core: c97920e79eba2321a262d3733cb2a6f1097db539
+  appcenter-crashes: 804ae51c5d1742ce20fdb6a68b3d06208a404ad5
+  AppCenterReactNativeShared: e1db64e8c65dfdca495efd1a1f77892cbc21342b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
@@ -441,4 +475,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 48db6b781b3e6959fc5ae18e712af95e95053e42
 
-COCOAPODS: 1.10.0.rc.1
+COCOAPODS: 1.10.1
