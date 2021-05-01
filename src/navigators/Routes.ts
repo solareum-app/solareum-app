@@ -1,6 +1,7 @@
 enum Routes {
+  Wallet = 'Wallet',
   DEX = 'DEX',
-  Cash = 'Cash',
+  Fiat = 'Fiat',
   Notifications = 'Notifications',
   Receive = 'Receive',
   Send = 'Send',
@@ -8,7 +9,6 @@ enum Routes {
   TokensListed = 'TokensListed',
   Transaction = 'Transaction',
   Transfers = 'Transfers',
-  Wallet = 'Wallet',
 }
 
 export default Routes;
