@@ -13,7 +13,7 @@ const SettingIcon: React.FC = () => {
     navigation.navigate(Routes.Settings);
   }, [navigation]);
 
-  return <Icon onPress={onPressHandler} name="setting" color="white" />;
+  return <Icon onPress={onPressHandler} name="setting" color="black" />;
 };
 
 const NotificationIcon: React.FC = () => {
@@ -23,7 +23,7 @@ const NotificationIcon: React.FC = () => {
     navigation.navigate(Routes.Notifications);
   }, [navigation]);
 
-  return <Icon onPress={onPressHandler} name="bells" color="white" />;
+  return <Icon onPress={onPressHandler} name="bells" color="black" />;
 };
 
 const Header: React.FC = () => {

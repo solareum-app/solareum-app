@@ -28,7 +28,7 @@ const TabNavigator: React.FC = () => {
         component={Wallet}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="Safety" color={color} size={size} />;
+            return <Icon name="wallet" color={color} size={size} />;
           },
         }}
       />
@@ -46,7 +46,7 @@ const TabNavigator: React.FC = () => {
         component={Fiat}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="bank" color={color} size={size} />;
+            return <Icon name="Safety" color={color} size={size} />;
           },
         }}
       />

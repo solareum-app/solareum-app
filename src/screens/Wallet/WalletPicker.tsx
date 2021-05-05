@@ -43,8 +43,8 @@ const WalletPicker: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text>{`Current Walltet Name`}</Text>
-        <Icon name="caretdown" color="white" size={16} />
+        <Text style={{ fontSize: 20 }}>{`Walltet Name`}</Text>
+        <Icon name="down" color="black" size={16} style={{ marginLeft: 4 }} />
       </TouchableOpacity>
       <BottomSheet
         modalProps={{ onRequestClose: onCloseHandler }}
@@ -56,11 +56,11 @@ const WalletPicker: React.FC = () => {
             bottomDivider
             containerStyle={l.containerStyle}
             onPress={l.onPress}>
-            <Icon name="Safety" size={17} color="red" />
+            <Icon name="Safety" size={16} color="black" />
             <ListItem.Content>
               <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
             </ListItem.Content>
-            <Icon name="setting" size={17} color="red" />
+            <Icon name="setting" size={16} color="black" />
           </ListItem>
         ))}
       </BottomSheet>
