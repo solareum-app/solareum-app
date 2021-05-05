@@ -1,15 +1,18 @@
 import React from 'react';
-import { View, SafeAreaView } from 'react-native';
+import { View } from 'react-native';
 import { WebView as RNWebView } from 'react-native-webview';
+
+import Header from '../Wallet/Header';
 
 const DEX = () => {
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <RNWebView
-          source={{ uri: 'https://swap.solareum.app' }}
-        />
-      </SafeAreaView>
+      <Header />
+      <RNWebView
+        source={{ uri: 'https://swap.solareum.app' }}
+        style={{ backgroundColor: 'rgb(27, 23, 23)' }}
+        containerStyle={{ backgroundColor: 'rgb(27, 23, 23)' }}
+      />
     </View>
   );
 };
