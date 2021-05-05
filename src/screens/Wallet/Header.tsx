@@ -13,7 +13,7 @@ const SettingIcon: React.FC = () => {
     navigation.navigate(Routes.Settings);
   }, [navigation]);
 
-  return <Icon onPress={onPressHandler} name="setting" color="black" />;
+  return <Icon onPress={onPressHandler} name="setting" color="white" />;
 };
 
 const NotificationIcon: React.FC = () => {
@@ -23,7 +23,7 @@ const NotificationIcon: React.FC = () => {
     navigation.navigate(Routes.Notifications);
   }, [navigation]);
 
-  return <Icon onPress={onPressHandler} name="bells" color="black" />;
+  return <Icon onPress={onPressHandler} name="bells" color="white" />;
 };
 
 const Header: React.FC = () => {
@@ -32,6 +32,10 @@ const Header: React.FC = () => {
       leftComponent={<SettingIcon />}
       centerComponent={<WalletPicker />}
       rightComponent={<NotificationIcon />}
+      containerStyle={{
+        backgroundColor: 'rgb(27, 23, 23)',
+        borderBottomColor: 'rgb(49,46,46)'
+      }}
     />
   );
 };

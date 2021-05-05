@@ -22,7 +22,9 @@ const Stack = createStackNavigator();
 
 const TabNavigator: React.FC = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      sceneContainerStyle={{ backgroundColor: 'rgb(27, 23, 23)' }}
+      tabBarOptions={{ style: { backgroundColor: 'rgb(27, 23, 23)', borderTopColor: 'rgb(49,46,46)' } }}>
       <Tab.Screen
         name={Routes.Wallet}
         component={Wallet}

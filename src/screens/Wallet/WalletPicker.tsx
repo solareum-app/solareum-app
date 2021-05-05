@@ -43,8 +43,8 @@ const WalletPicker: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text style={{ fontSize: 20 }}>{`Walltet Name`}</Text>
-        <Icon name="down" color="black" size={16} style={{ marginLeft: 4 }} />
+        <Text style={{ fontSize: 20, color: 'white' }}>{`Walltet Name`}</Text>
+        <Icon name="down" color="white" size={16} style={{ marginLeft: 4 }} />
       </TouchableOpacity>
       <BottomSheet
         modalProps={{ onRequestClose: onCloseHandler }}

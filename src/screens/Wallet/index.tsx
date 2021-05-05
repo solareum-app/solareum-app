@@ -21,7 +21,7 @@ const SendButton: React.FC = () => {
         icon={<Icon name="upload" size={24} color={'white'} />}
         onPress={onPressHandler}
       />
-      <Text>Send</Text>
+      <Text style={{ color: 'white' }}>Send</Text>
     </View>
   );
 };
@@ -38,7 +38,7 @@ const ReceiveButton: React.FC = () => {
         icon={<Icon name="download" size={24} color={'white'} />}
         onPress={onPressHandler}
       />
-      <Text>Receive</Text>
+      <Text style={{ color: 'white' }}>Receive</Text>
     </View>
   );
 };
@@ -54,7 +54,7 @@ const Wallet: React.FC = () => {
             justifyContent: 'flex-end',
             alignItems: 'center',
           }}>
-            <Text style={{ fontSize: 44 }}>{'549.52 $'}</Text>
+            <Text style={{ fontSize: 40, color: 'white' }}>{'549.52 $'}</Text>
           </View>
           <View
             style={{
