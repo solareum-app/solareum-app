@@ -3,7 +3,7 @@ import { ScrollView, View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
-// import { SendButton } from '../../components/ActionButtons';
+import { COLORS } from '../../theme/colors';
 import Icon from '../../components/Icon';
 import TokensList from '../../components/TokensList';
 import Routes from '../../navigators/Routes';
@@ -18,11 +18,17 @@ const SendButton: React.FC = () => {
   return (
     <View style={{ alignItems: 'center' }}>
       <Button
-        buttonStyle={{ width: 64, height: 64, borderRadius: 32 }}
-        icon={<Icon name="upload" size={24} color={'white'} />}
+        buttonStyle={{
+          width: 56,
+          height: 56,
+          borderRadius: 28,
+          marginBottom: 4,
+          backgroundColor: COLORS.blue2
+        }}
+        icon={<Icon name="upload" size={24} color={COLORS.white0} />}
         onPress={onPressHandler}
       />
-      <Text>Send</Text>
+      <Text style={{ color: COLORS.white0 }}>Send</Text>
     </View>
   );
 };
@@ -35,11 +41,17 @@ const ReceiveButton: React.FC = () => {
   return (
     <View style={{ alignItems: 'center' }}>
       <Button
-        buttonStyle={{ width: 64, height: 64, borderRadius: 32 }}
-        icon={<Icon name="download" size={24} color={'white'} />}
+        buttonStyle={{
+          width: 56,
+          height: 56,
+          borderRadius: 28,
+          marginBottom: 4,
+          backgroundColor: COLORS.blue2
+        }}
+        icon={<Icon name="download" size={24} color={COLORS.white0} />}
         onPress={onPressHandler}
       />
-      <Text>Receive</Text>
+      <Text style={{ color: COLORS.white0 }}>Receive</Text>
     </View>
   );
 };
@@ -49,13 +61,13 @@ const Wallet: React.FC = () => {
     <View style={{ flex: 1 }}>
       <Header />
       <ScrollView>
-        <View style={{ height: 250 }}>
+        <View style={{ height: 220 }}>
           <View style={{
             flex: 1,
             justifyContent: 'flex-end',
             alignItems: 'center',
           }}>
-            <Text style={{ fontSize: 48 }}>{'549.0 $'}</Text>
+            <Text style={{ fontSize: 40, color: COLORS.white0 }}>{'549.52 $'}</Text>
           </View>
           <View
             style={{
@@ -64,6 +76,9 @@ const Wallet: React.FC = () => {
               justifyContent: 'space-evenly',
               alignItems: 'flex-end',
               padding: 16,
+              width: 260,
+              marginLeft: 'auto',
+              marginRight: 'auto',
             }}>
             <SendButton />
             <ReceiveButton />

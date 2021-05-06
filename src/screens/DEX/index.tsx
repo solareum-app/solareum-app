@@ -1,10 +1,19 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { WebView as RNWebView } from 'react-native-webview';
+
+import { COLORS } from '../../theme/colors';
+import Header from '../Wallet/Header';
 
 const DEX = () => {
   return (
-    <View>
-      <Text>DEX screen</Text>
+    <View style={{ flex: 1 }}>
+      <Header />
+      <RNWebView
+        source={{ uri: 'https://swap.solareum.app' }}
+        style={{ backgroundColor: COLORS.dark0 }}
+        containerStyle={{ backgroundColor: COLORS.dark0 }}
+      />
     </View>
   );
 };

@@ -4,6 +4,7 @@ import { Avatar, ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { TokenInfo } from '@solana/spl-token-registry';
 
+import { COLORS } from '../../theme/colors';
 import Routes from '../../navigators/Routes';
 import { useTokenInfos } from '../../core/TokenRegistryProvider';
 
@@ -11,7 +12,7 @@ type PriceWithChangeProps = {
   symbol: string;
 };
 const PriceWithChange: React.FC<PriceWithChangeProps> = ({ symbol }) => {
-  React.useEffect(() => {}, [symbol]);
+  React.useEffect(() => { }, [symbol]);
 
   return (
     <>
@@ -31,21 +32,22 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
   }, [navigation, name]);
 
   return (
-    <ListItem bottomDivider onPress={onPressHandler}>
+    <ListItem bottomDivider onPress={onPressHandler}
+      containerStyle={{ backgroundColor: COLORS.dark0, borderBottomColor: COLORS.dark4 }}>
       {logoURI ? (
         <Avatar rounded source={{ uri: logoURI }} />
       ) : (
         <Avatar rounded title={symbol.toUpperCase()} />
       )}
       <ListItem.Content>
-        <ListItem.Title>{name}</ListItem.Title>
-        <ListItem.Subtitle>
+        <ListItem.Title style={{ color: COLORS.white0 }}>{name}</ListItem.Title>
+        <ListItem.Subtitle style={{ color: COLORS.white4 }}>
           <PriceWithChange symbol={symbol} />
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Content right>
-        <ListItem.Title>{`0.2 ${symbol.toUpperCase()}`}</ListItem.Title>
-        <ListItem.Subtitle>{'26,02 $'}</ListItem.Subtitle>
+        <ListItem.Title style={{ color: COLORS.white0 }}>{`0.2 ${symbol.toUpperCase()}`}</ListItem.Title>
+        <ListItem.Subtitle style={{ color: COLORS.white2 }}>{'26,02 $'}</ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   );

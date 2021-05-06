@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
 import Icon from 'react-native-vector-icons/AntDesign';
 
+import { COLORS } from '../theme/colors';
 import Fiat from '../screens/Fiat';
 import DEX from '../screens/DEX';
 import Notifications from '../screens/Notifications';
@@ -22,13 +23,19 @@ const Stack = createStackNavigator();
 
 const TabNavigator: React.FC = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      sceneContainerStyle={{ backgroundColor: COLORS.dark2 }}
+      tabBarOptions={{
+        style: { backgroundColor: COLORS.dark0, borderTopColor: COLORS.dark4 },
+        activeTintColor: COLORS.blue2
+      }}
+    >
       <Tab.Screen
         name={Routes.Wallet}
         component={Wallet}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="Safety" color={color} size={size} />;
+            return <Icon name="wallet" color={color} size={size} />;
           },
         }}
       />
@@ -46,7 +53,7 @@ const TabNavigator: React.FC = () => {
         component={Fiat}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="bank" color={color} size={size} />;
+            return <Icon name="Safety" color={color} size={size} />;
           },
         }}
       />

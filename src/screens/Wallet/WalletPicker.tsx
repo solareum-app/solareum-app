@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
 
+import { COLORS } from '../../theme/colors';
 import Icon from '../../components/Icon';
 
 const WalletPicker: React.FC = () => {
@@ -24,12 +25,12 @@ const WalletPicker: React.FC = () => {
     {
       title: 'Add wallet',
       containerStyle: { backgroundColor: 'blue' },
-      titleStyle: { color: 'white' },
+      titleStyle: { color: COLORS.white0 },
     },
     {
       title: 'Cancel',
       containerStyle: { backgroundColor: 'red' },
-      titleStyle: { color: 'white' },
+      titleStyle: { color: COLORS.white0 },
       onPress: () => setIsVisible(false),
     },
   ];
@@ -43,8 +44,8 @@ const WalletPicker: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text>{`Current Walltet Name`}</Text>
-        <Icon name="caretdown" color="white" size={16} />
+        <Text style={{ fontSize: 20, color: COLORS.white0 }}>{`Walltet Name`}</Text>
+        <Icon name="down" color={COLORS.white0} size={16} style={{ marginLeft: 4 }} />
       </TouchableOpacity>
       <BottomSheet
         modalProps={{ onRequestClose: onCloseHandler }}
@@ -56,11 +57,11 @@ const WalletPicker: React.FC = () => {
             bottomDivider
             containerStyle={l.containerStyle}
             onPress={l.onPress}>
-            <Icon name="Safety" size={17} color="red" />
+            <Icon name="Safety" size={16} color="black" />
             <ListItem.Content>
               <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
             </ListItem.Content>
-            <Icon name="setting" size={17} color="red" />
+            <Icon name="setting" size={16} color="black" />
           </ListItem>
         ))}
       </BottomSheet>
