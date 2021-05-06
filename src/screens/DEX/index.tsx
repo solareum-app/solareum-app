@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { WebView as RNWebView } from 'react-native-webview';
 
+import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
 
 const DEX = () => {
@@ -10,8 +11,8 @@ const DEX = () => {
       <Header />
       <RNWebView
         source={{ uri: 'https://swap.solareum.app' }}
-        style={{ backgroundColor: 'rgb(27, 23, 23)' }}
-        containerStyle={{ backgroundColor: 'rgb(27, 23, 23)' }}
+        style={{ backgroundColor: COLORS.dark0 }}
+        containerStyle={{ backgroundColor: COLORS.dark0 }}
       />
     </View>
   );

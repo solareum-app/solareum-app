@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
 
+import { COLORS } from '../../theme/colors';
 import Icon from '../../components/Icon';
 
 const WalletPicker: React.FC = () => {
@@ -24,12 +25,12 @@ const WalletPicker: React.FC = () => {
     {
       title: 'Add wallet',
       containerStyle: { backgroundColor: 'blue' },
-      titleStyle: { color: 'white' },
+      titleStyle: { color: COLORS.white0 },
     },
     {
       title: 'Cancel',
       containerStyle: { backgroundColor: 'red' },
-      titleStyle: { color: 'white' },
+      titleStyle: { color: COLORS.white0 },
       onPress: () => setIsVisible(false),
     },
   ];
@@ -43,8 +44,8 @@ const WalletPicker: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text style={{ fontSize: 20, color: 'white' }}>{`Walltet Name`}</Text>
-        <Icon name="down" color="white" size={16} style={{ marginLeft: 4 }} />
+        <Text style={{ fontSize: 20, color: COLORS.white0 }}>{`Walltet Name`}</Text>
+        <Icon name="down" color={COLORS.white0} size={16} style={{ marginLeft: 4 }} />
       </TouchableOpacity>
       <BottomSheet
         modalProps={{ onRequestClose: onCloseHandler }}
