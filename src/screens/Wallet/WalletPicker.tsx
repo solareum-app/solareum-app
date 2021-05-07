@@ -15,7 +15,6 @@ const WalletPicker: React.FC = () => {
     ref?.current?.open();
   };
 
-
   const list = [
     { title: 'List Item 1' },
     { title: 'List Item 2' },
