@@ -1,11 +1,17 @@
 import React, { useRef, forwardRef, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
-export const FixedContent = forwardRef((_, ref) => {
+export const FixedContent = forwardRef(({ children }, ref) => {
   const modalizeRef = useRef(null);
   const combinedRef = useCombinedRefs(ref, modalizeRef);
   const [toggle, setToggle] = useState(true);
@@ -25,8 +31,7 @@ export const FixedContent = forwardRef((_, ref) => {
       <TouchableOpacity
         style={s.content__description}
         activeOpacity={0.75}
-        onPress={() => setToggle(!toggle)}
-      >
+        onPress={() => setToggle(!toggle)}>
         <Text>adjustToContentHeight {JSON.stringify(toggle)}</Text>
       </TouchableOpacity>
 
@@ -36,7 +41,10 @@ export const FixedContent = forwardRef((_, ref) => {
         clearButtonMode="while-editing"
       />
 
-      <TouchableOpacity style={s.content__button} activeOpacity={0.75} onPress={handleClose}>
+      <TouchableOpacity
+        style={s.content__button}
+        activeOpacity={0.75}
+        onPress={handleClose}>
         <Text style={s.content__buttonText}>{'Send'.toUpperCase()}</Text>
       </TouchableOpacity>
     </View>
@@ -44,7 +52,7 @@ export const FixedContent = forwardRef((_, ref) => {
 
   return (
     <Modalize ref={combinedRef} adjustToContentHeight={toggle}>
-      {renderContent()}
+      {children ? children : renderContent()}
     </Modalize>
   );
 });
@@ -52,6 +60,7 @@ export const FixedContent = forwardRef((_, ref) => {
 const s = StyleSheet.create({
   content: {
     padding: 20,
+    paddingBottom: 40,
   },
 
   content__icon: {
