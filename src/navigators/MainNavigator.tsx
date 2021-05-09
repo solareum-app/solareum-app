@@ -65,7 +65,16 @@ const MainNavigator: React.FC = () => {
   return (
     <NavigationContainer>
       <Host>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          headerTitleStyle: {
+            color: COLORS.white0,
+            shadowColor: 'transparent',
+          },
+          headerStyle: {
+            backgroundColor: COLORS.dark2,
+            shadowColor: COLORS.dark4,
+          },
+        }}>
           <Stack.Screen
             name=" "
             component={TabNavigator}
