@@ -10,7 +10,7 @@ enum Routes {
   Settings = 'Settings',
   TokensListed = 'TokensListed',
   Transaction = 'Transaction',
-  Transfers = 'Transfers',
+  Token = 'Token',
   Wallet = 'Wallet',
 }
 

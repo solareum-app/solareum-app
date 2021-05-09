@@ -28,7 +28,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
   const navigation = useNavigation();
 
   const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.Transfers, { token: name });
+    navigation.navigate(Routes.Token, { token: name });
   }, [navigation, name]);
 
   return (
