@@ -1,67 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
-import LoadingIndicator from '../../components/LoadingIndicator';
+import { COLORS } from '../../theme/colors';
+import imgDelivering from '../../assets/clip-message-sent.png';
 
-type Notification = {
-  name: string;
-};
-
-enum Status {
-  LOADING = 'LOADING',
-  LOADED = 'LOADED',
-  ERROR = 'ERROR',
-}
-
-const NOTIFICATION_API =
-  'https://run.mocky.io/v3/e5f76c99-1238-4f19-b788-5683f763e73b';
+const s = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.dark2,
+  },
+  placeholderWrp: {
+    marginTop: 120,
+  },
+  placeholderImage: {
+    width: 280,
+    height: 140,
+    marginBottom: 16,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  message: {
+    color: COLORS.white4,
+    textAlign: 'center',
+    fontSize: 18,
+  },
+});
 
 const Notifications: React.FC = () => {
-  const [items, setItems] = React.useState<Notification[]>([]);
-  const [status, setStatus] = React.useState<string>('');
-
-  React.useEffect(() => {
-    const fetchNotifications = async () => {
-      setStatus(Status.LOADING);
-
-      try {
-        const response = await fetch(NOTIFICATION_API);
-        const json: { data: Notification[] } = await response.json();
-
-        if (Array.isArray(json.data) && json.data.length > 0) {
-          setItems(json.data);
-        }
-      } catch (error) {
-        console.log('[Notifications]::', { error });
-      }
-
-      setStatus(Status.LOADED);
-    };
-
-    fetchNotifications();
-  }, []);
-
   return (
-    <View style={styles.container}>
-      {status === Status.LOADING ? <LoadingIndicator /> : null}
-      {status === Status.LOADED && items.length === 0 ? (
-        <View>
-          <Text>NO DATA</Text>
-        </View>
-      ) : null}
-      {status === Status.LOADED && items.length > 0 ? (
-        <View>
-          <Text>LIST OF NOTIFICATION HERE</Text>
-        </View>
-      ) : null}
+    <View style={s.container}>
+      <View style={s.placeholderWrp}>
+        <Image source={imgDelivering} style={s.placeholderImage} />
+        <Text style={s.message}>Thông báo sẽ xuất hiện ở đây</Text>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default Notifications;
