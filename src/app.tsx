@@ -19,7 +19,7 @@ const App: React.FC = () => {
         <TokenRegistryProvider>
           <SafeAreaProvider initialMetrics={initialWindowMetrics}>
             <ThemeProvider>
-              <StatusBar barStyle="dark-content" />
+              <StatusBar barStyle="light-content" />
               <MainNavigator />
             </ThemeProvider>
           </SafeAreaProvider>
