@@ -106,7 +106,7 @@ const CopyButton: React.FC = () => {
   );
 };
 
-const Transfers: React.FC = () => {
+const Token: React.FC = () => {
   return (
     <View>
       <View style={{ height: 250 }}>
@@ -137,4 +137,4 @@ const Transfers: React.FC = () => {
   );
 };
 
-export default Transfers;
+export default Token;

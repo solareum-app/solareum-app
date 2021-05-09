@@ -16,7 +16,7 @@ import Send from '../screens/Send';
 import Settings from '../screens/Settings';
 import TokensListed from '../screens/TokensListed';
 import Transaction from '../screens/Transaction';
-import Transfers from '../screens/Transfers';
+import Token from '../screens/Token';
 import Wallet from '../screens/Wallet';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
@@ -92,7 +92,7 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.Settings} component={Settings} />
           <Stack.Screen name={Routes.TokensListed} component={TokensListed} />
           <Stack.Screen name={Routes.Transaction} component={Transaction} />
-          <Stack.Screen name={Routes.Transfers} component={Transfers} />
+          <Stack.Screen name={Routes.Token} component={Token} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>

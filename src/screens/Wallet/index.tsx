@@ -1,90 +1,61 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
-import { Button } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 
+import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
-import Icon from '../../components/Icon';
 import TokensList from '../../components/TokensList';
-import Routes from '../../navigators/Routes';
 import Header from './Header';
+import { grid } from '../../components/Styles';
 
-const SendButton: React.FC = () => {
-  const navigation = useNavigation();
-  const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.TokensListed, { action: 'send' });
-  }, [navigation]);
-
-  return (
-    <View style={{ alignItems: 'center' }}>
-      <Button
-        buttonStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 28,
-          marginBottom: 4,
-          backgroundColor: COLORS.blue2
-        }}
-        icon={<Icon name="upload" size={24} color={COLORS.white0} />}
-        onPress={onPressHandler}
-      />
-      <Text style={{ color: COLORS.white0 }}>Send</Text>
-    </View>
-  );
-};
-
-const ReceiveButton: React.FC = () => {
-  const navigation = useNavigation();
-  const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.TokensListed, { action: 'receive' });
-  }, [navigation]);
-  return (
-    <View style={{ alignItems: 'center' }}>
-      <Button
-        buttonStyle={{
-          width: 56,
-          height: 56,
-          borderRadius: 28,
-          marginBottom: 4,
-          backgroundColor: COLORS.blue2
-        }}
-        icon={<Icon name="download" size={24} color={COLORS.white0} />}
-        onPress={onPressHandler}
-      />
-      <Text style={{ color: COLORS.white0 }}>Receive</Text>
-    </View>
-  );
-};
+const s = StyleSheet.create({
+  header: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  info: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  infoBalance: {
+    marginTop: 12,
+    fontSize: 40,
+    color: COLORS.white0
+  },
+  control: {
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: 20,
+  },
+  controlItem: {
+    marginLeft: 12,
+    marginRight: 12,
+  },
+});
 
 const Wallet: React.FC = () => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={grid.container}>
       <Header />
       <ScrollView>
-        <View style={{ height: 220 }}>
-          <View style={{
-            flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}>
-            <Text style={{ fontSize: 40, color: COLORS.white0 }}>{'549.52 $'}</Text>
+        <View style={s.header}>
+          <View style={s.info}>
+            <Text style={s.infoBalance}>{'549.52 $'}</Text>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'flex-end',
-              padding: 16,
-              width: 260,
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}>
-            <SendButton />
-            <ReceiveButton />
+          <View style={s.control}>
+            <View style={s.controlItem}>
+              <RoundedButton onClick={() => null} title="Chuyển" iconName="upload" />
+            </View>
+            <View style={s.controlItem}>
+              <RoundedButton onClick={() => null} title="Nhận" iconName="download" />
+            </View>
           </View>
         </View>
-        <TokensList />
+        <View style={[grid.body, { padding: 10 }]}>
+          <TokensList />
+        </View>
       </ScrollView>
     </View>
   );
