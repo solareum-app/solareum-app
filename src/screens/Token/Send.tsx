@@ -8,6 +8,12 @@ import { COLORS } from '../../theme';
 
 const s = StyleSheet.create({
   main: {
+    backgroundColor: COLORS.dark0,
+    minHeight: 400,
+    padding: 20,
+    borderRadius: 20,
+  },
+  body: {
     marginTop: 20,
   },
   inputContainer: {
@@ -28,7 +34,7 @@ const s = StyleSheet.create({
   button: {
     height: 52
   },
-  body: {
+  card: {
     backgroundColor: COLORS.dark2,
     padding: 20,
     borderRadius: 10,
@@ -69,9 +75,9 @@ const s3 = StyleSheet.create({
 
 const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
   return (
-    <View style={grid.body}>
+    <View style={s.main}>
       <Text style={typo.title}>Gởi SOL</Text>
-      <View style={s.main}>
+      <View style={s.body}>
         <Input
           label="Địa chỉ ví"
           placeholder=""
@@ -101,8 +107,8 @@ const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
 
 const Step2 = ({ address, amount, next }) => {
   return (
-    <View style={grid.body}>
-      <View style={s.main}>
+    <View style={s.main}>
+      <View style={s.body}>
         <View style={s.header}>
           <View style={s.iconWrp}>
             <Avatar
@@ -115,7 +121,7 @@ const Step2 = ({ address, amount, next }) => {
             <Text style={[typo.normal, typo.bold]}>Solana</Text>
           </View>
         </View>
-        <View style={s.body}>
+        <View style={s.card}>
           <View style={s.group}>
             <Text style={[typo.helper, s.groupTitle]}>Token</Text>
             <Text style={[typo.normal, { lineHeight: 18 }]}>SOL / Native</Text>
@@ -147,7 +153,7 @@ const Step2 = ({ address, amount, next }) => {
 
 const Step3 = () => {
   return (
-    <View style={grid.body}>
+    <View style={s.main}>
       <View style={s3.body}>
         <Image source={imgDone} style={s3.cover} />
         <Text style={s3.message}>Giao dịch thành công</Text>

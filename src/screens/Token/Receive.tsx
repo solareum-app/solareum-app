@@ -2,11 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
+import { COLORS } from '../../theme/colors';
 import { RoundedButton } from '../../components/RoundedButton';
 import { grid, typo } from '../../components/Styles';
 
 const s = StyleSheet.create({
   main: {
+    backgroundColor: COLORS.dark0,
+    minHeight: 400,
+    padding: 20,
+    borderRadius: 20,
+  },
+  body: {
     marginTop: 20,
   },
   qr: {
@@ -35,9 +42,9 @@ const s = StyleSheet.create({
 
 export const Receive = () => {
   return (
-    <View style={grid.body}>
+    <View style={s.main}>
       <Text style={typo.title}>Nhận SOL</Text>
-      <View style={s.main}>
+      <View style={s.body}>
         <View style={s.qr}>
           <QRCode value="751dKZJazx8BrCkK1wxgLNzQcZBVzJbVgYbi8KKVe7MH" size={220} />
         </View>
