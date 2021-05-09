@@ -5,9 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import { COLORS } from '../theme/colors';
-import Fiat from '../screens/Fiat';
+import CreateWallet from '../screens/CreateWallet';
 import DEX from '../screens/DEX';
+import Fiat from '../screens/Fiat';
+import GetStarted from '../screens/GetStarted';
+import ImportWallet from '../screens/ImportWallet';
 import Notifications from '../screens/Notifications';
 import Receive from '../screens/Receive';
 import Send from '../screens/Send';
@@ -16,6 +18,7 @@ import TokensListed from '../screens/TokensListed';
 import Transaction from '../screens/Transaction';
 import Transfers from '../screens/Transfers';
 import Wallet from '../screens/Wallet';
+import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 
 const Tab = createBottomTabNavigator();
@@ -27,9 +30,8 @@ const TabNavigator: React.FC = () => {
       sceneContainerStyle={{ backgroundColor: COLORS.dark2 }}
       tabBarOptions={{
         style: { backgroundColor: COLORS.dark0, borderTopColor: COLORS.dark4 },
-        activeTintColor: COLORS.blue2
-      }}
-    >
+        activeTintColor: COLORS.blue2,
+      }}>
       <Tab.Screen
         name={Routes.Wallet}
         component={Wallet}
@@ -66,8 +68,11 @@ const MainNavigator: React.FC = () => {
     <NavigationContainer>
       <Host>
         <Stack.Navigator>
+          <Stack.Screen name={Routes.GetStarted} component={GetStarted} />
+          <Stack.Screen name={Routes.CreateWallet} component={CreateWallet} />
+          <Stack.Screen name={Routes.ImportWallet} component={ImportWallet} />
           <Stack.Screen
-            name=" "
+            name="TabNavigator"
             component={TabNavigator}
             options={{ headerShown: false }}
           />
