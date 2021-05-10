@@ -4,14 +4,15 @@ import QRCode from 'react-native-qrcode-svg';
 
 import { COLORS } from '../../theme/colors';
 import { RoundedButton } from '../../components/RoundedButton';
-import { grid, typo } from '../../components/Styles';
+import { typo } from '../../components/Styles';
 
 const s = StyleSheet.create({
   main: {
     backgroundColor: COLORS.dark0,
     minHeight: 400,
     padding: 20,
-    borderRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   body: {
     marginTop: 20,

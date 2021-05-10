@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { Input, Button, Avatar } from 'react-native-elements';
 
 import imgDone from '../../assets/clip-done.png';
-import { grid, typo } from '../../components/Styles';
+import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 
 const s = StyleSheet.create({
@@ -11,7 +11,8 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.dark0,
     minHeight: 400,
     padding: 20,
-    borderRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   body: {
     marginTop: 20,
@@ -90,6 +91,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
         <Input
           label="Số lượng"
           placeholder=""
+          keyboardType="numeric"
           style={typo.input}
           labelStyle={s.inputLabel}
           containerStyle={s.inputContainer}
