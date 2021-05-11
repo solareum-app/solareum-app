@@ -27,19 +27,11 @@ const s = StyleSheet.create({
   },
   input: {
   },
-  header: {
-    marginBottom: 20,
-  },
   footer: {
     marginTop: 40,
   },
   button: {
     height: 52
-  },
-  card: {
-    backgroundColor: COLORS.dark2,
-    padding: 20,
-    borderRadius: 10,
   },
   group: {
     marginBottom: 12,
@@ -48,10 +40,6 @@ const s = StyleSheet.create({
     marginBottom: 8,
     color: COLORS.white4
   },
-  iconWrp: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
 });
 
 const s3 = StyleSheet.create({
@@ -79,7 +67,7 @@ const s3 = StyleSheet.create({
 const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Chuyển SOL</Text>
+      <Text style={typo.title}>Chuyển Solana</Text>
       <View style={s.body}>
         <Input
           label="Địa chỉ ví"
@@ -112,40 +100,27 @@ const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
 const Step2 = ({ address, amount, next }) => {
   return (
     <View style={s.main}>
+      <Text style={typo.title}>Chuyển Solana</Text>
       <View style={s.body}>
-        <View style={s.header}>
-          <View style={s.iconWrp}>
-            <Avatar
-              size="large"
-              rounded
-              source={{
-                uri: "https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png"
-              }}
-            />
-            <Text style={[typo.normal, typo.bold]}>Solana</Text>
-          </View>
+        <View style={s.group}>
+          <Text style={[typo.helper, s.groupTitle]}>Token</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>SOL / Native</Text>
         </View>
-        <View style={s.card}>
-          <View style={s.group}>
-            <Text style={[typo.helper, s.groupTitle]}>Token</Text>
-            <Text style={[typo.normal, { lineHeight: 18 }]}>SOL / Native</Text>
-          </View>
-          <View style={s.group}>
-            <Text style={[typo.helper, s.groupTitle]}>Từ Ví</Text>
-            <Text style={[typo.normal, { lineHeight: 18 }]}>{address || '-'}</Text>
-          </View>
-          <View style={s.group}>
-            <Text style={[typo.helper, s.groupTitle]}>Chuyển đến Ví</Text>
-            <Text style={[typo.normal, { lineHeight: 18 }]}>{address || '-'}</Text>
-          </View>
-          <View style={s.group}>
-            <Text style={[typo.helper, s.groupTitle]}>Số lượng</Text>
-            <Text style={[typo.normal, { lineHeight: 18 }]}>{amount || 0} SOL</Text>
-          </View>
-          <View style={s.group}>
-            <Text style={[typo.helper, s.groupTitle]}>Phí</Text>
-            <Text style={[typo.normal, { lineHeight: 18 }]}>0.000005 SOL</Text>
-          </View>
+        <View style={s.group}>
+          <Text style={[typo.helper, s.groupTitle]}>Từ Ví</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>{address || '-'}</Text>
+        </View>
+        <View style={s.group}>
+          <Text style={[typo.helper, s.groupTitle]}>Chuyển đến Ví</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>{address || '-'}</Text>
+        </View>
+        <View style={s.group}>
+          <Text style={[typo.helper, s.groupTitle]}>Số lượng</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>{amount || 0} SOL</Text>
+        </View>
+        <View style={s.group}>
+          <Text style={[typo.helper, s.groupTitle]}>Phí</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>0.000005 SOL</Text>
         </View>
       </View>
       <View style={s.footer}>
