@@ -46,7 +46,7 @@ const Wallet: React.FC = () => {
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
-              <RoundedButton onClick={() => null} title="Gởi" iconName="upload" />
+              <RoundedButton onClick={() => null} title="Chuyển" iconName="upload" />
             </View>
             <View style={s.controlItem}>
               <RoundedButton onClick={() => null} title="Nhận" iconName="download" />

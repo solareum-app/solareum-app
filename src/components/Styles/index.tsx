@@ -40,11 +40,24 @@ export const typo = StyleSheet.create({
     fontWeight: 'bold',
   },
   helper: {
-    color: COLORS.white2,
+    color: COLORS.white4,
     fontSize: 14,
     lineHeight: 20,
   },
   input: {
     color: COLORS.white2,
-  }
+  },
+  address: {
+    color: COLORS.white2,
+    padding: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    backgroundColor: COLORS.dark4,
+    borderRadius: 8,
+    overflow: 'hidden',
+    fontSize: 16,
+    lineHeight: 18,
+    marginLeft: 20,
+    marginRight: 20,
+  },
 });

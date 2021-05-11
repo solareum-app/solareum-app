@@ -11,29 +11,28 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.dark0,
     minHeight: 400,
     padding: 20,
+    paddingBottom: 40,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   body: {
-    marginTop: 20,
+    marginTop: 40,
+    marginBottom: 40,
   },
   qr: {
     marginLeft: 'auto',
     marginRight: 'auto',
     borderRadius: 4,
     borderWidth: 16,
-    marginTop: 80,
-    marginBottom: 40,
+    marginBottom: 20,
     borderColor: 'white'
   },
-  footer: {
-    marginTop: 40,
-  },
+  footer: {},
   control: {
     flexDirection: 'row',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginBottom: 20,
+    marginTop: 20,
   },
   controlItem: {
     marginLeft: 12,
@@ -44,14 +43,16 @@ const s = StyleSheet.create({
 export const Receive = () => {
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Nhận SOL</Text>
       <View style={s.body}>
         <View style={s.qr}>
           <QRCode value="751dKZJazx8BrCkK1wxgLNzQcZBVzJbVgYbi8KKVe7MH" size={220} />
         </View>
-        <Text style={typo.helper}>Chỉ chuyển Solana (SOL) vào địa chỉ này. Việc chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các token đó.</Text>
+        <Text style={typo.address}>
+          751dKZJazx8BrCkK1wxgLNzQcZBVzJbVgYbi8KKVe7MH
+        </Text>
       </View>
       <View style={s.footer}>
+        <Text style={typo.helper}>Chỉ chuyển Solana (SOL) vào địa chỉ này. Việc chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các token đó.</Text>
         <View style={s.control}>
           <View style={s.controlItem}>
             <RoundedButton onClick={() => null} title="Sao chép" iconName="addfile" />

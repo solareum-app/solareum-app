@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { ScrollView, View, Text, StyleSheet, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
-import { SimpleContent } from '../../components/Modals/SimpleContent';
+import { FixedContent } from '../../components/Modals/FixedContent';
 
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
@@ -80,7 +80,7 @@ const Token = () => {
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
-              <RoundedButton onClick={openSendScreen} title="Gởi" iconName="upload" />
+              <RoundedButton onClick={openSendScreen} title="Chuyển" iconName="upload" />
             </View>
             <View style={s.controlItem}>
               <RoundedButton onClick={openReceiveScreen} title="Nhận" iconName="download" />
@@ -99,12 +99,12 @@ const Token = () => {
       </ScrollView>
 
       <Portal>
-        <SimpleContent ref={refSend}>
+        <FixedContent ref={refSend}>
           <Send initStep={1} />
-        </SimpleContent>
-        <SimpleContent ref={refReceived}>
+        </FixedContent>
+        <FixedContent ref={refReceived}>
           <Receive />
-        </SimpleContent>
+        </FixedContent>
       </Portal>
     </View>
   );

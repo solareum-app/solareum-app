@@ -11,6 +11,7 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.dark0,
     minHeight: 400,
     padding: 20,
+    paddingBottom: 40,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
@@ -55,7 +56,8 @@ const s = StyleSheet.create({
 
 const s3 = StyleSheet.create({
   body: {
-    marginTop: 120,
+    marginTop: 60,
+    marginBottom: 60,
   },
   cover: {
     width: 280,
@@ -77,7 +79,7 @@ const s3 = StyleSheet.create({
 const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Gởi SOL</Text>
+      <Text style={typo.title}>Chuyển SOL</Text>
       <View style={s.body}>
         <Input
           label="Địa chỉ ví"
@@ -133,7 +135,7 @@ const Step2 = ({ address, amount, next }) => {
             <Text style={[typo.normal, { lineHeight: 18 }]}>{address || '-'}</Text>
           </View>
           <View style={s.group}>
-            <Text style={[typo.helper, s.groupTitle]}>Gởi đến Ví</Text>
+            <Text style={[typo.helper, s.groupTitle]}>Chuyển đến Ví</Text>
             <Text style={[typo.normal, { lineHeight: 18 }]}>{address || '-'}</Text>
           </View>
           <View style={s.group}>
@@ -161,7 +163,7 @@ const Step3 = () => {
         <Text style={s3.message}>Giao dịch thành công</Text>
       </View>
       <View style={s.footer}>
-        <Button title="Kiểm tra" buttonStyle={s.button} />
+        <Button title="Kiểm tra" buttonStyle={s.button} type="clear" />
       </View>
     </View>
   )
