@@ -43,6 +43,7 @@ const s = StyleSheet.create({
 export const Receive = () => {
   return (
     <View style={s.main}>
+      <Text style={typo.title}>Nhận SOL</Text>
       <View style={s.body}>
         <View style={s.qr}>
           <QRCode value="751dKZJazx8BrCkK1wxgLNzQcZBVzJbVgYbi8KKVe7MH" size={220} />
@@ -52,7 +53,7 @@ export const Receive = () => {
         </Text>
       </View>
       <View style={s.footer}>
-        <Text style={typo.helper}>Chỉ chuyển Solana (SOL) vào địa chỉ này. Việc chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các token đó.</Text>
+        <Text style={typo.helper}>Chỉ chuyển Solana (SOL) vào địa chỉ này. Việc chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các token&nbsp;đó.</Text>
         <View style={s.control}>
           <View style={s.controlItem}>
             <RoundedButton onClick={() => null} title="Sao chép" iconName="addfile" />

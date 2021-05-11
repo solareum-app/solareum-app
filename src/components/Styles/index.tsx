@@ -27,9 +27,10 @@ export const grid = StyleSheet.create({
 export const typo = StyleSheet.create({
   title: {
     color: COLORS.white2,
-    fontSize: 24,
+    fontSize: 22,
     lineHeight: 32,
     marginBottom: 12,
+    textAlign: 'center'
   },
   normal: {
     color: COLORS.white2,
@@ -49,10 +50,10 @@ export const typo = StyleSheet.create({
   },
   address: {
     color: COLORS.white2,
+    backgroundColor: COLORS.dark2,
     padding: 8,
     paddingLeft: 12,
     paddingRight: 12,
-    backgroundColor: COLORS.dark4,
     borderRadius: 8,
     overflow: 'hidden',
     fontSize: 16,

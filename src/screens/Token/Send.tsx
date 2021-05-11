@@ -67,7 +67,7 @@ const s3 = StyleSheet.create({
 const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Chuyển Solana</Text>
+      <Text style={typo.title}>Chuyển SOL</Text>
       <View style={s.body}>
         <Input
           label="Địa chỉ ví"
@@ -100,7 +100,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
 const Step2 = ({ address, amount, next }) => {
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Chuyển Solana</Text>
+      <Text style={typo.title}>Chuyển SOL</Text>
       <View style={s.body}>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Token</Text>
