@@ -10,7 +10,7 @@ const DEX = () => {
     <View style={{ flex: 1 }}>
       <Header />
       <RNWebView
-        source={{ uri: 'https://swap.solareum.app' }}
+        source={{ uri: 'https://dex.solareum.app' }}
         style={{ backgroundColor: COLORS.dark0 }}
         containerStyle={{ backgroundColor: COLORS.dark0 }}
       />
