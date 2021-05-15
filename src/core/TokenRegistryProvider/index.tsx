@@ -44,5 +44,6 @@ export const TokenRegistryProvider: React.FC = (props) => {
 export const useTokenInfos = () => {
   const { tokenInfos } = useContext(TokenListContext);
 
-  return tokenInfos;
+  // temporarily show 12 token first
+  return tokenInfos?.slice(0, 12);
 };

@@ -12,6 +12,11 @@ const s = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   },
+  body: {
+    padding: 10,
+    paddingBottom: 20,
+    marginBottom: 40
+  },
   info: {
     flex: 1,
     alignItems: 'center',
@@ -53,7 +58,7 @@ const Wallet: React.FC = () => {
             </View>
           </View>
         </View>
-        <View style={[grid.body, { padding: 10 }]}>
+        <View style={[grid.body, s.body]}>
           <TokensList />
         </View>
       </ScrollView>

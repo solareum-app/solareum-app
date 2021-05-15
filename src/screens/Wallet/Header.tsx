@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import { Header as HeaderElement } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,7 +15,14 @@ const SettingIcon: React.FC = () => {
     navigation.navigate(Routes.Settings);
   }, [navigation]);
 
-  return <Icon onPress={onPressHandler} name="setting" color={COLORS.white2} />;
+  return (
+    <TouchableOpacity
+      style={{ paddingRight: 16 }}
+      onPress={onPressHandler}
+    >
+      <Icon name="setting" color={COLORS.white2} />
+    </TouchableOpacity>
+  );
 };
 
 const NotificationIcon: React.FC = () => {
@@ -24,7 +32,14 @@ const NotificationIcon: React.FC = () => {
     navigation.navigate(Routes.Notifications);
   }, [navigation]);
 
-  return <Icon onPress={onPressHandler} name="bells" color={COLORS.white2} />;
+  return (
+    <TouchableOpacity
+      style={{ paddingLeft: 16 }}
+      onPress={onPressHandler}
+    >
+      <Icon name="bells" color={COLORS.white2} />
+    </TouchableOpacity >
+  )
 };
 
 const Header: React.FC = () => {

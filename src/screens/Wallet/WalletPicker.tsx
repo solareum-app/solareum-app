@@ -31,9 +31,11 @@ const WalletPicker: React.FC = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
+          paddingLeft: 12,
+          paddingRight: 12,
         }}>
         <Text style={{ fontSize: 20, color: COLORS.white0 }}>{`Walltet Name`}</Text>
-        <Icon name="down" color={COLORS.white0} size={16} style={{ marginLeft: 4 }} />
+        <Icon name="down" color={COLORS.white0} size={20} style={{ marginLeft: 4 }} />
       </TouchableOpacity>
 
       <Portal>
@@ -42,21 +44,44 @@ const WalletPicker: React.FC = () => {
             {list.map((l, i) => (
               <ListItem
                 key={i}
-                bottomDivider
+                containerStyle={{
+                  backgroundColor: COLORS.dark0,
+                  borderBottomColor: COLORS.dark2,
+                  borderBottomWidth: 2
+                }}
               >
-                <Icon name="Safety" size={16} color="black" />
+                <Icon name="Safety" size={16} color={COLORS.white2} />
                 <ListItem.Content>
-                  <ListItem.Title>{l.title}</ListItem.Title>
+                  <ListItem.Title style={{ color: COLORS.white2 }}>{l.title}</ListItem.Title>
                 </ListItem.Content>
-                <Icon name="setting" size={16} color="black" />
               </ListItem>
             ))}
             <View style={s.group}>
               <View style={s.groupItem}>
-                <Button title="New" type="clear" titleStyle={{ color: COLORS.dark2 }} />
+                <Button title="New" type="clear"
+                  titleStyle={{ color: COLORS.white2 }}
+                  icon={
+                    <Icon
+                      size={16}
+                      name="plus"
+                      color={COLORS.white2}
+                      style={{ marginRight: 6 }}
+                    />
+                  }
+                />
               </View>
               <View style={s.groupItem}>
-                <Button title="Import" type="clear" titleStyle={{ color: COLORS.dark2 }} />
+                <Button title="Import" type="clear"
+                  titleStyle={{ color: COLORS.white2 }}
+                  icon={
+                    <Icon
+                      size={16}
+                      name="download"
+                      color={COLORS.white2}
+                      style={{ marginRight: 6 }}
+                    />
+                  }
+                />
               </View>
             </View>
           </View>
