@@ -4,7 +4,7 @@ import { Avatar, ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { TokenInfo } from '@solana/spl-token-registry';
 
-import { COLORS } from '../../theme/colors';
+import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import { useTokenInfos } from '../../core/TokenRegistryProvider';
 
@@ -64,14 +64,14 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
         <Avatar rounded title={symbol.toUpperCase()} />
       )}
       <ListItem.Content>
-        <ListItem.Title style={{ color: COLORS.white0 }}>{name}</ListItem.Title>
-        <ListItem.Subtitle style={{ color: COLORS.white4 }}>
+        <ListItem.Title style={{ color: COLORS.white0, fontSize: FONT_SIZES.md }}>{name}</ListItem.Title>
+        <ListItem.Subtitle style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}>
           <PriceWithChange symbol={symbol} />
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Content right>
-        <ListItem.Title style={{ color: COLORS.white0 }}>{`0.2 ${symbol.toUpperCase()}`}</ListItem.Title>
-        <ListItem.Subtitle style={{ color: COLORS.white2 }}>{'26,02 $'}</ListItem.Subtitle>
+        <ListItem.Title style={{ color: COLORS.white0, fontSize: FONT_SIZES.md }}>{`0.2 ${symbol.toUpperCase()}`}</ListItem.Title>
+        <ListItem.Subtitle style={{ color: COLORS.white2, fontSize: FONT_SIZES.sm }}>{'26,02 $'}</ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   );

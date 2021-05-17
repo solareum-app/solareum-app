@@ -69,7 +69,7 @@ const Token = () => {
         <View style={grid.header}>
           <View style={s.info}>
             <Avatar
-              size="large"
+              size="medium"
               rounded
               source={{
                 uri: "https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png"

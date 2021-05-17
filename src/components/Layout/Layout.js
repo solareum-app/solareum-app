@@ -10,9 +10,7 @@ const s = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-
     padding: 15,
-
     backgroundColor: '#fafafa',
   },
 });

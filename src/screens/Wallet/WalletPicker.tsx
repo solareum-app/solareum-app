@@ -5,7 +5,7 @@ import { Portal } from 'react-native-portalize';
 
 import { FixedContent } from '../../components/Modals/FixedContent';
 
-import { COLORS } from '../../theme/colors';
+import { COLORS, FONT_SIZES } from '../../theme';
 import Icon from '../../components/Icon';
 
 const WalletPicker: React.FC = () => {
@@ -34,8 +34,8 @@ const WalletPicker: React.FC = () => {
           paddingLeft: 12,
           paddingRight: 12,
         }}>
-        <Text style={{ fontSize: 20, color: COLORS.white0 }}>{`Walltet Name`}</Text>
-        <Icon name="down" color={COLORS.white0} size={20} style={{ marginLeft: 4 }} />
+        <Text style={{ fontSize: FONT_SIZES.md, color: COLORS.white0 }}>{`Walltet Name`}</Text>
+        <Icon name="down" color={COLORS.white0} size={FONT_SIZES.md} style={{ marginLeft: 4 }} />
       </TouchableOpacity>
 
       <Portal>
@@ -50,7 +50,7 @@ const WalletPicker: React.FC = () => {
                   borderBottomWidth: 2
                 }}
               >
-                <Icon name="Safety" size={16} color={COLORS.white2} />
+                <Icon name="Safety" size={FONT_SIZES.md} color={COLORS.white2} />
                 <ListItem.Content>
                   <ListItem.Title style={{ color: COLORS.white2 }}>{l.title}</ListItem.Title>
                 </ListItem.Content>
@@ -62,7 +62,7 @@ const WalletPicker: React.FC = () => {
                   titleStyle={{ color: COLORS.white2 }}
                   icon={
                     <Icon
-                      size={16}
+                      size={FONT_SIZES.md}
                       name="plus"
                       color={COLORS.white2}
                       style={{ marginRight: 6 }}
@@ -75,7 +75,7 @@ const WalletPicker: React.FC = () => {
                   titleStyle={{ color: COLORS.white2 }}
                   icon={
                     <Icon
-                      size={16}
+                      size={FONT_SIZES.md}
                       name="download"
                       color={COLORS.white2}
                       style={{ marginRight: 6 }}

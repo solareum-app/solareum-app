@@ -31,7 +31,7 @@ const s = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    height: 52
+    height: 44
   },
   group: {
     marginBottom: 12,

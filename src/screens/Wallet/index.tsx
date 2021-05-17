@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 
 import { RoundedButton } from '../../components/RoundedButton';
-import { COLORS } from '../../theme/colors';
+import { COLORS, FONT_SIZES } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
@@ -25,7 +25,7 @@ const s = StyleSheet.create({
   },
   infoBalance: {
     marginTop: 12,
-    fontSize: 40,
+    fontSize: 36,
     color: COLORS.white0
   },
   control: {

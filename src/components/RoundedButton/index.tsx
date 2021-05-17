@@ -16,9 +16,9 @@ const s = StyleSheet.create({
     alignItems: 'center'
   },
   button: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     marginBottom: 4,
     backgroundColor: COLORS.blue2,
   }
@@ -30,7 +30,7 @@ export const RoundedButton: React.FC<Props> = ({ onClick, title, iconName }) => 
       <Button
         buttonStyle={s.button}
         onPress={onClick}
-        icon={<Icon name={iconName} size={24} color={COLORS.white0} />}
+        icon={<Icon name={iconName} size={20} color={COLORS.white0} />}
       />
       <Text style={{ color: COLORS.white0 }}>{title}</Text>
     </View>

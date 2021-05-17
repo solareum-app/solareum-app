@@ -20,7 +20,7 @@ const SettingIcon: React.FC = () => {
       style={{ paddingRight: 16 }}
       onPress={onPressHandler}
     >
-      <Icon name="setting" color={COLORS.white2} />
+      <Icon name="setting" color={COLORS.white2} size={20} />
     </TouchableOpacity>
   );
 };
@@ -37,7 +37,7 @@ const NotificationIcon: React.FC = () => {
       style={{ paddingLeft: 16 }}
       onPress={onPressHandler}
     >
-      <Icon name="bells" color={COLORS.white2} />
+      <Icon name="bells" color={COLORS.white2} size={20} />
     </TouchableOpacity >
   )
 };
