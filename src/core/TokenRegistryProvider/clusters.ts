@@ -11,12 +11,12 @@ export const CLUSTERS: Cluster[] = [
   {
     name: 'devnet',
     apiUrl: clusterApiUrl('devnet'),
-    label: 'Devnet'
+    label: 'Devnet',
   },
   {
     name: 'testnet',
     apiUrl: clusterApiUrl('testnet'),
-    label: 'Testnet'
+    label: 'Testnet',
   },
   {
     name: 'localnet',
