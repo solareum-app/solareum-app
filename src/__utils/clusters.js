@@ -1,5 +1,5 @@
 import { clusterApiUrl } from '@solana/web3.js';
-import { MAINNET_URL } from '../utils/connection';
+import { MAINNET_URL } from './connection';
 
 export const CLUSTERS = [
   {

@@ -4,8 +4,9 @@ import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
+import { COLORS } from '../../theme';
 
-export const SimpleContent = forwardRef((_, ref) => {
+export const SimpleContent = forwardRef(({ children }, ref) => {
   const modalizeRef = useRef(null);
   const combinedRef = useCombinedRefs(ref, modalizeRef);
 
@@ -17,7 +18,9 @@ export const SimpleContent = forwardRef((_, ref) => {
 
     <View style={s.content__inside} key="1">
       <Text style={s.content__paragraph}>{faker.lorem.paragraphs(4)}</Text>
-      <Text style={[s.content__subheading, { marginTop: 30 }]}>Horizontal ScrollView</Text>
+      <Text style={[s.content__subheading, { marginTop: 30 }]}>
+        Horizontal ScrollView
+      </Text>
 
       <ScrollView style={s.content__scrollview} horizontal>
         {Array(5)
@@ -43,9 +46,14 @@ export const SimpleContent = forwardRef((_, ref) => {
       scrollViewProps={{
         showsVerticalScrollIndicator: false,
         stickyHeaderIndices: [0],
-      }}
-    >
-      {renderContent()}
+        style: {
+          backgroundColor: COLORS.dark0,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          overflow: 'hidden',
+        },
+      }}>
+      {children ? children : renderContent()}
     </Modalize>
   );
 });

@@ -1,4 +1,4 @@
-import { getUnlockedMnemonicAndSeed } from './../wallet-seed';
+import { getUnlockedMnemonicAndSeed } from '../wallet-seed';
 import * as bip32 from 'bip32';
 import nacl from 'tweetnacl';
 import { Account } from '@solana/web3.js';

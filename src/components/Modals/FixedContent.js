@@ -9,6 +9,7 @@ import {
 import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
+import { COLORS } from '../../theme';
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 export const FixedContent = forwardRef(({ children }, ref) => {
@@ -51,7 +52,17 @@ export const FixedContent = forwardRef(({ children }, ref) => {
   );
 
   return (
-    <Modalize ref={combinedRef} adjustToContentHeight={toggle}>
+    <Modalize
+      ref={combinedRef}
+      adjustToContentHeight={toggle}
+      scrollViewProps={{
+        style: {
+          backgroundColor: COLORS.dark0,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          overflow: 'hidden',
+        },
+      }}>
       {children ? children : renderContent()}
     </Modalize>
   );
