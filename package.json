@@ -19,7 +19,6 @@
     "@react-navigation/bottom-tabs": "5.11.9",
     "@react-navigation/native": "5.9.4",
     "@react-navigation/stack": "5.14.4",
-    "@solana/spl-token-registry": "0.2.60",
     "appcenter": "4.1.0",
     "appcenter-analytics": "4.1.0",
     "appcenter-crashes": "4.1.0",
@@ -41,7 +40,10 @@
     "react-native-webview": "^11.4.3",
     "react-redux": "7.2.3",
     "redux": "4.0.5",
-    "redux-logger": "3.0.6"
+    "redux-logger": "3.0.6",
+    "@project-serum/serum": "^0.13.33",
+    "@solana/spl-token-registry": "^0.2.1",
+    "@solana/web3.js": "^0.87.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
