@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
-// import { Connection, Account, PublicKey } from '@solana/web3.js';
+import { Connection } from '@solana/web3.js';
+import bs58 from 'bs58';
 
 import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
-// import { Wallet } from '../../spl-utils/wallet';
+import { Wallet } from '../../spl-utils/wallet';
+import { getAccountFromSeed } from '../../spl-utils/wallet-account';
 
 const INJECTED_SCRIPT = `
 window.solana = {
@@ -19,7 +21,18 @@ window.solana = {
 type Props = {};
 type State = {};
 
-// const secretKey = '';
+async function mnemonicToSeed(mnemonic) {
+  const bip39 = await import('bip39');
+  if (!bip39.validateMnemonic(mnemonic)) {
+    throw new Error('Invalid seed words');
+  }
+  const seed = await bip39.mnemonicToSeed(mnemonic);
+  return Buffer.from(seed).toString('hex');
+}
+
+// Testing account
+const mnemonic = 'unveil dust trophy deputy wear sorry limb announce initial seek property edge area target broken suspect rapid that job next toast expose enable prison';
+
 
 export default class Messaging extends Component<Props, State> {
   state = {};
@@ -28,23 +41,26 @@ export default class Messaging extends Component<Props, State> {
     super(props);
 
     this.webView = React.createRef();
-
-    // const account = new Account(secretKey);
-    // const connection = new Connection('https://devnet.solana.com');
-    // this.wallet = new Wallet(connection, 'custody', { account });
-    // console.log('wallet', this.wallet.publicKey)
   }
 
-  onMessage = (event: any) => {
+  async componentDidMount() {
+    const seed = await mnemonicToSeed(mnemonic);
+    const seedBuffer = Buffer.from(seed, 'hex');
+    const connection = new Connection('https://solana-api.projectserum.com');
+
+    account = getAccountFromSeed(seedBuffer, 0);
+    this.wallet = new Wallet(connection, 'custody', { account });
+  }
+
+  onMessage = async (event: any) => {
     const data = JSON.parse(event.nativeEvent.data);
-    console.log('onMessage', data);
 
     if (data.method === 'connect') {
       this.sendConnectMessage(data);
     }
 
     if (data.method === 'signTransaction') {
-      this.sendReject(data);
+      this.sendSignature(data);
     }
   };
 
@@ -56,21 +72,34 @@ export default class Messaging extends Component<Props, State> {
     }));
   }
 
-  sendReject = (message: any) => {
+  sendSignature = async (payload) => {
+    const encodedMessage = payload.params.message;
+    const message = bs58.decode(encodedMessage);
+    const signature = await this.wallet.createSignature(message);
+    this.populateMessage({
+      result: {
+        signature,
+        publicKey: this.wallet.publicKey.toBase58(),
+      },
+      id: payload.id,
+    });
+  }
+
+  sendReject = (payload: any) => {
     this.populateMessage({
       error: 'Transaction cancelled',
-      id: message.id,
+      id: payload.id,
     })
   };
 
-  sendConnectMessage = (message: any) => {
+  sendConnectMessage = (payload: any) => {
     this.populateMessage({
       method: 'connected',
       params: {
-        publicKey: 'FZ5MNLTWftEd1ciiRBMDgKsvL5CuEngm6q3rUNb6qHey',
+        publicKey: this.wallet.publicKey.toBase58(),
         autoApprove: true,
       },
-      id: message.id,
+      id: payload.id,
     });
   };
 
@@ -79,7 +108,6 @@ export default class Messaging extends Component<Props, State> {
       <View style={{ flex: 1 }}>
         <Header />
         <WebView
-          // source={{ uri: 'http://localhost:5000' }}
           source={{ uri: 'https://dex.solareum.app' }}
           ref={this.webView}
           style={{ backgroundColor: COLORS.dark0 }}
