@@ -1,23 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
 
-import Icon from '../../components/Icon';
+import { createWallet } from '../../storage/WalletCollection';
 import Routes from '../../navigators/Routes';
-
-/**
- * MOCKUP
- */
-const generateMnemonicAndSeed = async () => {
-  return {
-    mnemonic:
-      'cliff agree silk cave maximum treat kit increase zoo mammal color beyond mail bench steak online gallery crawl garment wise offer lizard unable federal',
-    seed:
-      'ccddd4a822542843d853c574893328ad5b5c68c0123c2df0116052435efd18bcf95b1ac41cd0f49c2e2cb153219676f911511b9ba42505de5551fad9ea6ff881',
-  };
-};
+import Icon from '../../components/Icon';
 
 const Word = ({ word, order }) => {
   return (
@@ -37,20 +26,17 @@ const Word = ({ word, order }) => {
 type Props = {};
 const CreateWallet: React.FC<Props> = () => {
   const navigation = useNavigation();
-  const [mnemonicAndSeed, setMnemonicAndSeed] = React.useState(null);
   const [confirmed, setConfirmed] = React.useState(false);
+  const seed = 'unveil dust trophy deputy wear sorry limb announce initial seek property edge area target broken suspect rapid that job next toast expose enable prison';
 
-  useEffect(() => {
-    generateMnemonicAndSeed().then(setMnemonicAndSeed);
-  }, []);
+  const handleCreateWallet = async () => {
+    await createWallet(seed);
+    navigation.navigate(Routes.Home, { screen: Routes.Wallet });
+  };
 
-  const onPressHandler = React.useCallback(() => {
-    navigation.navigate('TabNavigator', { screen: Routes.Wallet });
-  }, [navigation]);
-
-  const copyToClipboard = React.useCallback(() => {
-    Clipboard.setString(mnemonicAndSeed.mnemonic);
-  }, [mnemonicAndSeed]);
+  const copyToClipboard = () => {
+    Clipboard.setString(seed);
+  };
 
   return (
     <View style={{ margin: 8, flex: 1 }}>
@@ -69,7 +55,7 @@ const CreateWallet: React.FC<Props> = () => {
           margin: 20,
           marginBottom: 8,
         }}>
-        {mnemonicAndSeed?.mnemonic
+        {seed
           .split(' ')
           .map((word: string, index: number) => (
             <Word key={index} word={word} order={index + 1} />
@@ -120,7 +106,7 @@ const CreateWallet: React.FC<Props> = () => {
           checked={confirmed}
           onPress={() => setConfirmed((prevConfirmed) => !prevConfirmed)}
         />
-        <Button title="Create Wallet" onPress={onPressHandler} />
+        <Button title="Create Wallet" onPress={handleCreateWallet} />
       </View>
     </View>
   );
