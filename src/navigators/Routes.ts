@@ -1,4 +1,5 @@
 enum Routes {
+  Home = 'Home',
   CreateWallet = 'CreateWallet',
   DEX = 'DEX',
   Fiat = 'Fiat',

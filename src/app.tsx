@@ -11,22 +11,19 @@ import {
 import { ConnectionProvider } from './core/ConnectionProvider';
 import { TokenRegistryProvider } from './core/TokenRegistryProvider';
 import MainNavigator from './navigators/MainNavigator';
-import StoreProvider from './store/Provider';
 
 const App: React.FC = () => {
   return (
-    <StoreProvider>
-      <ConnectionProvider>
-        <TokenRegistryProvider>
-          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-            <ThemeProvider>
-              <StatusBar barStyle="light-content" />
-              <MainNavigator />
-            </ThemeProvider>
-          </SafeAreaProvider>
-        </TokenRegistryProvider>
-      </ConnectionProvider>
-    </StoreProvider>
+    <ConnectionProvider>
+      <TokenRegistryProvider>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+          <ThemeProvider>
+            <StatusBar barStyle="light-content" />
+            <MainNavigator />
+          </ThemeProvider>
+        </SafeAreaProvider>
+      </TokenRegistryProvider>
+    </ConnectionProvider>
   );
 };
 
