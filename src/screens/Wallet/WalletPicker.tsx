@@ -1,32 +1,36 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
+import { useNavigation } from '@react-navigation/native';
 
+import { getListWallet } from '../../storage/WalletCollection';
 import { FixedContent } from '../../components/Modals/FixedContent';
 
 import { COLORS, FONT_SIZES } from '../../theme';
+import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
 
 const WalletPicker: React.FC = () => {
   const ref = useRef();
+  const navigation = useNavigation();
+  const [walletList, setWalletList] = useState([]);
 
-  const openWalletBook = () => {
-    ref?.current?.open();
-  };
+  const fetchWalletList = async () => {
+    const list = await getListWallet();
+    setWalletList(list);
+  }
 
-  const list = [
-    { title: 'List Item 1' },
-    { title: 'List Item 2' },
-    { title: 'List Item 3' },
-    { title: 'List Item 4' },
-    { title: 'List Item 5' },
-  ];
+  useEffect(() => {
+    fetchWalletList();
+  }, []);
 
   return (
     <View>
       <TouchableOpacity
-        onPress={openWalletBook}
+        onPress={() => {
+          ref?.current?.open();
+        }}
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -41,9 +45,9 @@ const WalletPicker: React.FC = () => {
       <Portal>
         <FixedContent ref={ref}>
           <View style={s.content}>
-            {list.map((l, i) => (
+            {walletList.map((l, i) => (
               <ListItem
-                key={i}
+                key={l.key}
                 containerStyle={{
                   backgroundColor: COLORS.dark0,
                   borderBottomColor: COLORS.dark2,
@@ -52,13 +56,17 @@ const WalletPicker: React.FC = () => {
               >
                 <Icon name="Safety" size={FONT_SIZES.md} color={COLORS.white2} />
                 <ListItem.Content>
-                  <ListItem.Title style={{ color: COLORS.white2 }}>{l.title}</ListItem.Title>
+                  <ListItem.Title style={{ color: COLORS.white2 }}>{l.key}</ListItem.Title>
                 </ListItem.Content>
               </ListItem>
             ))}
             <View style={s.group}>
               <View style={s.groupItem}>
                 <Button title="New" type="clear"
+                  onPress={() => {
+                    ref.current?.close();
+                    navigation.navigate(Routes.CreateWallet)
+                  }}
                   titleStyle={{ color: COLORS.white2 }}
                   icon={
                     <Icon
@@ -72,6 +80,10 @@ const WalletPicker: React.FC = () => {
               </View>
               <View style={s.groupItem}>
                 <Button title="Import" type="clear"
+                  onPress={() => {
+                    ref.current?.close();
+                    navigation.navigate(Routes.ImportWallet)
+                  }}
                   titleStyle={{ color: COLORS.white2 }}
                   icon={
                     <Icon

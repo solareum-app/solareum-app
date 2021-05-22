@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
 
 import { createWallet } from '../../storage/WalletCollection';
+import { generateMnemonicAndSeed } from '../../spl-utils/wallet-account';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
 
@@ -27,16 +28,27 @@ type Props = {};
 const CreateWallet: React.FC<Props> = () => {
   const navigation = useNavigation();
   const [confirmed, setConfirmed] = React.useState(false);
-  const seed = 'unveil dust trophy deputy wear sorry limb announce initial seek property edge area target broken suspect rapid that job next toast expose enable prison';
+  const [seed, setSeed] = useState('');
+  const [mnemonic, setMnemonic] = useState('');
+
+  const getSeed = async () => {
+    const { seed: s, mnemonic: m } = await generateMnemonicAndSeed();
+    setSeed(s);
+    setMnemonic(m);
+  };
 
   const handleCreateWallet = async () => {
-    await createWallet(seed);
+    await createWallet(seed, mnemonic);
     navigation.navigate(Routes.Home, { screen: Routes.Wallet });
   };
 
   const copyToClipboard = () => {
     Clipboard.setString(seed);
   };
+
+  useEffect(() => {
+    getSeed();
+  }, []);
 
   return (
     <View style={{ margin: 8, flex: 1 }}>
@@ -55,7 +67,7 @@ const CreateWallet: React.FC<Props> = () => {
           margin: 20,
           marginBottom: 8,
         }}>
-        {seed
+        {mnemonic
           .split(' ')
           .map((word: string, index: number) => (
             <Word key={index} word={word} order={index + 1} />
