@@ -10,7 +10,7 @@ const ImportWallet: React.FC<Props> = () => {
   const navigation = useNavigation();
 
   const onPressHandler = React.useCallback(() => {
-    navigation.navigate('TabNavigator', { screen: Routes.Wallet });
+    navigation.navigate(Routes.Home, { screen: Routes.Wallet });
   }, [navigation]);
 
   return (

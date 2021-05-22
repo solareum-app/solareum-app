@@ -3,11 +3,12 @@ import { v4 } from 'uuid';
 
 export const COLLECTION_NAME = 'WALLET';
 
-export const createWallet = async (seedPhrase: string) => {
+export const createWallet = async (seed: string, mnemonic: string) => {
   const wallet = {
     collection: COLLECTION_NAME,
     id: v4(),
-    seedPhrase,
+    seed,
+    mnemonic,
   };
   return await setItem(COLLECTION_NAME, wallet.id, wallet);
 };

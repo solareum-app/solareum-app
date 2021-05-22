@@ -11,7 +11,7 @@ export const DERIVATION_PATH = {
 };
 
 export function getAccountFromSeed(
-  seed,
+  seed, // Buffer
   walletIndex,
   dPath = DERIVATION_PATH.bip44Change,
   accountIndex = 0,
@@ -34,4 +34,20 @@ function deriveSeed(seed, walletIndex, derivationPath, accountIndex) {
     default:
       throw new Error(`invalid derivation path: ${derivationPath}`);
   }
+}
+
+export async function generateMnemonicAndSeed() {
+  const bip39 = await import('bip39');
+  const mnemonic = bip39.generateMnemonic(256);
+  const seed = await bip39.mnemonicToSeed(mnemonic);
+  return { mnemonic, seed: Buffer.from(seed).toString('hex') };
+}
+
+export async function mnemonicToSeed(mnemonic) {
+  const bip39 = await import('bip39');
+  if (!bip39.validateMnemonic(mnemonic)) {
+    throw new Error('Invalid seed words');
+  }
+  const seed = await bip39.mnemonicToSeed(mnemonic);
+  return Buffer.from(seed).toString('hex');
 }
