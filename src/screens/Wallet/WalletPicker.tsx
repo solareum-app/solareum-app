@@ -4,8 +4,8 @@ import { ListItem, Button } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
 import { useNavigation } from '@react-navigation/native';
 
-import { getListWallet } from '../../storage/WalletCollection';
 import { FixedContent } from '../../components/Modals/FixedContent';
+import WalletFactory from '../../factory/Wallet';
 
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
@@ -18,23 +18,20 @@ const getShortPublicKey = (key: string) => {
 
 const WalletPicker: React.FC = () => {
   const ref = useRef();
+  const [count, setCount] = useState(0);
   const navigation = useNavigation();
   const [walletList, setWalletList] = useState([]);
 
-  const fetchWalletList = async () => {
-    const list = await getListWallet();
-    setWalletList(list);
-  }
-
   useEffect(() => {
-    fetchWalletList();
-  }, []);
+    setWalletList(WalletFactory.getList());
+  }, [count]);
 
   return (
     <View>
       <TouchableOpacity
         onPress={() => {
           ref?.current?.open();
+          setCount(i => i + 1);
         }}
         style={{
           flexDirection: 'row',
@@ -50,9 +47,9 @@ const WalletPicker: React.FC = () => {
       <Portal>
         <FixedContent ref={ref}>
           <View style={s.content}>
-            {walletList.map((l, i) => (
+            {walletList.map((l) => (
               <ListItem
-                key={l.key}
+                key={l.id}
                 containerStyle={{
                   backgroundColor: COLORS.dark0,
                   borderBottomColor: COLORS.dark2,

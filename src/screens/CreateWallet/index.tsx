@@ -4,12 +4,12 @@ import { Button, CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
 
-import { createWallet } from '../../storage/WalletCollection';
 import Icon from '../../components/Icon';
 import { generateMnemonicAndSeed } from '../../spl-utils/wallet-account';
 import Routes from '../../navigators/Routes';
 import { grid, typo } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
+import WalletFactory from '../../factory/Wallet';
 
 const s = StyleSheet.create({
   main: {
@@ -58,7 +58,7 @@ const CreateWallet: React.FC<Props> = () => {
   const [mnemonic, setMnemonic] = useState('');
   const [isStored, setIsStored] = useState(false);
   // TODO: Allow user to choose wallet name when creating
-  const [name, setName] = useState('Solareum Wallet');
+  const [name, setName] = useState('');
 
   const getSeed = async () => {
     const { seed: s, mnemonic: m } = await generateMnemonicAndSeed();
@@ -67,7 +67,7 @@ const CreateWallet: React.FC<Props> = () => {
   };
 
   const handleCreateWallet = async () => {
-    await createWallet(seed, mnemonic, name, isStored);
+    await WalletFactory.create(seed, mnemonic, name, isStored);
     navigation.navigate(Routes.Home, { screen: Routes.Wallet });
   };
 
@@ -96,7 +96,7 @@ const CreateWallet: React.FC<Props> = () => {
 
             <View style={s.seedWrp}>
               <Text style={s.seed}>
-                {mnemonic}
+                {mnemonic || '-'}
               </Text>
             </View>
 
