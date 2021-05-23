@@ -11,6 +11,11 @@ import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
 
+const getShortPublicKey = (key: string) => {
+  const visible = 7;
+  return `${key.slice(0, visible)}...${key.slice(key.length - visible, key.length)}`;
+};
+
 const WalletPicker: React.FC = () => {
   const ref = useRef();
   const navigation = useNavigation();
@@ -54,15 +59,16 @@ const WalletPicker: React.FC = () => {
                   borderBottomWidth: 2
                 }}
               >
-                <Icon name="Safety" size={FONT_SIZES.md} color={COLORS.white2} />
+                <Icon name="wallet" size={FONT_SIZES.lg} color={COLORS.white2} />
                 <ListItem.Content>
-                  <ListItem.Title style={{ color: COLORS.white2 }}>{l.key}</ListItem.Title>
+                  <ListItem.Title style={{ color: COLORS.white2 }}>{l.name || 'Solareum Wallet'}</ListItem.Title>
+                  <ListItem.Title style={{ color: COLORS.white4, fontSize: 12 }}>{getShortPublicKey(l.id)}</ListItem.Title>
                 </ListItem.Content>
               </ListItem>
             ))}
             <View style={s.group}>
               <View style={s.groupItem}>
-                <Button title="New" type="clear"
+                <Button title="Tạo Ví" type="clear"
                   onPress={() => {
                     ref.current?.close();
                     navigation.navigate(Routes.CreateWallet)
@@ -79,7 +85,7 @@ const WalletPicker: React.FC = () => {
                 />
               </View>
               <View style={s.groupItem}>
-                <Button title="Import" type="clear"
+                <Button title="Khôi phục" type="clear"
                   onPress={() => {
                     ref.current?.close();
                     navigation.navigate(Routes.ImportWallet)

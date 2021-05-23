@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 
 import { RoundedButton } from '../../components/RoundedButton';
-import { COLORS, FONT_SIZES } from '../../theme';
+import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';

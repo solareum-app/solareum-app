@@ -21,6 +21,9 @@ export const grid = StyleSheet.create({
     fontSize: 18,
     color: COLORS.white2,
     lineHeight: 28,
+  },
+  button: {
+    height: 44,
   }
 });
 
@@ -37,6 +40,7 @@ export const typo = StyleSheet.create({
     color: COLORS.white2,
     fontSize: 16,
     lineHeight: 24,
+    marginBottom: 16,
   },
   bold: {
     fontWeight: 'bold',
@@ -45,6 +49,13 @@ export const typo = StyleSheet.create({
     color: COLORS.white4,
     fontSize: 14,
     lineHeight: 20,
+    marginBottom: 8,
+  },
+  warning: {
+    color: COLORS.warning,
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 8,
   },
   input: {
     color: COLORS.white2,
