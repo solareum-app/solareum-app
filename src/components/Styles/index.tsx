@@ -10,6 +10,13 @@ export const grid = StyleSheet.create({
   header: {
     flex: 0,
   },
+  content: {
+    flex: 1,
+    padding: 20,
+  },
+  wrp: {
+    flex: 1,
+  },
   body: {
     flex: 1,
     backgroundColor: COLORS.dark0,
