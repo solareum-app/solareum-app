@@ -81,8 +81,8 @@ const CreateWallet: React.FC<Props> = () => {
 
   return (
     <View style={grid.container}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={{ flex: 2 }}>
+      <SafeAreaView style={grid.wrp}>
+        <ScrollView>
           <View style={s.body}>
             <Text style={[typo.title, s.title]} >
               Lưu mã khôi phục

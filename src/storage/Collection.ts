@@ -5,6 +5,8 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// AsyncStorage.clear();
+
 const getKey = (collection: string, id: string) => {
   return `${collection}-${id}`;
 };
