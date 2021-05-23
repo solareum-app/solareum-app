@@ -6,7 +6,7 @@ export const COLLECTION_NAME = 'WALLET';
 export const createWallet = async (
   seed: string,
   mnemonic: string,
-  name: string = 'Solareum Wallet 01',
+  name?: string,
   isStored: boolean = false,
 ) => {
   const wallet = {
@@ -17,7 +17,9 @@ export const createWallet = async (
     name,
     isStored,
   };
-  return await setItem(COLLECTION_NAME, wallet.id, wallet);
+
+  await setItem(COLLECTION_NAME, wallet.id, wallet);
+  return await getWalletById(wallet.id);
 };
 
 export const getWalletById = async (id: string) => {
