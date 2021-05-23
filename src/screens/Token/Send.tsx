@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { Input, Button, Avatar } from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
 
 import imgDone from '../../assets/clip-done.png';
 import { typo } from '../../components/Styles';
