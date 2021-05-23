@@ -85,9 +85,6 @@ const Token = () => {
             <View style={s.controlItem}>
               <RoundedButton onClick={openReceiveScreen} title="Nhận" iconName="download" />
             </View>
-            <View style={s.controlItem}>
-              <RoundedButton onClick={() => null} title="Sao chép" iconName="addfile" />
-            </View>
           </View>
         </View>
         <View style={grid.body}>
