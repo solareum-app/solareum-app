@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 import { COLORS } from '../../theme/colors';
 import { RoundedButton } from '../../components/RoundedButton';
 import { typo } from '../../components/Styles';
+import { getWallet } from '../../spl-utils/getWallet';
 
 const s = StyleSheet.create({
   main: {
@@ -41,15 +42,26 @@ const s = StyleSheet.create({
 });
 
 export const Receive = () => {
+  const [address, setAddress] = useState('-');
+
+  const init = async () => {
+    const wallet = await getWallet();
+    setAddress(wallet.publicKey.toBase58());
+  }
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
     <View style={s.main}>
       <Text style={typo.title}>Nhận SOL</Text>
       <View style={s.body}>
         <View style={s.qr}>
-          <QRCode value="751dKZJazx8BrCkK1wxgLNzQcZBVzJbVgYbi8KKVe7MH" size={220} />
+          <QRCode value={address} size={220} />
         </View>
         <Text style={typo.address}>
-          751dKZJazx8BrCkK1wxgLNzQcZBVzJbVgYbi8KKVe7MH
+          {address}
         </Text>
       </View>
       <View style={s.footer}>

@@ -77,7 +77,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
           <PriceWithChange symbol={symbol} />
         </ListItem.Subtitle>
       </ListItem.Content>
-      <ListItem.Content right>
+      <ListItem.Content right style={{ flex: 1 }}>
         <ListItem.Title style={{
           color: COLORS.white0,
           fontSize: FONT_SIZES.md
@@ -111,7 +111,6 @@ const TokensList: React.FC<TokensListProps> = ({ query = '', balanceList }) => {
           }
         }
         const tokenInfo = tokenInfos?.find(token => token.address === i.mint.toBase58())
-        console.log('tokenInfo', tokenInfo, '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU', i.mint.toBase58());
         return {
           ...i,
           ...tokenInfo,

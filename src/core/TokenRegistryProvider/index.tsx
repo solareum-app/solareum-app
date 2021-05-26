@@ -45,5 +45,5 @@ export const useTokenInfos = () => {
   const { tokenInfos } = useContext(TokenListContext);
 
   // temporarily show 12 token first
-  return tokenInfos?.slice(0, 12);
+  return tokenInfos;
 };

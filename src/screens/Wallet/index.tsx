@@ -58,7 +58,7 @@ class WalletScreen extends React.PureComponent {
   loadBalance = async () => {
     this.setState({ loading: true });
 
-    const wallet = await getWallet()
+    const wallet = await getWallet();
     const balanceList = await getBalanceList(wallet);
 
     this.setState({
