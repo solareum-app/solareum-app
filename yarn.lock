@@ -1377,10 +1377,10 @@
   dependencies:
     type-detect "4.0.8"
 
-"@solana/spl-token-registry@^0.2.1":
-  version "0.2.106"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token-registry/-/spl-token-registry-0.2.106.tgz#501c44ce6b6b11a73f311bd1723c8e111ad9abe7"
-  integrity sha512-7dSdRGi/3aYj5jL1xyF+Ujj82Tr8ioGkuDMK1kqYO3dGwOhrFO5RrLz4VweSWB0BI/KjU3mi05Vks/guYy5qUQ==
+"@solana/spl-token-registry@^0.2.114":
+  version "0.2.114"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token-registry/-/spl-token-registry-0.2.114.tgz#f7fb744b72035a304332c0c3dee5f2e361397698"
+  integrity sha512-rOEey6OUnJKMXmeig7wR30sIPJTi7ITFHj9KBkrOrTDG4J3U+/CpVTI5hBPCGGIpVgxJBmqOYf0BFxSXrRAeig==
   dependencies:
     cross-fetch "3.0.6"
 

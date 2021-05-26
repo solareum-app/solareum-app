@@ -1,6 +1,7 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, RefreshControl, View, Text, StyleSheet } from 'react-native';
 
+import { getWallet, getBalanceList } from '../../spl-utils/getWallet';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
@@ -40,30 +41,65 @@ const s = StyleSheet.create({
   },
 });
 
-const Wallet: React.FC = () => {
-  return (
-    <View style={grid.container}>
-      <Header />
-      <ScrollView>
-        <View style={s.header}>
-          <View style={s.info}>
-            <Text style={s.infoBalance}>{'549.52 $'}</Text>
-          </View>
-          <View style={s.control}>
-            <View style={s.controlItem}>
-              <RoundedButton onClick={() => null} title="Chuyển" iconName="upload" />
+class WalletScreen extends React.PureComponent {
+  state = {
+    loading: false,
+    balanceList: [],
+  }
+
+  onRefresh = async () => {
+    await this.loadBalance();
+  }
+
+  async componentDidMount() {
+    await this.loadBalance();
+  }
+
+  loadBalance = async () => {
+    this.setState({ loading: true });
+
+    const wallet = await getWallet();
+    const balanceList = await getBalanceList(wallet);
+
+    this.setState({
+      loading: false,
+      balanceList
+    })
+  }
+
+  render() {
+    return (
+      <View style={grid.container}>
+        <Header />
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.loading}
+              onRefresh={this.onRefresh}
+              colors={[COLORS.white2]}
+              tintColor={COLORS.white2}
+            />}
+        >
+          <View style={s.header}>
+            <View style={s.info}>
+              <Text style={s.infoBalance}>{'549.52 $'}</Text>
             </View>
-            <View style={s.controlItem}>
-              <RoundedButton onClick={() => null} title="Nhận" iconName="download" />
+            <View style={s.control}>
+              <View style={s.controlItem}>
+                <RoundedButton onClick={() => null} title="Chuyển" iconName="upload" />
+              </View>
+              <View style={s.controlItem}>
+                <RoundedButton onClick={() => null} title="Nhận" iconName="download" />
+              </View>
             </View>
           </View>
-        </View>
-        <View style={[grid.body, s.body]}>
-          <TokensList />
-        </View>
-      </ScrollView>
-    </View>
-  );
+          <View style={[grid.body, s.body]}>
+            <TokensList balanceList={this.state.balanceList} />
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
 };
 
-export default Wallet;
+export default WalletScreen;

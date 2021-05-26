@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import { TokenInfo } from '@solana/spl-token-registry';
 
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
@@ -39,16 +38,25 @@ const PriceWithChange: React.FC<PriceWithChangeProps> = ({ symbol }) => {
   React.useEffect(() => { }, [symbol]);
 
   return (
-    <>
-      <Text>{`$ 500.91 `}</Text>
-      <Text>{`+4.16% `}</Text>
-    </>
+    <Text>{`$500.91`}</Text>
   );
 };
 
+const balanceFormat = new Intl.NumberFormat(undefined, {
+  minimumFractionDigits: 4,
+  maximumFractionDigits: 4,
+  useGrouping: true,
+});
+
 type TokenInfoItemProps = TokenInfo & {};
 const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
-  const { symbol, name, logoURI } = props;
+  const {
+    name = 'Undefined',
+    symbol = '---',
+    logoURI = '',
+    amount,
+    decimals,
+  } = props;
   const navigation = useNavigation();
 
   const onPressHandler = React.useCallback(() => {
@@ -69,9 +77,15 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
           <PriceWithChange symbol={symbol} />
         </ListItem.Subtitle>
       </ListItem.Content>
-      <ListItem.Content right>
-        <ListItem.Title style={{ color: COLORS.white0, fontSize: FONT_SIZES.md }}>{`0.2 ${symbol.toUpperCase()}`}</ListItem.Title>
-        <ListItem.Subtitle style={{ color: COLORS.white2, fontSize: FONT_SIZES.sm }}>{'26,02 $'}</ListItem.Subtitle>
+      <ListItem.Content right style={{ flex: 1 }}>
+        <ListItem.Title style={{
+          color: COLORS.white0,
+          fontSize: FONT_SIZES.md
+        }}
+        >
+          {`${balanceFormat.format(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
+        </ListItem.Title>
+        <ListItem.Subtitle style={{ color: COLORS.white2, fontSize: FONT_SIZES.sm }}>{'0.0$'}</ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   );
@@ -80,21 +94,34 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
 type TokensListProps = {
   action?: 'list_all';
   query?: string;
+  balanceList: any[]
 };
-const TokensList: React.FC<TokensListProps> = ({ query = '' }) => {
+const TokensList: React.FC<TokensListProps> = ({ query = '', balanceList }) => {
   const tokenInfos = useTokenInfos();
-  const filteredTokens = React.useMemo(
+
+  const balanceInfo = React.useMemo(
     () =>
-      tokenInfos?.filter(
-        (t) =>
-          t.symbol.toLowerCase().includes(query.toLowerCase()) ||
-          t.name.toLowerCase().includes(query.toLowerCase()),
-      ),
-    [tokenInfos, query],
+      balanceList.map(i => {
+        if (!i.mint) { // solana
+          return {
+            ...i,
+            symbol: 'SOL',
+            name: 'Solana',
+            logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png',
+          }
+        }
+        const tokenInfo = tokenInfos?.find(token => token.address === i.mint.toBase58())
+        return {
+          ...i,
+          ...tokenInfo,
+        }
+      }),
+    [tokenInfos, balanceList, query],
   );
+
   return (
     <>
-      {filteredTokens?.map((token: TokenInfo, index: number) => (
+      {balanceInfo?.map((token, index: number) => (
         <TokenInfoItem key={index} {...token} />
       ))}
     </>

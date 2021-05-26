@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Connection } from '@solana/web3.js';
 import bs58 from 'bs58';
 
 import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
-import { Wallet } from '../../spl-utils/wallet';
-import { getAccountFromSeed } from '../../spl-utils/wallet-account';
+import { getWallet } from '../../spl-utils/getWallet';
 
 const INJECTED_SCRIPT = `
 window.solana = {
@@ -21,19 +19,6 @@ window.solana = {
 type Props = {};
 type State = {};
 
-async function mnemonicToSeed(mnemonic) {
-  const bip39 = await import('bip39');
-  if (!bip39.validateMnemonic(mnemonic)) {
-    throw new Error('Invalid seed words');
-  }
-  const seed = await bip39.mnemonicToSeed(mnemonic);
-  return Buffer.from(seed).toString('hex');
-}
-
-// Testing account
-const mnemonic = 'unveil dust trophy deputy wear sorry limb announce initial seek property edge area target broken suspect rapid that job next toast expose enable prison';
-
-
 export default class Messaging extends Component<Props, State> {
   state = {};
 
@@ -44,12 +29,7 @@ export default class Messaging extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    const seed = await mnemonicToSeed(mnemonic);
-    const seedBuffer = Buffer.from(seed, 'hex');
-    const connection = new Connection('https://solana-api.projectserum.com');
-
-    account = getAccountFromSeed(seedBuffer, 0);
-    this.wallet = new Wallet(connection, 'custody', { account });
+    this.wallet = await getWallet();
   }
 
   onMessage = async (event: any) => {
