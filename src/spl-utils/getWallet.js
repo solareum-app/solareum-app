@@ -20,7 +20,7 @@ export const getConnection = () => {
 export const getWallet = async () => {
   const seed = await mnemonicToSeed(recoveryPhrase);
   const seedBuffer = Buffer.from(seed, 'hex');
-  const connection = new Connection('https://api.mainnet-beta.solana.com');
+  const connection = new Connection('http://api.mainnet-beta.solana.com');
   const account = getAccountFromSeed(seedBuffer, 0);
   const wallet = new Wallet(connection, 'custody', { account });
 
