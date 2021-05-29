@@ -1529,6 +1529,8 @@ var AgentManager = /*#__PURE__*/function () {
 
       if (this._activeRequests === 0 && this._destroyTimeout === null) {
         this._destroyTimeout = setTimeout(function () {
+          // since _agent doesnt support react-native yet
+          // so we will ignore destroy function if it's not present
           _this._agent && _this._agent.destroy && _this._agent.destroy();
 
           _this._agent = AgentManager._newAgent(_this._useHttps);
