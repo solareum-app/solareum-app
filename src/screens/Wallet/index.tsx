@@ -59,21 +59,11 @@ class WalletScreen extends React.PureComponent {
     this.setState({ loading: true });
 
     const wallet = await getWallet();
-    // const balanceList = await getBalanceList(wallet);
+    const balanceList = await getBalanceList(wallet);
 
     this.setState({
       loading: false,
-      balanceList: [
-        {
-          "amount": 24547960,
-          "decimals": 9,
-          "mint": null,
-          "owner": { "_bn": '--' },
-          "tokenName": "SOL",
-          "tokenSymbol": "SOL",
-          "valid": true
-        }
-      ]
+      balanceList,
     })
   }
 
