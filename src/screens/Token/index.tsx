@@ -8,6 +8,7 @@ import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
 import { grid, typo } from '../../components/Styles';
 import imgDelivering from '../../assets/clip-message-sent.png';
+import { balanceFormat } from '../../utils/balanceFormat';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -52,9 +53,17 @@ const s = StyleSheet.create({
   },
 });
 
-const Token = () => {
+const Token = ({ route }) => {
+  const token = route.params.token;
   const refSend = useRef();
   const refReceived = useRef();
+
+  const {
+    symbol = '---',
+    logoURI = '',
+    amount,
+    decimals,
+  } = token;
 
   const openSendScreen = () => {
     refSend?.current?.open();
@@ -72,10 +81,10 @@ const Token = () => {
               size="medium"
               rounded
               source={{
-                uri: "https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png"
+                uri: logoURI
               }} />
             <Text style={s.infoBalance}>
-              {'549.52 SOL'}
+              {`${balanceFormat.format(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
             </Text>
           </View>
           <View style={s.control}>
