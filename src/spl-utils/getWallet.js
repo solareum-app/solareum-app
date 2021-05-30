@@ -3,11 +3,7 @@ import { Connection } from '@solana/web3.js';
 import { getAccountFromSeed, mnemonicToSeed } from './wallet-account';
 import { Wallet } from './wallet';
 import { TOKEN_PROGRAM_ID } from './tokens/instructions';
-import {
-  ACCOUNT_LAYOUT,
-  parseMintData,
-  parseTokenAccountData,
-} from './tokens/data';
+import { parseMintData, parseTokenAccountData } from './tokens/data';
 
 const recoveryPhrase =
   'unveil dust trophy deputy wear sorry limb announce initial seek property edge area target broken suspect rapid that job next toast expose enable prison';
@@ -62,9 +58,12 @@ export const getBalanceInfo = async (publicKey) => {
       decimals: 9,
       mint: null,
       owner: publicKey,
-      tokenName: 'SOL',
-      tokenSymbol: 'SOL',
       valid: true,
+      // add default information for solana
+      name: 'Solana',
+      symbol: 'SOL',
+      logoURI:
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png',
     };
   }
 

@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import { useTokenInfos } from '../../core/TokenRegistryProvider';
+import { balanceFormat } from '../../utils/balanceFormat';
 
 const isValidUrl = (url: string) => {
   const urlRegex = new RegExp("^" + // protocol identifier
@@ -38,15 +39,9 @@ const PriceWithChange: React.FC<PriceWithChangeProps> = ({ symbol }) => {
   React.useEffect(() => { }, [symbol]);
 
   return (
-    <Text>{`$500.91`}</Text>
+    <Text>{`$28.91`}</Text>
   );
 };
-
-const balanceFormat = new Intl.NumberFormat(undefined, {
-  minimumFractionDigits: 4,
-  maximumFractionDigits: 4,
-  useGrouping: true,
-});
 
 type TokenInfoItemProps = TokenInfo & {};
 const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
@@ -56,11 +51,11 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
     logoURI = '',
     amount,
     decimals,
-  } = props;
+  } = props.token;
   const navigation = useNavigation();
 
   const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.Token, { token: name });
+    navigation.navigate(Routes.Token, { token: props.token });
   }, [navigation, name]);
 
   return (
@@ -102,15 +97,8 @@ const TokensList: React.FC<TokensListProps> = ({ query = '', balanceList }) => {
   const balanceInfo = React.useMemo(
     () =>
       balanceList.map(i => {
-        if (!i.mint) { // solana
-          return {
-            ...i,
-            symbol: 'SOL',
-            name: 'Solana',
-            logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png',
-          }
-        }
-        const tokenInfo = tokenInfos?.find(token => token.address === i.mint.toBase58())
+        const address = i.mint ? i.mint.toBase58() : '';
+        const tokenInfo = tokenInfos?.find(token => token.address === address) || {};
         return {
           ...i,
           ...tokenInfo,
@@ -122,7 +110,7 @@ const TokensList: React.FC<TokensListProps> = ({ query = '', balanceList }) => {
   return (
     <>
       {balanceInfo?.map((token, index: number) => (
-        <TokenInfoItem key={index} {...token} />
+        <TokenInfoItem key={index} token={token} />
       ))}
     </>
   );
