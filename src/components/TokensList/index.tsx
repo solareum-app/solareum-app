@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
-import { useTokenInfos } from '../../core/TokenRegistryProvider';
+import { usePrice } from '../../core/TokenRegistryProvider';
 import { balanceFormat } from '../../utils/balanceFormat';
 
 const isValidUrl = (url: string) => {
@@ -51,8 +51,12 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
     logoURI = '',
     amount,
     decimals,
+    coingeckoId
   } = props.token;
   const navigation = useNavigation();
+  const priceData = usePrice();
+  const tokenPrice = priceData[coingeckoId].usd;
+  const tokenEst = priceData[coingeckoId].usd * amount / Math.pow(10, decimals);
 
   const onPressHandler = React.useCallback(() => {
     navigation.navigate(Routes.Token, { token: props.token });
@@ -69,7 +73,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
       <ListItem.Content>
         <ListItem.Title style={{ color: COLORS.white0, fontSize: FONT_SIZES.md }}>{name}</ListItem.Title>
         <ListItem.Subtitle style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}>
-          <PriceWithChange symbol={symbol} />
+          <Text>{`$${tokenPrice}`}</Text>
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Content right style={{ flex: 1 }}>
@@ -80,7 +84,9 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
         >
           {`${balanceFormat.format(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
         </ListItem.Title>
-        <ListItem.Subtitle style={{ color: COLORS.white2, fontSize: FONT_SIZES.sm }}>{'0.0$'}</ListItem.Subtitle>
+        <ListItem.Subtitle style={{ color: COLORS.white2, fontSize: FONT_SIZES.sm }}>
+          {`$${balanceFormat.format(tokenEst)}`}
+        </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   );
@@ -89,27 +95,12 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
 type TokensListProps = {
   action?: 'list_all';
   query?: string;
-  balanceList: any[]
+  balanceListInfo: any[]
 };
-const TokensList: React.FC<TokensListProps> = ({ query = '', balanceList }) => {
-  const tokenInfos = useTokenInfos();
-
-  const balanceInfo = React.useMemo(
-    () =>
-      balanceList.map(i => {
-        const address = i.mint ? i.mint.toBase58() : '';
-        const tokenInfo = tokenInfos?.find(token => token.address === address) || {};
-        return {
-          ...i,
-          ...tokenInfo,
-        }
-      }),
-    [tokenInfos, balanceList, query],
-  );
-
+const TokensList: React.FC<TokensListProps> = ({ query = '', balanceListInfo }) => {
   return (
     <>
-      {balanceInfo?.map((token, index: number) => (
+      {balanceListInfo?.map((token, index: number) => (
         <TokenInfoItem key={index} token={token} />
       ))}
     </>
