@@ -7,6 +7,7 @@ import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
+import { TokenListContext } from '../../core/TokenRegistryProvider';
 
 const s = StyleSheet.create({
   header: {
@@ -45,6 +46,7 @@ class WalletScreen extends React.PureComponent {
   state = {
     loading: false,
     balanceList: [],
+    balanceListInfo: [],
   }
 
   onRefresh = async () => {
@@ -52,22 +54,42 @@ class WalletScreen extends React.PureComponent {
   }
 
   async componentDidMount() {
-    await this.loadBalance();
+    const balanceListInfo = await this.loadBalance();
+    const gekcoIds = balanceListInfo.map(i => i.coingeckoId);
+    this.context.setTokenList(gekcoIds);
   }
 
   loadBalance = async () => {
     this.setState({ loading: true });
 
+    const { tokenInfos } = this.context;
     const wallet = await getWallet();
     const balanceList = await getBalanceList(wallet);
+    const balanceListInfo = balanceList.map(i => {
+      const address = i.mint ? i.mint.toBase58() : '';
+      const tokenInfo = tokenInfos?.find(token => token.address === address) || null;
+      const coingeckoInfo = tokenInfo?.extensions?.coingeckoId
+        ? { coingeckoId: tokenInfo?.extensions?.coingeckoId }
+        : {};
+      return {
+        ...i,
+        ...tokenInfo,
+        ...coingeckoInfo,
+      }
+    });
 
     this.setState({
       loading: false,
       balanceList,
-    })
+      balanceListInfo,
+    });
+
+    return balanceListInfo;
   }
 
   render() {
+    const { balanceListInfo } = this.state;
+
     return (
       <View style={grid.container}>
         <Header />
@@ -82,7 +104,7 @@ class WalletScreen extends React.PureComponent {
         >
           <View style={s.header}>
             <View style={s.info}>
-              <Text style={s.infoBalance}>{'549.52 $'}</Text>
+              <Text style={s.infoBalance}>{'$549.52'}</Text>
             </View>
             <View style={s.control}>
               <View style={s.controlItem}>
@@ -94,12 +116,14 @@ class WalletScreen extends React.PureComponent {
             </View>
           </View>
           <View style={[grid.body, s.body]}>
-            <TokensList balanceList={this.state.balanceList} />
+            <TokensList balanceListInfo={balanceListInfo} />
           </View>
         </ScrollView>
       </View>
     );
   }
 };
+
+WalletScreen.contextType = TokenListContext;
 
 export default WalletScreen;
