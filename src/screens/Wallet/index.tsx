@@ -44,6 +44,7 @@ const s = StyleSheet.create({
 
 class WalletScreen extends React.PureComponent {
   state = {
+    init: false,
     loading: false,
     balanceList: [],
     balanceListInfo: [],
@@ -53,14 +54,17 @@ class WalletScreen extends React.PureComponent {
     await this.loadBalance();
   }
 
-  async componentDidMount() {
-    const balanceListInfo = await this.loadBalance();
-    const gekcoIds = balanceListInfo.map(i => i.coingeckoId);
-    this.context.setTokenList(gekcoIds);
+  componentDidUpdate = async () => {
+    // init the app when tokenInfos is ready
+    if (this.context.tokenInfos && !this.state.init) {
+      const balanceListInfo = await this.loadBalance();
+      const gekcoIds = balanceListInfo.map(i => i.coingeckoId);
+      this.context.setTokenList(gekcoIds);
+    }
   }
 
   loadBalance = async () => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, init: true });
 
     const { tokenInfos } = this.context;
     const wallet = await getWallet();

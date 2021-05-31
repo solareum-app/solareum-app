@@ -32,17 +32,6 @@ const isValidUrl = (url: string) => {
   return urlRegex.test(url);
 };
 
-type PriceWithChangeProps = {
-  symbol: string;
-};
-const PriceWithChange: React.FC<PriceWithChangeProps> = ({ symbol }) => {
-  React.useEffect(() => { }, [symbol]);
-
-  return (
-    <Text>{`$28.91`}</Text>
-  );
-};
-
 type TokenInfoItemProps = TokenInfo & {};
 const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
   const {
@@ -55,8 +44,8 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
   } = props.token;
   const navigation = useNavigation();
   const priceData = usePrice();
-  const tokenPrice = priceData[coingeckoId].usd;
-  const tokenEst = priceData[coingeckoId].usd * amount / Math.pow(10, decimals);
+  const tokenPrice = priceData[coingeckoId] ? priceData[coingeckoId].usd : 0;
+  const tokenEst = tokenPrice * amount / Math.pow(10, decimals);
 
   const onPressHandler = React.useCallback(() => {
     navigation.navigate(Routes.Token, { token: props.token });
