@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
+import Clipboard from '@react-native-community/clipboard';
 
 import { COLORS } from '../../theme/colors';
 import { RoundedButton } from '../../components/RoundedButton';
 import { typo } from '../../components/Styles';
-import { getWallet } from '../../spl-utils/getWallet';
 
 const s = StyleSheet.create({
   main: {
@@ -17,8 +17,8 @@ const s = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   body: {
-    marginTop: 40,
-    marginBottom: 40,
+    marginTop: 20,
+    marginBottom: 20,
   },
   qr: {
     marginLeft: 'auto',
@@ -41,21 +41,15 @@ const s = StyleSheet.create({
   },
 });
 
-export const Receive = () => {
-  const [address, setAddress] = useState('-');
-
-  const init = async () => {
-    const wallet = await getWallet();
-    setAddress(wallet.publicKey.toBase58());
-  }
-
-  useEffect(() => {
-    init();
-  }, []);
+export const Receive = ({ token }) => {
+  const address = token.owner.toBase58();
+  const copyToClipboard = () => {
+    Clipboard.setString(address);
+  };
 
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Nhận SOL</Text>
+      <Text style={typo.title}>Nhận {token.symbol}</Text>
       <View style={s.body}>
         <View style={s.qr}>
           <QRCode value={address} size={220} />
@@ -65,10 +59,10 @@ export const Receive = () => {
         </Text>
       </View>
       <View style={s.footer}>
-        <Text style={typo.helper}>Chỉ chuyển Solana (SOL) vào địa chỉ này. Việc chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các token&nbsp;đó.</Text>
+        <Text style={typo.helper}>Chỉ chuyển {token.name} (SPL) vào địa chỉ này. Việc chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các token&nbsp;đó.</Text>
         <View style={s.control}>
           <View style={s.controlItem}>
-            <RoundedButton onClick={() => null} title="Sao chép" iconName="addfile" />
+            <RoundedButton onClick={copyToClipboard} title="Sao chép" iconName="addfile" />
           </View>
           <View style={s.controlItem}>
             <RoundedButton onClick={() => null} title="Chia sẻ" iconName="upload" />

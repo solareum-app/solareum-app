@@ -5,6 +5,8 @@ import { Input, Button } from 'react-native-elements';
 import imgDone from '../../assets/clip-done.png';
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
+import { price } from '../../utils/autoRound';
+import { usePrice } from '../../core/TokenRegistryProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -20,7 +22,7 @@ const s = StyleSheet.create({
   },
   inputContainer: {
     paddingLeft: 0,
-    paddingRight: 0
+    paddingRight: 0,
   },
   inputLabel: {
     fontWeight: 'normal'
@@ -64,7 +66,12 @@ const s3 = StyleSheet.create({
   }
 });
 
-const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
+const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
+  const priceData = usePrice();
+  const id = token.coingeckoId;
+  const tokenPrice = priceData[id] ? priceData[id].usd : 0;
+  const estValue = amount * tokenPrice;
+
   return (
     <View style={s.main}>
       <Text style={typo.title}>Chuyển SOL</Text>
@@ -87,8 +94,9 @@ const Step1 = ({ address, setAddress, amount, setAmount, next }) => {
           containerStyle={s.inputContainer}
           value={amount}
           onChangeText={value => setAmount(value)}
+          errorMessage={`≈$${price(estValue)}`}
+          errorStyle={{ color: COLORS.white4 }}
         />
-        <Text style={typo.helper}>Ad nostrud pariatur commodo deserunt incididunt dolore Lorem sit veniam minim eiusmod laborum culpa.</Text>
       </View>
       <View style={s.footer}>
         <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
@@ -144,8 +152,8 @@ const Step3 = () => {
   )
 };
 
-export const Send = ({ initStep }) => {
-  const [step, setStep] = useState(1);
+export const Send = ({ initStep = 1, token }) => {
+  const [step, setStep] = useState(initStep);
   const [address, setAddress] = useState('');
   const [amount, setAmount] = useState('');
 
@@ -157,6 +165,7 @@ export const Send = ({ initStep }) => {
         setAddress={setAddress}
         amount={amount}
         setAmount={setAmount}
+        token={token}
       />
     )
   }
