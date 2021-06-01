@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import { usePrice } from '../../core/TokenRegistryProvider';
-import { balanceFormat } from '../../utils/balanceFormat';
+import { price } from '../../utils/autoRound';
 
 const isValidUrl = (url: string) => {
   const urlRegex = new RegExp("^" + // protocol identifier
@@ -62,7 +62,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
       <ListItem.Content>
         <ListItem.Title style={{ color: COLORS.white0, fontSize: FONT_SIZES.md }}>{name}</ListItem.Title>
         <ListItem.Subtitle style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}>
-          <Text>{`$${tokenPrice}`}</Text>
+          <Text>{`$${price(tokenPrice)}`}</Text>
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Content right style={{ flex: 1 }}>
@@ -71,10 +71,10 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
           fontSize: FONT_SIZES.md
         }}
         >
-          {`${balanceFormat.format(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
+          {`${price(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
         </ListItem.Title>
-        <ListItem.Subtitle style={{ color: COLORS.white2, fontSize: FONT_SIZES.sm }}>
-          {`$${balanceFormat.format(tokenEst)}`}
+        <ListItem.Subtitle style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}>
+          {`$${price(tokenEst)}`}
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>

@@ -8,6 +8,7 @@ import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
 import { TokenListContext } from '../../core/TokenRegistryProvider';
+import { price } from '../../utils/autoRound';
 
 const s = StyleSheet.create({
   header: {
@@ -41,6 +42,17 @@ const s = StyleSheet.create({
     marginRight: 12,
   },
 });
+
+const getTotalEstimate = (balanceListInfo: any[], priceData: any) => {
+  let total = 0;
+  for (let i = 0; i < balanceListInfo.length; i++) {
+    const { coingeckoId, amount, decimals } = balanceListInfo[i];
+    const tokenPrice = priceData[coingeckoId] ? priceData[coingeckoId].usd : 0;
+    const tokenValue = tokenPrice * amount / Math.pow(10, decimals);
+    total += tokenValue;
+  }
+  return total;
+};
 
 class WalletScreen extends React.PureComponent {
   state = {
@@ -93,6 +105,8 @@ class WalletScreen extends React.PureComponent {
 
   render() {
     const { balanceListInfo } = this.state;
+    const { priceData } = this.context;
+    const totalEst = getTotalEstimate(balanceListInfo, priceData);
 
     return (
       <View style={grid.container}>
@@ -108,7 +122,7 @@ class WalletScreen extends React.PureComponent {
         >
           <View style={s.header}>
             <View style={s.info}>
-              <Text style={s.infoBalance}>{'$549.52'}</Text>
+              <Text style={s.infoBalance}>${price(totalEst)}</Text>
             </View>
             <View style={s.control}>
               <View style={s.controlItem}>
