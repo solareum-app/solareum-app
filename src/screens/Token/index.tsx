@@ -7,8 +7,8 @@ import { FixedContent } from '../../components/Modals/FixedContent';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
 import { grid, typo } from '../../components/Styles';
-import imgDelivering from '../../assets/clip-message-sent.png';
 import { balanceFormat } from '../../utils/balanceFormat';
+import imgDelivering from '../../assets/clip-message-sent.png';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -106,10 +106,10 @@ const Token = ({ route }) => {
 
       <Portal>
         <FixedContent ref={refSend}>
-          <Send initStep={1} />
+          <Send initStep={1} token={token} />
         </FixedContent>
         <FixedContent ref={refReceived}>
-          <Receive />
+          <Receive token={token} />
         </FixedContent>
       </Portal>
     </View>
