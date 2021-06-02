@@ -42,7 +42,7 @@ const s = StyleSheet.create({
 });
 
 export const Receive = ({ token }) => {
-  const address = token.owner.toBase58();
+  const address = token.owner;
   const copyToClipboard = () => {
     Clipboard.setString(address);
   };

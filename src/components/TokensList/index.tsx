@@ -47,9 +47,9 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
   const tokenPrice = priceData[coingeckoId] ? priceData[coingeckoId].usd : 0;
   const tokenEst = tokenPrice * amount / Math.pow(10, decimals);
 
-  const onPressHandler = React.useCallback(() => {
+  const onPressHandler = () => {
     navigation.navigate(Routes.Token, { token: props.token });
-  }, [navigation, name]);
+  };
 
   return (
     <ListItem bottomDivider onPress={onPressHandler}

@@ -37,8 +37,8 @@ export const getBalanceInfo = async (publicKey) => {
       return {
         amount,
         decimals,
-        mint,
-        owner,
+        mint: mint.toBase58(),
+        owner: owner.toBase58(),
         valid: true,
       };
     } catch (e) {
@@ -58,7 +58,7 @@ export const getBalanceInfo = async (publicKey) => {
       amount: accountInfo?.lamports ?? 0,
       decimals: 9,
       mint: null,
-      owner: publicKey,
+      owner: publicKey.toBase58(),
       valid: true,
       // add default information for solana
       coingeckoId: 'solana',
