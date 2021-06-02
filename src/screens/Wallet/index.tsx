@@ -63,7 +63,9 @@ class WalletScreen extends React.PureComponent {
   }
 
   onRefresh = async () => {
-    await this.loadBalance();
+    const balanceListInfo = await this.loadBalance();
+    const gekcoIds = balanceListInfo.map(i => i.coingeckoId);
+    this.context.setTokenList(gekcoIds);
   }
 
   componentDidUpdate = async () => {
@@ -82,7 +84,7 @@ class WalletScreen extends React.PureComponent {
     const wallet = await getWallet();
     const balanceList = await getBalanceList(wallet);
     const balanceListInfo = balanceList.map(i => {
-      const address = i.mint ? i.mint.toBase58() : '';
+      const address = i.mint ? i.mint : '';
       const tokenInfo = tokenInfos?.find(token => token.address === address) || null;
       const coingeckoInfo = tokenInfo?.extensions?.coingeckoId
         ? { coingeckoId: tokenInfo?.extensions?.coingeckoId }
