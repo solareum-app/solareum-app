@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, RefreshControl, View, Text, StyleSheet } from 'react-native';
 
-import { getWallet, getBalanceList } from '../../spl-utils/getWallet';
+import { getBalanceList } from '../../spl-utils/getWallet';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
@@ -60,6 +60,7 @@ class WalletScreen extends React.PureComponent {
     loading: false,
     balanceList: [],
     balanceListInfo: [],
+    walletAddress: '',
   }
 
   onRefresh = async () => {
@@ -70,18 +71,18 @@ class WalletScreen extends React.PureComponent {
 
   componentDidUpdate = async () => {
     // init the app when tokenInfos is ready
-    if (this.context.tokenInfos && !this.state.init) {
+    if (this.context.wallet.address !== this.state.walletAddress) {
       const balanceListInfo = await this.loadBalance();
       const gekcoIds = balanceListInfo.map(i => i.coingeckoId);
       this.context.setTokenList(gekcoIds);
+      this.setState({ walletAddress: this.context.wallet.address })
     }
   }
 
   loadBalance = async () => {
     this.setState({ loading: true, init: true });
 
-    const { tokenInfos } = this.context;
-    const wallet = await getWallet();
+    const { tokenInfos, wallet } = this.context;
     const balanceList = await getBalanceList(wallet);
     const balanceListInfo = balanceList.map(i => {
       const address = i.mint ? i.mint : '';

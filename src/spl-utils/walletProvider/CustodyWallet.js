@@ -4,6 +4,7 @@ import bs58 from 'bs58';
 export class CustodyWalletProvider {
   constructor(args) {
     this.account = args.account;
+    this.name = args.name;
   }
 
   async init() {
