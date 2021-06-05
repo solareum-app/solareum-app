@@ -1,11 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
 
+import { getItem, setItem } from '../../storage/Collection';
 import { getListWallet } from '../../storage/WalletCollection';
 import { useConnectionConfig } from '../ConnectionProvider';
 import { clusterForEndpoint } from './clusters';
 import { getWallet } from '../../spl-utils/getWallet';
 import { Cluster } from './types';
+
+const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
 export type TokenInfos = TokenInfo[] | null;
 export type TokenListContextType = {
@@ -60,9 +63,14 @@ export const TokenRegistryProvider: React.FC = (props) => {
   }, [tokenList]);
 
   // init wallet
+  const setWalletWrapper = (w: any, data: any) => {
+    setItem('SYS', DEFAULT_WALLET, data.key);
+    setWallet(w);
+  };
   const initWallet = async () => {
     const list = await getListWallet();
-    const data = list[0];
+    const walletKey = await getItem('SYS', DEFAULT_WALLET);
+    const data = !walletKey ? list[0] : list.find(i => i.key === walletKey);
     if (!data) {
       return;
     }
@@ -81,7 +89,7 @@ export const TokenRegistryProvider: React.FC = (props) => {
       priceData,
       setTokenList,
       wallet,
-      setWallet
+      setWallet: setWalletWrapper
     }}>
       {props.children}
     </TokenListContext.Provider>

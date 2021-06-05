@@ -31,7 +31,7 @@ const WalletPicker: React.FC = () => {
 
   const selectWallet = async (walletData) => {
     const w = await getWallet(walletData.mnemonic, walletData.name);
-    setWallet(w);
+    setWallet(w, walletData);
     ref.current?.close();
   };
 
