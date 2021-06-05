@@ -69,6 +69,12 @@ class WalletScreen extends React.PureComponent {
     this.context.setTokenList(gekcoIds);
   }
 
+  componentDidMount() {
+    if (this.context.wallet) {
+      this.onRefresh();
+    }
+  }
+
   componentDidUpdate = async (_, prevState: any) => {
     if (this.context.wallet) {
       this.setState({ address: this.context.wallet.address });
@@ -76,15 +82,12 @@ class WalletScreen extends React.PureComponent {
 
     // init the app when tokenInfos is ready
     if (prevState.address !== this.state.address) {
-      const balanceListInfo = await this.loadBalance();
-      const gekcoIds = balanceListInfo.map(i => i.coingeckoId);
-      this.context.setTokenList(gekcoIds);
+      this.onRefresh();
     }
   }
 
   loadBalance = async () => {
     this.setState({ loading: true, init: true });
-
     const { tokenInfos, wallet } = this.context;
     const balanceList = await getBalanceList(wallet);
     const balanceListInfo = balanceList.map(i => {
