@@ -12,7 +12,7 @@ const SettingIcon: React.FC = () => {
   const navigation = useNavigation();
 
   const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.Settings);
+    navigation.navigate(Routes.Security);
   }, [navigation]);
 
   return (

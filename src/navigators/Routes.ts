@@ -13,6 +13,7 @@ enum Routes {
   Transaction = 'Giao dịch',
   Token = 'Token',
   Wallet = 'Ví',
+  Security = 'Security',
 }
 
 export default Routes;

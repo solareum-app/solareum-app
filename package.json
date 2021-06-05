@@ -17,6 +17,7 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
+    "@haskkor/react-native-pincode": "1.22.6",
     "@project-serum/serum": "^0.13.33",
     "@react-native-async-storage/async-storage": "^1.15.4",
     "@react-native-community/clipboard": "1.5.1",
@@ -56,6 +57,7 @@
     "react-native-crypto": "^2.1.0",
     "react-native-elements": "3.3.2",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-keychain": "7.0.0",
     "react-native-level-fs": "^3.0.0",
     "react-native-modalize": "^2.0.8",
     "react-native-os": "^1.0.1",

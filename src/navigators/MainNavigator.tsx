@@ -10,6 +10,7 @@ import Notifications from '../screens/Notifications';
 import Receive from '../screens/Receive';
 import Send from '../screens/Send';
 import Settings from '../screens/Settings';
+import Security from '../screens/Settings/Security';
 import TokensListed from '../screens/TokensListed';
 import Transaction from '../screens/Transaction';
 import Token from '../screens/Token';
@@ -58,6 +59,7 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.Receive} component={Receive} />
           <Stack.Screen name={Routes.Send} component={Send} />
           <Stack.Screen name={Routes.Settings} component={Settings} />
+          <Stack.Screen name={Routes.Security} component={Security} />
           <Stack.Screen name={Routes.TokensListed} component={TokensListed} />
           <Stack.Screen name={Routes.Transaction} component={Transaction} />
           <Stack.Screen name={Routes.Token} component={Token} />
