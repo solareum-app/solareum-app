@@ -5,7 +5,7 @@ import bs58 from 'bs58';
 
 import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
-import { getWallet } from '../../spl-utils/getWallet';
+import { TokenListContext } from '../../core/TokenRegistryProvider';
 
 const INJECTED_SCRIPT = `
 window.solana = {
@@ -19,8 +19,10 @@ window.solana = {
 type Props = {};
 type State = {};
 
-export default class Messaging extends Component<Props, State> {
-  state = {};
+export default class SolareumDEX extends Component<Props, State> {
+  state = {
+    walletAddress: '',
+  };
 
   constructor(props) {
     super(props);
@@ -29,7 +31,15 @@ export default class Messaging extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    this.wallet = await getWallet();
+    this.wallet = this.context.wallet;
+  }
+
+  componentDidUpdate() {
+    if (this.context.wallet.address !== this.state.walletAddress) {
+      this.wallet = this.context.wallet;
+      this.setState({ walletAddress: this.context.wallet.address });
+      this.webView.current.reload();
+    }
   }
 
   onMessage = async (event: any) => {
@@ -102,3 +112,5 @@ export default class Messaging extends Component<Props, State> {
     );
   }
 }
+
+SolareumDEX.contextType = TokenListContext;

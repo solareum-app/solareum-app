@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, RefreshControl, View, Text, StyleSheet } from 'react-native';
 
-import { getWallet, getBalanceList } from '../../spl-utils/getWallet';
+import { getBalanceList } from '../../spl-utils/getWallet';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
@@ -60,6 +60,7 @@ class WalletScreen extends React.PureComponent {
     loading: false,
     balanceList: [],
     balanceListInfo: [],
+    address: '',
   }
 
   onRefresh = async () => {
@@ -68,9 +69,13 @@ class WalletScreen extends React.PureComponent {
     this.context.setTokenList(gekcoIds);
   }
 
-  componentDidUpdate = async () => {
+  componentDidUpdate = async (_, prevState: any) => {
+    if (this.context.wallet) {
+      this.setState({ address: this.context.wallet.address });
+    }
+
     // init the app when tokenInfos is ready
-    if (this.context.tokenInfos && !this.state.init) {
+    if (prevState.address !== this.state.address) {
       const balanceListInfo = await this.loadBalance();
       const gekcoIds = balanceListInfo.map(i => i.coingeckoId);
       this.context.setTokenList(gekcoIds);
@@ -80,8 +85,7 @@ class WalletScreen extends React.PureComponent {
   loadBalance = async () => {
     this.setState({ loading: true, init: true });
 
-    const { tokenInfos } = this.context;
-    const wallet = await getWallet();
+    const { tokenInfos, wallet } = this.context;
     const balanceList = await getBalanceList(wallet);
     const balanceListInfo = balanceList.map(i => {
       const address = i.mint ? i.mint : '';

@@ -32,6 +32,14 @@ export class Wallet {
     return this.type === 'local';
   }
 
+  get address() {
+    return this.provider.publicKey.toBase58();
+  }
+
+  get name() {
+    return this.provider.name || 'Solareum Wallet';
+  }
+
   getTokenAccountInfo = async () => {
     let accounts = await getOwnedTokenAccounts(this.connection, this.publicKey);
     return accounts

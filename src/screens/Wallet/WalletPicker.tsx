@@ -10,6 +10,8 @@ import WalletFactory from '../../factory/Wallet';
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
+import { useWallet } from '../../core/TokenRegistryProvider';
+import { getWallet } from '../../spl-utils/getWallet';
 
 const getShortPublicKey = (key: string) => {
   const visible = 7;
@@ -21,10 +23,17 @@ const WalletPicker: React.FC = () => {
   const [count, setCount] = useState(0);
   const navigation = useNavigation();
   const [walletList, setWalletList] = useState([]);
+  const [wallet, setWallet] = useWallet(null);
 
   useEffect(() => {
     setWalletList(WalletFactory.getList());
   }, [count]);
+
+  const selectWallet = async (walletData) => {
+    const w = await getWallet(walletData.mnemonic, walletData.name);
+    setWallet(w, walletData);
+    ref.current?.close();
+  };
 
   return (
     <View>
@@ -40,16 +49,19 @@ const WalletPicker: React.FC = () => {
           paddingLeft: 12,
           paddingRight: 12,
         }}>
-        <Text style={{ fontSize: FONT_SIZES.md, color: COLORS.white0 }}>{`Walltet Name`}</Text>
+        <Text style={{ fontSize: FONT_SIZES.md, color: COLORS.white0 }}>
+          {wallet ? wallet.name : 'Walltet Name'}
+        </Text>
         <Icon name="down" color={COLORS.white0} size={FONT_SIZES.md} style={{ marginLeft: 4 }} />
       </TouchableOpacity>
 
       <Portal>
         <FixedContent ref={ref}>
           <View style={s.content}>
-            {walletList.map((l) => (
+            {walletList.map((w) => (
               <ListItem
-                key={l.id}
+                key={w.id}
+                onPress={() => selectWallet(w)}
                 containerStyle={{
                   backgroundColor: COLORS.dark0,
                   borderBottomColor: COLORS.dark2,
@@ -58,8 +70,8 @@ const WalletPicker: React.FC = () => {
               >
                 <Icon name="wallet" size={FONT_SIZES.lg} color={COLORS.white2} />
                 <ListItem.Content>
-                  <ListItem.Title style={{ color: COLORS.white2 }}>{l.name || 'Solareum Wallet'}</ListItem.Title>
-                  <ListItem.Title style={{ color: COLORS.white4, fontSize: 12 }}>{getShortPublicKey(l.id)}</ListItem.Title>
+                  <ListItem.Title style={{ color: COLORS.white2 }}>{w.name || 'Solareum Wallet'}</ListItem.Title>
+                  <ListItem.Title style={{ color: COLORS.white4, fontSize: 12 }}>{getShortPublicKey(w.id)}</ListItem.Title>
                 </ListItem.Content>
               </ListItem>
             ))}

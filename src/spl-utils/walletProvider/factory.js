@@ -4,7 +4,7 @@ import { CustodyWalletProvider } from './CustodyWallet';
 
 export class WalletProviderFactory {
   static getProvider(type, args) {
-    if (type === 'custody') {
+    if (type === 'solareum') {
       return new CustodyWalletProvider(args);
     }
 

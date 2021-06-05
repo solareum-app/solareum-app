@@ -3,11 +3,11 @@
  * This provides some api that enable you to work with multiple records
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from './';
 
 // AsyncStorage.clear();
 
-const getKey = (collection: string, id: string) => {
+const getKey = (collection: string = 'SYS', id: string) => {
   return `${collection}-${id}`;
 };
 
@@ -16,15 +16,22 @@ export const getItem = async (collection: string, id: string) => {
   const data = await AsyncStorage.getItem(key);
 
   if (!data) {
-    throw Error(`Unable to get data for key: ${key}`);
+    return null;
   }
 
-  return JSON.parse(data);
+  try {
+    return JSON.parse(data);
+  } catch {
+    return data;
+  }
 };
 
 export const setItem = async (collection: string, id: string, value: any) => {
   const key = getKey(collection, id);
-  return await AsyncStorage.setItem(key, JSON.stringify(value));
+  return await AsyncStorage.setItem(
+    key,
+    typeof value === 'string' ? value : JSON.stringify(value),
+  );
 };
 
 export const getCollection = async (collection: string) => {
