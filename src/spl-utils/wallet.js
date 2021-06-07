@@ -6,8 +6,8 @@ import {
   getOwnedTokenAccounts,
   nativeTransfer,
   transferTokens,
-  transferAndClose,
 } from './tokens';
+// import { setInitialAccountInfo } from './connection';
 import { ACCOUNT_LAYOUT, parseTokenAccountData } from './tokens/data';
 import { WalletProviderFactory } from './walletProvider/factory';
 
@@ -44,6 +44,7 @@ export class Wallet {
     let accounts = await getOwnedTokenAccounts(this.connection, this.publicKey);
     return accounts
       .map(({ publicKey, accountInfo }) => {
+        // setInitialAccountInfo(this.connection, publicKey, accountInfo);
         return { publicKey, parsed: parseTokenAccountData(accountInfo.data) };
       })
       .sort((account1, account2) =>
@@ -81,6 +82,7 @@ export class Wallet {
     destination,
     amount,
     mint,
+    decimals,
     memo = null,
     overrideDestinationCheck = false,
   ) => {
@@ -98,6 +100,7 @@ export class Wallet {
       amount,
       memo,
       mint,
+      decimals,
       overrideDestinationCheck,
     });
   };
@@ -112,16 +115,6 @@ export class Wallet {
       owner: this,
       sourcePublicKey: publicKey,
       skipPreflight,
-    });
-  };
-
-  transferAndClose = async (source, destination, amount) => {
-    return await transferAndClose({
-      connection: this.connection,
-      owner: this,
-      sourcePublicKey: source,
-      destinationPublicKey: destination,
-      amount,
     });
   };
 

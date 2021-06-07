@@ -79,8 +79,12 @@ export const getBalanceList = async (wallet) => {
   const balanceList = [];
 
   for (let i = 0; i < publicKeys.length; i++) {
-    const balance = await getBalanceInfo(publicKeys[i]);
-    balanceList.push(balance);
+    const pk = publicKeys[i];
+    const balance = await getBalanceInfo(pk);
+    balanceList.push({
+      ...balance,
+      publicKey: pk.toBase58(),
+    });
   }
 
   return balanceList;
