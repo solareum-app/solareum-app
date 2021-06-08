@@ -1,10 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import DEX from '../screens/DEX';
-import Fiat from '../screens/Fiat';
+import Social from '../screens/Social';
 import Wallet from '../screens/Wallet';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
@@ -33,16 +32,16 @@ export const HomeScreen: React.FC = () => {
         component={DEX}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="swap" color={color} size={size} />;
+            return <Icon name="retweet" color={color} size={size} />;
           },
         }}
       />
       <Tab.Screen
         name={Routes.Social}
-        component={Fiat}
+        component={Social}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="cloudo" color={color} size={size} />;
+            return <Icon name="aliwangwang-o1" color={color} size={size} />;
           },
         }}
       />
