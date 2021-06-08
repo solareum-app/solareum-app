@@ -3,6 +3,7 @@ enum Routes {
   CreateWallet = 'Tạo Ví',
   DEX = 'DEX',
   Fiat = 'Fiat',
+  Social = 'Social',
   GetStarted = 'Bắt đầu',
   ImportWallet = 'Khôi phục Ví',
   Notifications = 'Thông báo',
@@ -12,7 +13,7 @@ enum Routes {
   TokensListed = 'Tokens',
   Transaction = 'Giao dịch',
   Token = 'Token',
-  Wallet = 'Ví',
+  Wallet = 'Wallet',
 }
 
 export default Routes;

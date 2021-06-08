@@ -56,7 +56,6 @@ const getTotalEstimate = (balanceListInfo: any[], priceData: any) => {
 
 class WalletScreen extends React.PureComponent {
   state = {
-    init: false,
     loading: false,
     balanceList: [],
     balanceListInfo: [],
@@ -64,19 +63,21 @@ class WalletScreen extends React.PureComponent {
   }
 
   onRefresh = async () => {
+    this.setState({ loading: true });
     const balanceListInfo = await this.loadBalance();
     const gekcoIds = balanceListInfo.map(i => i.coingeckoId);
     this.context.setTokenList(gekcoIds);
+    this.setState({ loading: false });
   }
 
   componentDidMount() {
-    if (this.context.wallet) {
+    if (this.context.wallet && this.context.tokenInfos) {
       this.onRefresh();
     }
   }
 
   componentDidUpdate = async (_, prevState: any) => {
-    if (this.context.wallet) {
+    if (this.context.wallet && this.context.tokenInfos) {
       this.setState({ address: this.context.wallet.address });
     }
 
@@ -87,7 +88,6 @@ class WalletScreen extends React.PureComponent {
   }
 
   loadBalance = async () => {
-    this.setState({ loading: true, init: true });
     const { tokenInfos, wallet } = this.context;
     const balanceList = await getBalanceList(wallet);
     const balanceListInfo = balanceList.map(i => {
@@ -104,7 +104,6 @@ class WalletScreen extends React.PureComponent {
     });
 
     this.setState({
-      loading: false,
       balanceList,
       balanceListInfo,
     });

@@ -38,11 +38,11 @@ export const HomeScreen: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name={Routes.Fiat}
+        name={Routes.Social}
         component={Fiat}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="Safety" color={color} size={size} />;
+            return <Icon name="cloudo" color={color} size={size} />;
           },
         }}
       />
