@@ -1,12 +1,16 @@
 import React, { useRef } from 'react';
+import { AppState, AppStateStatus } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
+import { hasUserSetPinCode } from '@haskkor/react-native-pincode';
+import { PinStatus } from '@haskkor/react-native-pincode/src/PinCode';
 
 import CreateWallet from '../screens/CreateWallet';
 import GetStarted from '../screens/GetStarted';
 import ImportWallet from '../screens/ImportWallet';
 import Notifications from '../screens/Notifications';
+import PassCode from '../screens/PassCode';
 import Receive from '../screens/Receive';
 import Send from '../screens/Send';
 import Settings from '../screens/Settings';
@@ -21,15 +25,56 @@ import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 
 const Stack = createStackNavigator();
+const BACKGROUND_TIME = 2 * 60 * 1000;
 
 const MainNavigator: React.FC = () => {
   const navigationRef = useRef(null);
+  const [appState, setAppState] = React.useState<AppStateStatus>('active');
 
-  const checkInitScreen = async () => {
-    const wallets = await getListWallet();
-    if (!wallets.length) {
-      navigationRef.current?.navigate(Routes.GetStarted);
-    }
+  React.useEffect(() => {
+    let timer: number = -1;
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      console.log('handleAppStateChange', { appState, nextAppState });
+      clearTimeout(timer);
+
+      if (appState?.match(/inactive|background/) && nextAppState === 'active') {
+        timer = setTimeout(() => {
+          navigationRef.current?.navigate(Routes.PassCode, {
+            PINCodeStatus: PinStatus.enter,
+            showBackButton: false,
+          });
+        }, BACKGROUND_TIME);
+      }
+
+      setAppState(nextAppState);
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
+  }, [appState, navigationRef]);
+
+  const checkInitScreen = () => {
+    hasUserSetPinCode().then(async (result: boolean) => {
+      if (result) {
+        navigationRef.current?.navigate(Routes.PassCode, {
+          PINCodeStatus: PinStatus.enter,
+          showBackButton: false,
+        });
+      } else {
+        navigationRef.current?.navigate(Routes.PassCode, {
+          PINCodeStatus: PinStatus.choose,
+          showBackButton: false,
+        });
+      }
+    });
+
+    // const wallets = await getListWallet();
+    // if (!wallets.length) {
+    //   navigationRef.current?.navigate(Routes.GetStarted);
+    // }
+
     // TODO: Hide splashscreen after all step have completed
   };
 
@@ -56,6 +101,11 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.CreateWallet} component={CreateWallet} />
           <Stack.Screen name={Routes.ImportWallet} component={ImportWallet} />
           <Stack.Screen name={Routes.Notifications} component={Notifications} />
+          <Stack.Screen
+            name={Routes.PassCode}
+            component={PassCode}
+            options={{ gestureEnabled: false }}
+          />
           <Stack.Screen name={Routes.Receive} component={Receive} />
           <Stack.Screen name={Routes.Send} component={Send} />
           <Stack.Screen name={Routes.Settings} component={Settings} />

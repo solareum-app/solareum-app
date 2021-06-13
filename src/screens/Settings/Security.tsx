@@ -1,22 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Portal } from 'react-native-portalize';
-import PINCode, {
+import {
   hasUserSetPinCode,
   deleteUserPinCode,
   resetPinCodeInternalStates,
 } from '@haskkor/react-native-pincode';
 import { PinStatus } from '@haskkor/react-native-pincode/src/PinCode';
-import { Modalize } from 'react-native-modalize';
 
 import { COLORS } from '../../theme/colors';
+import Routes from '../../navigators/Routes';
 
 type PINCodeStatusType = null | 'choose' | 'enter' | 'locked';
 const Security = () => {
   const [PINCodeStatus, setPINCodeStatus] = useState<PINCodeStatusType>(null);
-  const modalizeRef = useRef<Modalize>(null);
-  const [isCorrectPINCode, setIsCorrectPINCode] = useState<boolean>(false);
   const navigation = useNavigation();
 
   const clearPINCode = React.useCallback(async () => {
@@ -24,72 +21,40 @@ const Security = () => {
     await resetPinCodeInternalStates();
   }, []);
 
+  useEffect(() => {
+    hasUserSetPinCode().then((result: boolean) => {
+      if (result) {
+        setPINCodeStatus(PinStatus.enter);
+        navigation.navigate(Routes.PassCode, {
+          PINCodeStatus: PinStatus.enter,
+          setPINCodeStatus,
+        });
+      } else {
+        setPINCodeStatus(null);
+      }
+    });
+  }, [navigation, setPINCodeStatus, clearPINCode]);
+
   const togglePINCodeModal = React.useCallback(() => {
     hasUserSetPinCode().then((result: boolean) => {
       if (result) {
         setPINCodeStatus(null);
         clearPINCode();
       } else {
-        setPINCodeStatus(PinStatus.choose);
-        modalizeRef.current?.open();
+        navigation.navigate(Routes.PassCode, {
+          PINCodeStatus: PinStatus.choose,
+          setPINCodeStatus,
+        });
       }
     });
-  }, [setPINCodeStatus, modalizeRef, clearPINCode]);
-
-  const handleCloseModal = React.useCallback(() => {
-    hasUserSetPinCode().then((result: boolean) => {
-      if (!result) {
-        setPINCodeStatus(null);
-      } else if (!isCorrectPINCode) {
-        navigation.goBack();
-      }
-    });
-  }, [navigation, setPINCodeStatus, isCorrectPINCode]);
-
-  const finishProcess = React.useCallback(() => {
-    setIsCorrectPINCode(true);
-
-    if (PINCodeStatus === PinStatus.enter) {
-      // waiting for `isCorrectPINCode` be updated then closing the modal
-      setTimeout(() => {
-        modalizeRef.current?.close();
-      }, 1000);
-    } else {
-      // closing modal immediately
-      modalizeRef.current?.close();
-    }
-  }, [modalizeRef, PINCodeStatus]);
-
-  useEffect(() => {
-    hasUserSetPinCode().then((result: boolean) => {
-      if (result) {
-        setPINCodeStatus(PinStatus.enter);
-        modalizeRef.current?.open();
-      }
-    });
-  }, []);
+  }, [setPINCodeStatus, clearPINCode, navigation]);
 
   return (
     <View style={styles.container}>
-      <View>
-        <Button
-          onPress={togglePINCodeModal}
-          title={`App Lock: ${PINCodeStatus !== null ? 'ON' : 'OFF'}`}
-        />
-      </View>
-      <Portal>
-        <Modalize ref={modalizeRef} onClose={handleCloseModal}>
-          <View style={styles.modalContent}>
-            {PINCodeStatus !== null ? (
-              <PINCode
-                status={PINCodeStatus}
-                touchIDDisabled
-                finishProcess={finishProcess}
-              />
-            ) : null}
-          </View>
-        </Modalize>
-      </Portal>
+      <Button
+        onPress={togglePINCodeModal}
+        title={`App Lock: ${PINCodeStatus !== null ? 'ON' : 'OFF'}`}
+      />
     </View>
   );
 };
@@ -98,9 +63,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.dark2,
-  },
-  modalContent: {
-    padding: 15,
   },
 });
 

@@ -14,6 +14,7 @@ enum Routes {
   Token = 'Token',
   Wallet = 'Ví',
   Security = 'Security',
+  PassCode = 'PassCode',
 }
 
 export default Routes;
