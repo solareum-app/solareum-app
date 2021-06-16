@@ -7,7 +7,7 @@ import { FixedContent } from '../../components/Modals/FixedContent';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
 import { grid, typo } from '../../components/Styles';
-import { balanceFormat } from '../../utils/balanceFormat';
+import { roundDown } from '../../utils/autoRound';
 import imgDelivering from '../../assets/clip-message-sent.png';
 
 import { Send } from './Send';
@@ -84,7 +84,7 @@ const Token = ({ route }) => {
                 uri: logoURI
               }} />
             <Text style={s.infoBalance}>
-              {`${balanceFormat.format(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
+              {`${roundDown(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
             </Text>
           </View>
           <View style={s.control}>

@@ -2,16 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import { COLORS } from '../../theme/colors';
 
-export const input = StyleSheet.create({
-  container: {
-    paddingLeft: 0,
-    paddingRight: 0
-  },
-  label: {
-    fontWeight: 'normal'
-  },
-});
-
 export const grid = StyleSheet.create({
   container: {
     flex: 1,
@@ -42,6 +32,17 @@ export const grid = StyleSheet.create({
   button: {
     height: 44,
   }
+});
+
+
+export const input = StyleSheet.create({
+  container: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  label: {
+    fontWeight: 'normal'
+  },
 });
 
 export const typo = StyleSheet.create({

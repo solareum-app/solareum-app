@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Linking } from 'react-native';
 import { Input, Button } from 'react-native-elements';
+import { PublicKey } from '@solana/web3.js';
 
 import imgDone from '../../assets/clip-done.png';
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { price } from '../../utils/autoRound';
-import { usePrice } from '../../core/TokenRegistryProvider';
+import { usePrice, useWallet } from '../../core/TokenRegistryProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -67,6 +68,7 @@ const s3 = StyleSheet.create({
 });
 
 const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
+  const { symbol } = token;
   const priceData = usePrice();
   const id = token.coingeckoId;
   const tokenPrice = priceData[id] ? priceData[id].usd : 0;
@@ -74,7 +76,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
 
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Chuyển SOL</Text>
+      <Text style={typo.title}>Chuyển {symbol}</Text>
       <View style={s.body}>
         <Input
           label="Địa chỉ ví"
@@ -88,7 +90,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
         <Input
           label="Số lượng"
           placeholder=""
-          keyboardType="numeric"
+          keyboardType="numbers-and-punctuation"
           style={typo.input}
           labelStyle={s.inputLabel}
           containerStyle={s.inputContainer}
@@ -105,18 +107,19 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   )
 }
 
-const Step2 = ({ address, amount, next }) => {
+const Step2 = ({ token, address, amount, next, busy, error }) => {
+  const { symbol } = token;
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Chuyển SOL</Text>
+      <Text style={typo.title}>Chuyển {symbol}</Text>
       <View style={s.body}>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Token</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>SOL / Native</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>{symbol} / Native</Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Từ Ví</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>{address || '-'}</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>{token.publicKey || '-'}</Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Chuyển đến Ví</Text>
@@ -124,7 +127,7 @@ const Step2 = ({ address, amount, next }) => {
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Số lượng</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>{amount || 0} SOL</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>{amount || 0} {symbol}</Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Phí</Text>
@@ -132,13 +135,17 @@ const Step2 = ({ address, amount, next }) => {
         </View>
       </View>
       <View style={s.footer}>
-        <Button title="Xác nhận giao dịch" buttonStyle={s.button} onPress={next} />
+        <Button title="Xác nhận giao dịch" buttonStyle={s.button} onPress={next} loading={busy} />
       </View>
     </View>
   )
 }
 
-const Step3 = () => {
+const Step3 = ({ signature }) => {
+  const openBrowser = () => {
+    Linking.openURL(`https://explorer.solana.com/tx/${signature}`)
+  }
+
   return (
     <View style={s.main}>
       <View style={s3.body}>
@@ -146,7 +153,7 @@ const Step3 = () => {
         <Text style={s3.message}>Giao dịch thành công</Text>
       </View>
       <View style={s.footer}>
-        <Button title="Kiểm tra" buttonStyle={s.button} type="clear" />
+        <Button title="Chi tiết" buttonStyle={s.button} type="clear" onPress={openBrowser} />
       </View>
     </View>
   )
@@ -155,7 +162,39 @@ const Step3 = () => {
 export const Send = ({ initStep = 1, token }) => {
   const [step, setStep] = useState(initStep);
   const [address, setAddress] = useState('');
+  const [error, setError] = useState('');
   const [amount, setAmount] = useState('');
+  const [signature, setSignature] = useState('');
+  const [wallet] = useWallet();
+  const [busy, setBusy] = useState(false);
+
+  const transfer = async () => {
+    setBusy(true);
+    const destination = new PublicKey(address);
+    let qty = Math.round(parseFloat(amount) * 10 ** token.decimals);
+    let sig = '';
+
+    try {
+      if (!token.mint) {
+        sig = await wallet.transferSol(destination, qty);
+      } else {
+        sig = await wallet.transferToken(
+          new PublicKey(token.publicKey),
+          destination,
+          qty,
+          new PublicKey(token.mint),
+          token.decimals
+        );
+      }
+      setSignature(sig);
+      setBusy(false);
+      setStep(3);
+    }
+    catch (err) {
+      setError(err);
+    }
+
+  };
 
   if (step === 1) {
     return (
@@ -171,8 +210,11 @@ export const Send = ({ initStep = 1, token }) => {
   }
 
   if (step === 2) {
-    return <Step2 address={address} amount={amount} next={() => setStep(3)} />;
+    return <Step2
+      token={token}
+      address={address} amount={amount}
+      next={transfer} busy={busy} error={error} />;
   }
 
-  return <Step3 />
+  return <Step3 signature={signature} />
 };

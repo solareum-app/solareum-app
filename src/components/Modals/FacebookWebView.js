@@ -18,7 +18,7 @@ import { useCombinedRefs } from '../../hooks/use-combined-refs';
 const { width, height: initialHeight } = Dimensions.get('window');
 const isAndroid = Platform.OS === 'android';
 
-const extractHostname = url => {
+const extractHostname = (url) => {
   let hostname;
 
   if (url.indexOf('//') > -1) {
@@ -79,7 +79,7 @@ export const FacebookWebView = forwardRef((_, ref) => {
     }
   };
 
-  const handleLoad = status => {
+  const handleLoad = (status) => {
     setMounted(true);
 
     if (status === 'progress' && !mounted) {
@@ -123,7 +123,7 @@ export const FacebookWebView = forwardRef((_, ref) => {
     [],
   );
 
-  const handleMessage = useCallback(event => {
+  const handleMessage = useCallback((event) => {
     // iOS already inherit from the whole document body height,
     // so we don't have to manually get it with the injected script
     if (!isAndroid) {
@@ -166,7 +166,10 @@ export const FacebookWebView = forwardRef((_, ref) => {
   const renderHeader = () => (
     <View style={s.header}>
       <View style={s.header__wrapper}>
-        <TouchableOpacity style={s.header__close} onPress={handleClose} activeOpacity={0.75}>
+        <TouchableOpacity
+          style={s.header__close}
+          onPress={handleClose}
+          activeOpacity={0.75}>
           <Image source={require('../../assets/cross.png')} />
         </TouchableOpacity>
 
@@ -174,19 +177,20 @@ export const FacebookWebView = forwardRef((_, ref) => {
           style={{ opacity: back ? 1 : 0.2 }}
           onPress={handleBack}
           disabled={!back}
-          activeOpacity={0.75}
-        >
+          activeOpacity={0.75}>
           <Image source={require('../../assets/arrow.png')} />
         </TouchableOpacity>
 
         <View style={s.header__center}>
           {secured && (
-            <Image style={{ tintColor: '#31a14c' }} source={require('../../assets/lock.png')} />
+            <Image
+              style={{ tintColor: '#31a14c' }}
+              source={require('../../assets/lock.png')}
+            />
           )}
           <Text
             style={[s.header__url, { color: secured ? '#31a14c' : '#5a6266' }]}
-            numberOfLines={1}
-          >
+            numberOfLines={1}>
             {url}
           </Text>
         </View>
@@ -195,8 +199,7 @@ export const FacebookWebView = forwardRef((_, ref) => {
           style={[s.header__arrowRight, { opacity: forward ? 1 : 0.2 }]}
           onPress={handleForward}
           disabled={!forward}
-          activeOpacity={0.75}
-        >
+          activeOpacity={0.75}>
           <Image source={require('../../assets/arrow.png')} />
         </TouchableOpacity>
 
@@ -232,11 +235,12 @@ export const FacebookWebView = forwardRef((_, ref) => {
       ref={combinedRef}
       HeaderComponent={renderHeader}
       scrollViewProps={{ showsVerticalScrollIndicator: false }}
-      onLayout={handleLayout}
-    >
+      onLayout={handleLayout}>
       <RNWebView
         ref={webViewRef}
-        source={{ uri: 'https://github.com/jeremybarbet/react-native-modalize' }}
+        source={{
+          uri: _.url,
+        }}
         onLoadStart={() => handleLoad('start')}
         onLoadProgress={() => handleLoad('progress')}
         onLoadEnd={() => handleLoad('end')}

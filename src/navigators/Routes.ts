@@ -1,7 +1,9 @@
 enum Routes {
   Home = 'Nhà',
-  CreateWallet = 'Tạo Ví',
+  Wallet = 'Wallet',
   DEX = 'DEX',
+  Social = 'Social',
+  CreateWallet = 'Tạo Ví',
   Fiat = 'Fiat',
   GetStarted = 'Bắt đầu',
   ImportWallet = 'Khôi phục Ví',
@@ -12,7 +14,6 @@ enum Routes {
   TokensListed = 'Tokens',
   Transaction = 'Giao dịch',
   Token = 'Token',
-  Wallet = 'Ví',
   Security = 'Security',
   PassCode = 'PassCode',
 }
