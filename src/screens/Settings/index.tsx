@@ -14,7 +14,11 @@ const MenuItem: React.FC<MenuItemType> = ({ name, icon }) => {
   }, []);
 
   return (
-    <ListItem bottomDivider onPress={onPressHandler} containerStyle={styles.item}>
+    <ListItem
+      bottomDivider
+      onPress={onPressHandler}
+      containerStyle={styles.item}
+    >
       <Icon name={icon.name} color={icon.color} size={20} />
       <ListItem.Content>
         <ListItem.Title style={styles.itemTitle}>{name}</ListItem.Title>
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     color: COLORS.white2,
-  }
+  },
 });
 
 export default Settings;

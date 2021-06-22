@@ -13,17 +13,23 @@ const Tab = createBottomTabNavigator();
 export const HomeScreen: React.FC = () => {
   return (
     <Tab.Navigator
-      sceneContainerStyle={{ backgroundColor: COLORS.dark2 }}
+      sceneContainerStyle={{
+        backgroundColor: COLORS.dark2,
+      }}
       tabBarOptions={{
-        style: { backgroundColor: COLORS.dark0, borderTopColor: COLORS.dark4 },
-        activeTintColor: COLORS.blue2,
-      }}>
+        style: {
+          backgroundColor: COLORS.dark0,
+          borderTopColor: COLORS.dark4,
+        },
+        activeTintColor: COLORS.blue0,
+      }}
+    >
       <Tab.Screen
         name={Routes.Wallet}
         component={Wallet}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return <Icon name="wallet" color={color} size={size} />;
+          tabBarIcon: ({ color }) => {
+            return <Icon name="wallet" color={color} size={20} />;
           },
         }}
       />
@@ -31,8 +37,8 @@ export const HomeScreen: React.FC = () => {
         name={Routes.DEX}
         component={DEX}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return <Icon name="retweet" color={color} size={size} />;
+          tabBarIcon: ({ color }) => {
+            return <Icon name="retweet" color={color} size={20} />;
           },
         }}
       />
@@ -40,8 +46,8 @@ export const HomeScreen: React.FC = () => {
         name={Routes.Social}
         component={Social}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return <Icon name="aliwangwang-o1" color={color} size={size} />;
+          tabBarIcon: ({ color }) => {
+            return <Icon name="aliwangwang-o1" color={color} size={20} />;
           },
         }}
       />
