@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Header as HeaderElement } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,6 +7,20 @@ import { COLORS } from '../../theme/colors';
 import Icon from '../../components/Icon';
 import Routes from '../../navigators/Routes';
 import WalletPicker from './WalletPicker';
+
+const s = StyleSheet.create({
+  setting: {
+    paddingRight: 16,
+    opacity: 0.75,
+  },
+  notification: {
+    paddingLeft: 16,
+    opacity: 0.75,
+  },
+  icon: {
+    opacity: 0.7,
+  },
+});
 
 const SettingIcon: React.FC = () => {
   const navigation = useNavigation();
@@ -16,11 +30,8 @@ const SettingIcon: React.FC = () => {
   }, [navigation]);
 
   return (
-    <TouchableOpacity
-      style={{ paddingRight: 16 }}
-      onPress={onPressHandler}
-    >
-      <Icon name="setting" color={COLORS.white2} size={20} />
+    <TouchableOpacity style={s.setting} onPress={onPressHandler}>
+      <Icon name="setting" color={COLORS.white2} size={24} style={s.icon} />
     </TouchableOpacity>
   );
 };
@@ -33,13 +44,10 @@ const NotificationIcon: React.FC = () => {
   }, [navigation]);
 
   return (
-    <TouchableOpacity
-      style={{ paddingLeft: 16 }}
-      onPress={onPressHandler}
-    >
-      <Icon name="bells" color={COLORS.white2} size={20} />
-    </TouchableOpacity >
-  )
+    <TouchableOpacity style={s.notification} onPress={onPressHandler}>
+      <Icon name="bells" color={COLORS.white2} size={24} style={s.icon} />
+    </TouchableOpacity>
+  );
 };
 
 const Header: React.FC = () => {
@@ -50,7 +58,7 @@ const Header: React.FC = () => {
       rightComponent={<NotificationIcon />}
       containerStyle={{
         backgroundColor: COLORS.dark2,
-        borderBottomColor: COLORS.dark4
+        borderBottomColor: COLORS.dark4,
       }}
     />
   );

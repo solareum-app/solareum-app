@@ -15,8 +15,43 @@ import { getWallet } from '../../spl-utils/getWallet';
 
 const getShortPublicKey = (key: string) => {
   const visible = 7;
-  return `${key.slice(0, visible)}...${key.slice(key.length - visible, key.length)}`;
+  return `${key.slice(0, visible)}...${key.slice(
+    key.length - visible,
+    key.length,
+  )}`;
 };
+
+const s = StyleSheet.create({
+  content: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  group: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 8,
+    marginLeft: -4,
+    marginRight: -4,
+  },
+  groupItem: {
+    flex: 1,
+    marginLeft: 4,
+    marginRight: 4,
+  },
+  walletWrp: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 12,
+    paddingRight: 12,
+  },
+  walletTitle: {
+    fontSize: FONT_SIZES.md,
+    color: COLORS.white0,
+    paddingVertical: 2,
+    fontWeight: 'bold',
+  },
+});
 
 const WalletPicker: React.FC = () => {
   const ref = useRef();
@@ -40,19 +75,18 @@ const WalletPicker: React.FC = () => {
       <TouchableOpacity
         onPress={() => {
           ref?.current?.open();
-          setCount(i => i + 1);
+          setCount((i) => i + 1);
         }}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingLeft: 12,
-          paddingRight: 12,
-        }}>
-        <Text style={{ fontSize: FONT_SIZES.md, color: COLORS.white0 }}>
+        style={s.walletWrp}>
+        <Text style={s.walletTitle}>
           {wallet ? wallet.name : 'Walltet Name'}
         </Text>
-        <Icon name="down" color={COLORS.white0} size={FONT_SIZES.md} style={{ marginLeft: 4 }} />
+        <Icon
+          name="down"
+          color={COLORS.white0}
+          size={FONT_SIZES.md}
+          style={{ marginLeft: 4 }}
+        />
       </TouchableOpacity>
 
       <Portal>
@@ -65,22 +99,32 @@ const WalletPicker: React.FC = () => {
                 containerStyle={{
                   backgroundColor: COLORS.dark0,
                   borderBottomColor: COLORS.dark2,
-                  borderBottomWidth: 2
-                }}
-              >
-                <Icon name="wallet" size={FONT_SIZES.lg} color={COLORS.white2} />
+                  borderBottomWidth: 2,
+                }}>
+                <Icon
+                  name="wallet"
+                  size={FONT_SIZES.lg}
+                  color={COLORS.white2}
+                />
                 <ListItem.Content>
-                  <ListItem.Title style={{ color: COLORS.white2 }}>{w.name || 'Solareum Wallet'}</ListItem.Title>
-                  <ListItem.Title style={{ color: COLORS.white4, fontSize: 12 }}>{getShortPublicKey(w.id)}</ListItem.Title>
+                  <ListItem.Title style={{ color: COLORS.white2 }}>
+                    {w.name || 'Solareum Wallet'}
+                  </ListItem.Title>
+                  <ListItem.Title
+                    style={{ color: COLORS.white4, fontSize: 12 }}>
+                    {getShortPublicKey(w.id)}
+                  </ListItem.Title>
                 </ListItem.Content>
               </ListItem>
             ))}
             <View style={s.group}>
               <View style={s.groupItem}>
-                <Button title="Tạo Ví" type="clear"
+                <Button
+                  title="Tạo Ví"
+                  type="clear"
                   onPress={() => {
                     ref.current?.close();
-                    navigation.navigate(Routes.CreateWallet)
+                    navigation.navigate(Routes.CreateWallet);
                   }}
                   titleStyle={{ color: COLORS.white2 }}
                   icon={
@@ -94,10 +138,12 @@ const WalletPicker: React.FC = () => {
                 />
               </View>
               <View style={s.groupItem}>
-                <Button title="Khôi phục" type="clear"
+                <Button
+                  title="Khôi phục"
+                  type="clear"
                   onPress={() => {
                     ref.current?.close();
-                    navigation.navigate(Routes.ImportWallet)
+                    navigation.navigate(Routes.ImportWallet);
                   }}
                   titleStyle={{ color: COLORS.white2 }}
                   icon={
@@ -117,25 +163,5 @@ const WalletPicker: React.FC = () => {
     </View>
   );
 };
-
-const s = StyleSheet.create({
-  content: {
-    padding: 20,
-    paddingBottom: 40,
-  },
-  group: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 8,
-    marginLeft: -4,
-    marginRight: -4,
-  },
-  groupItem: {
-    flex: 1,
-    marginLeft: 4,
-    marginRight: 4,
-  },
-});
-
 
 export default WalletPicker;

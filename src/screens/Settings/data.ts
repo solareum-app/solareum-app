@@ -1,4 +1,5 @@
 import { MenuGroupType } from './types';
+import { COLORS } from '../../theme/colors';
 
 export const groups: MenuGroupType[] = [
   {
@@ -12,13 +13,6 @@ export const groups: MenuGroupType[] = [
         },
       },
       {
-        name: 'Push Notifications',
-        icon: {
-          name: 'notification',
-          color: 'red',
-        },
-      },
-      {
         name: 'Preferences',
         icon: {
           name: 'setting',
@@ -28,37 +22,13 @@ export const groups: MenuGroupType[] = [
     ],
   },
   {
-    name: null,
-    items: [
-      {
-        name: 'Price Alerts',
-        icon: {
-          name: 'questioncircle',
-          color: 'red',
-        },
-      },
-    ],
-  },
-  {
-    name: null,
-    items: [
-      {
-        name: 'WalletConnect',
-        icon: {
-          name: 'questioncircle',
-          color: 'red',
-        },
-      },
-    ],
-  },
-  {
     name: 'Join Community',
     items: [
       {
-        name: 'Help Center',
+        name: 'Community',
         icon: {
           name: 'questioncircle',
-          color: '#f4b400',
+          color: COLORS.warning,
         },
       },
       {
@@ -75,34 +45,13 @@ export const groups: MenuGroupType[] = [
           color: '#0088cc',
         },
       },
-      {
-        name: 'Facebook',
-        icon: {
-          name: 'facebook-square',
-          color: '#3b5998',
-        },
-      },
-      {
-        name: 'Reddit',
-        icon: {
-          name: 'questioncircle',
-          color: '#ff4301',
-        },
-      },
-      {
-        name: 'Youtube',
-        icon: {
-          name: 'youtube',
-          color: '#ff0000',
-        },
-      },
     ],
   },
   {
     name: null,
     items: [
       {
-        name: 'About',
+        name: 'Version 2.0.4',
         icon: {
           name: 'heart',
           color: '#e25555',
