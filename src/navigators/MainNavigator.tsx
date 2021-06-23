@@ -18,32 +18,25 @@ import Security from '../screens/Settings/Security';
 import TokensListed from '../screens/TokensListed';
 import Transaction from '../screens/Transaction';
 import Token from '../screens/Token';
-import { getListWallet } from '../storage/WalletCollection';
+// import { getListWallet } from '../storage/WalletCollection';
 
 import { HomeScreen } from './HomeScreen';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 
 const Stack = createStackNavigator();
-const BACKGROUND_TIME = 2 * 60 * 1000;
 
 const MainNavigator: React.FC = () => {
   const navigationRef = useRef(null);
   const [appState, setAppState] = React.useState<AppStateStatus>('active');
 
   React.useEffect(() => {
-    let timer: number = -1;
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      console.log('handleAppStateChange', { appState, nextAppState });
-      clearTimeout(timer);
-
       if (appState?.match(/inactive|background/) && nextAppState === 'active') {
-        timer = setTimeout(() => {
-          navigationRef.current?.navigate(Routes.PassCode, {
-            PINCodeStatus: PinStatus.enter,
-            showBackButton: false,
-          });
-        }, BACKGROUND_TIME);
+        navigationRef.current?.navigate(Routes.PassCode, {
+          PINCodeStatus: PinStatus.enter,
+          showBackButton: false,
+        });
       }
 
       setAppState(nextAppState);
@@ -55,7 +48,7 @@ const MainNavigator: React.FC = () => {
     };
   }, [appState, navigationRef]);
 
-  const checkInitScreen = () => {
+  const init = async () => {
     hasUserSetPinCode().then(async (result: boolean) => {
       if (result) {
         navigationRef.current?.navigate(Routes.PassCode, {
@@ -79,7 +72,7 @@ const MainNavigator: React.FC = () => {
   };
 
   return (
-    <NavigationContainer ref={navigationRef} onReady={checkInitScreen}>
+    <NavigationContainer ref={navigationRef} onReady={init}>
       <Host>
         <Stack.Navigator
           screenOptions={{
@@ -91,7 +84,8 @@ const MainNavigator: React.FC = () => {
               backgroundColor: COLORS.dark2,
               shadowColor: COLORS.dark4,
             },
-          }}>
+          }}
+        >
           <Stack.Screen
             name={Routes.Home}
             component={HomeScreen}

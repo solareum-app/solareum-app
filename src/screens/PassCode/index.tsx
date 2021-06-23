@@ -7,7 +7,9 @@ import { PinStatus } from '@haskkor/react-native-pincode/src/PinCode';
 import { COLORS } from '../../theme/colors';
 
 type PINCodeStatusType = null | 'choose' | 'enter' | 'locked';
+
 type Props = {};
+
 const PassCode: React.FC<Props> = ({ route }) => {
   const ref = React.useRef<null | boolean>(null);
   const {
