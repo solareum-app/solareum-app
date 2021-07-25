@@ -37,6 +37,15 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - libwebp (1.2.0):
+    - libwebp/demux (= 1.2.0)
+    - libwebp/mux (= 1.2.0)
+    - libwebp/webp (= 1.2.0)
+  - libwebp/demux (1.2.0):
+    - libwebp/webp
+  - libwebp/mux (1.2.0):
+    - libwebp/demux
+  - libwebp/webp (1.2.0)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -279,6 +288,10 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
+  - RNFastImage (8.3.7):
+    - React-Core
+    - SDWebImage (~> 5.8)
+    - SDWebImageWebPCoder (~> 0.6.1)
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNOS (1.2.6):
@@ -318,6 +331,12 @@ PODS:
     - React
   - RNVectorIcons (8.1.0):
     - React-Core
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SDWebImageWebPCoder (0.6.1):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.7)
   - TcpSockets (3.3.2):
     - React
   - Yoga (1.14.0)
@@ -361,6 +380,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNOS (from `../node_modules/react-native-os`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -375,6 +395,9 @@ SPEC REPOS:
     - AppCenter
     - AppCenterReactNativeShared
     - boost-for-react-native
+    - libwebp
+    - SDWebImage
+    - SDWebImageWebPCoder
 
 EXTERNAL SOURCES:
   appcenter-analytics:
@@ -449,6 +472,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNFastImage:
+    :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNOS:
@@ -478,6 +503,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -506,12 +532,15 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: f47a7e8f927f7c9da947491fc55752eb9ce17f2d
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNFastImage: a7384db75df352500261e8e8f1ac2026def26102
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
   RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 

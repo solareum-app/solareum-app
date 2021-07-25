@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Portal } from 'react-native-portalize';
 import { format } from 'date-fns';
 
+import { ImageCached } from '../../components/ImageCached/ImageCached';
 import { COLORS } from '../../theme';
 import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { typo } from '../../components/Styles';
@@ -46,7 +47,7 @@ export const SocialItem = ({ model }) => {
   return (
     <View>
       <TouchableOpacity style={s.main} onPress={openSendScreen}>
-        <Image
+        <ImageCached
           source={model.image_url ? { uri: model.image_url } : bullImg}
           style={s.image}
         />

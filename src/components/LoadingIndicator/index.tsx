@@ -1,14 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 
-const LoadingIndicator: React.FC = () => {
-  return (
-    <View style={styles.container}>
-      <ActivityIndicator size="small" />
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -16,5 +8,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+const LoadingIndicator: React.FC = () => {
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator size="small" />
+    </View>
+  );
+};
 
 export default LoadingIndicator;
