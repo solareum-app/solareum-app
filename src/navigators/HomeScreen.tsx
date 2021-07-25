@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/AntDesign';
+import IconFeather from 'react-native-vector-icons/Feather';
 
 import DEX from '../screens/DEX';
 import Social from '../screens/Social';
@@ -29,7 +29,7 @@ export const HomeScreen: React.FC = () => {
         component={Wallet}
         options={{
           tabBarIcon: ({ color }) => {
-            return <Icon name="wallet" color={color} size={20} />;
+            return <IconFeather name="shield" color={color} size={20} />;
           },
         }}
       />
@@ -38,7 +38,7 @@ export const HomeScreen: React.FC = () => {
         component={DEX}
         options={{
           tabBarIcon: ({ color }) => {
-            return <Icon name="retweet" color={color} size={20} />;
+            return <IconFeather name="repeat" color={color} size={20} />;
           },
         }}
       />
@@ -47,7 +47,7 @@ export const HomeScreen: React.FC = () => {
         component={Social}
         options={{
           tabBarIcon: ({ color }) => {
-            return <Icon name="aliwangwang-o1" color={color} size={20} />;
+            return <IconFeather name="coffee" color={color} size={20} />;
           },
         }}
       />

@@ -24,7 +24,7 @@ const s = StyleSheet.create({
   infoBalance: {
     marginTop: 12,
     fontSize: 28,
-    color: COLORS.white0
+    color: COLORS.white0,
   },
   control: {
     flexDirection: 'row',
@@ -58,19 +58,14 @@ const Token = ({ route }) => {
   const refSend = useRef();
   const refReceived = useRef();
 
-  const {
-    symbol = '---',
-    logoURI = '',
-    amount,
-    decimals,
-  } = token;
+  const { symbol = '---', logoURI = '', amount, decimals } = token;
 
   const openSendScreen = () => {
     refSend?.current?.open();
-  }
+  };
   const openReceiveScreen = () => {
     refReceived?.current?.open();
-  }
+  };
 
   return (
     <View style={grid.container}>
@@ -81,25 +76,38 @@ const Token = ({ route }) => {
               size="medium"
               rounded
               source={{
-                uri: logoURI
-              }} />
+                uri: logoURI,
+              }}
+            />
             <Text style={s.infoBalance}>
-              {`${roundDown(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
+              {`${roundDown(
+                amount / Math.pow(10, decimals),
+              )} ${symbol.toUpperCase()}`}
             </Text>
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
-              <RoundedButton onClick={openSendScreen} title="Chuyển" iconName="upload" />
+              <RoundedButton
+                onClick={openSendScreen}
+                title="Chuyển"
+                iconName="upload"
+              />
             </View>
             <View style={s.controlItem}>
-              <RoundedButton onClick={openReceiveScreen} title="Nhận" iconName="download" />
+              <RoundedButton
+                onClick={openReceiveScreen}
+                title="Nhận"
+                iconName="download"
+              />
             </View>
           </View>
         </View>
         <View style={grid.body}>
           <View style={s.messageWrp}>
             <Image source={imgDelivering} style={s.placeholderImage} />
-            <Text style={[typo.normal, s.helper]}>Lịch sử giao dịch sẽ hiển thị ở đây</Text>
+            <Text style={[typo.normal, s.helper]}>
+              Lịch sử giao dịch sẽ hiển thị ở đây
+            </Text>
           </View>
         </View>
       </ScrollView>
