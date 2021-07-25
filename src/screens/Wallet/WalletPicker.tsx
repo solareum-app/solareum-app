@@ -7,19 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import WalletFactory from '../../factory/Wallet';
 
+import { getShortPublicKey } from '../../utils';
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
 import { useWallet } from '../../core/TokenRegistryProvider';
 import { getWallet } from '../../spl-utils/getWallet';
-
-const getShortPublicKey = (key: string) => {
-  const visible = 7;
-  return `${key.slice(0, visible)}...${key.slice(
-    key.length - visible,
-    key.length,
-  )}`;
-};
 
 const s = StyleSheet.create({
   content: {
@@ -39,17 +32,33 @@ const s = StyleSheet.create({
     marginRight: 4,
   },
   walletWrp: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingLeft: 12,
     paddingRight: 12,
+    marginRight: -20, // size of icon + margin
+  },
+  titleWrp: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  titleLeft: {},
+  titleIcon: {
+    paddingLeft: 8,
   },
   walletTitle: {
-    fontSize: FONT_SIZES.md,
+    fontSize: 14,
+    lineHeight: 20,
     color: COLORS.white0,
     paddingVertical: 2,
     fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  walletSubtitle: {
+    fontSize: 12,
+    lineHeight: 12,
+    color: COLORS.white4,
+    paddingVertical: 2,
+    textAlign: 'center',
   },
 });
 
@@ -66,6 +75,7 @@ const WalletPicker: React.FC = () => {
 
   const selectWallet = async (walletData) => {
     const w = await getWallet(walletData.mnemonic, walletData.name);
+    console.log('w', w.publicKey.toBase58());
     setWallet(w, walletData);
     ref.current?.close();
   };
@@ -77,16 +87,21 @@ const WalletPicker: React.FC = () => {
           ref?.current?.open();
           setCount((i) => i + 1);
         }}
-        style={s.walletWrp}>
-        <Text style={s.walletTitle}>
-          {wallet ? wallet.name : 'Walltet Name'}
-        </Text>
-        <Icon
-          name="down"
-          color={COLORS.white0}
-          size={FONT_SIZES.md}
-          style={{ marginLeft: 4 }}
-        />
+        style={s.walletWrp}
+      >
+        <View style={s.titleWrp}>
+          <View style={s.titleLeft}>
+            <Text style={s.walletTitle}>
+              {wallet ? wallet.name : 'Walltet Name'}
+            </Text>
+            <Text style={s.walletSubtitle}>
+              {wallet ? getShortPublicKey(wallet.publicKey.toBase58()) : '--'}
+            </Text>
+          </View>
+          <View style={s.titleIcon}>
+            <Icon name="down" color={COLORS.white0} size={12} />
+          </View>
+        </View>
       </TouchableOpacity>
 
       <Portal>
@@ -100,7 +115,8 @@ const WalletPicker: React.FC = () => {
                   backgroundColor: COLORS.dark0,
                   borderBottomColor: COLORS.dark2,
                   borderBottomWidth: 2,
-                }}>
+                }}
+              >
                 <Icon
                   name="wallet"
                   size={FONT_SIZES.lg}
@@ -109,10 +125,6 @@ const WalletPicker: React.FC = () => {
                 <ListItem.Content>
                   <ListItem.Title style={{ color: COLORS.white2 }}>
                     {w.name || 'Solareum Wallet'}
-                  </ListItem.Title>
-                  <ListItem.Title
-                    style={{ color: COLORS.white4, fontSize: 12 }}>
-                    {getShortPublicKey(w.id)}
                   </ListItem.Title>
                 </ListItem.Content>
               </ListItem>

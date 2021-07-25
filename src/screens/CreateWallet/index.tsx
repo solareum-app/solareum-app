@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { Button, CheckBox } from 'react-native-elements';
+import { Button, CheckBox, Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
 
 import Icon from '../../components/Icon';
 import { generateMnemonicAndSeed } from '../../spl-utils/wallet-account';
 import Routes from '../../navigators/Routes';
-import { grid, typo } from '../../components/Styles';
+import { grid, typo, input } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
 import WalletFactory from '../../factory/Wallet';
 
@@ -47,18 +47,17 @@ const s = StyleSheet.create({
     padding: 20,
     paddingTop: 0,
     paddingBottom: 40,
-    width: '100%'
-  }
+    width: '100%',
+  },
 });
 
 type Props = {};
 const CreateWallet: React.FC<Props> = () => {
   const navigation = useNavigation();
   const [seed, setSeed] = useState('');
+  const [walletName, setWalletName] = useState('');
   const [mnemonic, setMnemonic] = useState('');
   const [isStored, setIsStored] = useState(false);
-  // TODO: Allow user to choose wallet name when creating
-  const [name, setName] = useState('');
 
   const getSeed = async () => {
     const { seed: s, mnemonic: m } = await generateMnemonicAndSeed();
@@ -67,7 +66,7 @@ const CreateWallet: React.FC<Props> = () => {
   };
 
   const handleCreateWallet = async () => {
-    await WalletFactory.create(seed, mnemonic, name, isStored);
+    await WalletFactory.create(seed, mnemonic, walletName, isStored);
     navigation.navigate(Routes.Home, { screen: Routes.Wallet });
   };
 
@@ -84,20 +83,26 @@ const CreateWallet: React.FC<Props> = () => {
       <SafeAreaView style={grid.wrp}>
         <ScrollView>
           <View style={s.body}>
-            <Text style={[typo.title, s.title]} >
-              Lưu mã khôi phục
-            </Text>
+            <Input
+              label="Tên Ví"
+              placeholder=""
+              style={typo.input}
+              labelStyle={input.label}
+              containerStyle={input.container}
+              value={walletName}
+              onChangeText={(text) => setWalletName(text)}
+            />
+            <Text style={[typo.title, s.title]}>Lưu mã khôi phục</Text>
 
             <View style={s.wrp}>
               <Text style={typo.normal}>
-                Vui lòng lưu trữ 24 chữ cái bên dưới ở nơi an toàn, và giữ nguyên thứ tự.
+                Vui lòng lưu trữ 24 chữ cái bên dưới ở nơi an toàn, và giữ
+                nguyên thứ tự.
               </Text>
             </View>
 
             <View style={s.seedWrp}>
-              <Text style={s.seed}>
-                {mnemonic || '-'}
-              </Text>
+              <Text style={s.seed}>{mnemonic || '-'}</Text>
             </View>
 
             <View style={s.wrp}>
@@ -105,8 +110,9 @@ const CreateWallet: React.FC<Props> = () => {
                 title="Sao chép"
                 type="clear"
                 onPress={copyToClipboard}
-                titleStyle={{ marginLeft: 8, }}
-                icon={<Icon name='addfile' color={COLORS.blue2} />} />
+                titleStyle={{ marginLeft: 8 }}
+                icon={<Icon name="addfile" color={COLORS.blue2} />}
+              />
             </View>
 
             <View style={[s.wrp, { marginTop: 8 }]}>
@@ -114,13 +120,16 @@ const CreateWallet: React.FC<Props> = () => {
                 Không chia sẻ các mã khôi phục này với bất kỳ ai.
               </Text>
               <Text style={typo.helper}>
-                Bạn cần mã này để khôi phục ví trong trường hợp điện thoại của bạn bị mất hoặc hư hỏng.
+                Bạn cần mã này để khôi phục ví trong trường hợp điện thoại của
+                bạn bị mất hoặc hư hỏng.
               </Text>
               <Text style={typo.helper}>
-                Mã khôi phục này chỉ được lưu trên thiết bị của bạn, và được mã hóa bằng mã PIN của bạn.
+                Mã khôi phục này chỉ được lưu trên thiết bị của bạn, và được mã
+                hóa bằng mã PIN của bạn.
               </Text>
               <Text style={typo.helper}>
-                Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó ở phần Cài Đặt sau khi ví được tạo.
+                Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó
+                ở phần Cài Đặt sau khi ví được tạo.
               </Text>
             </View>
           </View>
@@ -137,9 +146,13 @@ const CreateWallet: React.FC<Props> = () => {
             textStyle={{ color: COLORS.white2 }}
             title="Tôi đã lưu mã khôi phục"
             checked={isStored}
-            onPress={() => setIsStored(prev => !prev)}
+            onPress={() => setIsStored((prev) => !prev)}
           />
-          <Button title="Tạo Ví" onPress={handleCreateWallet} style={grid.button} />
+          <Button
+            title="Tạo Ví"
+            onPress={handleCreateWallet}
+            style={grid.button}
+          />
         </View>
       </SafeAreaView>
     </View>

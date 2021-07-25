@@ -7,7 +7,7 @@ import { FixedContent } from '../../components/Modals/FixedContent';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
 import { grid, typo } from '../../components/Styles';
-import { roundDown } from '../../utils/autoRound';
+import { price } from '../../utils/autoRound';
 import imgDelivering from '../../assets/clip-message-sent.png';
 
 import { Send } from './Send';
@@ -80,7 +80,7 @@ const Token = ({ route }) => {
               }}
             />
             <Text style={s.infoBalance}>
-              {`${roundDown(
+              {`${price(
                 amount / Math.pow(10, decimals),
               )} ${symbol.toUpperCase()}`}
             </Text>

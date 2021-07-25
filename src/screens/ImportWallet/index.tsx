@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  StyleSheet,
+} from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -31,7 +38,7 @@ const s = StyleSheet.create({
     height: 200,
     flexWrap: 'wrap',
     marginBottom: 8,
-  }
+  },
 });
 
 type Props = {};
@@ -49,7 +56,7 @@ const ImportWallet: React.FC<Props> = () => {
   const paste = async () => {
     const text = await Clipboard.getString();
     setRecovery(text);
-  }
+  };
 
   return (
     <View style={grid.container}>
@@ -57,26 +64,36 @@ const ImportWallet: React.FC<Props> = () => {
         <ScrollView>
           <View style={grid.content}>
             <View style={s.wrp}>
+              <Input
+                label="Tên Ví"
+                placeholder=""
+                style={typo.input}
+                labelStyle={input.label}
+                containerStyle={input.container}
+                value={walletName}
+                onChangeText={(text) => setWalletName(text)}
+              />
+            </View>
+            <View style={s.wrp}>
               <Text style={s.label}>Mã khôi phục</Text>
               <TextInput
                 style={s.recoverPhrase}
                 multiline={true}
                 value={recovery}
-                onChangeText={text => setRecovery(text)} />
-              <Text style={typo.helper}>Bạn có thể nhập Mã khôi phục từ các SPL wallet khác như: Sollet</Text>
+                onChangeText={(text) => setRecovery(text)}
+              />
+              <Text style={typo.helper}>
+                Bạn có thể nhập Mã khôi phục từ các SPL wallet khác như: Sollet
+              </Text>
               <Button title="Dán mã khôi phục" type="clear" onPress={paste} />
             </View>
-
-            <Input
-              label="Tên Ví"
-              placeholder=""
-              style={typo.input}
-              labelStyle={input.label}
-              containerStyle={input.container}
-              value={walletName}
-              onChangeText={text => setWalletName(text)}
-            />
-            <Button title="Import" onPress={importWallet} style={grid.button} />
+            <View style={s.wrp}>
+              <Button
+                title="Khôi phục Ví"
+                onPress={importWallet}
+                style={grid.button}
+              />
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>

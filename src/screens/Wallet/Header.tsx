@@ -20,6 +20,19 @@ const s = StyleSheet.create({
   icon: {
     opacity: 0.7,
   },
+  container: {
+    backgroundColor: COLORS.dark2,
+    borderBottomColor: COLORS.dark4,
+    paddingVertical: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  containerLeft: {
+    paddingVertical: 8,
+  },
+  containerRight: {
+    paddingVertical: 8,
+  },
 });
 
 const SettingIcon: React.FC = () => {
@@ -56,10 +69,9 @@ const Header: React.FC = () => {
       leftComponent={<SettingIcon />}
       centerComponent={<WalletPicker />}
       rightComponent={<NotificationIcon />}
-      containerStyle={{
-        backgroundColor: COLORS.dark2,
-        borderBottomColor: COLORS.dark4,
-      }}
+      containerStyle={s.container}
+      leftContainerStyle={s.containerLeft}
+      rightContainerStyle={s.containerRight}
     />
   );
 };
