@@ -23,7 +23,9 @@ const s = StyleSheet.create({
     marginRight: 16,
     borderRadius: 4,
   },
-  titleWrp: {},
+  titleWrp: {
+    flex: 1,
+  },
   title: {
     fontSize: 18,
     lineHeight: 24,
