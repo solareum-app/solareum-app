@@ -1,19 +1,20 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { Header as HeaderElement } from 'react-native-elements';
+import { Header as HeaderElement, Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
 import { COLORS } from '../../theme/colors';
-import Icon from '../../components/Icon';
 import Routes from '../../navigators/Routes';
 import WalletPicker from './WalletPicker';
 
 const s = StyleSheet.create({
   setting: {
+    padding: 2,
     paddingRight: 16,
     opacity: 0.75,
   },
   notification: {
+    padding: 2,
     paddingLeft: 16,
     opacity: 0.75,
   },
@@ -44,7 +45,13 @@ const SettingIcon: React.FC = () => {
 
   return (
     <TouchableOpacity style={s.setting} onPress={onPressHandler}>
-      <Icon name="setting" color={COLORS.white2} size={24} style={s.icon} />
+      <Icon
+        type="feather"
+        name="hexagon"
+        color={COLORS.white2}
+        size={20}
+        style={s.icon}
+      />
     </TouchableOpacity>
   );
 };
@@ -58,7 +65,13 @@ const NotificationIcon: React.FC = () => {
 
   return (
     <TouchableOpacity style={s.notification} onPress={onPressHandler}>
-      <Icon name="bells" color={COLORS.white2} size={24} style={s.icon} />
+      <Icon
+        type="feather"
+        name="message-square"
+        color={COLORS.white2}
+        size={20}
+        style={s.icon}
+      />
     </TouchableOpacity>
   );
 };

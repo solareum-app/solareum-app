@@ -10,6 +10,7 @@ import Notifications from '../screens/Notifications';
 import Receive from '../screens/Receive';
 import Send from '../screens/Send';
 import Settings from '../screens/Settings';
+import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
 import TokensListed from '../screens/TokensListed';
 import Transaction from '../screens/Transaction';
 import Token from '../screens/Token';
@@ -45,7 +46,8 @@ const MainNavigator: React.FC = () => {
               backgroundColor: COLORS.dark2,
               shadowColor: COLORS.dark4,
             },
-          }}>
+          }}
+        >
           <Stack.Screen
             name={Routes.Home}
             component={HomeScreen}
@@ -61,6 +63,7 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.TokensListed} component={TokensListed} />
           <Stack.Screen name={Routes.Transaction} component={Transaction} />
           <Stack.Screen name={Routes.Token} component={Token} />
+          <Stack.Screen name={Routes.SettingWallet} component={SettingWallet} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>

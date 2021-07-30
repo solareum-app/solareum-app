@@ -1,17 +1,22 @@
-import { createWallet, getListWallet } from '../storage/WalletCollection';
+import {
+  createWallet,
+  getListWallet,
+  WalletStore,
+} from '../storage/WalletCollection';
 
 class WalletFactory {
-  current = null;
-  list: any[] = [];
+  list: WalletStore[] = [];
+  currentId: string;
 
   constructor() {
     this.init();
+    this.currentId = '';
   }
 
   async init() {
-    const walletList = await getListWallet();
+    const walletList: WalletStore[] = await getListWallet();
     if (walletList.length) {
-      this.current = walletList[0];
+      this.currentId = walletList[0].id;
       this.list = walletList;
     }
   }
@@ -22,12 +27,15 @@ class WalletFactory {
     name: string,
     isStored: boolean = false,
   ) {
-    const walletName = !!name
-      ? name
-      : `Solareum Wallet ${this.list.length + 1}`;
-    const newWallet = await createWallet(seed, mnemonic, walletName, isStored);
-    this.list.push(newWallet);
+    const walletName = name ? name : `Solareum Wallet ${this.list.length + 1}`;
+    const newWallet: WalletStore = await createWallet(
+      seed,
+      mnemonic,
+      walletName,
+      isStored,
+    );
 
+    this.list.push(newWallet);
     return newWallet;
   }
 
@@ -36,15 +44,19 @@ class WalletFactory {
   async delete() {}
 
   getCurrent() {
-    return this.current;
+    return this.list.find((i) => i.id === this.currentId);
   }
 
   getList() {
     return this.list;
   }
 
-  setCurrent(wallet) {
-    this.current = wallet;
+  setCurrentById(id: string) {
+    this.currentId = id;
+    return this.list.find((i) => i.id === id);
+  }
+  setCurrent(wallet: WalletStore) {
+    this.currentId = wallet.id;
     return wallet;
   }
 }

@@ -1,4 +1,4 @@
-enum Routes {
+export enum Routes {
   Home = 'Nhà',
   CreateWallet = 'Tạo Ví',
   DEX = 'DEX',
@@ -14,6 +14,7 @@ enum Routes {
   Transaction = 'Giao dịch',
   Token = 'Token',
   Wallet = 'Wallet',
+  SettingWallet = 'Quản lý Ví',
 }
 
 export default Routes;

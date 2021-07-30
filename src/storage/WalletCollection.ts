@@ -3,18 +3,28 @@ import { v4 } from 'uuid';
 
 export const COLLECTION_NAME = 'WALLET';
 
+export type WalletStore = {
+  collection: string;
+  id: string;
+  name: string;
+  seed: string;
+  mnemonic: string;
+  isStored: boolean;
+  address?: string;
+};
+
 export const createWallet = async (
   seed: string,
   mnemonic: string,
-  name?: string,
+  name: string,
   isStored: boolean = false,
-) => {
-  const wallet = {
+): Promise<WalletStore> => {
+  const wallet: WalletStore = {
     collection: COLLECTION_NAME,
     id: v4(),
+    name,
     seed,
     mnemonic,
-    name,
     isStored,
   };
 
@@ -22,10 +32,10 @@ export const createWallet = async (
   return await getWalletById(wallet.id);
 };
 
-export const getWalletById = async (id: string) => {
+export const getWalletById = async (id: string): Promise<WalletStore> => {
   return await getItem(COLLECTION_NAME, id);
 };
 
-export const getListWallet = async () => {
+export const getListWallet = async (): Promise<WalletStore[]> => {
   return await getCollection(COLLECTION_NAME);
 };

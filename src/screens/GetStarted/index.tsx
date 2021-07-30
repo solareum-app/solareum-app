@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import { Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,7 +16,7 @@ import imgEducation from '../../assets/clip-education.png';
 
 const s = StyleSheet.create({
   wrp: {
-    marginBottom: 12
+    marginBottom: 12,
   },
   placeholderImage: {
     width: 280,
@@ -21,7 +28,7 @@ const s = StyleSheet.create({
   message: {
     ...typo.normal,
     marginBottom: 8,
-  }
+  },
 });
 
 type Props = {};
@@ -45,17 +52,40 @@ const GetStarted: React.FC<Props> = () => {
               <Image source={imgEducation} style={s.placeholderImage} />
             </View>
             <View style={s.wrp}>
-              <Text style={[typo.title, { textAlign: 'left' }]}>Chào mừng tới Solareum Wallet!</Text>
-              <Text style={s.message}>Solareum Wallet được thiết kế đơn giản tập trung vào 3 tính năng chính mà bạn sẽ thực hiện thường xuyên mỗi ngày.</Text>
-              <Text style={s.message}>▪︎ Lưu trữ, và chuyển nhận SOL cũng như tất cả các SPK tokens.</Text>
-              <Text style={s.message}>▪︎ Kết nối trực tiếp với Serum DEX, giúp thực hiện nhanh chóng các giao dịch trên nền tảng sàn phi tập trung, ngay trên điện thoại.</Text>
-              <Text style={s.message}>▪︎ Đồng thời Solareum Wallet còn là cấu nối với Fiat currency, giúp bạn nạp rút USDC/USDT thuận tiện, nhanh chóng.</Text>
+              <Text style={[typo.title, { textAlign: 'left' }]}>
+                Chào mừng tới Solareum Wallet!
+              </Text>
+              <Text style={s.message}>
+                Solareum Wallet được thiết kế đơn giản tập trung vào 3 tính năng
+                chính mà bạn sẽ thực hiện thường xuyên mỗi ngày.
+              </Text>
+              <Text style={s.message}>
+                ▪︎ Lưu trữ, và chuyển nhận SOL cũng như tất cả các SPK tokens.
+              </Text>
+              <Text style={s.message}>
+                ▪︎ Kết nối trực tiếp với Serum DEX, giúp thực hiện nhanh chóng
+                các giao dịch trên nền tảng sàn phi tập trung, ngay trên điện
+                thoại.
+              </Text>
+              <Text style={s.message}>
+                ▪︎ Đồng thời Solareum Wallet còn là cấu nối với Fiat currency,
+                giúp bạn nạp rút USDC/USDT thuận tiện, nhanh chóng.
+              </Text>
             </View>
             <View style={s.wrp}>
-              <Button title="Tạo Ví" onPress={createWalletHandler} style={grid.button} />
+              <Button
+                title="Tạo Ví"
+                onPress={createWalletHandler}
+                style={grid.button}
+              />
             </View>
             <View style={s.wrp}>
-              <Button title="Khôi Phục" onPress={importWalletHandler} style={grid.button} type="clear" />
+              <Button
+                title="Khôi Phục"
+                onPress={importWalletHandler}
+                style={grid.button}
+                type="clear"
+              />
             </View>
           </View>
         </ScrollView>

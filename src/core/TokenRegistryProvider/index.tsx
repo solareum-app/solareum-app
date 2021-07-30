@@ -38,9 +38,8 @@ export const TokenRegistryProvider: React.FC = (props) => {
     tokenListProvider.resolve().then((tokenListContainer) => {
       const cluster: Cluster | undefined = clusterForEndpoint(endpoint);
 
-      const filteredTokenListContainer = tokenListContainer?.filterByClusterSlug(
-        cluster ? cluster.name : '',
-      );
+      const filteredTokenListContainer =
+        tokenListContainer?.filterByClusterSlug(cluster ? cluster.name : '');
       const listOfTokens =
         tokenListContainer !== filteredTokenListContainer
           ? filteredTokenListContainer?.getList()
@@ -50,16 +49,20 @@ export const TokenRegistryProvider: React.FC = (props) => {
     });
   }, [endpoint]);
 
-
   // get data from coingekco
   useEffect(() => {
-    fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${tokenList.join(',')}&vs_currencies=usd,vnd`)
-      .then(resp => resp.json())
-      .then(data => {
+    fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=${tokenList.join(
+        ',',
+      )}&vs_currencies=usd,vnd`,
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
         setPriceData(data);
-      }).catch(() => {
-        setPriceData({});
       })
+      .catch(() => {
+        setPriceData({});
+      });
   }, [tokenList]);
 
   // init wallet
@@ -70,13 +73,13 @@ export const TokenRegistryProvider: React.FC = (props) => {
   const initWallet = async () => {
     const list = await getListWallet();
     const walletKey = await getItem('SYS', DEFAULT_WALLET);
-    const data = !walletKey ? list[0] : list.find(i => i.key === walletKey);
+    const data = !walletKey ? list[0] : list.find((i) => i.key === walletKey);
     if (!data) {
       return;
     }
     const w = await getWallet(data.mnemonic, data.name);
     setWallet(w);
-  }
+  };
 
   useEffect(() => {
     setTokenList(['solana']);
@@ -84,13 +87,15 @@ export const TokenRegistryProvider: React.FC = (props) => {
   }, []);
 
   return (
-    <TokenListContext.Provider value={{
-      tokenInfos,
-      priceData,
-      setTokenList,
-      wallet,
-      setWallet: setWalletWrapper
-    }}>
+    <TokenListContext.Provider
+      value={{
+        tokenInfos,
+        priceData,
+        setTokenList,
+        wallet,
+        setWallet: setWalletWrapper,
+      }}
+    >
       {props.children}
     </TokenListContext.Provider>
   );

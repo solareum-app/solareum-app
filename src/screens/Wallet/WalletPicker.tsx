@@ -67,7 +67,7 @@ const WalletPicker: React.FC = () => {
   const [count, setCount] = useState(0);
   const navigation = useNavigation();
   const [walletList, setWalletList] = useState([]);
-  const [wallet, setWallet] = useWallet(null);
+  const [wallet, setWallet] = useWallet();
 
   useEffect(() => {
     setWalletList(WalletFactory.getList());
@@ -75,7 +75,6 @@ const WalletPicker: React.FC = () => {
 
   const selectWallet = async (walletData) => {
     const w = await getWallet(walletData.mnemonic, walletData.name);
-    console.log('w', w.publicKey.toBase58());
     setWallet(w, walletData);
     ref.current?.close();
   };
