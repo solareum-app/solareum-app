@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/core';
 import Routes from '../../navigators/Routes';
 import { WalletStore } from '../../storage/WalletCollection';
 import WalletFactory from '../../factory/Wallet';
-import { useWallet } from '../../core/TokenRegistryProvider';
+import { useApp } from '../../core/TokenRegistryProvider';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
 
@@ -87,13 +87,11 @@ const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
 
 export const Wallet: React.FC = () => {
   const [walletList, setWalletList] = useState<WalletStore[]>([]);
-  const [selectedId, setSelectedId] = useState<string>(WalletFactory.currentId);
+  const { walletId, setWalletId } = useApp();
   const navigation = useNavigation();
-  console.log('Wallet123');
 
   const onSelect = (id: string) => {
-    setSelectedId(id);
-    WalletFactory.setCurrentById(id);
+    setWalletId(id);
     navigation.navigate(Routes.Wallet);
   };
 
@@ -109,7 +107,8 @@ export const Wallet: React.FC = () => {
             {walletList.map((i) => {
               return (
                 <WalletItem
-                  active={i.id === selectedId}
+                  key={i.id}
+                  active={i.id === walletId}
                   item={i}
                   onSelect={() => onSelect(i.id)}
                 />
