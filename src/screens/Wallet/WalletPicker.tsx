@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
 import { useNavigation } from '@react-navigation/native';
 
 import { FixedContent } from '../../components/Modals/FixedContent';
-import WalletFactory from '../../factory/Wallet';
 
 import { getShortPublicKey } from '../../utils';
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
-import { useWallet } from '../../core/TokenRegistryProvider';
+import { useApp } from '../../core/TokenRegistryProvider';
 import { getWallet } from '../../spl-utils/getWallet';
+import { AddressInfo } from '../../storage/WalletCollection';
 
 const s = StyleSheet.create({
   content: {
@@ -60,20 +60,19 @@ const s = StyleSheet.create({
     paddingVertical: 2,
     textAlign: 'center',
   },
+  listItemContainer: {
+    backgroundColor: COLORS.dark0,
+    borderBottomColor: COLORS.dark2,
+    borderBottomWidth: 2,
+  },
 });
 
 const WalletPicker: React.FC = () => {
   const ref = useRef();
-  const [count, setCount] = useState(0);
   const navigation = useNavigation();
-  const [walletList, setWalletList] = useState([]);
-  const [wallet, setWallet] = useWallet();
+  const { wallet, setWallet, addressList } = useApp();
 
-  useEffect(() => {
-    setWalletList(WalletFactory.getList());
-  }, [count]);
-
-  const selectWallet = async (walletData) => {
+  const selectWallet = async (walletData: AddressInfo) => {
     const w = await getWallet(walletData.mnemonic, walletData.name);
     setWallet(w, walletData);
     ref.current?.close();
@@ -84,7 +83,6 @@ const WalletPicker: React.FC = () => {
       <TouchableOpacity
         onPress={() => {
           ref?.current?.open();
-          setCount((i) => i + 1);
         }}
         style={s.walletWrp}
       >
@@ -106,15 +104,11 @@ const WalletPicker: React.FC = () => {
       <Portal>
         <FixedContent ref={ref}>
           <View style={s.content}>
-            {walletList.map((w) => (
+            {addressList.map((w) => (
               <ListItem
                 key={w.id}
                 onPress={() => selectWallet(w)}
-                containerStyle={{
-                  backgroundColor: COLORS.dark0,
-                  borderBottomColor: COLORS.dark2,
-                  borderBottomWidth: 2,
-                }}
+                containerStyle={s.listItemContainer}
               >
                 <Icon
                   name="wallet"

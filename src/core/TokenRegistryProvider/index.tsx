@@ -2,7 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
 
 import { getItem, setItem } from '../../storage/Collection';
-import { getListWallet, AddressInfo } from '../../storage/WalletCollection';
+import {
+  getListWallet,
+  AddressInfo,
+  createWallet,
+} from '../../storage/WalletCollection';
 import { useConnectionConfig } from '../ConnectionProvider';
 import { clusterForEndpoint } from './clusters';
 import { getWallet } from '../../spl-utils/getWallet';
@@ -20,6 +24,7 @@ export type TokenListContextType = {
   addressId: string;
   setAddressId: Function;
   addressList: AddressInfo[];
+  createAddress: Function;
 };
 export const TokenListContext = React.createContext<TokenListContextType>({
   tokenInfos: null,
@@ -30,6 +35,7 @@ export const TokenListContext = React.createContext<TokenListContextType>({
   addressId: '',
   setAddressId: () => null,
   addressList: [],
+  createAddress: () => null,
 });
 
 export const TokenRegistryProvider: React.FC = (props) => {
@@ -38,11 +44,19 @@ export const TokenRegistryProvider: React.FC = (props) => {
   const [tokenList, setTokenList] = useState([]);
   const [priceData, setPriceData] = useState({});
   const [wallet, setWallet] = useState(null);
-
   const [addressId, setAddressId] = useState('');
   const [addressList, setAddressList] = useState<AddressInfo[]>([]);
 
-  // init wallet
+  const createAddress = async (
+    seed: string,
+    mnemonic: string,
+    name: string,
+    isStored: boolean = false,
+  ) => {
+    const address = await createWallet(seed, mnemonic, name, isStored);
+    setAddressList([...addressList, address]);
+    setAddressIdWrapper(address.id);
+  };
   const setAddressIdWrapper = async (id: string) => {
     const list = await getListWallet();
     const address = list.find((i: AddressInfo) => i.id === id) || null;
@@ -58,6 +72,7 @@ export const TokenRegistryProvider: React.FC = (props) => {
     setAddressId(data.id);
     setWallet(w);
   };
+  // init wallet
   const initWallet = async () => {
     const list = await getListWallet();
     const walletKey = await getItem('SYS', DEFAULT_WALLET);
@@ -119,6 +134,7 @@ export const TokenRegistryProvider: React.FC = (props) => {
         addressId: addressId,
         setAddressId: setAddressIdWrapper,
         addressList,
+        createAddress,
       }}
     >
       {props.children}

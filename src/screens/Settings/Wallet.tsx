@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -12,7 +12,6 @@ import { useNavigation } from '@react-navigation/core';
 
 import Routes from '../../navigators/Routes';
 import { AddressInfo } from '../../storage/WalletCollection';
-import WalletFactory from '../../factory/Wallet';
 import { useApp } from '../../core/TokenRegistryProvider';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
@@ -86,8 +85,7 @@ const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
 };
 
 export const Wallet: React.FC = () => {
-  const [walletList, setWalletList] = useState<AddressInfo[]>([]);
-  const { addressId, setAddressId } = useApp();
+  const { addressId, setAddressId, addressList } = useApp();
   const navigation = useNavigation();
 
   const onSelect = (id: string) => {
@@ -95,16 +93,12 @@ export const Wallet: React.FC = () => {
     navigation.navigate(Routes.Wallet);
   };
 
-  useEffect(() => {
-    setWalletList(WalletFactory.getList() || []);
-  }, []);
-
   return (
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>
         <ScrollView>
           <View style={grid.content}>
-            {walletList.map((i) => {
+            {addressList.map((i) => {
               return (
                 <WalletItem
                   key={i.id}

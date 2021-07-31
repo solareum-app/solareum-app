@@ -14,7 +14,7 @@ import Clipboard from '@react-native-community/clipboard';
 import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
-import WalletFactory from '../../factory/Wallet';
+import { useApp } from '../../core/TokenRegistryProvider';
 
 const s = StyleSheet.create({
   wrp: {
@@ -46,10 +46,11 @@ const ImportWallet: React.FC<Props> = () => {
   const navigation = useNavigation();
   const [recovery, setRecovery] = useState('');
   const [walletName, setWalletName] = useState('');
+  const { createAddress } = useApp();
 
   const importWallet = async () => {
     // TODO: Handle the seed later
-    await WalletFactory.create('seed', recovery, walletName, true);
+    await createAddress('seed', recovery, walletName, true);
     navigation.navigate(Routes.Home, { screen: Routes.Wallet });
   };
 

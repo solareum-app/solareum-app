@@ -9,7 +9,7 @@ import { generateMnemonicAndSeed } from '../../spl-utils/wallet-account';
 import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
-import WalletFactory from '../../factory/Wallet';
+import { useApp } from '../../core/TokenRegistryProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -58,6 +58,7 @@ const CreateWallet: React.FC<Props> = () => {
   const [walletName, setWalletName] = useState('');
   const [mnemonic, setMnemonic] = useState('');
   const [isStored, setIsStored] = useState(false);
+  const { createAddress } = useApp();
 
   const getSeed = async () => {
     const { seed: s, mnemonic: m } = await generateMnemonicAndSeed();
@@ -66,7 +67,7 @@ const CreateWallet: React.FC<Props> = () => {
   };
 
   const handleCreateWallet = async () => {
-    await WalletFactory.create(seed, mnemonic, walletName, isStored);
+    await createAddress(seed, mnemonic, walletName, isStored);
     navigation.navigate(Routes.Home, { screen: Routes.Wallet });
   };
 
