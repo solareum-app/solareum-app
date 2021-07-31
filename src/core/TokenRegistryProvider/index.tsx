@@ -51,8 +51,8 @@ export const TokenRegistryProvider: React.FC = (props) => {
   };
   const setWalletWrapper = (w: any, data: WalletStore) => {
     setItem('SYS', DEFAULT_WALLET, data.id);
-    setWallet(w);
     setWalletId(data.id);
+    setWallet(w);
   };
   const initWallet = async () => {
     const list = await getListWallet();
@@ -62,6 +62,7 @@ export const TokenRegistryProvider: React.FC = (props) => {
       return;
     }
     const w = await getWallet(data.mnemonic, data.name);
+    setWalletId(data.id);
     setWallet(w);
   };
 
