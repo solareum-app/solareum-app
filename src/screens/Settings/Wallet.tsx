@@ -11,7 +11,7 @@ import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
 
 import Routes from '../../navigators/Routes';
-import { WalletStore } from '../../storage/WalletCollection';
+import { AddressInfo } from '../../storage/WalletCollection';
 import WalletFactory from '../../factory/Wallet';
 import { useApp } from '../../core/TokenRegistryProvider';
 import { grid } from '../../components/Styles';
@@ -62,7 +62,7 @@ const s = StyleSheet.create({
 
 type Props = {
   active?: boolean;
-  item: WalletStore;
+  item: AddressInfo;
   onSelect: any;
 };
 
@@ -86,12 +86,12 @@ const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
 };
 
 export const Wallet: React.FC = () => {
-  const [walletList, setWalletList] = useState<WalletStore[]>([]);
-  const { walletId, setWalletId } = useApp();
+  const [walletList, setWalletList] = useState<AddressInfo[]>([]);
+  const { addressId, setAddressId } = useApp();
   const navigation = useNavigation();
 
   const onSelect = (id: string) => {
-    setWalletId(id);
+    setAddressId(id);
     navigation.navigate(Routes.Wallet);
   };
 
@@ -108,7 +108,7 @@ export const Wallet: React.FC = () => {
               return (
                 <WalletItem
                   key={i.id}
-                  active={i.id === walletId}
+                  active={i.id === addressId}
                   item={i}
                   onSelect={() => onSelect(i.id)}
                 />

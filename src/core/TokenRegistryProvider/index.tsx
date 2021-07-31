@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
 
 import { getItem, setItem } from '../../storage/Collection';
-import { getListWallet, WalletStore } from '../../storage/WalletCollection';
+import { getListWallet, AddressInfo } from '../../storage/WalletCollection';
 import { useConnectionConfig } from '../ConnectionProvider';
 import { clusterForEndpoint } from './clusters';
 import { getWallet } from '../../spl-utils/getWallet';
@@ -17,8 +17,9 @@ export type TokenListContextType = {
   setTokenList: Function;
   wallet: any;
   setWallet: Function;
-  walletId: string;
-  setWalletId: Function;
+  addressId: string;
+  setAddressId: Function;
+  addressList: AddressInfo[];
 };
 export const TokenListContext = React.createContext<TokenListContextType>({
   tokenInfos: null,
@@ -26,8 +27,9 @@ export const TokenListContext = React.createContext<TokenListContextType>({
   setTokenList: () => null,
   wallet: null,
   setWallet: () => null,
-  walletId: '',
-  setWalletId: () => null,
+  addressId: '',
+  setAddressId: () => null,
+  addressList: [],
 });
 
 export const TokenRegistryProvider: React.FC = (props) => {
@@ -35,35 +37,38 @@ export const TokenRegistryProvider: React.FC = (props) => {
   const [tokenInfos, setTokenInfos] = useState<TokenInfos>(null);
   const [tokenList, setTokenList] = useState([]);
   const [priceData, setPriceData] = useState({});
-  const [walletId, setWalletId] = useState('');
   const [wallet, setWallet] = useState(null);
 
+  const [addressId, setAddressId] = useState('');
+  const [addressList, setAddressList] = useState<AddressInfo[]>([]);
+
   // init wallet
-  const setWalletIdWrapper = async (id: string) => {
+  const setAddressIdWrapper = async (id: string) => {
     const list = await getListWallet();
-    const walletStore = list.find((i: WalletStore) => i.id === id) || null;
-    if (!walletStore) {
+    const address = list.find((i: AddressInfo) => i.id === id) || null;
+    if (!address) {
       return;
     }
-    const w = await getWallet(walletStore.mnemonic, walletStore.name);
-    setWalletId(id);
+    const w = await getWallet(address.mnemonic, address.name);
+    setAddressId(id);
     setWallet(w);
   };
-  const setWalletWrapper = (w: any, data: WalletStore) => {
+  const setWalletWrapper = (w: any, data: AddressInfo) => {
     setItem('SYS', DEFAULT_WALLET, data.id);
-    setWalletId(data.id);
+    setAddressId(data.id);
     setWallet(w);
   };
   const initWallet = async () => {
     const list = await getListWallet();
     const walletKey = await getItem('SYS', DEFAULT_WALLET);
     const data = !walletKey ? list[0] : list.find((i) => i.id === walletKey);
-    if (!data) {
-      return;
+
+    setAddressList(list);
+    if (data) {
+      const w = await getWallet(data.mnemonic, data.name);
+      setAddressId(data.id);
+      setWallet(w);
     }
-    const w = await getWallet(data.mnemonic, data.name);
-    setWalletId(data.id);
-    setWallet(w);
   };
 
   useEffect(() => {
@@ -111,8 +116,9 @@ export const TokenRegistryProvider: React.FC = (props) => {
         setTokenList,
         wallet,
         setWallet: setWalletWrapper,
-        walletId: walletId,
-        setWalletId: setWalletIdWrapper,
+        addressId: addressId,
+        setAddressId: setAddressIdWrapper,
+        addressList,
       }}
     >
       {props.children}

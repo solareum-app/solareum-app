@@ -1,11 +1,11 @@
 import {
   createWallet,
   getListWallet,
-  WalletStore,
+  AddressInfo,
 } from '../storage/WalletCollection';
 
 class WalletFactory {
-  list: WalletStore[] = [];
+  list: AddressInfo[] = [];
   currentId: string;
 
   constructor() {
@@ -14,7 +14,7 @@ class WalletFactory {
   }
 
   async init() {
-    const walletList: WalletStore[] = await getListWallet();
+    const walletList: AddressInfo[] = await getListWallet();
     if (walletList.length) {
       this.currentId = walletList[0].id;
       this.list = walletList;
@@ -28,7 +28,7 @@ class WalletFactory {
     isStored: boolean = false,
   ) {
     const walletName = name ? name : `Solareum Wallet ${this.list.length + 1}`;
-    const newWallet: WalletStore = await createWallet(
+    const newWallet: AddressInfo = await createWallet(
       seed,
       mnemonic,
       walletName,
@@ -55,7 +55,7 @@ class WalletFactory {
     this.currentId = id;
     return this.list.find((i) => i.id === id);
   }
-  setCurrent(wallet: WalletStore) {
+  setCurrent(wallet: AddressInfo) {
     this.currentId = wallet.id;
     return wallet;
   }

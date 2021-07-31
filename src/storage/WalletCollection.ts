@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 
 export const COLLECTION_NAME = 'WALLET';
 
-export type WalletStore = {
+export type AddressInfo = {
   collection: string;
   id: string;
   name: string;
@@ -18,8 +18,8 @@ export const createWallet = async (
   mnemonic: string,
   name: string,
   isStored: boolean = false,
-): Promise<WalletStore> => {
-  const wallet: WalletStore = {
+): Promise<AddressInfo> => {
+  const wallet: AddressInfo = {
     collection: COLLECTION_NAME,
     id: v4(),
     name,
@@ -32,10 +32,10 @@ export const createWallet = async (
   return await getWalletById(wallet.id);
 };
 
-export const getWalletById = async (id: string): Promise<WalletStore> => {
+export const getWalletById = async (id: string): Promise<AddressInfo> => {
   return await getItem(COLLECTION_NAME, id);
 };
 
-export const getListWallet = async (): Promise<WalletStore[]> => {
+export const getListWallet = async (): Promise<AddressInfo[]> => {
   return await getCollection(COLLECTION_NAME);
 };
