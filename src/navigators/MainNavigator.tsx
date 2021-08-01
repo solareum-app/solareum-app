@@ -8,8 +8,6 @@ import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
 import ImportWallet from '../screens/ImportWallet';
 import Notifications from '../screens/Notifications';
-import Receive from '../screens/Receive';
-import Send from '../screens/Send';
 import Settings from '../screens/Settings';
 import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
 import TokensListed from '../screens/TokensListed';
@@ -59,8 +57,6 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.EditWallet} component={EditWallet} />
           <Stack.Screen name={Routes.ImportWallet} component={ImportWallet} />
           <Stack.Screen name={Routes.Notifications} component={Notifications} />
-          <Stack.Screen name={Routes.Receive} component={Receive} />
-          <Stack.Screen name={Routes.Send} component={Send} />
           <Stack.Screen name={Routes.Settings} component={Settings} />
           <Stack.Screen name={Routes.TokensListed} component={TokensListed} />
           <Stack.Screen name={Routes.Transaction} component={Transaction} />

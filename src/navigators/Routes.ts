@@ -8,8 +8,6 @@ export enum Routes {
   GetStarted = 'Bắt đầu',
   ImportWallet = 'Khôi phục Ví',
   Notifications = 'Thông báo',
-  Receive = 'Nhận',
-  Send = 'Gởi',
   Settings = 'Cấu hình',
   TokensListed = 'Tokens',
   Transaction = 'Giao dịch',
