@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 
 import { getBalanceList } from '../../spl-utils/getWallet';
 import { RoundedButton } from '../../components/RoundedButton';
@@ -125,7 +126,7 @@ class WalletScreen extends React.PureComponent {
 
   render() {
     const { balanceListInfo } = this.state;
-    const { priceData } = this.context;
+    const { priceData, wallet } = this.context;
     const totalEst = getTotalEstimate(balanceListInfo, priceData);
 
     return (
@@ -158,6 +159,16 @@ class WalletScreen extends React.PureComponent {
                   onClick={() => null}
                   title="Nhận"
                   iconName="download"
+                />
+              </View>
+              <View style={s.controlItem}>
+                <RoundedButton
+                  onClick={() => {
+                    Clipboard.setString(wallet.publicKey.toBase58());
+                  }}
+                  title="Sao chép"
+                  iconName="copy"
+                  type="feather"
                 />
               </View>
             </View>

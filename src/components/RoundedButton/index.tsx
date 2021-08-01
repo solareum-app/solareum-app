@@ -5,15 +5,9 @@ import { Button } from 'react-native-elements';
 import Icon from '../../components/Icon';
 import { COLORS } from '../../theme/colors';
 
-type Props = {
-  onClick: any,
-  title: string,
-  iconName: string,
-}
-
 const s = StyleSheet.create({
   main: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   button: {
     width: 48,
@@ -21,16 +15,30 @@ const s = StyleSheet.create({
     borderRadius: 24,
     marginBottom: 4,
     backgroundColor: COLORS.blue2,
-  }
+  },
 });
 
-export const RoundedButton: React.FC<Props> = ({ onClick, title, iconName }) => {
+type Props = {
+  onClick: any;
+  title: string;
+  iconName: string;
+  type?: string;
+};
+
+export const RoundedButton: React.FC<Props> = ({
+  onClick,
+  title,
+  iconName,
+  type,
+}) => {
   return (
     <View style={s.main}>
       <Button
         buttonStyle={s.button}
         onPress={onClick}
-        icon={<Icon name={iconName} size={20} color={COLORS.white0} />}
+        icon={
+          <Icon type={type} name={iconName} size={20} color={COLORS.white0} />
+        }
       />
       <Text style={{ color: COLORS.white0 }}>{title}</Text>
     </View>
