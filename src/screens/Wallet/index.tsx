@@ -70,10 +70,15 @@ class WalletScreen extends React.PureComponent {
 
   onRefresh = async () => {
     this.setState({ loading: true });
-    const balanceListInfo = await this.loadBalance();
-    const gekcoIds = balanceListInfo.map((i) => i.coingeckoId);
-    this.context.setTokenList(gekcoIds);
-    this.setState({ loading: false });
+    try {
+      const balanceListInfo = await this.loadBalance();
+      const gekcoIds = balanceListInfo.map((i) => i.coingeckoId);
+      this.context.setTokenList(gekcoIds);
+      this.setState({ loading: false });
+    } catch (err) {
+      console.log('err', err);
+      this.setState({ loading: false });
+    }
   };
 
   componentDidMount() {

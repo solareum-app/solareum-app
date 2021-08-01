@@ -4,17 +4,22 @@ import { getAccountFromSeed, mnemonicToSeed } from './wallet-account';
 import { Wallet } from './wallet';
 import { TOKEN_PROGRAM_ID } from './tokens/instructions';
 import { parseMintData, parseTokenAccountData } from './tokens/data';
+import { MAINNET_URL } from '../config';
 
 export const getConnection = () => {
-  const connection = new Connection('https://api.mainnet-beta.solana.com');
-  return connection;
+  try {
+    const connection = new Connection(MAINNET_URL);
+    return connection;
+  } catch (err) {
+    return null;
+  }
 };
 
 export const getWallet = async (recovery, name) => {
   const seed = await mnemonicToSeed(recovery);
   const seedBuffer = Buffer.from(seed, 'hex');
-  const connection = new Connection('http://api.mainnet-beta.solana.com');
   const account = getAccountFromSeed(seedBuffer, 0);
+  const connection = getConnection();
   const wallet = new Wallet(connection, 'solareum', { account, name });
 
   return wallet;
@@ -70,22 +75,26 @@ export const getBalanceInfo = async (publicKey) => {
 };
 
 export const getBalanceList = async (wallet) => {
-  const tokenAccountInfo = (await wallet.getTokenAccountInfo()) || [];
-  const publicKeys = [
-    wallet.publicKey,
-    ...tokenAccountInfo.map(({ publicKey }) => publicKey),
-  ];
+  try {
+    const tokenAccountInfo = (await wallet.getTokenAccountInfo()) || [];
+    const publicKeys = [
+      wallet.publicKey,
+      ...tokenAccountInfo.map(({ publicKey }) => publicKey),
+    ];
 
-  const balanceList = [];
+    const balanceList = [];
 
-  for (let i = 0; i < publicKeys.length; i++) {
-    const pk = publicKeys[i];
-    const balance = await getBalanceInfo(pk);
-    balanceList.push({
-      ...balance,
-      publicKey: pk.toBase58(),
-    });
+    for (let i = 0; i < publicKeys.length; i++) {
+      const pk = publicKeys[i];
+      const balance = await getBalanceInfo(pk);
+      balanceList.push({
+        ...balance,
+        publicKey: pk.toBase58(),
+      });
+    }
+
+    return balanceList;
+  } catch (err) {
+    return [];
   }
-
-  return balanceList;
 };

@@ -83,7 +83,8 @@ export const AppProvider: React.FC = (props) => {
   const initWallet = async () => {
     const list = await getListWallet();
     const walletKey = await getItem('SYS', DEFAULT_WALLET);
-    const data = !walletKey ? list[0] : list.find((i) => i.id === walletKey);
+    let data = !walletKey ? list[0] : list.find((i) => i.id === walletKey);
+    data = data || list[0];
 
     setAddressList(list);
     if (data) {

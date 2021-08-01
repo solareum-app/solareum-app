@@ -16,58 +16,24 @@ import {
   TOKEN_PROGRAM_ID,
   transferChecked,
 } from './instructions';
-import {
-  ACCOUNT_LAYOUT,
-  getOwnedAccountsFilters,
-  MINT_LAYOUT,
-  parseTokenAccountData,
-} from './data';
-import bs58 from 'bs58';
+import { ACCOUNT_LAYOUT, getOwnedAccountsFilters, MINT_LAYOUT } from './data';
 
 export async function getOwnedTokenAccounts(connection, publicKey) {
   let filters = getOwnedAccountsFilters(publicKey);
-  let resp = await connection._rpcRequest('getProgramAccounts', [
-    TOKEN_PROGRAM_ID.toBase58(),
-    {
-      commitment: connection.commitment,
-      filters,
-    },
-  ]);
-  if (resp.error) {
-    throw new Error(
-      'failed to get token accounts owned by ' +
-        publicKey.toBase58() +
-        ': ' +
-        resp.error.message,
-    );
-  }
-  return resp.result
-    .map(({ pubkey, account: { data, executable, owner, lamports } }) => ({
+  let resp = await connection.getProgramAccounts(TOKEN_PROGRAM_ID, {
+    filters,
+  });
+  return resp.map(
+    ({ pubkey, account: { data, executable, owner, lamports } }) => ({
       publicKey: new PublicKey(pubkey),
       accountInfo: {
-        data: bs58.decode(data),
+        data,
         executable,
         owner: new PublicKey(owner),
         lamports,
       },
-    }))
-    .filter(({ accountInfo }) => {
-      // TODO: remove this check once mainnet is updated
-      return filters.every((filter) => {
-        if (filter.dataSize) {
-          return accountInfo.data.length === filter.dataSize;
-        } else if (filter.memcmp) {
-          let filterBytes = bs58.decode(filter.memcmp.bytes);
-          return accountInfo.data
-            .slice(
-              filter.memcmp.offset,
-              filter.memcmp.offset + filterBytes.length,
-            )
-            .equals(filterBytes);
-        }
-        return false;
-      });
-    });
+    }),
+  );
 }
 
 export async function signAndSendTransaction(
@@ -303,7 +269,7 @@ export async function transferTokens({
   decimals,
   overrideDestinationCheck,
 }) {
-  const destinationAccountInfo = await connection.getAccountInfo(
+  let destinationAccountInfo = await connection.getAccountInfo(
     destinationPublicKey,
   );
   if (
@@ -328,24 +294,25 @@ export async function transferTokens({
   ) {
     throw new Error('Cannot send to address with zero SOL balances');
   }
-  const destinationSplTokenAccount = (
-    await getOwnedTokenAccounts(connection, destinationPublicKey)
-  )
-    .map(({ publicKey, accountInfo }) => {
-      return { publicKey, parsed: parseTokenAccountData(accountInfo.data) };
-    })
-    .filter(({ parsed }) => parsed.mint.equals(mint))
-    .sort((a, b) => {
-      return b.parsed.amount - a.parsed.amount;
-    })[0];
-  if (destinationSplTokenAccount) {
+
+  const destinationAssociatedTokenAddress = await findAssociatedTokenAddress(
+    destinationPublicKey,
+    mint,
+  );
+  destinationAccountInfo = await connection.getAccountInfo(
+    destinationAssociatedTokenAddress,
+  );
+  if (
+    !!destinationAccountInfo &&
+    destinationAccountInfo.owner.equals(TOKEN_PROGRAM_ID)
+  ) {
     return await transferBetweenSplTokenAccounts({
       connection,
       owner,
       mint,
       decimals,
       sourcePublicKey,
-      destinationPublicKey: destinationSplTokenAccount.publicKey,
+      destinationPublicKey: destinationAssociatedTokenAddress,
       amount,
       memo,
     });
@@ -420,14 +387,12 @@ async function createAndTransferToAccount({
   mint,
   decimals,
 }) {
-  const [
-    createAccountInstruction,
-    newAddress,
-  ] = await createAssociatedTokenAccountIx(
-    owner.publicKey,
-    destinationPublicKey,
-    mint,
-  );
+  const [createAccountInstruction, newAddress] =
+    await createAssociatedTokenAccountIx(
+      owner.publicKey,
+      destinationPublicKey,
+      mint,
+    );
   let transaction = new Transaction();
   transaction.add(
     assertOwner({
@@ -436,8 +401,8 @@ async function createAndTransferToAccount({
     }),
   );
   transaction.add(createAccountInstruction);
-  const transferBetweenAccountsTxn = createTransferBetweenSplTokenAccountsInstruction(
-    {
+  const transferBetweenAccountsTxn =
+    createTransferBetweenSplTokenAccountsInstruction({
       ownerPublicKey: owner.publicKey,
       mint,
       decimals,
@@ -445,8 +410,7 @@ async function createAndTransferToAccount({
       destinationPublicKey: newAddress,
       amount,
       memo,
-    },
-  );
+    });
   transaction.add(transferBetweenAccountsTxn);
   let signers = [];
   return await signAndSendTransaction(connection, transaction, owner, signers);
