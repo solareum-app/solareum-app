@@ -25,7 +25,7 @@ const s = StyleSheet.create({
   wrp: {
     marginBottom: 12,
   },
-  seedWrp: {
+  mnemonicWrp: {
     backgroundColor: COLORS.dark0,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -34,7 +34,7 @@ const s = StyleSheet.create({
     marginTop: 8,
     marginBottom: 8,
   },
-  seed: {
+  mnemonic: {
     color: COLORS.white0,
     fontSize: FONT_SIZES.lg,
     lineHeight: LINE_HEIGHT.lg,
@@ -49,15 +49,23 @@ const s = StyleSheet.create({
     paddingBottom: 40,
     width: '100%',
   },
+  checkboxContainer: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    marginLeft: 0,
+    paddingLeft: 0,
+  },
 });
 
 type Props = {};
+
 const CreateWallet: React.FC<Props> = () => {
   const navigation = useNavigation();
   const [seed, setSeed] = useState('');
   const [walletName, setWalletName] = useState('');
   const [mnemonic, setMnemonic] = useState('');
-  const [isStored, setIsStored] = useState(false);
+  const [isStored, setIsStored] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const { createAddress } = useApp();
 
   const getSeed = async () => {
@@ -66,9 +74,15 @@ const CreateWallet: React.FC<Props> = () => {
     setMnemonic(m);
   };
 
-  const handleCreateWallet = async () => {
-    await createAddress(seed, mnemonic, walletName, isStored);
-    navigation.navigate(Routes.Home, { screen: Routes.Wallet });
+  const submit = async () => {
+    setLoading(true);
+    try {
+      await createAddress(seed, mnemonic, walletName, isStored);
+      navigation.navigate(Routes.Home, { screen: Routes.Wallet });
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
   };
 
   const copyToClipboard = () => {
@@ -91,7 +105,7 @@ const CreateWallet: React.FC<Props> = () => {
               labelStyle={input.label}
               containerStyle={input.container}
               value={walletName}
-              onChangeText={(text) => setWalletName(text)}
+              onChangeText={(text: string) => setWalletName(text)}
             />
             <Text style={[typo.title, s.title]}>Lưu mã khôi phục</Text>
 
@@ -102,8 +116,8 @@ const CreateWallet: React.FC<Props> = () => {
               </Text>
             </View>
 
-            <View style={s.seedWrp}>
-              <Text style={s.seed}>{mnemonic || '-'}</Text>
+            <View style={s.mnemonicWrp}>
+              <Text style={s.mnemonic}>{mnemonic || '-'}</Text>
             </View>
 
             <View style={s.wrp}>
@@ -138,12 +152,7 @@ const CreateWallet: React.FC<Props> = () => {
 
         <View style={s.footer}>
           <CheckBox
-            containerStyle={{
-              backgroundColor: 'transparent',
-              borderColor: 'transparent',
-              marginLeft: 0,
-              paddingLeft: 0,
-            }}
+            containerStyle={s.checkboxContainer}
             textStyle={{ color: COLORS.white2 }}
             title="Tôi đã lưu mã khôi phục"
             checked={isStored}
@@ -151,8 +160,9 @@ const CreateWallet: React.FC<Props> = () => {
           />
           <Button
             title="Tạo Ví"
-            onPress={handleCreateWallet}
             style={grid.button}
+            loading={loading}
+            onPress={submit}
           />
         </View>
       </SafeAreaView>

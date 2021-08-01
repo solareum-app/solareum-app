@@ -6,6 +6,7 @@ import {
   getListWallet,
   AddressInfo,
   createWallet,
+  updateWallet,
 } from '../../storage/WalletCollection';
 import { useConnectionConfig } from '../ConnectionProvider';
 import { clusterForEndpoint } from './clusters';
@@ -25,6 +26,7 @@ export type AppContextType = {
   setAddressId: Function;
   addressList: AddressInfo[];
   createAddress: Function;
+  updateAddress: Function;
 };
 export const AppContext = React.createContext<AppContextType>({
   tokenInfos: null,
@@ -36,6 +38,7 @@ export const AppContext = React.createContext<AppContextType>({
   setAddressId: () => null,
   addressList: [],
   createAddress: () => null,
+  updateAddress: () => null,
 });
 
 export const AppProvider: React.FC = (props) => {
@@ -62,7 +65,18 @@ export const AppProvider: React.FC = (props) => {
       w.publicKey.toBase58(),
     );
     setAddressList([...addressList, address]);
-    setAddressIdWrapper(address.id);
+    await setAddressIdWrapper(address.id);
+  };
+  const updateAddress = async (
+    id: string,
+    name: string,
+    isStored: boolean = false,
+  ) => {
+    await updateWallet(id, name, isStored);
+    const list = await getListWallet();
+
+    setAddressList([...list]);
+    await setAddressIdWrapper(id);
   };
   const setAddressIdWrapper = async (id: string) => {
     const list = await getListWallet();
@@ -143,6 +157,7 @@ export const AppProvider: React.FC = (props) => {
         setAddressId: setAddressIdWrapper,
         addressList,
         createAddress,
+        updateAddress,
       }}
     >
       {props.children}

@@ -34,6 +34,20 @@ export const createWallet = async (
   return await getWalletById(wallet.id);
 };
 
+export const updateWallet = async (
+  id: string,
+  name: string,
+  isStored: boolean = false,
+) => {
+  const wallet = await getWalletById(id);
+  await setItem(COLLECTION_NAME, wallet.id, {
+    ...wallet,
+    name,
+    isStored,
+  });
+  return await getWalletById(wallet.id);
+};
+
 export const getWalletById = async (id: string): Promise<AddressInfo> => {
   return await getItem(COLLECTION_NAME, id);
 };

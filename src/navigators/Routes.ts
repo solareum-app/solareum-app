@@ -1,6 +1,7 @@
 export enum Routes {
   Home = 'Nhà',
   CreateWallet = 'Tạo Ví',
+  EditWallet = 'Chỉnh sửa Ví',
   DEX = 'DEX',
   Fiat = 'Fiat',
   Social = 'Social',

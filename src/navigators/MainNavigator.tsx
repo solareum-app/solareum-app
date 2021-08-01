@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
 
-import CreateWallet from '../screens/CreateWallet';
+import CreateWallet from '../screens/WalletManagement/CreateWallet';
+import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
 import ImportWallet from '../screens/ImportWallet';
 import Notifications from '../screens/Notifications';
@@ -55,6 +56,7 @@ const MainNavigator: React.FC = () => {
           />
           <Stack.Screen name={Routes.GetStarted} component={GetStarted} />
           <Stack.Screen name={Routes.CreateWallet} component={CreateWallet} />
+          <Stack.Screen name={Routes.EditWallet} component={EditWallet} />
           <Stack.Screen name={Routes.ImportWallet} component={ImportWallet} />
           <Stack.Screen name={Routes.Notifications} component={Notifications} />
           <Stack.Screen name={Routes.Receive} component={Receive} />

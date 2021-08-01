@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -49,7 +49,7 @@ const s = StyleSheet.create({
   },
   iconRight: {
     flex: 0,
-    padding: 8,
+    padding: 12,
   },
   title: {
     color: COLORS.white2,
@@ -66,6 +66,8 @@ type Props = {
 };
 
 const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
+  const navigation = useNavigation();
+
   return (
     <TouchableOpacity style={s.main} onPress={onSelect}>
       <View style={s.iconLeft}>
@@ -77,9 +79,14 @@ const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
         ) : null}
       </View>
       <Text style={s.title}>{item.name}</Text>
-      <View style={s.iconRight}>
+      <TouchableOpacity
+        style={s.iconRight}
+        onPress={() => {
+          navigation.navigate(Routes.EditWallet, { address: item });
+        }}
+      >
         <Icon type="feather" name="info" color={COLORS.white4} size={16} />
-      </View>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 };
@@ -87,18 +94,23 @@ const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
 export const Wallet: React.FC = () => {
   const { addressId, setAddressId, addressList } = useApp();
   const navigation = useNavigation();
+  const [list, setList] = useState([]);
 
   const onSelect = (id: string) => {
     setAddressId(id);
     navigation.navigate(Routes.Wallet);
   };
 
+  useEffect(() => {
+    setList(addressList);
+  }, [addressList]);
+
   return (
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>
         <ScrollView>
           <View style={grid.content}>
-            {addressList.map((i) => {
+            {list.map((i) => {
               return (
                 <WalletItem
                   key={i.id}
