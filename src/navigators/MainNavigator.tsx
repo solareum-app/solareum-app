@@ -10,8 +10,7 @@ import ImportWallet from '../screens/ImportWallet';
 import Notifications from '../screens/Notifications';
 import Settings from '../screens/Settings';
 import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
-import TokensListed from '../screens/TokensListed';
-import Transaction from '../screens/Transaction';
+import Search from '../screens/Search';
 import Token from '../screens/Token';
 import { getListWallet } from '../storage/WalletCollection';
 
@@ -58,10 +57,9 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.ImportWallet} component={ImportWallet} />
           <Stack.Screen name={Routes.Notifications} component={Notifications} />
           <Stack.Screen name={Routes.Settings} component={Settings} />
-          <Stack.Screen name={Routes.TokensListed} component={TokensListed} />
-          <Stack.Screen name={Routes.Transaction} component={Transaction} />
           <Stack.Screen name={Routes.Token} component={Token} />
           <Stack.Screen name={Routes.SettingWallet} component={SettingWallet} />
+          <Stack.Screen name={Routes.Search} component={Search} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>

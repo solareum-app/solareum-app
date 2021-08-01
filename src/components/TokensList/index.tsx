@@ -105,14 +105,10 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
 };
 
 type TokensListProps = {
-  action?: 'list_all';
-  query?: string;
   balanceListInfo: any[];
 };
-const TokensList: React.FC<TokensListProps> = ({
-  query = '',
-  balanceListInfo,
-}) => {
+
+const TokensList: React.FC<TokensListProps> = ({ balanceListInfo }) => {
   return (
     <>
       {balanceListInfo?.map((token, index: number) => (

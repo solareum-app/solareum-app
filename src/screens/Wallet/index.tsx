@@ -16,6 +16,7 @@ import Header from './Header';
 import { grid } from '../../components/Styles';
 import { AppContext } from '../../core/AppProvider';
 import { price } from '../../utils/autoRound';
+import { Routes } from '../../navigators/Routes';
 
 const s = StyleSheet.create({
   header: {
@@ -149,14 +150,18 @@ class WalletScreen extends React.PureComponent {
             <View style={s.control}>
               <View style={s.controlItem}>
                 <RoundedButton
-                  onClick={() => null}
+                  onClick={() => {
+                    this.props.navigation.navigate(Routes.Search);
+                  }}
                   title="Chuyển"
                   iconName="upload"
                 />
               </View>
               <View style={s.controlItem}>
                 <RoundedButton
-                  onClick={() => null}
+                  onClick={() => {
+                    this.props.navigation.navigate(Routes.Search);
+                  }}
                   title="Nhận"
                   iconName="download"
                 />
