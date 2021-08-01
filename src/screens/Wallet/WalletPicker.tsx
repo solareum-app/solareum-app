@@ -10,7 +10,7 @@ import { getShortPublicKey } from '../../utils';
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
-import { useApp } from '../../core/TokenRegistryProvider';
+import { useApp } from '../../core/AppProvider';
 import { getWallet } from '../../spl-utils/getWallet';
 import { AddressInfo } from '../../storage/WalletCollection';
 

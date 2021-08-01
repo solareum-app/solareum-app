@@ -5,7 +5,7 @@ import bs58 from 'bs58';
 
 import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
-import { TokenListContext } from '../../core/TokenRegistryProvider';
+import { TokenListContext } from '../../core/AppProvider';
 
 const INJECTED_SCRIPT = `
 window.solana = {

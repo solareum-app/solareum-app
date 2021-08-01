@@ -7,7 +7,7 @@ import imgDone from '../../assets/clip-done.png';
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { price } from '../../utils/autoRound';
-import { usePrice, useWallet } from '../../core/TokenRegistryProvider';
+import { useApp } from '../../core/AppProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -26,22 +26,21 @@ const s = StyleSheet.create({
     paddingRight: 0,
   },
   inputLabel: {
-    fontWeight: 'normal'
+    fontWeight: 'normal',
   },
-  input: {
-  },
+  input: {},
   footer: {
     marginTop: 40,
   },
   button: {
-    height: 44
+    height: 44,
   },
   group: {
     marginBottom: 12,
   },
   groupTitle: {
     marginBottom: 8,
-    color: COLORS.white4
+    color: COLORS.white4,
   },
 });
 
@@ -64,12 +63,12 @@ const s3 = StyleSheet.create({
   },
   footer: {
     marginTop: 40,
-  }
+  },
 });
 
 const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   const { symbol } = token;
-  const priceData = usePrice();
+  const { priceData } = useApp();
   const id = token.coingeckoId;
   const tokenPrice = priceData[id] ? priceData[id].usd : 0;
   const estValue = amount * tokenPrice;
@@ -85,7 +84,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
           labelStyle={s.inputLabel}
           containerStyle={s.inputContainer}
           value={address}
-          onChangeText={value => setAddress(value)}
+          onChangeText={(value) => setAddress(value)}
         />
         <Input
           label="Số lượng"
@@ -95,7 +94,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
           labelStyle={s.inputLabel}
           containerStyle={s.inputContainer}
           value={amount}
-          onChangeText={value => setAmount(value)}
+          onChangeText={(value) => setAmount(value)}
           errorMessage={`≈$${price(estValue)}`}
           errorStyle={{ color: COLORS.white4 }}
         />
@@ -104,8 +103,8 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
         <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
       </View>
     </View>
-  )
-}
+  );
+};
 
 const Step2 = ({ token, address, amount, next, busy, error }) => {
   const { symbol } = token;
@@ -115,19 +114,27 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
       <View style={s.body}>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Token</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>{symbol} / Native</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>
+            {symbol} / Native
+          </Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Từ Ví</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>{token.publicKey || '-'}</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>
+            {token.publicKey || '-'}
+          </Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Chuyển đến Ví</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>{address || '-'}</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>
+            {address || '-'}
+          </Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Số lượng</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>{amount || 0} {symbol}</Text>
+          <Text style={[typo.normal, { lineHeight: 18 }]}>
+            {amount || 0} {symbol}
+          </Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Phí</Text>
@@ -135,16 +142,21 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
         </View>
       </View>
       <View style={s.footer}>
-        <Button title="Xác nhận giao dịch" buttonStyle={s.button} onPress={next} loading={busy} />
+        <Button
+          title="Xác nhận giao dịch"
+          buttonStyle={s.button}
+          onPress={next}
+          loading={busy}
+        />
       </View>
     </View>
-  )
-}
+  );
+};
 
 const Step3 = ({ signature }) => {
   const openBrowser = () => {
-    Linking.openURL(`https://explorer.solana.com/tx/${signature}`)
-  }
+    Linking.openURL(`https://explorer.solana.com/tx/${signature}`);
+  };
 
   return (
     <View style={s.main}>
@@ -153,10 +165,15 @@ const Step3 = ({ signature }) => {
         <Text style={s3.message}>Giao dịch thành công</Text>
       </View>
       <View style={s.footer}>
-        <Button title="Chi tiết" buttonStyle={s.button} type="clear" onPress={openBrowser} />
+        <Button
+          title="Chi tiết"
+          buttonStyle={s.button}
+          type="clear"
+          onPress={openBrowser}
+        />
       </View>
     </View>
-  )
+  );
 };
 
 export const Send = ({ initStep = 1, token }) => {
@@ -165,7 +182,7 @@ export const Send = ({ initStep = 1, token }) => {
   const [error, setError] = useState('');
   const [amount, setAmount] = useState('');
   const [signature, setSignature] = useState('');
-  const [wallet] = useWallet();
+  const { wallet } = useApp();
   const [busy, setBusy] = useState(false);
 
   const transfer = async () => {
@@ -183,17 +200,15 @@ export const Send = ({ initStep = 1, token }) => {
           destination,
           qty,
           new PublicKey(token.mint),
-          token.decimals
+          token.decimals,
         );
       }
       setSignature(sig);
       setBusy(false);
       setStep(3);
-    }
-    catch (err) {
+    } catch (err) {
       setError(err);
     }
-
   };
 
   if (step === 1) {
@@ -206,15 +221,21 @@ export const Send = ({ initStep = 1, token }) => {
         setAmount={setAmount}
         token={token}
       />
-    )
+    );
   }
 
   if (step === 2) {
-    return <Step2
-      token={token}
-      address={address} amount={amount}
-      next={transfer} busy={busy} error={error} />;
+    return (
+      <Step2
+        token={token}
+        address={address}
+        amount={amount}
+        next={transfer}
+        busy={busy}
+        error={error}
+      />
+    );
   }
 
-  return <Step3 signature={signature} />
+  return <Step3 signature={signature} />;
 };

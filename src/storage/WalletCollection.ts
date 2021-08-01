@@ -18,6 +18,7 @@ export const createWallet = async (
   mnemonic: string,
   name: string,
   isStored: boolean = false,
+  address: string,
 ): Promise<AddressInfo> => {
   const wallet: AddressInfo = {
     collection: COLLECTION_NAME,
@@ -26,6 +27,7 @@ export const createWallet = async (
     seed,
     mnemonic,
     isStored,
+    address,
   };
 
   await setItem(COLLECTION_NAME, wallet.id, wallet);

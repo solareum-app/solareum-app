@@ -13,7 +13,7 @@ import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
-import { TokenListContext } from '../../core/TokenRegistryProvider';
+import { TokenListContext } from '../../core/AppProvider';
 import { price } from '../../utils/autoRound';
 
 const s = StyleSheet.create({

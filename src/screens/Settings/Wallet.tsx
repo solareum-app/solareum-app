@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/core';
 
 import Routes from '../../navigators/Routes';
 import { AddressInfo } from '../../storage/WalletCollection';
-import { useApp } from '../../core/TokenRegistryProvider';
+import { useApp } from '../../core/AppProvider';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
 

@@ -15,7 +15,7 @@ import { Cluster } from './types';
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
 export type TokenInfos = TokenInfo[] | null;
-export type TokenListContextType = {
+export type AppContextType = {
   tokenInfos: TokenInfos;
   priceData: any;
   setTokenList: Function;
@@ -26,7 +26,7 @@ export type TokenListContextType = {
   addressList: AddressInfo[];
   createAddress: Function;
 };
-export const TokenListContext = React.createContext<TokenListContextType>({
+export const AppContext = React.createContext<AppContextType>({
   tokenInfos: null,
   priceData: {},
   setTokenList: () => null,
@@ -38,7 +38,7 @@ export const TokenListContext = React.createContext<TokenListContextType>({
   createAddress: () => null,
 });
 
-export const TokenRegistryProvider: React.FC = (props) => {
+export const AppProvider: React.FC = (props) => {
   const { endpoint } = useConnectionConfig();
   const [tokenInfos, setTokenInfos] = useState<TokenInfos>(null);
   const [tokenList, setTokenList] = useState([]);
@@ -53,7 +53,14 @@ export const TokenRegistryProvider: React.FC = (props) => {
     name: string,
     isStored: boolean = false,
   ) => {
-    const address = await createWallet(seed, mnemonic, name, isStored);
+    const w = await getWallet(mnemonic, name);
+    const address = await createWallet(
+      seed,
+      mnemonic,
+      name,
+      isStored,
+      w.publicKey.toBase58(),
+    );
     setAddressList([...addressList, address]);
     setAddressIdWrapper(address.id);
   };
@@ -124,7 +131,7 @@ export const TokenRegistryProvider: React.FC = (props) => {
   }, []);
 
   return (
-    <TokenListContext.Provider
+    <AppContext.Provider
       value={{
         tokenInfos,
         priceData,
@@ -138,25 +145,10 @@ export const TokenRegistryProvider: React.FC = (props) => {
       }}
     >
       {props.children}
-    </TokenListContext.Provider>
+    </AppContext.Provider>
   );
 };
 
 export const useApp = () => {
-  return useContext(TokenListContext);
-};
-
-export const usePrice = () => {
-  const { priceData } = useContext(TokenListContext);
-  return priceData;
-};
-
-export const useTokenInfos = () => {
-  const { tokenInfos } = useContext(TokenListContext);
-  return tokenInfos;
-};
-
-export const useWallet = () => {
-  const { wallet, setWallet } = useContext(TokenListContext);
-  return [wallet, setWallet];
+  return useContext(AppContext);
 };
