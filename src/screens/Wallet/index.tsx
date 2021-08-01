@@ -13,7 +13,7 @@ import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
-import { TokenListContext } from '../../core/AppProvider';
+import { AppContext } from '../../core/AppProvider';
 import { price } from '../../utils/autoRound';
 
 const s = StyleSheet.create({
@@ -166,6 +166,6 @@ class WalletScreen extends React.PureComponent {
   }
 }
 
-WalletScreen.contextType = TokenListContext;
+WalletScreen.contextType = AppContext;
 
 export default WalletScreen;

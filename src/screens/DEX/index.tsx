@@ -5,7 +5,7 @@ import bs58 from 'bs58';
 
 import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
-import { TokenListContext } from '../../core/AppProvider';
+import { AppContext } from '../../core/AppProvider';
 
 const INJECTED_SCRIPT = `
 window.solana = {
@@ -55,12 +55,16 @@ export default class SolareumDEX extends Component<Props, State> {
   };
 
   populateMessage = (payload) => {
-    if (!this.webView.current) { return; }
-    this.webView.current.postMessage(JSON.stringify({
-      isRN: true,
-      ...payload,
-    }));
-  }
+    if (!this.webView.current) {
+      return;
+    }
+    this.webView.current.postMessage(
+      JSON.stringify({
+        isRN: true,
+        ...payload,
+      }),
+    );
+  };
 
   sendSignature = async (payload) => {
     const encodedMessage = payload.params.message;
@@ -73,13 +77,13 @@ export default class SolareumDEX extends Component<Props, State> {
       },
       id: payload.id,
     });
-  }
+  };
 
   sendReject = (payload: any) => {
     this.populateMessage({
       error: 'Transaction cancelled',
       id: payload.id,
-    })
+    });
   };
 
   sendConnectMessage = (payload: any) => {
@@ -113,4 +117,4 @@ export default class SolareumDEX extends Component<Props, State> {
   }
 }
 
-SolareumDEX.contextType = TokenListContext;
+SolareumDEX.contextType = AppContext;
