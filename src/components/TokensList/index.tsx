@@ -46,7 +46,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
     name = 'Undefined',
     symbol = '---',
     logoURI = '',
-    amount,
+    amount = 0,
     decimals,
     coingeckoId,
   } = props.token;

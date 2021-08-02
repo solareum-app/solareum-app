@@ -5,11 +5,12 @@ import { SearchBar } from 'react-native-elements';
 import TokensList from '../../components/TokensList';
 import { grid } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider';
+import { COLORS } from '../../theme';
 
 const Search: React.FC = () => {
   const [query, setQuery] = useState('');
-  const { tokenInfos = [] } = useApp();
   const [tokens, setTokens] = useState([]);
+  const { tokenInfos = [] } = useApp();
 
   useEffect(() => {
     const q = query.toLowerCase();
@@ -23,7 +24,12 @@ const Search: React.FC = () => {
 
   return (
     <View style={grid.container}>
-      <SearchBar onChangeText={setQuery} value={query} />
+      <SearchBar
+        onChangeText={setQuery}
+        value={query}
+        containerStyle={{ backgroundColor: COLORS.dark0 }}
+        inputContainerStyle={{ backgroundColor: COLORS.dark2 }}
+      />
       <ScrollView>
         <TokensList balanceListInfo={tokens} />
       </ScrollView>
