@@ -62,6 +62,11 @@ const getTotalEstimate = (balanceListInfo: any[], priceData: any) => {
   return total;
 };
 
+export enum TransferAction {
+  send = 'send',
+  receive = 'receive',
+}
+
 class WalletScreen extends React.PureComponent {
   state = {
     loading: false,
@@ -151,7 +156,9 @@ class WalletScreen extends React.PureComponent {
               <View style={s.controlItem}>
                 <RoundedButton
                   onClick={() => {
-                    this.props.navigation.navigate(Routes.Search);
+                    this.props.navigation.navigate(Routes.Search, {
+                      action: TransferAction.send,
+                    });
                   }}
                   title="Chuyển"
                   iconName="upload"
@@ -160,7 +167,9 @@ class WalletScreen extends React.PureComponent {
               <View style={s.controlItem}>
                 <RoundedButton
                   onClick={() => {
-                    this.props.navigation.navigate(Routes.Search);
+                    this.props.navigation.navigate(Routes.Search, {
+                      action: TransferAction.receive,
+                    });
                   }}
                   title="Nhận"
                   iconName="download"

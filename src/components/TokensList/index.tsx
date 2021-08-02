@@ -40,8 +40,10 @@ const isValidUrl = (url: string) => {
   return urlRegex.test(url);
 };
 
-type TokenInfoItemProps = TokenInfo & {};
-const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
+type TokenInfoItemProps = TokenInfo & {
+  action?: string;
+};
+const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
   const {
     name = 'Undefined',
     symbol = '---',
@@ -56,7 +58,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
   const tokenEst = (tokenPrice * amount) / Math.pow(10, decimals);
 
   const onPressHandler = () => {
-    navigation.navigate(Routes.Token, { token: props.token });
+    navigation.navigate(Routes.Token, { token: props.token, action });
   };
 
   return (
@@ -106,13 +108,14 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
 
 type TokensListProps = {
   balanceListInfo: any[];
+  action?: string;
 };
 
-const TokensList: React.FC<TokensListProps> = ({ balanceListInfo }) => {
+const TokensList: React.FC<TokensListProps> = ({ balanceListInfo, action }) => {
   return (
     <>
       {balanceListInfo?.map((token, index: number) => (
-        <TokenInfoItem key={index} token={token} />
+        <TokenInfoItem key={index} token={token} action={action} />
       ))}
     </>
   );

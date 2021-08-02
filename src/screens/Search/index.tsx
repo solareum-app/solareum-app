@@ -7,10 +7,11 @@ import { grid } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider';
 import { COLORS } from '../../theme';
 
-const Search: React.FC = () => {
+const Search: React.FC = ({ route }) => {
   const [query, setQuery] = useState('');
   const [tokens, setTokens] = useState([]);
   const { tokenInfos = [] } = useApp();
+  const { action } = route.params;
 
   useEffect(() => {
     const q = query.toLowerCase();
@@ -31,7 +32,7 @@ const Search: React.FC = () => {
         inputContainerStyle={{ backgroundColor: COLORS.dark2 }}
       />
       <ScrollView>
-        <TokensList balanceListInfo={tokens} />
+        <TokensList balanceListInfo={tokens} action={action} />
       </ScrollView>
     </View>
   );

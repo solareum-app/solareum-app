@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
@@ -9,6 +9,7 @@ import { COLORS } from '../../theme/colors';
 import { grid, typo } from '../../components/Styles';
 import { price } from '../../utils/autoRound';
 import imgDelivering from '../../assets/clip-message-sent.png';
+import { TransferAction } from '../Wallet';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -54,7 +55,7 @@ const s = StyleSheet.create({
 });
 
 const Token = ({ route }) => {
-  const token = route.params.token;
+  const { action, token } = route.params;
   const refSend = useRef();
   const refReceived = useRef();
 
@@ -66,6 +67,17 @@ const Token = ({ route }) => {
   const openReceiveScreen = () => {
     refReceived?.current?.open();
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (action === TransferAction.send) {
+        openSendScreen();
+      }
+      if (action === TransferAction.receive) {
+        openReceiveScreen();
+      }
+    }, 100);
+  }, []);
 
   return (
     <View style={grid.container}>
