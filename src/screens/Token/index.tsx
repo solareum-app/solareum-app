@@ -2,8 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
-import { FixedContent } from '../../components/Modals/FixedContent';
+import Clipboard from '@react-native-community/clipboard';
 
+import { FixedContent } from '../../components/Modals/FixedContent';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
 import { grid, typo } from '../../components/Styles';
@@ -110,6 +111,16 @@ const Token = ({ route }) => {
                 onClick={openReceiveScreen}
                 title="Nhận"
                 iconName="download"
+              />
+            </View>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => {
+                  Clipboard.setString(token.publicKey);
+                }}
+                title="Copy"
+                iconName="copy"
+                type="feather"
               />
             </View>
           </View>

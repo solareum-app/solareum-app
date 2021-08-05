@@ -180,7 +180,7 @@ class WalletScreen extends React.PureComponent {
                   onClick={() => {
                     Clipboard.setString(wallet.publicKey.toBase58());
                   }}
-                  title="Sao chép"
+                  title="Copy"
                   iconName="copy"
                   type="feather"
                 />
