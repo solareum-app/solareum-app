@@ -142,6 +142,14 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
         </View>
       </View>
       <View style={s.footer}>
+        {error ? (
+          <View style={s.group}>
+            <Text style={[typo.warning]}>
+              Hiện tại chúng tôi chưa hỗ trợ chuyển token thông qua địa chỉ SOL.
+              Hãy dùng địa chỉ token.
+            </Text>
+          </View>
+        ) : null}
         <Button
           title="Xác nhận giao dịch"
           buttonStyle={s.button}
@@ -188,7 +196,7 @@ export const Send = ({ initStep = 1, token }) => {
   const transfer = async () => {
     setBusy(true);
     const destination = new PublicKey(address);
-    let qty = Math.round(parseFloat(amount) * 10 ** token.decimals);
+    let qty = Math.round(parseFloat(amount) * Math.pow(10, token.decimals));
     let sig = '';
 
     try {
@@ -201,13 +209,17 @@ export const Send = ({ initStep = 1, token }) => {
           qty,
           new PublicKey(token.mint),
           token.decimals,
+          null,
+          true,
         );
       }
       setSignature(sig);
       setBusy(false);
       setStep(3);
     } catch (err) {
+      console.log('err', err);
       setError(err);
+      setBusy(false);
     }
   };
 
