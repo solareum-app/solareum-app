@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import bs58 from 'bs58';
 
 import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
 import { AppContext } from '../../core/AppProvider';
+import { LoadingImage } from '../../components/LoadingIndicator';
 
 const INJECTED_SCRIPT = `
 window.solana = {
@@ -15,6 +16,24 @@ window.solana = {
   },
 };
 `;
+
+const s = StyleSheet.create({
+  main: {
+    flex: 1,
+    backgroundColor: COLORS.dark0,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.dark0,
+  },
+  loading: {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+  },
+});
 
 type Props = {};
 type State = {};
@@ -105,18 +124,24 @@ export default class SolareumDEX extends Component<Props, State> {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={s.main}>
         <Header />
         <WebView
           source={{ uri }}
           ref={this.webView}
-          style={{ backgroundColor: COLORS.dark0 }}
-          containerStyle={{ backgroundColor: COLORS.dark0 }}
+          style={s.container}
+          containerStyle={s.container}
           injectedJavaScriptBeforeContentLoaded={INJECTED_SCRIPT}
           automaticallyAdjustContentInsets={false}
           onMessage={this.onMessage}
           textZoom={100}
           pullToRefreshEnabled={true}
+          startInLoadingState={true}
+          renderLoading={() => (
+            <View style={s.loading}>
+              <LoadingImage />
+            </View>
+          )}
         />
       </View>
     );
