@@ -98,11 +98,17 @@ export default class SolareumDEX extends Component<Props, State> {
   };
 
   render() {
+    const { marketId } = this.props.route.params;
+    let uri = 'https://dex.solareum.app';
+    if (marketId) {
+      uri += `/#/market/${marketId}`;
+    }
+
     return (
       <View style={{ flex: 1 }}>
         <Header />
         <WebView
-          source={{ uri: 'https://dex.solareum.app' }}
+          source={{ uri }}
           ref={this.webView}
           style={{ backgroundColor: COLORS.dark0 }}
           containerStyle={{ backgroundColor: COLORS.dark0 }}

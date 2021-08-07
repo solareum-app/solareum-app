@@ -31,17 +31,16 @@ export const grid = StyleSheet.create({
   },
   button: {
     height: 44,
-  }
+  },
 });
-
 
 export const input = StyleSheet.create({
   container: {
     paddingLeft: 0,
-    paddingRight: 0
+    paddingRight: 0,
   },
   label: {
-    fontWeight: 'normal'
+    fontWeight: 'normal',
   },
 });
 
@@ -52,7 +51,7 @@ export const typo = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 12,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   normal: {
     color: COLORS.white2,
