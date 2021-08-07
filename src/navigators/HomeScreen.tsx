@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IconFeather from 'react-native-vector-icons/Feather';
 
-import DEX from '../screens/DEX';
+import Market from '../screens/Market';
 import Social from '../screens/Social';
 import Wallet from '../screens/Wallet';
 import { COLORS } from '../theme/colors';
@@ -34,8 +34,8 @@ export const HomeScreen: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name={Routes.DEX}
-        component={DEX}
+        name={Routes.Market}
+        component={Market}
         options={{
           tabBarIcon: ({ color }) => {
             return <IconFeather name="repeat" color={color} size={20} />;

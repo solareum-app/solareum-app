@@ -12,6 +12,7 @@ import Settings from '../screens/Settings';
 import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
 import Search from '../screens/Search';
 import Token from '../screens/Token';
+import DEX from '../screens/DEX';
 import { getListWallet } from '../storage/WalletCollection';
 
 import { HomeScreen } from './HomeScreen';
@@ -49,6 +50,11 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen
             name={Routes.Home}
             component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={Routes.DEX}
+            component={DEX}
             options={{ headerShown: false }}
           />
           <Stack.Screen name={Routes.GetStarted} component={GetStarted} />

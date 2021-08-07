@@ -12,6 +12,7 @@ import { useConnectionConfig } from '../ConnectionProvider';
 import { clusterForEndpoint } from './clusters';
 import { getWallet } from '../../spl-utils/getWallet';
 import { Cluster } from './types';
+import { MarketProvider } from './MarketProvider';
 
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
@@ -40,6 +41,10 @@ export const AppContext = React.createContext<AppContextType>({
   createAddress: () => null,
   updateAddress: () => null,
 });
+
+export const useApp = () => {
+  return useContext(AppContext);
+};
 
 export const AppProvider: React.FC = (props) => {
   const { endpoint } = useConnectionConfig();
@@ -160,11 +165,7 @@ export const AppProvider: React.FC = (props) => {
         updateAddress,
       }}
     >
-      {props.children}
+      <MarketProvider>{props.children}</MarketProvider>
     </AppContext.Provider>
   );
-};
-
-export const useApp = () => {
-  return useContext(AppContext);
 };
