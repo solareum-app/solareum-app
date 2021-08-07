@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MarketInfo } from '../../core/AppProvider/MarketProvider';
 import { useNavigation } from '@react-navigation/core';
 import { CryptoIcon } from '../../components/CryptoIcon';
+import Icon from '../../components/Icon';
 
 import { COLORS } from '../../theme/colors';
 import Routes from '../../navigators/Routes';
@@ -14,20 +15,16 @@ const s = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.dark4,
   },
   iconBase: {
     width: 36,
     height: 36,
-    borderRadius: 36,
-    overflow: 'hidden',
-    backgroundColor: COLORS.dark4,
   },
   iconQuote: {
     width: 36,
     height: 36,
-    borderRadius: 36,
-    overflow: 'hidden',
-    backgroundColor: COLORS.dark4,
     marginLeft: -8,
     zIndex: -1,
   },
@@ -36,6 +33,10 @@ const s = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     marginLeft: 12,
+    flex: 1,
+  },
+  icon: {
+    color: COLORS.white2,
   },
 });
 
@@ -59,6 +60,9 @@ export const MarketItem = ({ item }: Props) => {
         <CryptoIcon uri={item.quoteInfo?.logoURI} />
       </View>
       <Text style={s.name}>{item.name}</Text>
+      <View style={s.icon}>
+        <Icon type="feather" name="chevron-right" color={COLORS.white4} />
+      </View>
     </TouchableOpacity>
   );
 };

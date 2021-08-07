@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { SvgXml } from 'react-native-svg';
 
+import { COLORS } from '../theme';
 import LoadingIndicator from './LoadingIndicator';
 
 const iconStyle = StyleSheet.create({
@@ -11,6 +12,7 @@ const iconStyle = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     overflow: 'hidden',
+    backgroundColor: COLORS.dark4,
   },
 });
 
@@ -45,7 +47,7 @@ export const CryptoIcon = ({ uri = '', ...props }) => {
   }, []);
 
   if (!uri) {
-    return <Avatar rounded />;
+    return <View style={iconStyle.main} />;
   }
 
   if (isSVG) {
@@ -65,5 +67,9 @@ export const CryptoIcon = ({ uri = '', ...props }) => {
     );
   }
 
-  return <Avatar {...props} source={{ uri: uri }} />;
+  return (
+    <View style={iconStyle.main}>
+      <Avatar {...props} source={{ uri: uri }} />
+    </View>
+  );
 };

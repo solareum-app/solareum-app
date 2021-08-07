@@ -11,6 +11,7 @@ import { grid, typo } from '../../components/Styles';
 import { price } from '../../utils/autoRound';
 import imgDelivering from '../../assets/clip-message-sent.png';
 import { TransferAction } from '../Wallet';
+import { CryptoIcon } from '../../components/CryptoIcon';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -85,13 +86,7 @@ const Token = ({ route }) => {
       <ScrollView>
         <View style={grid.header}>
           <View style={s.info}>
-            <Avatar
-              size="medium"
-              rounded
-              source={{
-                uri: logoURI,
-              }}
-            />
+            <CryptoIcon uri={logoURI} />
             <Text style={s.infoBalance}>
               {`${price(
                 amount / Math.pow(10, decimals),
