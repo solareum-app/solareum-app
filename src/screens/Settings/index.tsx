@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/core';
 import { Routes } from '../../navigators/Routes';
 import { COLORS } from '../../theme/colors';
 import { spacings } from '../../theme';
+import { typo } from '../../components/Styles';
+import package from '../../../package.json';
 
 const s = StyleSheet.create({
   container: {
@@ -27,6 +29,9 @@ const s = StyleSheet.create({
   },
   itemTitle: {
     color: COLORS.white2,
+  },
+  wrp: {
+    padding: 20,
   },
 });
 
@@ -77,6 +82,12 @@ const Settings: React.FC = () => {
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
+        </View>
+
+        <View style={s.group}>
+          <View style={s.wrp}>
+            <Text style={typo.helper}>v{package.version}</Text>
+          </View>
         </View>
       </ScrollView>
     </View>
