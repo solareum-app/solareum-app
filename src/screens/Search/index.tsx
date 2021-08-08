@@ -26,10 +26,11 @@ const Search: React.FC = ({ route }) => {
   return (
     <View style={grid.container}>
       <SearchBar
-        onChangeText={setQuery}
-        value={query}
         containerStyle={{ backgroundColor: COLORS.dark0 }}
         inputContainerStyle={{ backgroundColor: COLORS.dark2 }}
+        placeholder="Nhập tên Tokens: SOL, XSB..."
+        onChangeText={setQuery}
+        value={query}
       />
       <ScrollView>
         <TokensList balanceListInfo={tokens} action={action} />
