@@ -125,7 +125,7 @@ export default class SolareumDEX extends Component<Props, State> {
 
     return (
       <View style={s.main}>
-        <Header />
+        <Header isBack />
         <WebView
           source={{ uri }}
           ref={this.webView}

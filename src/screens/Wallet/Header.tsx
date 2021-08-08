@@ -47,8 +47,8 @@ const SettingIcon: React.FC = () => {
     <TouchableOpacity style={s.setting} onPress={onPressHandler}>
       <Icon
         type="feather"
-        name="hexagon"
-        color={COLORS.white2}
+        name="settings"
+        color={COLORS.white4}
         size={20}
         style={s.icon}
       />
@@ -56,18 +56,18 @@ const SettingIcon: React.FC = () => {
   );
 };
 
-const NotificationIcon: React.FC = () => {
+const BackIcon: React.FC = () => {
   const navigation = useNavigation();
 
   const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.Notifications);
+    navigation.goBack();
   }, [navigation]);
 
   return (
     <TouchableOpacity style={s.notification} onPress={onPressHandler}>
       <Icon
         type="feather"
-        name="message-square"
+        name="arrow-left"
         color={COLORS.white2}
         size={20}
         style={s.icon}
@@ -76,12 +76,12 @@ const NotificationIcon: React.FC = () => {
   );
 };
 
-const Header: React.FC = () => {
+const Header: React.FC = ({ isBack }) => {
   return (
     <HeaderElement
-      leftComponent={<SettingIcon />}
+      leftComponent={isBack ? <BackIcon /> : null}
       centerComponent={<WalletPicker />}
-      rightComponent={<NotificationIcon />}
+      rightComponent={<SettingIcon />}
       containerStyle={s.container}
       leftContainerStyle={s.containerLeft}
       rightContainerStyle={s.containerRight}
