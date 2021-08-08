@@ -16,9 +16,11 @@ export type MarketInfo = {
 };
 export type MarketContextType = {
   marketList: MarketInfo[];
+  symbolList: string[];
 };
 export const MarketContext = React.createContext<MarketContextType>({
   marketList: [],
+  symbolList: [],
 });
 
 export const useMarket = () => {
@@ -28,6 +30,7 @@ export const useMarket = () => {
 export const MarketProvider = ({ children }) => {
   const { tokenInfos } = useApp();
   const [marketList, setMarketList] = useState<MarketInfo[]>([]);
+  const [symbolList, setSymbolList] = useState<string[]>([]);
 
   useEffect(() => {
     const list = MARKETS.map((i) => {
@@ -50,19 +53,21 @@ export const MarketProvider = ({ children }) => {
       } as MarketInfo;
     });
 
-    setMarketList(
-      list
-        .filter((i) => ['USDC', 'USDT', 'SOL'].indexOf(i.quote) >= 0)
-        .sort((a, b) => {
-          const ap = a.quote === 'USDC' ? 1 : 0;
-          const bp = b.quote === 'USDC' ? 1 : 0;
-          return bp - ap;
-        }),
-    );
+    const m = list
+      .filter((i) => ['USDC', 'USDT', 'SOL'].indexOf(i.quote) >= 0)
+      .sort((a, b) => {
+        const ap = a.quote === 'USDC' ? 1 : 0;
+        const bp = b.quote === 'USDC' ? 1 : 0;
+        return bp - ap;
+      });
+    const s = [...m.map((i) => i.base), ...m.map((i) => i.quote)];
+
+    setMarketList(m);
+    setSymbolList(s);
   }, [tokenInfos]);
 
   return (
-    <MarketContext.Provider value={{ marketList }}>
+    <MarketContext.Provider value={{ marketList, symbolList }}>
       {children}
     </MarketContext.Provider>
   );
