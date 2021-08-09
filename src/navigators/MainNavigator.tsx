@@ -29,11 +29,8 @@ const MainNavigator: React.FC = () => {
 
     if (!wallets.length) {
       navigationRef.current?.navigate(Routes.GetStarted);
-      SplashScreen.hide();
-    } else {
-      SplashScreen.show();
     }
-
+    SplashScreen.hide();
     // TODO: Hide splashscreen after all step have completed
   };
 
