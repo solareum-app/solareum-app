@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
-
+import { AppState } from 'react-native';
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -14,7 +14,7 @@ import Search from '../screens/Search';
 import Token from '../screens/Token';
 import DEX from '../screens/DEX';
 import { getListWallet } from '../storage/WalletCollection';
-
+import SplashScreen from 'react-native-splash-screen';
 import { HomeScreen } from './HomeScreen';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
@@ -26,10 +26,32 @@ const MainNavigator: React.FC = () => {
 
   const checkInitScreen = async () => {
     const wallets = await getListWallet();
+
     if (!wallets.length) {
       navigationRef.current?.navigate(Routes.GetStarted);
+      SplashScreen.hide();
+    } else {
+      SplashScreen.show();
     }
+
     // TODO: Hide splashscreen after all step have completed
+  };
+
+  useEffect(() => {
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    };
+  }, []);
+
+  const _handleAppStateChange = (nextAppState: any) => {
+    if (nextAppState === 'background') {
+      SplashScreen.show();
+    }
+    if (nextAppState === 'active') {
+      SplashScreen.hide();
+    }
   };
 
   return (
