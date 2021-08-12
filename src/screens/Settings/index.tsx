@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { ListItem, Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
@@ -36,11 +36,30 @@ const s = StyleSheet.create({
   wrp: {
     padding: 20,
   },
+  backIcon: {
+    marginLeft: 20,
+  },
 });
 
 const Settings: React.FC = () => {
   const navigation = useNavigation();
   const refPolicy = useRef();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <View style={s.backIcon}>
+          <Icon
+            type="antdesign"
+            name="left"
+            color={COLORS.white4}
+            size={20}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={s.container}>
