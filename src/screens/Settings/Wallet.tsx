@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -57,9 +57,6 @@ const s = StyleSheet.create({
     lineHeight: 24,
     flex: 1,
   },
-  backIcon: {
-    marginLeft: 20,
-  },
 });
 
 type Props = {
@@ -70,22 +67,6 @@ type Props = {
 
 const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
   const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <View style={s.backIcon}>
-          <Icon
-            type="antdesign"
-            name="left"
-            color={COLORS.white4}
-            size={20}
-            onPress={() => navigation.goBack()}
-          />
-        </View>
-      ),
-    });
-  }, [navigation]);
 
   return (
     <TouchableOpacity style={s.main} onPress={onSelect}>
