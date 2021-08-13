@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
-import { AppState } from 'react-native';
+import { AppState, View } from 'react-native';
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -18,6 +18,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { HomeScreen } from './HomeScreen';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
+import { Icon } from 'react-native-elements';
 
 const Stack = createStackNavigator();
 
@@ -64,6 +65,23 @@ const MainNavigator: React.FC = () => {
               backgroundColor: COLORS.dark2,
               shadowColor: COLORS.dark4,
             },
+            headerLeft: ({ canGoBack, onPress }: any) =>
+              canGoBack && (
+                <View
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{
+                    marginLeft: 20,
+                  }}
+                >
+                  <Icon
+                    type="antdesign"
+                    name="left"
+                    color={COLORS.white4}
+                    size={20}
+                    onPress={onPress}
+                  />
+                </View>
+              ),
           }}
         >
           <Stack.Screen
