@@ -5,14 +5,11 @@ import { Portal } from 'react-native-portalize';
 import { useNavigation } from '@react-navigation/native';
 
 import { FixedContent } from '../../components/Modals/FixedContent';
-
 import { getShortPublicKey } from '../../utils';
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
 import { useApp } from '../../core/AppProvider';
-import { getWallet } from '../../spl-utils/getWallet';
-import { AddressInfo } from '../../storage/WalletCollection';
 
 const s = StyleSheet.create({
   content: {
@@ -70,13 +67,7 @@ const s = StyleSheet.create({
 const WalletPicker: React.FC = () => {
   const ref = useRef();
   const navigation = useNavigation();
-  const { wallet, setWallet, addressList } = useApp();
-
-  const selectWallet = async (walletData: AddressInfo) => {
-    const w = await getWallet(walletData.mnemonic, walletData.name);
-    setWallet(w, walletData);
-    ref.current?.close();
-  };
+  const { wallet, addressList, setAddressId } = useApp();
 
   return (
     <View>
@@ -107,7 +98,10 @@ const WalletPicker: React.FC = () => {
             {addressList.map((w) => (
               <ListItem
                 key={w.id}
-                onPress={() => selectWallet(w)}
+                onPress={() => {
+                  setAddressId(w.id);
+                  ref.current?.close();
+                }}
                 containerStyle={s.listItemContainer}
               >
                 <Icon
@@ -122,6 +116,7 @@ const WalletPicker: React.FC = () => {
                 </ListItem.Content>
               </ListItem>
             ))}
+
             <View style={s.group}>
               <View style={s.groupItem}>
                 <Button

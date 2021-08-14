@@ -681,7 +681,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AE358CB5C1D9D1DA28E196F3 /* Pods-Solareum-SolareumTests.debug.xcconfig */;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -690,6 +689,7 @@
 				INFOPLIST_FILE = SolareumTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.18.4;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -705,12 +705,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8261572FA23955A63653572A /* Pods-Solareum-SolareumTests.release.xcconfig */;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = SolareumTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.18.4;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -726,7 +726,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E40C9C4654477591E904E97B /* Pods-Solareum.debug.xcconfig */;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -734,6 +733,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.18.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -751,13 +751,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7F305E48C78FFDC2EE03A025 /* Pods-Solareum.release.xcconfig */;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.18.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -774,7 +774,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EEADA4D90A4F6F52ABD9A3C5 /* Pods-Solareum-tvOS.debug.xcconfig */;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -786,6 +785,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.18.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -803,7 +803,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8309F965B295591D14417755 /* Pods-Solareum-tvOS.release.xcconfig */;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -815,6 +814,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.18.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -832,7 +832,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3447136D36255F3BCE5F6779 /* Pods-Solareum-tvOSTests.debug.xcconfig */;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -843,6 +842,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.18.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -860,7 +860,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1F7D94164E66FA627234204B /* Pods-Solareum-tvOSTests.release.xcconfig */;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -871,6 +870,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.18.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -887,7 +887,6 @@
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -939,6 +938,7 @@
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
+				MARKETING_VERSION = 2.18.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -948,7 +948,6 @@
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-        MARKETING_VERSION = 2.0.1;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -993,6 +992,7 @@
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
+				MARKETING_VERSION = 2.18.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

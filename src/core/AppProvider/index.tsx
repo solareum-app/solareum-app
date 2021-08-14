@@ -10,50 +10,73 @@ import {
 } from '../../storage/WalletCollection';
 import { useConnectionConfig } from '../ConnectionProvider';
 import { clusterForEndpoint } from './clusters';
-import { getWallet } from '../../spl-utils/getWallet';
+import { getWallet, getAccountList } from '../../spl-utils/getWallet';
 import { Cluster } from './types';
 import { MarketProvider } from './MarketProvider';
+import { IAccount, createAccountList } from './IAccount';
+import { LoadingImage } from '../../components/LoadingIndicator';
 
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
-export type TokenInfos = TokenInfo[] | null;
 export type AppContextType = {
-  tokenInfos: TokenInfos;
+  accountList: IAccount[];
+  updateAccountByPK: Function;
+  tokenInfos: TokenInfo[];
   priceData: any;
-  setTokenList: Function;
   wallet: any;
-  setWallet: Function;
   addressId: string;
   setAddressId: Function;
   addressList: AddressInfo[];
   createAddress: Function;
   updateAddress: Function;
+  loadAccountList: Function;
 };
 export const AppContext = React.createContext<AppContextType>({
-  tokenInfos: null,
+  accountList: [],
+  updateAccountByPK: () => null,
+  tokenInfos: [],
   priceData: {},
-  setTokenList: () => null,
   wallet: null,
-  setWallet: () => null,
   addressId: '',
   setAddressId: () => null,
   addressList: [],
   createAddress: () => null,
   updateAddress: () => null,
+  loadAccountList: () => null,
 });
 
 export const useApp = () => {
   return useContext(AppContext);
 };
 
+const SOL_TOKEN = {
+  address: 'SOL',
+  symbol: 'SOL',
+  name: 'Solana',
+  extensions: {
+    coingeckoId: 'solana',
+  },
+  logoURI:
+    'https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png',
+};
+
 export const AppProvider: React.FC = (props) => {
   const { endpoint } = useConnectionConfig();
-  const [tokenInfos, setTokenInfos] = useState<TokenInfos>(null);
-  const [tokenList, setTokenList] = useState([]);
+  const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
+  const [accountList, setAccountList] = useState<IAccount[]>([]);
   const [priceData, setPriceData] = useState({});
   const [wallet, setWallet] = useState(null);
   const [addressId, setAddressId] = useState('');
   const [addressList, setAddressList] = useState<AddressInfo[]>([]);
+
+  const updateAccountByPK = (pk: string) => { };
+
+  const loadAccountList = async () => {
+    const accs = await getAccountList(wallet);
+    const accList = createAccountList(tokenInfos, accs, priceData);
+    setAccountList(accList);
+    return accList;
+  };
 
   const createAddress = async (
     seed: string,
@@ -89,15 +112,12 @@ export const AppProvider: React.FC = (props) => {
     if (!address) {
       return;
     }
+    setItem('SYS', DEFAULT_WALLET, address.id);
     const w = await getWallet(address.mnemonic, address.name);
+    setWallet(w);
     setAddressId(id);
-    setWallet(w);
   };
-  const setWalletWrapper = (w: any, data: AddressInfo) => {
-    setItem('SYS', DEFAULT_WALLET, data.id);
-    setAddressId(data.id);
-    setWallet(w);
-  };
+
   // init wallet
   const initWallet = async () => {
     const list = await getListWallet();
@@ -105,19 +125,31 @@ export const AppProvider: React.FC = (props) => {
     let data = !walletKey ? list[0] : list.find((i) => i.id === walletKey);
     data = data || list[0];
 
-    setAddressList(list);
     if (data) {
-      const w = await getWallet(data.mnemonic, data.name);
-      setAddressId(data.id);
-      setWallet(w);
+      setAddressList(list);
+      setAddressIdWrapper(data.id);
     }
+  };
+
+  const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
+    const list = tokenList.map((i) => i.extensions?.coingeckoId) || [];
+    const filtered = list.filter((i) => i !== undefined);
+    const price = await fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=${filtered.join(
+        ',',
+      )}&vs_currencies=usd,vnd`,
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        return data;
+      });
+    return price;
   };
 
   useEffect(() => {
     const tokenListProvider = new TokenListProvider();
-    tokenListProvider.resolve().then((tokenListContainer) => {
+    tokenListProvider.resolve().then(async (tokenListContainer) => {
       const cluster: Cluster | undefined = clusterForEndpoint(endpoint);
-
       const filteredTokenListContainer =
         tokenListContainer?.filterByClusterSlug(cluster ? cluster.name : '');
       const listOfTokens =
@@ -125,28 +157,24 @@ export const AppProvider: React.FC = (props) => {
           ? filteredTokenListContainer?.getList()
           : null; // Workaround for filter return all on unknown slug
 
-      setTokenInfos(listOfTokens);
+      const tokenList = [SOL_TOKEN, ...listOfTokens];
+      const priceMapping = await fetchPriceData(tokenList);
+      const accList = createAccountList(tokenList, [], priceMapping);
+
+      setPriceData(priceMapping);
+      setTokenInfos(tokenList);
+      setAccountList(accList);
     });
   }, [endpoint]);
 
-  // get data from coingekco
+  // calculate account list
   useEffect(() => {
-    fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${tokenList.join(
-        ',',
-      )}&vs_currencies=usd,vnd`,
-    )
-      .then((resp) => resp.json())
-      .then((data) => {
-        setPriceData(data);
-      })
-      .catch(() => {
-        setPriceData({});
-      });
-  }, [tokenList]);
+    const accList = createAccountList(tokenInfos, accountList, priceData);
+    setAccountList(accList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tokenInfos, priceData]);
 
   useEffect(() => {
-    setTokenList(['solana']);
     initWallet();
   }, []);
 
@@ -155,17 +183,20 @@ export const AppProvider: React.FC = (props) => {
       value={{
         tokenInfos,
         priceData,
-        setTokenList,
         wallet,
-        setWallet: setWalletWrapper,
         addressId: addressId,
         setAddressId: setAddressIdWrapper,
         addressList,
         createAddress,
         updateAddress,
+        accountList,
+        updateAccountByPK,
+        loadAccountList,
       }}
     >
-      <MarketProvider>{props.children}</MarketProvider>
+      <MarketProvider>
+        {tokenInfos.length ? props.children : <LoadingImage />}
+      </MarketProvider>
     </AppContext.Provider>
   );
 };

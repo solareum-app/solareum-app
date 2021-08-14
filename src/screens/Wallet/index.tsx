@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   RefreshControl,
@@ -8,15 +8,17 @@ import {
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 
-import { getBalanceList } from '../../spl-utils/getWallet';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
-import { AppContext } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider';
 import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
+import { useEffect } from 'react';
+import { IAccount } from '../../core/AppProvider/IAccount';
+import { useNavigation } from '@react-navigation/native';
 
 const s = StyleSheet.create({
   header: {
@@ -51,12 +53,11 @@ const s = StyleSheet.create({
   },
 });
 
-const getTotalEstimate = (balanceListInfo: any[], priceData: any) => {
+const getTotalEstimate = (balanceListInfo: any[]) => {
   let total = 0;
   for (let i = 0; i < balanceListInfo.length; i++) {
-    const { coingeckoId, amount, decimals } = balanceListInfo[i];
-    const tokenPrice = priceData[coingeckoId] ? priceData[coingeckoId].usd : 0;
-    const tokenValue = (tokenPrice * amount) / Math.pow(10, decimals);
+    const { usd, amount, decimals } = balanceListInfo[i];
+    const tokenValue = (usd * amount) / Math.pow(10, decimals);
     total += tokenValue;
   }
   return total;
@@ -67,135 +68,87 @@ export enum TransferAction {
   receive = 'receive',
 }
 
-class WalletScreen extends React.PureComponent {
-  state = {
-    loading: false,
-    balanceList: [],
-    balanceListInfo: [],
-    address: '',
-  };
+const WalletScreen = () => {
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+  const { loadAccountList, wallet, accountList, addressId } = useApp();
+  const activeAccountList = accountList
+    .filter((i: IAccount) => i.mint)
+    .sort((a, b) => b.value - a.value);
+  const totalEst = getTotalEstimate(activeAccountList);
 
-  onRefresh = async () => {
-    this.setState({ loading: true });
+  const onRefresh = async () => {
     try {
-      const balanceListInfo = await this.loadBalance();
-      const gekcoIds = balanceListInfo.map((i) => i.coingeckoId);
-      this.context.setTokenList(gekcoIds);
-      this.setState({ loading: false });
-    } catch (err) {
-      console.log('err', err);
-      this.setState({ loading: false });
+      setLoading(true);
+      await loadAccountList();
+      setLoading(false);
+    } catch {
+      setLoading(false);
     }
   };
 
-  componentDidMount() {
-    if (this.context.wallet && this.context.tokenInfos) {
-      this.onRefresh();
-    }
-  }
+  useEffect(() => {
+    onRefresh();
+  }, [addressId]);
 
-  componentDidUpdate = async (_, prevState: any) => {
-    if (this.context.wallet && this.context.tokenInfos) {
-      this.setState({ address: this.context.wallet.address });
-    }
-
-    // init the app when tokenInfos is ready
-    if (prevState.address !== this.state.address) {
-      this.onRefresh();
-    }
-  };
-
-  loadBalance = async () => {
-    const { tokenInfos, wallet } = this.context;
-    const balanceList = await getBalanceList(wallet);
-    const balanceListInfo = balanceList.map((i) => {
-      const address = i.mint ? i.mint : '';
-      const tokenInfo =
-        tokenInfos?.find((token) => token.address === address) || null;
-      const coingeckoInfo = tokenInfo?.extensions?.coingeckoId
-        ? { coingeckoId: tokenInfo?.extensions?.coingeckoId }
-        : {};
-      return {
-        ...i,
-        ...tokenInfo,
-        ...coingeckoInfo,
-      };
-    });
-
-    this.setState({
-      balanceList,
-      balanceListInfo,
-    });
-
-    return balanceListInfo;
-  };
-
-  render() {
-    const { balanceListInfo } = this.state;
-    const { priceData, wallet } = this.context;
-    const totalEst = getTotalEstimate(balanceListInfo, priceData);
-
-    return (
-      <View style={grid.container}>
-        <Header />
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.loading}
-              onRefresh={this.onRefresh}
-              colors={[COLORS.white2]}
-              tintColor={COLORS.white2}
-            />
-          }
-        >
-          <View style={s.header}>
-            <View style={s.info}>
-              <Text style={s.infoBalance}>${price(totalEst)}</Text>
+  return (
+    <View style={grid.container}>
+      <Header />
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={onRefresh}
+            colors={[COLORS.white2]}
+            tintColor={COLORS.white2}
+          />
+        }
+      >
+        <View style={s.header}>
+          <View style={s.info}>
+            <Text style={s.infoBalance}>${price(totalEst)}</Text>
+          </View>
+          <View style={s.control}>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => {
+                  navigation.navigate(Routes.Search, {
+                    action: TransferAction.send,
+                  });
+                }}
+                title="Chuyển"
+                iconName="upload"
+              />
             </View>
-            <View style={s.control}>
-              <View style={s.controlItem}>
-                <RoundedButton
-                  onClick={() => {
-                    this.props.navigation.navigate(Routes.Search, {
-                      action: TransferAction.send,
-                    });
-                  }}
-                  title="Chuyển"
-                  iconName="upload"
-                />
-              </View>
-              <View style={s.controlItem}>
-                <RoundedButton
-                  onClick={() => {
-                    this.props.navigation.navigate(Routes.Search, {
-                      action: TransferAction.receive,
-                    });
-                  }}
-                  title="Nhận"
-                  iconName="download"
-                />
-              </View>
-              <View style={s.controlItem}>
-                <RoundedButton
-                  onClick={() => {
-                    Clipboard.setString(wallet.publicKey.toBase58());
-                  }}
-                  title="Copy"
-                  iconName="copy"
-                  type="feather"
-                />
-              </View>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => {
+                  navigation.navigate(Routes.Search, {
+                    action: TransferAction.receive,
+                  });
+                }}
+                title="Nhận"
+                iconName="download"
+              />
+            </View>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => {
+                  Clipboard.setString(wallet.publicKey.toBase58());
+                }}
+                title="Copy"
+                iconName="copy"
+                type="feather"
+              />
             </View>
           </View>
-          <View style={[grid.body, s.body]}>
-            <TokensList balanceListInfo={balanceListInfo} />
-          </View>
-        </ScrollView>
-      </View>
-    );
-  }
-}
-
-WalletScreen.contextType = AppContext;
+        </View>
+        <View style={[grid.body, s.body]}>
+          <TokensList balanceListInfo={activeAccountList} />
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 
 export default WalletScreen;

@@ -57,24 +57,18 @@ export const getBalanceInfo = async (publicKey) => {
   // SOL native token
   if (!mint) {
     return {
+      mint: 'SOL',
       amount: accountInfo?.lamports ?? 0,
-      decimals: 9,
-      mint: null,
       owner: publicKey.toBase58(),
+      decimals: 9,
       valid: true,
-      // add default information for solana
-      coingeckoId: 'solana',
-      name: 'Solana',
-      symbol: 'SOL',
-      logoURI:
-        'https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png',
     };
   }
 
   return null;
 };
 
-export const getBalanceList = async (wallet) => {
+export const getAccountList = async (wallet) => {
   try {
     const tokenAccountInfo = (await wallet.getTokenAccountInfo()) || [];
     const publicKeys = [
