@@ -11,13 +11,13 @@ import { useMarket } from '../../core/AppProvider/MarketProvider';
 const Search: React.FC = ({ route }) => {
   const [query, setQuery] = useState('');
   const [tokens, setTokens] = useState([]);
-  const { tokenInfos = [] } = useApp();
+  const { accountList } = useApp();
   const { symbolList } = useMarket();
   const { action } = route.params;
 
   useEffect(() => {
     const q = query.toLowerCase();
-    const t = tokenInfos?.filter((i) => {
+    const t = accountList?.filter((i) => {
       const name = i.name ? i.name.toLowerCase() : '';
       const symbol = i.symbol ? i.symbol.toLowerCase() : '';
       return name.indexOf(q) >= 0 || symbol.indexOf(q) >= 0;
@@ -37,7 +37,7 @@ const Search: React.FC = ({ route }) => {
     });
 
     setTokens(sortedList?.splice(0, 24) || []);
-  }, [query, tokenInfos]);
+  }, [query, accountList]);
 
   return (
     <View style={grid.container}>
