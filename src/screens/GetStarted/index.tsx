@@ -31,6 +31,7 @@ const s = StyleSheet.create({
     ...typo.normal,
     marginBottom: 8,
   },
+  title: { textAlign: 'left' },
 });
 
 type Props = {};
@@ -55,20 +56,20 @@ const GetStarted: React.FC<Props> = () => {
               <Image source={imgEducation} style={s.placeholderImage} />
             </View>
             <View style={s.wrp}>
-              <Text style={[typo.title, { textAlign: 'left' }]}>
+              <Text style={[typo.title, s.title]}>
                 Chào mừng tới Solareum Wallet!
               </Text>
               <Text style={s.message}>
-                Solareum Wallet được thiết kế đơn giản tập trung vào 3 tính năng
-                chính mà bạn sẽ thực hiện thường xuyên mỗi ngày.
+                Solareum Wallet được thiết kế đơn giản tập trung vào 2 tính năng
+                chính mà bạn sẽ thực hiện thường xuyên mỗi ngày:
               </Text>
               <Text style={s.message}>
-                ▪︎ Lưu trữ, và chuyển nhận SOL cũng như tất cả các SPK tokens.
+                ▪︎ Lưu trữ, và chuyển nhận SOL cũng như tất cả các SPL tokens.
               </Text>
               <Text style={s.message}>
                 ▪︎ Kết nối trực tiếp với Serum DEX, giúp thực hiện nhanh chóng
                 các giao dịch trên nền tảng sàn phi tập trung, ngay trên điện
-                thoại.
+                thoại. Giúp bạn không bỏ lỡ bất kỳ cơ hội đầu tư nào.
               </Text>
             </View>
             <View style={s.wrp}>
@@ -99,6 +100,7 @@ const GetStarted: React.FC<Props> = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
+
       <Portal>
         <FacebookWebView
           ref={refPolicy}
