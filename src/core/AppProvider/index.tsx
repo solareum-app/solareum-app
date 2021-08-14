@@ -112,6 +112,7 @@ export const AppProvider: React.FC = (props) => {
     if (!address) {
       return;
     }
+    setItem('SYS', DEFAULT_WALLET, address.id);
     const w = await getWallet(address.mnemonic, address.name);
     setWallet(w);
     setAddressId(id);

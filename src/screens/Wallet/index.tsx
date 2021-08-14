@@ -88,9 +88,6 @@ const WalletScreen = () => {
   };
 
   useEffect(() => {
-    if (loading) {
-      return;
-    }
     onRefresh();
   }, [addressId]);
 
