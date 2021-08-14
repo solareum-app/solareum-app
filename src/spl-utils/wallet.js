@@ -1,4 +1,4 @@
-import { Account } from '@solana/web3.js';
+import { Keypair } from '@solana/web3.js';
 import {
   closeTokenAccount,
   createAndInitializeTokenAccount,
@@ -7,7 +7,6 @@ import {
   nativeTransfer,
   transferTokens,
 } from './tokens';
-// import { setInitialAccountInfo } from './connection';
 import { ACCOUNT_LAYOUT, parseTokenAccountData } from './tokens/data';
 import { WalletProviderFactory } from './walletProvider/factory';
 
@@ -44,7 +43,6 @@ export class Wallet {
     let accounts = await getOwnedTokenAccounts(this.connection, this.publicKey);
     return accounts
       .map(({ publicKey, accountInfo }) => {
-        // setInitialAccountInfo(this.connection, publicKey, accountInfo);
         return { publicKey, parsed: parseTokenAccountData(accountInfo.data) };
       })
       .sort((account1, account2) =>
@@ -59,7 +57,7 @@ export class Wallet {
       connection: this.connection,
       payer: this,
       mintPublicKey: tokenAddress,
-      newAccount: new Account(),
+      newAccount: new Keypair(),
     });
   };
 

@@ -60,8 +60,7 @@ const Token = ({ route }) => {
   const { action, token } = route.params;
   const refSend = useRef();
   const refReceived = useRef();
-
-  const { symbol = '---', logoURI = '', amount = 0, decimals } = token;
+  const { symbol = '$$$', logoURI = '', amount = 0, decimals } = token;
 
   const openSendScreen = () => {
     refSend?.current?.open();

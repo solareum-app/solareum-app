@@ -74,6 +74,12 @@ export const typo = StyleSheet.create({
     lineHeight: 20,
     marginBottom: 8,
   },
+  caution: {
+    color: COLORS.caution,
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 8,
+  },
   input: {
     color: COLORS.white2,
   },
