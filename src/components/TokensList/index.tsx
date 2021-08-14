@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
-import { useApp } from '../../core/AppProvider';
 import { price } from '../../utils/autoRound';
 import { CryptoIcon } from '../CryptoIcon';
 
@@ -18,18 +17,15 @@ type TokenInfoItemProps = TokenInfo & {
 };
 const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
   const {
-    name = 'Undefined',
-    symbol = '---',
+    name = '$$$',
+    symbol = '-',
     logoURI = '',
     amount = 0,
     decimals,
-    coingeckoId,
+    usd,
+    value,
   } = props.token;
   const navigation = useNavigation();
-  const { priceData } = useApp();
-  const tokenPrice = priceData[coingeckoId] ? priceData[coingeckoId].usd : 0;
-  const tokenEst = (tokenPrice * amount) / Math.pow(10, decimals);
-
   const onPressHandler = () => {
     navigation.navigate(Routes.Token, { token: props.token, action });
   };
@@ -57,7 +53,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
         >
-          <Text>{`$${price(tokenPrice)}`}</Text>
+          <Text>{`$${price(usd)}`}</Text>
         </ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Content right style={{ flex: 1 }}>
@@ -72,7 +68,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
         >
-          {`$${price(tokenEst)}`}
+          {`$${price(value)}`}
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>

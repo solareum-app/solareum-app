@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 
-import { getBalanceList } from '../../spl-utils/getWallet';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
@@ -51,12 +50,11 @@ const s = StyleSheet.create({
   },
 });
 
-const getTotalEstimate = (balanceListInfo: any[], priceData: any) => {
+const getTotalEstimate = (balanceListInfo: any[]) => {
   let total = 0;
   for (let i = 0; i < balanceListInfo.length; i++) {
-    const { coingeckoId, amount, decimals } = balanceListInfo[i];
-    const tokenPrice = priceData[coingeckoId] ? priceData[coingeckoId].usd : 0;
-    const tokenValue = (tokenPrice * amount) / Math.pow(10, decimals);
+    const { usd, amount, decimals } = balanceListInfo[i];
+    const tokenValue = (usd * amount) / Math.pow(10, decimals);
     total += tokenValue;
   }
   return total;
@@ -70,20 +68,15 @@ export enum TransferAction {
 class WalletScreen extends React.PureComponent {
   state = {
     loading: false,
-    balanceList: [],
-    balanceListInfo: [],
     address: '',
   };
 
   onRefresh = async () => {
     this.setState({ loading: true });
     try {
-      const balanceListInfo = await this.loadBalance();
-      const gekcoIds = balanceListInfo.map((i) => i.coingeckoId);
-      this.context.setTokenList(gekcoIds);
+      await this.loadBalance();
       this.setState({ loading: false });
     } catch (err) {
-      console.log('err', err);
       this.setState({ loading: false });
     }
   };
@@ -98,7 +91,6 @@ class WalletScreen extends React.PureComponent {
     if (this.context.wallet && this.context.tokenInfos) {
       this.setState({ address: this.context.wallet.address });
     }
-
     // init the app when tokenInfos is ready
     if (prevState.address !== this.state.address) {
       this.onRefresh();
@@ -106,34 +98,16 @@ class WalletScreen extends React.PureComponent {
   };
 
   loadBalance = async () => {
-    const { tokenInfos, wallet } = this.context;
-    const balanceList = await getBalanceList(wallet);
-    const balanceListInfo = balanceList.map((i) => {
-      const address = i.mint ? i.mint : '';
-      const tokenInfo =
-        tokenInfos?.find((token) => token.address === address) || null;
-      const coingeckoInfo = tokenInfo?.extensions?.coingeckoId
-        ? { coingeckoId: tokenInfo?.extensions?.coingeckoId }
-        : {};
-      return {
-        ...i,
-        ...tokenInfo,
-        ...coingeckoInfo,
-      };
-    });
-
-    this.setState({
-      balanceList,
-      balanceListInfo,
-    });
-
-    return balanceListInfo;
+    const { loadAccountList } = this.context;
+    await loadAccountList();
   };
 
   render() {
-    const { balanceListInfo } = this.state;
-    const { priceData, wallet } = this.context;
-    const totalEst = getTotalEstimate(balanceListInfo, priceData);
+    const { wallet, accountList } = this.context;
+    const activeAccountList = accountList
+      .filter((i) => i.mint)
+      .sort((a, b) => b.value - a.value);
+    const totalEst = getTotalEstimate(activeAccountList);
 
     return (
       <View style={grid.container}>
@@ -188,7 +162,7 @@ class WalletScreen extends React.PureComponent {
             </View>
           </View>
           <View style={[grid.body, s.body]}>
-            <TokensList balanceListInfo={balanceListInfo} />
+            <TokensList balanceListInfo={activeAccountList} />
           </View>
         </ScrollView>
       </View>

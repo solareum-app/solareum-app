@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
@@ -26,7 +26,7 @@ const s = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 16,
     marginBottom: 20,
-    borderColor: 'white'
+    borderColor: 'white',
   },
   footer: {},
   control: {
@@ -42,7 +42,7 @@ const s = StyleSheet.create({
 });
 
 export const Receive = ({ token }) => {
-  const address = token.publicKey;
+  const address = token.publicKey || '-';
   const copyToClipboard = () => {
     Clipboard.setString(address);
   };
@@ -54,21 +54,30 @@ export const Receive = ({ token }) => {
         <View style={s.qr}>
           <QRCode value={address} size={220} />
         </View>
-        <Text style={typo.address}>
-          {address}
-        </Text>
+        <Text style={typo.address}>{address}</Text>
       </View>
       <View style={s.footer}>
-        <Text style={typo.helper}>Chỉ chuyển {token.name} (SPL) vào địa chỉ này. Việc chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các token&nbsp;đó.</Text>
+        <Text style={typo.helper}>
+          Chỉ chuyển {token.name} (SPL) vào địa chỉ này. Việc chuyển token khác
+          vào địa chỉ này có thể dẫn đến mất toàn toàn các token&nbsp;đó.
+        </Text>
         <View style={s.control}>
           <View style={s.controlItem}>
-            <RoundedButton onClick={copyToClipboard} title="Sao chép" iconName="addfile" />
+            <RoundedButton
+              onClick={copyToClipboard}
+              title="Sao chép"
+              iconName="addfile"
+            />
           </View>
           <View style={s.controlItem}>
-            <RoundedButton onClick={() => null} title="Chia sẻ" iconName="upload" />
+            <RoundedButton
+              onClick={() => null}
+              title="Chia sẻ"
+              iconName="upload"
+            />
           </View>
         </View>
       </View>
     </View>
-  )
+  );
 };
