@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, RefreshControl, ScrollView, View } from 'react-native';
 
-import LoadingIndicator from '../../components/LoadingIndicator';
+import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme';
 import { grid } from '../../components/Styles';
 import { SocialItem } from './SocialItem';
@@ -71,7 +71,7 @@ const Social = () => {
             {articleList.length
               ? articleList.map((i) => <SocialItem key={i.slug} model={i} />)
               : null}
-            {fetching ? <LoadingIndicator /> : null}
+            {fetching ? <LoadingImage /> : null}
           </View>
         </ScrollView>
       </SafeAreaView>
