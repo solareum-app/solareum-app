@@ -7,6 +7,7 @@ export type IAccount = {
   amount: number;
   decimals: number;
   valid: boolean;
+  value: number;
   isMinted: boolean;
   usd: number;
   vnd: number;

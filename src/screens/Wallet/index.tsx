@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   RefreshControl,
@@ -13,9 +13,11 @@ import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
-import { AppContext } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider';
 import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
+import { useEffect } from 'react';
+import { IAccount } from '../../core/AppProvider/IAccount';
 
 const s = StyleSheet.create({
   header: {
@@ -65,111 +67,86 @@ export enum TransferAction {
   receive = 'receive',
 }
 
-class WalletScreen extends React.PureComponent {
-  state = {
-    loading: false,
-    address: '',
-  };
+const WalletScreen = () => {
+  const [loading, setLoading] = useState(false);
+  const { loadAccountList, wallet, accountList, addressId } = useApp();
+  const activeAccountList = accountList
+    .filter((i: IAccount) => i.mint)
+    .sort((a, b) => b.value - a.value);
+  const totalEst = getTotalEstimate(activeAccountList);
 
-  onRefresh = async () => {
-    this.setState({ loading: true });
+  const onRefresh = async () => {
     try {
-      await this.loadBalance();
-      this.setState({ loading: false });
-    } catch (err) {
-      this.setState({ loading: false });
+      setLoading(true);
+      await loadAccountList();
+      setLoading(false);
+    } catch {
+      setLoading(false);
     }
   };
 
-  componentDidMount() {
-    if (this.context.wallet && this.context.tokenInfos) {
-      this.onRefresh();
-    }
-  }
+  useEffect(() => {
+    onRefresh();
+  }, [addressId]);
 
-  componentDidUpdate = async (_, prevState: any) => {
-    if (this.context.wallet && this.context.tokenInfos) {
-      this.setState({ address: this.context.wallet.address });
-    }
-    // init the app when tokenInfos is ready
-    if (prevState.address !== this.state.address) {
-      this.onRefresh();
-    }
-  };
-
-  loadBalance = async () => {
-    const { loadAccountList } = this.context;
-    await loadAccountList();
-  };
-
-  render() {
-    const { wallet, accountList } = this.context;
-    const activeAccountList = accountList
-      .filter((i) => i.mint)
-      .sort((a, b) => b.value - a.value);
-    const totalEst = getTotalEstimate(activeAccountList);
-
-    return (
-      <View style={grid.container}>
-        <Header />
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.loading}
-              onRefresh={this.onRefresh}
-              colors={[COLORS.white2]}
-              tintColor={COLORS.white2}
-            />
-          }
-        >
-          <View style={s.header}>
-            <View style={s.info}>
-              <Text style={s.infoBalance}>${price(totalEst)}</Text>
+  return (
+    <View style={grid.container}>
+      <Header />
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={onRefresh}
+            colors={[COLORS.white2]}
+            tintColor={COLORS.white2}
+          />
+        }
+      >
+        <View style={s.header}>
+          <View style={s.info}>
+            <Text style={s.infoBalance}>${price(totalEst)}</Text>
+          </View>
+          <View style={s.control}>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => {
+                  this.props.navigation.navigate(Routes.Search, {
+                    action: TransferAction.send,
+                  });
+                }}
+                title="Chuyển"
+                iconName="upload"
+              />
             </View>
-            <View style={s.control}>
-              <View style={s.controlItem}>
-                <RoundedButton
-                  onClick={() => {
-                    this.props.navigation.navigate(Routes.Search, {
-                      action: TransferAction.send,
-                    });
-                  }}
-                  title="Chuyển"
-                  iconName="upload"
-                />
-              </View>
-              <View style={s.controlItem}>
-                <RoundedButton
-                  onClick={() => {
-                    this.props.navigation.navigate(Routes.Search, {
-                      action: TransferAction.receive,
-                    });
-                  }}
-                  title="Nhận"
-                  iconName="download"
-                />
-              </View>
-              <View style={s.controlItem}>
-                <RoundedButton
-                  onClick={() => {
-                    Clipboard.setString(wallet.publicKey.toBase58());
-                  }}
-                  title="Copy"
-                  iconName="copy"
-                  type="feather"
-                />
-              </View>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => {
+                  this.props.navigation.navigate(Routes.Search, {
+                    action: TransferAction.receive,
+                  });
+                }}
+                title="Nhận"
+                iconName="download"
+              />
+            </View>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => {
+                  Clipboard.setString(wallet.publicKey.toBase58());
+                }}
+                title="Copy"
+                iconName="copy"
+                type="feather"
+              />
             </View>
           </View>
-          <View style={[grid.body, s.body]}>
-            <TokensList balanceListInfo={activeAccountList} />
-          </View>
-        </ScrollView>
-      </View>
-    );
-  }
-}
-
-WalletScreen.contextType = AppContext;
+        </View>
+        <View style={[grid.body, s.body]}>
+          <TokensList balanceListInfo={activeAccountList} />
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 
 export default WalletScreen;

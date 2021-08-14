@@ -115,8 +115,8 @@ export const AppProvider: React.FC = (props) => {
       return;
     }
     const w = await getWallet(address.mnemonic, address.name);
-    setAddressId(id);
     setWallet(w);
+    setAddressId(id);
   };
   const setWalletWrapper = (w: any, data: AddressInfo) => {
     setItem('SYS', DEFAULT_WALLET, data.id);
