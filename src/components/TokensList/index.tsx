@@ -2,74 +2,93 @@ import React from 'react';
 import { Text } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import { TokenInfo } from '@solana/spl-token-registry';
 
+import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
-import { useTokenInfos } from '../../core/TokenRegistryProvider';
+import { useApp } from '../../core/AppProvider';
+import { price } from '../../utils/autoRound';
+import { CryptoIcon } from '../CryptoIcon';
 
-type PriceWithChangeProps = {
-  symbol: string;
-};
-const PriceWithChange: React.FC<PriceWithChangeProps> = ({ symbol }) => {
-  React.useEffect(() => {}, [symbol]);
-
-  return (
-    <>
-      <Text>{`$ 500.91 `}</Text>
-      <Text>{`+4.16% `}</Text>
-    </>
-  );
+const isValidUrl = (url: string) => {
+  return url.indexOf('.png') >= 0 || url.indexOf('.svg') >= 0;
 };
 
-type TokenInfoItemProps = TokenInfo & {};
-const TokenInfoItem: React.FC<TokenInfoItemProps> = (props) => {
-  const { symbol, name, logoURI } = props;
+type TokenInfoItemProps = TokenInfo & {
+  action?: string;
+};
+const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
+  const {
+    name = 'Undefined',
+    symbol = '---',
+    logoURI = '',
+    amount = 0,
+    decimals,
+    coingeckoId,
+  } = props.token;
   const navigation = useNavigation();
+  const { priceData } = useApp();
+  const tokenPrice = priceData[coingeckoId] ? priceData[coingeckoId].usd : 0;
+  const tokenEst = (tokenPrice * amount) / Math.pow(10, decimals);
 
-  const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.Transfers, { token: name });
-  }, [navigation, name]);
+  const onPressHandler = () => {
+    navigation.navigate(Routes.Token, { token: props.token, action });
+  };
 
   return (
-    <ListItem bottomDivider onPress={onPressHandler}>
-      {logoURI ? (
-        <Avatar rounded source={{ uri: logoURI }} />
+    <ListItem
+      bottomDivider
+      onPress={onPressHandler}
+      containerStyle={{
+        backgroundColor: COLORS.dark0,
+        borderBottomColor: COLORS.dark4,
+      }}
+    >
+      {logoURI && isValidUrl(logoURI) ? (
+        <CryptoIcon rounded uri={logoURI} />
       ) : (
         <Avatar rounded title={symbol.toUpperCase()} />
       )}
       <ListItem.Content>
-        <ListItem.Title>{name}</ListItem.Title>
-        <ListItem.Subtitle>
-          <PriceWithChange symbol={symbol} />
+        <ListItem.Title
+          style={{ color: COLORS.white0, fontSize: FONT_SIZES.md }}
+        >
+          {name}
+        </ListItem.Title>
+        <ListItem.Subtitle
+          style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
+        >
+          <Text>{`$${price(tokenPrice)}`}</Text>
         </ListItem.Subtitle>
       </ListItem.Content>
-      <ListItem.Content right>
-        <ListItem.Title>{`0.2 ${symbol.toUpperCase()}`}</ListItem.Title>
-        <ListItem.Subtitle>{'26,02 $'}</ListItem.Subtitle>
+      <ListItem.Content right style={{ flex: 1 }}>
+        <ListItem.Title
+          style={{
+            color: COLORS.white0,
+            fontSize: FONT_SIZES.md,
+          }}
+        >
+          {`${price(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
+        </ListItem.Title>
+        <ListItem.Subtitle
+          style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
+        >
+          {`$${price(tokenEst)}`}
+        </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   );
 };
 
 type TokensListProps = {
-  action?: 'list_all';
-  query?: string;
+  balanceListInfo: any[];
+  action?: string;
 };
-const TokensList: React.FC<TokensListProps> = ({ query = '' }) => {
-  const tokenInfos = useTokenInfos();
-  const filteredTokens = React.useMemo(
-    () =>
-      tokenInfos?.filter(
-        (t) =>
-          t.symbol.toLowerCase().includes(query.toLowerCase()) ||
-          t.name.toLowerCase().includes(query.toLowerCase()),
-      ),
-    [tokenInfos, query],
-  );
+
+const TokensList: React.FC<TokensListProps> = ({ balanceListInfo, action }) => {
   return (
     <>
-      {filteredTokens?.map((token: TokenInfo, index: number) => (
-        <TokenInfoItem key={index} {...token} />
+      {balanceListInfo?.map((token, index: number) => (
+        <TokenInfoItem key={index} token={token} action={action} />
       ))}
     </>
   );

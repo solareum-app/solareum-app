@@ -1,69 +1,170 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { BottomSheet, ListItem } from 'react-native-elements';
+import React, { useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ListItem, Button } from 'react-native-elements';
+import { Portal } from 'react-native-portalize';
+import { useNavigation } from '@react-navigation/native';
 
+import { FixedContent } from '../../components/Modals/FixedContent';
+
+import { getShortPublicKey } from '../../utils';
+import { COLORS, FONT_SIZES } from '../../theme';
+import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
+import { useApp } from '../../core/AppProvider';
+import { getWallet } from '../../spl-utils/getWallet';
+import { AddressInfo } from '../../storage/WalletCollection';
+
+const s = StyleSheet.create({
+  content: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  group: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 8,
+    marginLeft: -4,
+    marginRight: -4,
+  },
+  groupItem: {
+    flex: 1,
+    marginLeft: 4,
+    marginRight: 4,
+  },
+  walletWrp: {
+    paddingLeft: 12,
+    paddingRight: 12,
+    marginRight: -20, // size of icon + margin
+  },
+  titleWrp: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  titleLeft: {},
+  titleIcon: {
+    paddingLeft: 8,
+  },
+  walletTitle: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS.white0,
+    paddingVertical: 2,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  walletSubtitle: {
+    fontSize: 12,
+    lineHeight: 12,
+    color: COLORS.white4,
+    paddingVertical: 2,
+    textAlign: 'center',
+  },
+  listItemContainer: {
+    backgroundColor: COLORS.dark0,
+    borderBottomColor: COLORS.dark2,
+    borderBottomWidth: 2,
+  },
+});
 
 const WalletPicker: React.FC = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = useRef();
+  const navigation = useNavigation();
+  const { wallet, setWallet, addressList } = useApp();
 
-  const onPressHandler = React.useCallback(() => {
-    setIsVisible((prevIsVisible) => !prevIsVisible);
-  }, [setIsVisible]);
-
-  const onCloseHandler = React.useCallback(() => {
-    setIsVisible(false);
-  }, [setIsVisible]);
-
-  const list = [
-    { title: 'List Item 1' },
-    { title: 'List Item 2' },
-    { title: 'List Item 3' },
-    { title: 'List Item 4' },
-    { title: 'List Item 5' },
-    {
-      title: 'Add wallet',
-      containerStyle: { backgroundColor: 'blue' },
-      titleStyle: { color: 'white' },
-    },
-    {
-      title: 'Cancel',
-      containerStyle: { backgroundColor: 'red' },
-      titleStyle: { color: 'white' },
-      onPress: () => setIsVisible(false),
-    },
-  ];
+  const selectWallet = async (walletData: AddressInfo) => {
+    const w = await getWallet(walletData.mnemonic, walletData.name);
+    setWallet(w, walletData);
+    ref.current?.close();
+  };
 
   return (
     <View>
       <TouchableOpacity
-        onPress={onPressHandler}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text>{`Current Walltet Name`}</Text>
-        <Icon name="caretdown" color="white" size={16} />
+        onPress={() => {
+          ref?.current?.open();
+        }}
+        style={s.walletWrp}
+      >
+        <View style={s.titleWrp}>
+          <View style={s.titleLeft}>
+            <Text style={s.walletTitle}>
+              {wallet ? wallet.name : 'Walltet Name'}
+            </Text>
+            <Text style={s.walletSubtitle}>
+              {wallet ? getShortPublicKey(wallet.publicKey.toBase58()) : '--'}
+            </Text>
+          </View>
+          <View style={s.titleIcon}>
+            <Icon name="down" color={COLORS.white0} size={12} />
+          </View>
+        </View>
       </TouchableOpacity>
-      <BottomSheet
-        modalProps={{ onRequestClose: onCloseHandler }}
-        isVisible={isVisible}
-        containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.5)' }}>
-        {list.map((l, i) => (
-          <ListItem
-            key={i}
-            bottomDivider
-            containerStyle={l.containerStyle}
-            onPress={l.onPress}>
-            <Icon name="Safety" size={17} color="red" />
-            <ListItem.Content>
-              <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
-            </ListItem.Content>
-            <Icon name="setting" size={17} color="red" />
-          </ListItem>
-        ))}
-      </BottomSheet>
+
+      <Portal>
+        <FixedContent ref={ref}>
+          <View style={s.content}>
+            {addressList.map((w) => (
+              <ListItem
+                key={w.id}
+                onPress={() => selectWallet(w)}
+                containerStyle={s.listItemContainer}
+              >
+                <Icon
+                  name="wallet"
+                  size={FONT_SIZES.lg}
+                  color={COLORS.white2}
+                />
+                <ListItem.Content>
+                  <ListItem.Title style={{ color: COLORS.white2 }}>
+                    {w.name || 'Solareum Wallet'}
+                  </ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+            <View style={s.group}>
+              <View style={s.groupItem}>
+                <Button
+                  title="Tạo Ví"
+                  type="clear"
+                  onPress={() => {
+                    ref.current?.close();
+                    navigation.navigate(Routes.CreateWallet);
+                  }}
+                  titleStyle={{ color: COLORS.white2 }}
+                  icon={
+                    <Icon
+                      size={FONT_SIZES.md}
+                      name="plus"
+                      color={COLORS.white2}
+                      style={{ marginRight: 6 }}
+                    />
+                  }
+                />
+              </View>
+              <View style={s.groupItem}>
+                <Button
+                  title="Khôi phục"
+                  type="clear"
+                  onPress={() => {
+                    ref.current?.close();
+                    navigation.navigate(Routes.ImportWallet);
+                  }}
+                  titleStyle={{ color: COLORS.white2 }}
+                  icon={
+                    <Icon
+                      size={FONT_SIZES.md}
+                      name="download"
+                      color={COLORS.white2}
+                      style={{ marginRight: 6 }}
+                    />
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </FixedContent>
+      </Portal>
     </View>
   );
 };

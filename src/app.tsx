@@ -1,3 +1,4 @@
+import '../shim.js';
 import 'react-native-gesture-handler';
 import React from 'react';
 import { StatusBar } from 'react-native';
@@ -8,24 +9,21 @@ import {
 } from 'react-native-safe-area-context';
 
 import { ConnectionProvider } from './core/ConnectionProvider';
-import { TokenRegistryProvider } from './core/TokenRegistryProvider';
+import { AppProvider } from './core/AppProvider';
 import MainNavigator from './navigators/MainNavigator';
-import StoreProvider from './store/Provider';
 
 const App: React.FC = () => {
   return (
-    <StoreProvider>
-      <ConnectionProvider>
-        <TokenRegistryProvider>
-          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-            <ThemeProvider>
-              <StatusBar barStyle="dark-content" />
-              <MainNavigator />
-            </ThemeProvider>
-          </SafeAreaProvider>
-        </TokenRegistryProvider>
-      </ConnectionProvider>
-    </StoreProvider>
+    <ConnectionProvider>
+      <AppProvider>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+          <ThemeProvider>
+            <StatusBar barStyle="light-content" />
+            <MainNavigator />
+          </ThemeProvider>
+        </SafeAreaProvider>
+      </AppProvider>
+    </ConnectionProvider>
   );
 };
 

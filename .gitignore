@@ -64,6 +64,3 @@ buck-out/
 
 # please use yarn
 package-lock.json
-
-# disable temporary
-/src/utils

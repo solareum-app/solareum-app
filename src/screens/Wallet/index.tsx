@@ -1,78 +1,201 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
-import { Button } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import {
+  ScrollView,
+  RefreshControl,
+  View,
+  Text,
+  StyleSheet,
+} from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 
-// import { SendButton } from '../../components/ActionButtons';
-import Icon from '../../components/Icon';
+import { getBalanceList } from '../../spl-utils/getWallet';
+import { RoundedButton } from '../../components/RoundedButton';
+import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
-import Routes from '../../navigators/Routes';
 import Header from './Header';
+import { grid } from '../../components/Styles';
+import { AppContext } from '../../core/AppProvider';
+import { price } from '../../utils/autoRound';
+import { Routes } from '../../navigators/Routes';
 
-const SendButton: React.FC = () => {
-  const navigation = useNavigation();
-  const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.TokensListed, { action: 'send' });
-  }, [navigation]);
+const s = StyleSheet.create({
+  header: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  body: {
+    padding: 10,
+    paddingBottom: 20,
+    marginBottom: 40,
+  },
+  info: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  infoBalance: {
+    marginTop: 12,
+    fontSize: 36,
+    color: COLORS.white0,
+  },
+  control: {
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: 20,
+  },
+  controlItem: {
+    marginLeft: 12,
+    marginRight: 12,
+  },
+});
 
-  return (
-    <View style={{ alignItems: 'center' }}>
-      <Button
-        buttonStyle={{ width: 64, height: 64, borderRadius: 32 }}
-        icon={<Icon name="upload" size={24} color={'white'} />}
-        onPress={onPressHandler}
-      />
-      <Text>Send</Text>
-    </View>
-  );
+const getTotalEstimate = (balanceListInfo: any[], priceData: any) => {
+  let total = 0;
+  for (let i = 0; i < balanceListInfo.length; i++) {
+    const { coingeckoId, amount, decimals } = balanceListInfo[i];
+    const tokenPrice = priceData[coingeckoId] ? priceData[coingeckoId].usd : 0;
+    const tokenValue = (tokenPrice * amount) / Math.pow(10, decimals);
+    total += tokenValue;
+  }
+  return total;
 };
 
-const ReceiveButton: React.FC = () => {
-  const navigation = useNavigation();
-  const onPressHandler = React.useCallback(() => {
-    navigation.navigate(Routes.TokensListed, { action: 'receive' });
-  }, [navigation]);
-  return (
-    <View style={{ alignItems: 'center' }}>
-      <Button
-        buttonStyle={{ width: 64, height: 64, borderRadius: 32 }}
-        icon={<Icon name="download" size={24} color={'white'} />}
-        onPress={onPressHandler}
-      />
-      <Text>Receive</Text>
-    </View>
-  );
-};
+export enum TransferAction {
+  send = 'send',
+  receive = 'receive',
+}
 
-const Wallet: React.FC = () => {
-  return (
-    <View style={{ flex: 1 }}>
-      <Header />
-      <ScrollView>
-        <View style={{ height: 250 }}>
-          <View style={{
-            flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}>
-            <Text style={{ fontSize: 48 }}>{'549.0 $'}</Text>
+class WalletScreen extends React.PureComponent {
+  state = {
+    loading: false,
+    balanceList: [],
+    balanceListInfo: [],
+    address: '',
+  };
+
+  onRefresh = async () => {
+    this.setState({ loading: true });
+    try {
+      const balanceListInfo = await this.loadBalance();
+      const gekcoIds = balanceListInfo.map((i) => i.coingeckoId);
+      this.context.setTokenList(gekcoIds);
+      this.setState({ loading: false });
+    } catch (err) {
+      console.log('err', err);
+      this.setState({ loading: false });
+    }
+  };
+
+  componentDidMount() {
+    if (this.context.wallet && this.context.tokenInfos) {
+      this.onRefresh();
+    }
+  }
+
+  componentDidUpdate = async (_, prevState: any) => {
+    if (this.context.wallet && this.context.tokenInfos) {
+      this.setState({ address: this.context.wallet.address });
+    }
+
+    // init the app when tokenInfos is ready
+    if (prevState.address !== this.state.address) {
+      this.onRefresh();
+    }
+  };
+
+  loadBalance = async () => {
+    const { tokenInfos, wallet } = this.context;
+    const balanceList = await getBalanceList(wallet);
+    const balanceListInfo = balanceList.map((i) => {
+      const address = i.mint ? i.mint : '';
+      const tokenInfo =
+        tokenInfos?.find((token) => token.address === address) || null;
+      const coingeckoInfo = tokenInfo?.extensions?.coingeckoId
+        ? { coingeckoId: tokenInfo?.extensions?.coingeckoId }
+        : {};
+      return {
+        ...i,
+        ...tokenInfo,
+        ...coingeckoInfo,
+      };
+    });
+
+    this.setState({
+      balanceList,
+      balanceListInfo,
+    });
+
+    return balanceListInfo;
+  };
+
+  render() {
+    const { balanceListInfo } = this.state;
+    const { priceData, wallet } = this.context;
+    const totalEst = getTotalEstimate(balanceListInfo, priceData);
+
+    return (
+      <View style={grid.container}>
+        <Header />
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.loading}
+              onRefresh={this.onRefresh}
+              colors={[COLORS.white2]}
+              tintColor={COLORS.white2}
+            />
+          }
+        >
+          <View style={s.header}>
+            <View style={s.info}>
+              <Text style={s.infoBalance}>${price(totalEst)}</Text>
+            </View>
+            <View style={s.control}>
+              <View style={s.controlItem}>
+                <RoundedButton
+                  onClick={() => {
+                    this.props.navigation.navigate(Routes.Search, {
+                      action: TransferAction.send,
+                    });
+                  }}
+                  title="Chuyển"
+                  iconName="upload"
+                />
+              </View>
+              <View style={s.controlItem}>
+                <RoundedButton
+                  onClick={() => {
+                    this.props.navigation.navigate(Routes.Search, {
+                      action: TransferAction.receive,
+                    });
+                  }}
+                  title="Nhận"
+                  iconName="download"
+                />
+              </View>
+              <View style={s.controlItem}>
+                <RoundedButton
+                  onClick={() => {
+                    Clipboard.setString(wallet.publicKey.toBase58());
+                  }}
+                  title="Copy"
+                  iconName="copy"
+                  type="feather"
+                />
+              </View>
+            </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'flex-end',
-              padding: 16,
-            }}>
-            <SendButton />
-            <ReceiveButton />
+          <View style={[grid.body, s.body]}>
+            <TokensList balanceListInfo={balanceListInfo} />
           </View>
-        </View>
-        <TokensList />
-      </ScrollView>
-    </View>
-  );
-};
+        </ScrollView>
+      </View>
+    );
+  }
+}
 
-export default Wallet;
+WalletScreen.contextType = AppContext;
+
+export default WalletScreen;
