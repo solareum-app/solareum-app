@@ -24,7 +24,6 @@ export type AppContextType = {
   tokenInfos: TokenInfo[];
   priceData: any;
   wallet: any;
-  setWallet: Function;
   addressId: string;
   setAddressId: Function;
   addressList: AddressInfo[];
@@ -38,7 +37,6 @@ export const AppContext = React.createContext<AppContextType>({
   tokenInfos: [],
   priceData: {},
   wallet: null,
-  setWallet: () => null,
   addressId: '',
   setAddressId: () => null,
   addressList: [],
@@ -118,11 +116,6 @@ export const AppProvider: React.FC = (props) => {
     setWallet(w);
     setAddressId(id);
   };
-  const setWalletWrapper = (w: any, data: AddressInfo) => {
-    setItem('SYS', DEFAULT_WALLET, data.id);
-    setAddressId(data.id);
-    setWallet(w);
-  };
 
   // init wallet
   const initWallet = async () => {
@@ -131,11 +124,9 @@ export const AppProvider: React.FC = (props) => {
     let data = !walletKey ? list[0] : list.find((i) => i.id === walletKey);
     data = data || list[0];
 
-    setAddressList(list);
     if (data) {
-      const w = await getWallet(data.mnemonic, data.name);
-      setAddressId(data.id);
-      setWallet(w);
+      setAddressList(list);
+      setAddressIdWrapper(data.id);
     }
   };
 
@@ -192,7 +183,6 @@ export const AppProvider: React.FC = (props) => {
         tokenInfos,
         priceData,
         wallet,
-        setWallet: setWalletWrapper,
         addressId: addressId,
         setAddressId: setAddressIdWrapper,
         addressList,
