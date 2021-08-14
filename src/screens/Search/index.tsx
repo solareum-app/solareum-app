@@ -27,12 +27,22 @@ const Search: React.FC = ({ route }) => {
     const sortedList = t?.sort((a, b) => {
       let ta = symbolList.indexOf(a.symbol) >= 0 ? 100 : 0;
       let tb = symbolList.indexOf(b.symbol) >= 0 ? 100 : 0;
+
+      // move token has account to top
+      if (a.mint) {
+        ta = 1000;
+      }
+      if (b.mint) {
+        tb = 1000;
+      }
+
       if (a.name?.includes('Sollet') || a.name?.includes('Wrapped')) {
-        ta = 50;
+        ta = ta / 2;
       }
       if (b.name?.includes('Sollet') || b.name?.includes('Wrapped')) {
-        tb = 50;
+        tb = ta / 2;
       }
+
       return tb - ta;
     });
 
