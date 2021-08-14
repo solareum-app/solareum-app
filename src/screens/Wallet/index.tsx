@@ -78,10 +78,6 @@ const WalletScreen = () => {
   const totalEst = getTotalEstimate(activeAccountList);
 
   const onRefresh = async () => {
-    if (loading) {
-      return;
-    }
-
     try {
       setLoading(true);
       await loadAccountList();
@@ -92,6 +88,9 @@ const WalletScreen = () => {
   };
 
   useEffect(() => {
+    if (loading) {
+      return;
+    }
     onRefresh();
   }, [addressId]);
 
