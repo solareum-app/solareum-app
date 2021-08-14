@@ -18,6 +18,7 @@ import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
+import { useNavigation } from '@react-navigation/native';
 
 const s = StyleSheet.create({
   header: {
@@ -69,6 +70,7 @@ export enum TransferAction {
 
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
   const { loadAccountList, wallet, accountList, addressId } = useApp();
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint)
@@ -76,6 +78,10 @@ const WalletScreen = () => {
   const totalEst = getTotalEstimate(activeAccountList);
 
   const onRefresh = async () => {
+    if (loading) {
+      return;
+    }
+
     try {
       setLoading(true);
       await loadAccountList();
@@ -110,7 +116,7 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  this.props.navigation.navigate(Routes.Search, {
+                  navigation.navigate(Routes.Search, {
                     action: TransferAction.send,
                   });
                 }}
@@ -121,7 +127,7 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  this.props.navigation.navigate(Routes.Search, {
+                  navigation.navigate(Routes.Search, {
                     action: TransferAction.receive,
                   });
                 }}

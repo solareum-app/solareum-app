@@ -116,6 +116,7 @@ const WalletPicker: React.FC = () => {
                 </ListItem.Content>
               </ListItem>
             ))}
+
             <View style={s.group}>
               <View style={s.groupItem}>
                 <Button
