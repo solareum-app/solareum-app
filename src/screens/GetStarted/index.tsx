@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,9 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import { Portal } from 'react-native-portalize';
 
+import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { grid, typo } from '../../components/Styles';
 import Routes from '../../navigators/Routes';
 import imgEducation from '../../assets/clip-education.png';
@@ -34,6 +36,7 @@ const s = StyleSheet.create({
 type Props = {};
 const GetStarted: React.FC<Props> = () => {
   const navigation = useNavigation();
+  const refPolicy = useRef();
 
   const createWalletHandler = React.useCallback(() => {
     navigation.navigate(Routes.CreateWallet);
@@ -67,10 +70,16 @@ const GetStarted: React.FC<Props> = () => {
                 các giao dịch trên nền tảng sàn phi tập trung, ngay trên điện
                 thoại.
               </Text>
-              <Text style={s.message}>
-                ▪︎ Đồng thời Solareum Wallet còn là cấu nối với Fiat currency,
-                giúp bạn nạp rút USDC/USDT thuận tiện, nhanh chóng.
-              </Text>
+            </View>
+            <View style={s.wrp}>
+              <Button
+                title="Điều khoản sử dụng"
+                type="clear"
+                onPress={() => {
+                  refPolicy.current.open();
+                }}
+                style={grid.button}
+              />
             </View>
             <View style={s.wrp}>
               <Button
@@ -82,14 +91,20 @@ const GetStarted: React.FC<Props> = () => {
             <View style={s.wrp}>
               <Button
                 title="Khôi Phục"
+                type="outline"
                 onPress={importWalletHandler}
                 style={grid.button}
-                type="clear"
               />
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
+      <Portal>
+        <FacebookWebView
+          ref={refPolicy}
+          url="https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418"
+        />
+      </Portal>
     </View>
   );
 };

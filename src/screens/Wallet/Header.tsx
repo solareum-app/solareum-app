@@ -18,9 +18,6 @@ const s = StyleSheet.create({
     paddingLeft: 16,
     opacity: 0.75,
   },
-  icon: {
-    opacity: 0.7,
-  },
   container: {
     backgroundColor: COLORS.dark2,
     borderBottomColor: COLORS.dark4,
@@ -45,13 +42,7 @@ const SettingIcon: React.FC = () => {
 
   return (
     <TouchableOpacity style={s.setting} onPress={onPressHandler}>
-      <Icon
-        type="feather"
-        name="settings"
-        color={COLORS.white4}
-        size={20}
-        style={s.icon}
-      />
+      <Icon type="feather" name="settings" color={COLORS.white4} size={20} />
     </TouchableOpacity>
   );
 };
@@ -65,13 +56,7 @@ const BackIcon: React.FC = () => {
 
   return (
     <TouchableOpacity style={s.notification} onPress={onPressHandler}>
-      <Icon
-        type="feather"
-        name="arrow-left"
-        color={COLORS.white2}
-        size={20}
-        style={s.icon}
-      />
+      <Icon type="feather" name="arrow-left" color={COLORS.white4} size={20} />
     </TouchableOpacity>
   );
 };
