@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
-import { AppState, View } from 'react-native';
+import { AppState, View, StyleSheet } from 'react-native';
+
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -20,6 +21,12 @@ import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 import { Icon } from 'react-native-elements';
 
+const s = StyleSheet.create({
+  backWrp: {
+    marginLeft: 20,
+  },
+});
+
 const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
@@ -31,8 +38,8 @@ const MainNavigator: React.FC = () => {
     if (!wallets.length) {
       navigationRef.current?.navigate(Routes.GetStarted);
     }
+
     SplashScreen.hide();
-    // TODO: Hide splashscreen after all step have completed
   };
 
   useEffect(() => {
@@ -67,15 +74,10 @@ const MainNavigator: React.FC = () => {
             },
             headerLeft: ({ canGoBack, onPress }: any) =>
               canGoBack && (
-                <View
-                  // eslint-disable-next-line react-native/no-inline-styles
-                  style={{
-                    marginLeft: 20,
-                  }}
-                >
+                <View style={s.backWrp}>
                   <Icon
-                    type="antdesign"
-                    name="left"
+                    type="feather"
+                    name="arrow-left"
                     color={COLORS.white4}
                     size={20}
                     onPress={onPress}
