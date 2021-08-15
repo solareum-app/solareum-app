@@ -68,10 +68,10 @@ const Social = () => {
           }
         >
           <View style={grid.content}>
+            {fetching ? <LoadingImage /> : null}
             {articleList.length
               ? articleList.map((i) => <SocialItem key={i.slug} model={i} />)
               : null}
-            {fetching ? <LoadingImage /> : null}
           </View>
         </ScrollView>
       </SafeAreaView>

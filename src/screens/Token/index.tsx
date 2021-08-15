@@ -1,6 +1,12 @@
-import React, { useRef, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, Image } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import React, { useRef, useEffect, useState } from 'react';
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  RefreshControl,
+} from 'react-native';
 import { Portal } from 'react-native-portalize';
 import Clipboard from '@react-native-community/clipboard';
 
@@ -15,14 +21,15 @@ import { CryptoIcon } from '../../components/CryptoIcon';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
+import { useApp } from '../../core/AppProvider';
 
 const s = StyleSheet.create({
   header: {},
   info: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 36,
+    marginBottom: 24,
   },
   infoBalance: {
     marginTop: 12,
@@ -58,15 +65,27 @@ const s = StyleSheet.create({
 
 const Token = ({ route }) => {
   const { action, token } = route.params;
+  const [loading, setLoading] = useState(false);
+  const [account, setAccount] = useState(token);
+  const { getAccountByPk } = useApp();
+
   const refSend = useRef();
   const refReceived = useRef();
-  const { symbol = '$$$', logoURI = '', amount = 0, decimals } = token;
+  const { symbol = '$$$', logoURI = '', amount = 0, decimals } = account;
 
   const openSendScreen = () => {
     refSend?.current?.open();
   };
+
   const openReceiveScreen = () => {
     refReceived?.current?.open();
+  };
+
+  const onRefresh = async () => {
+    setLoading(true);
+    const acc = await getAccountByPk(token.publicKey);
+    setAccount({ ...account, ...acc });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -82,10 +101,19 @@ const Token = ({ route }) => {
 
   return (
     <View style={grid.container}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={onRefresh}
+            colors={[COLORS.white2]}
+            tintColor={COLORS.white2}
+          />
+        }
+      >
         <View style={grid.header}>
           <View style={s.info}>
-            <CryptoIcon uri={logoURI} />
+            <CryptoIcon uri={logoURI} size={56} />
             <Text style={s.infoBalance}>
               {`${price(
                 amount / Math.pow(10, decimals),
@@ -131,10 +159,10 @@ const Token = ({ route }) => {
 
       <Portal>
         <FixedContent ref={refSend}>
-          <Send initStep={1} token={token} />
+          <Send initStep={1} token={account} />
         </FixedContent>
         <FixedContent ref={refReceived}>
-          <Receive token={token} />
+          <Receive token={account} />
         </FixedContent>
       </Portal>
     </View>
