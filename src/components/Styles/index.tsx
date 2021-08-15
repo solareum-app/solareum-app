@@ -80,6 +80,12 @@ export const typo = StyleSheet.create({
     lineHeight: 20,
     marginBottom: 8,
   },
+  critical: {
+    color: COLORS.critical,
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 8,
+  },
   input: {
     color: COLORS.white2,
   },

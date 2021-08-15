@@ -1,6 +1,6 @@
 {
   "name": "solareum",
-  "version": "2.18.5",
+  "version": "2.18.6",
   "private": true,
   "scripts": {
     "postinstall": "rn-nodeify --install --hack --yarn && yarn run cp:superstruct && yarn run cp:solana && npx jetify && npx pod-install",
@@ -51,6 +51,7 @@
     "faker": "^5.5.3",
     "https-browserify": "~0.0.0",
     "immutable-tuple": "^0.4.10",
+    "lottie-react-native": "^4.0.3",
     "path-browserify": "0.0.0",
     "process": "^0.11.0",
     "punycode": "^1.2.4",
