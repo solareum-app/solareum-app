@@ -25,7 +25,7 @@ export const createAccountList = (
     const account = accountList?.find((acc) => acc.mint === address) || {};
     const usd = price.usd || 0;
     const amount = account.amount || 0;
-    const decimals = account.decimals || 8;
+    const decimals = account.decimals || 0;
     const value = (amount / Math.pow(10, decimals)) * usd;
 
     return {
