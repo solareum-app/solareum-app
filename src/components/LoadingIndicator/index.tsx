@@ -1,6 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, View, StyleSheet, Image } from 'react-native';
-import imgMessageSent from '../../assets/clip-message-sent.png';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import LottieView from 'lottie-react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,6 +23,7 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    height: 200,
   },
   img: {
     width: 200,
@@ -32,8 +33,13 @@ const s = StyleSheet.create({
 
 export const LoadingImage: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <Image source={imgMessageSent} style={s.img} />
+    <View style={s.container}>
+      <LottieView
+        autoPlay
+        loop
+        source={require('../../theme/lottie/loading.json')}
+        style={s.img}
+      />
     </View>
   );
 };

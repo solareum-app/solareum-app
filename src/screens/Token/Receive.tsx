@@ -55,7 +55,8 @@ const s = StyleSheet.create({
   },
 });
 
-const MAX_TRY = 12;
+const MAX_TRY = 24;
+const WAIT_TIME = 10000; // 10s -> 4mins for total
 
 export const Receive = ({ token }) => {
   const { accountList, wallet, loadAccountList } = useApp();
@@ -82,7 +83,7 @@ export const Receive = ({ token }) => {
     const list = await loadAccountList();
     const acc = list.find((i) => i.address === account.address) || {};
     if (!acc.publicKey) {
-      await wait(5000);
+      await wait(WAIT_TIME);
       return pollingAccount(no - 1);
     }
     return acc;
