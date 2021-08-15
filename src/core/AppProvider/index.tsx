@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
+import { PublicKey } from '@solana/web3.js';
 
 import { getItem, setItem } from '../../storage/Collection';
 import {
@@ -10,7 +11,11 @@ import {
 } from '../../storage/WalletCollection';
 import { useConnectionConfig } from '../ConnectionProvider';
 import { clusterForEndpoint } from './clusters';
-import { getWallet, getAccountList } from '../../spl-utils/getWallet';
+import {
+  getWallet,
+  getAccountList,
+  getAccountInfo,
+} from '../../spl-utils/getWallet';
 import { Cluster } from './types';
 import { MarketProvider } from './MarketProvider';
 import { IAccount, createAccountList } from './IAccount';
@@ -20,7 +25,7 @@ const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
 export type AppContextType = {
   accountList: IAccount[];
-  updateAccountByPK: Function;
+  getAccountByPk: Function;
   tokenInfos: TokenInfo[];
   priceData: any;
   wallet: any;
@@ -33,7 +38,7 @@ export type AppContextType = {
 };
 export const AppContext = React.createContext<AppContextType>({
   accountList: [],
-  updateAccountByPK: () => null,
+  getAccountByPk: () => null,
   tokenInfos: [],
   priceData: {},
   wallet: null,
@@ -69,7 +74,20 @@ export const AppProvider: React.FC = (props) => {
   const [addressId, setAddressId] = useState('');
   const [addressList, setAddressList] = useState<AddressInfo[]>([]);
 
-  const updateAccountByPK = (pk: string) => { };
+  const getAccountByPk = async (pk: string) => {
+    const account = await getAccountInfo(new PublicKey(pk));
+    const newAccountList = accountList.map((i) => {
+      if (i.publicKey === account?.publicKey) {
+        return {
+          ...i,
+          ...account,
+        };
+      }
+      return i;
+    });
+    setAccountList(newAccountList);
+    return account;
+  };
 
   const loadAccountList = async () => {
     const accs = await getAccountList(wallet);
@@ -190,7 +208,7 @@ export const AppProvider: React.FC = (props) => {
         createAddress,
         updateAddress,
         accountList,
-        updateAccountByPK,
+        getAccountByPk,
         loadAccountList,
       }}
     >

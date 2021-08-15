@@ -25,7 +25,7 @@ export const getWallet = async (recovery, name) => {
   return wallet;
 };
 
-export const getBalanceInfo = async (publicKey) => {
+export const getAccountInfo = async (publicKey) => {
   const connection = getConnection();
   const accountInfo = await connection.getAccountInfo(publicKey);
   let { mint, owner, amount } = accountInfo?.owner.equals(TOKEN_PROGRAM_ID)
@@ -37,19 +37,21 @@ export const getBalanceInfo = async (publicKey) => {
     try {
       let { decimals } = parseMintData(mintInfo.data);
       return {
+        valid: true,
         amount,
         decimals,
         mint: mint.toBase58(),
         owner: owner.toBase58(),
-        valid: true,
+        publicKey: publicKey.toBase58(),
       };
     } catch (e) {
       return {
+        valid: false,
         amount,
         decimals: 0,
         mint,
         owner,
-        valid: false,
+        publicKey: publicKey.toBase58(),
       };
     }
   }
@@ -57,11 +59,12 @@ export const getBalanceInfo = async (publicKey) => {
   // SOL native token
   if (!mint) {
     return {
-      mint: 'SOL',
-      amount: accountInfo?.lamports ?? 0,
-      owner: publicKey.toBase58(),
-      decimals: 9,
       valid: true,
+      amount: accountInfo?.lamports ?? 0,
+      decimals: 9,
+      mint: 'SOL',
+      owner: publicKey.toBase58(),
+      publicKey: publicKey.toBase58(),
     };
   }
 
@@ -80,7 +83,7 @@ export const getAccountList = async (wallet) => {
 
     for (let i = 0; i < publicKeys.length; i++) {
       const pk = publicKeys[i];
-      const balance = await getBalanceInfo(pk);
+      const balance = await getAccountInfo(pk);
       balanceList.push({
         ...balance,
         publicKey: pk.toBase58(),
