@@ -20,6 +20,10 @@ import { Cluster } from './types';
 import { MarketProvider } from './MarketProvider';
 import { IAccount, createAccountList } from './IAccount';
 import { LoadingImage } from '../../components/LoadingIndicator';
+import {
+  storeAccountList,
+  getAccountListByOwner,
+} from '../../storage/AccountCollection';
 
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
@@ -68,11 +72,17 @@ const SOL_TOKEN = {
 export const AppProvider: React.FC = (props) => {
   const { endpoint } = useConnectionConfig();
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
-  const [accountList, setAccountList] = useState<IAccount[]>([]);
+  const [accountList, setAccountListSource] = useState<IAccount[]>([]);
   const [priceData, setPriceData] = useState({});
   const [wallet, setWallet] = useState(null);
   const [addressId, setAddressId] = useState('');
   const [addressList, setAddressList] = useState<AddressInfo[]>([]);
+
+  const setAccountList = async (list: IAccount[]) => {
+    setAccountListSource(list);
+    await storeAccountList(list);
+    return 0;
+  };
 
   const getAccountByPk = async (pk: string) => {
     const account = await getAccountInfo(new PublicKey(pk));
@@ -89,7 +99,18 @@ export const AppProvider: React.FC = (props) => {
     return account;
   };
 
+  const loadAccountFromStore = async (owner: string) => {
+    const list = await getAccountListByOwner(owner);
+    const storeAccList = createAccountList(tokenInfos, list, priceData);
+    setAccountListSource(storeAccList);
+  };
+
   const loadAccountList = async () => {
+    // get data from the store
+    const owner = wallet.publicKey.toBase58();
+    loadAccountFromStore(owner);
+
+    // get data from the chain
     const accs = await getAccountList(wallet);
     const accList = createAccountList(tokenInfos, accs, priceData);
     setAccountList(accList);
@@ -132,8 +153,10 @@ export const AppProvider: React.FC = (props) => {
     }
     setItem('SYS', DEFAULT_WALLET, address.id);
     const w = await getWallet(address.mnemonic, address.name);
+    const owner = w.publicKey.toBase58();
     setWallet(w);
     setAddressId(id);
+    loadAccountFromStore(owner);
   };
 
   // init wallet
