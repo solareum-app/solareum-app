@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Linking } from 'react-native';
 import { ListItem, Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
 import { Portal } from 'react-native-portalize';
@@ -30,8 +30,12 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.dark0,
     borderBottomColor: COLORS.dark2,
   },
+  itemWallet: {
+    color: COLORS.white2,
+  },
   itemTitle: {
     color: COLORS.white2,
+    fontSize: 14,
   },
   wrp: {
     padding: 20,
@@ -55,7 +59,7 @@ const Settings: React.FC = () => {
           >
             <Icon type="antdesign" name="wallet" color="grey" size={20} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Ví</ListItem.Title>
+              <ListItem.Title style={s.itemWallet}>Ví Crypto</ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -63,7 +67,13 @@ const Settings: React.FC = () => {
 
         <View style={s.group}>
           <Text style={s.groupName}>Cộng đồng</Text>
-          <ListItem bottomDivider onPress={() => null} containerStyle={s.item}>
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              Linking.openURL('https://wealthclub.vn');
+            }}
+          >
             <Icon type="antdesign" name="staro" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>WealthClub</ListItem.Title>
@@ -71,7 +81,13 @@ const Settings: React.FC = () => {
             <ListItem.Chevron color="grey" />
           </ListItem>
 
-          <ListItem bottomDivider onPress={() => null} containerStyle={s.item}>
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              Linking.openURL('https://twitter.com/solareum_wallet');
+            }}
+          >
             <Icon type="feather" name="twitter" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>Twitter</ListItem.Title>
@@ -79,7 +95,13 @@ const Settings: React.FC = () => {
             <ListItem.Chevron color="grey" />
           </ListItem>
 
-          <ListItem bottomDivider onPress={() => null} containerStyle={s.item}>
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              Linking.openURL('https://t.me/solareum_wallet');
+            }}
+          >
             <Icon type="antdesign" name="hearto" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>Telegram</ListItem.Title>
@@ -89,15 +111,31 @@ const Settings: React.FC = () => {
 
           <ListItem
             bottomDivider
+            containerStyle={s.item}
             onPress={() => {
               refPolicy.current.open();
             }}
-            containerStyle={s.item}
           >
             <Icon type="antdesign" name="rocket1" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
                 Điều khoản sử dụng
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
+
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              Linking.openURL('https://solareum.app');
+            }}
+          >
+            <Icon type="feather" name="zap" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>
+                Về Solareum Wallet
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />

@@ -42,22 +42,21 @@ const MainNavigator: React.FC = () => {
     SplashScreen.hide();
   };
 
-  useEffect(() => {
-    AppState.addEventListener('change', _handleAppStateChange);
-
-    return () => {
-      AppState.removeEventListener('change', _handleAppStateChange);
-    };
-  }, []);
-
-  const _handleAppStateChange = (nextAppState: any) => {
-    if (nextAppState === 'background') {
-      SplashScreen.show();
-    }
-    if (nextAppState === 'active') {
-      SplashScreen.hide();
-    }
-  };
+  // TODO: rework on this then, This is not so stable
+  // const handleAppStateChange = (nextAppState: any) => {
+  //   if (nextAppState === 'background' || nextAppState === 'inactive') {
+  //     SplashScreen.show();
+  //   }
+  //   if (nextAppState === 'active') {
+  //     SplashScreen.hide();
+  //   }
+  // };
+  // useEffect(() => {
+  //   AppState.addEventListener('change', handleAppStateChange);
+  //   return () => {
+  //     AppState.removeEventListener('change', handleAppStateChange);
+  //   };
+  // }, []);
 
   return (
     <NavigationContainer ref={navigationRef} onReady={checkInitScreen}>
