@@ -28,8 +28,8 @@ const s = StyleSheet.create({
   info: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 36,
+    marginBottom: 24,
   },
   infoBalance: {
     marginTop: 12,
@@ -113,7 +113,7 @@ const Token = ({ route }) => {
       >
         <View style={grid.header}>
           <View style={s.info}>
-            <CryptoIcon uri={logoURI} />
+            <CryptoIcon uri={logoURI} size={56} />
             <Text style={s.infoBalance}>
               {`${price(
                 amount / Math.pow(10, decimals),
