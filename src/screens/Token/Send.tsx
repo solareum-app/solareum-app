@@ -67,11 +67,8 @@ const s3 = StyleSheet.create({
 });
 
 const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
-  const { symbol } = token;
-  const { priceData } = useApp();
-  const id = token.coingeckoId;
-  const tokenPrice = priceData[id] ? priceData[id].usd : 0;
-  const estValue = amount * tokenPrice;
+  const { symbol, usd } = token;
+  const estValue = amount * usd;
 
   return (
     <View style={s.main}>
@@ -200,7 +197,7 @@ export const Send = ({ initStep = 1, token }) => {
     let sig = '';
 
     try {
-      if (!token.mint) {
+      if (token.mint === 'SOL') {
         sig = await wallet.transferSol(destination, qty);
       } else {
         sig = await wallet.transferToken(
@@ -217,7 +214,6 @@ export const Send = ({ initStep = 1, token }) => {
       setBusy(false);
       setStep(3);
     } catch (err) {
-      console.log('err', err);
       setError(err);
       setBusy(false);
     }
