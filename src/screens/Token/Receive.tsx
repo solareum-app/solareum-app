@@ -53,6 +53,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     height: 240,
   },
+  warning: { marginBottom: 16 },
 });
 
 const MAX_TRY = 24;
@@ -96,7 +97,7 @@ export const Receive = ({ token }) => {
       const acc = await pollingAccount(MAX_TRY);
       setAccount(acc);
     } catch (err) {
-      setError('Có lỗi xảy ra, vui lòng thử lại sau');
+      setError('Có lỗi xảy ra, vui lòng thử lại sau!');
     } finally {
       setLoading(false);
     }
@@ -123,7 +124,7 @@ export const Receive = ({ token }) => {
             <View>
               <View style={s.body}>
                 <View>
-                  <Text style={[typo.warning, { marginBottom: 16 }]}>
+                  <Text style={[typo.warning, s.warning]}>
                     Bạn chưa có tài khoản {account.symbol}
                   </Text>
                   <Text style={typo.normal}>
@@ -137,7 +138,7 @@ export const Receive = ({ token }) => {
                     hành động này. Bạn có đồng ý tạo tài&nbsp;khoản?
                   </Text>
                   <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
-                  {error ? <Text style={typo.caution}>{error}</Text> : null}
+                  {error ? <Text style={typo.critical}>{error}</Text> : null}
                 </View>
               </View>
               <View style={s.footer}>
