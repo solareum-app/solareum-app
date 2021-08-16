@@ -169,28 +169,40 @@ export const FacebookWebView = forwardRef((_, ref) => {
         <TouchableOpacity
           style={s.header__close}
           onPress={handleClose}
-          activeOpacity={0.75}>
-          <Image source={require('../../assets/cross.png')} />
+          activeOpacity={0.75}
+        >
+          <Image
+            style={s.iconDimension}
+            source={require('../../assets/cross.png')}
+          />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={{ opacity: back ? 1 : 0.2 }}
           onPress={handleBack}
           disabled={!back}
-          activeOpacity={0.75}>
-          <Image source={require('../../assets/arrow.png')} />
+          activeOpacity={0.75}
+        >
+          <Image
+            style={s.iconDimension}
+            source={require('../../assets/arrow.png')}
+          />
         </TouchableOpacity>
 
         <View style={s.header__center}>
           {secured && (
             <Image
-              style={{ tintColor: '#31a14c' }}
+              style={[{ tintColor: '#31a14c' }, s.iconDimension]}
               source={require('../../assets/lock.png')}
             />
           )}
           <Text
-            style={[s.header__url, { color: secured ? '#31a14c' : '#5a6266' }]}
-            numberOfLines={1}>
+            style={[
+              s.header__url,
+              { color: secured ? '#31a14c' : '#5a6266', fontSize: 14 },
+            ]}
+            numberOfLines={1}
+          >
             {url}
           </Text>
         </View>
@@ -199,8 +211,12 @@ export const FacebookWebView = forwardRef((_, ref) => {
           style={[s.header__arrowRight, { opacity: forward ? 1 : 0.2 }]}
           onPress={handleForward}
           disabled={!forward}
-          activeOpacity={0.75}>
-          <Image source={require('../../assets/arrow.png')} />
+          activeOpacity={0.75}
+        >
+          <Image
+            style={s.iconDimension}
+            source={require('../../assets/arrow.png')}
+          />
         </TouchableOpacity>
 
         <TouchableOpacity disabled>
@@ -235,7 +251,8 @@ export const FacebookWebView = forwardRef((_, ref) => {
       ref={combinedRef}
       HeaderComponent={renderHeader}
       scrollViewProps={{ showsVerticalScrollIndicator: false }}
-      onLayout={handleLayout}>
+      onLayout={handleLayout}
+    >
       <RNWebView
         ref={webViewRef}
         source={{
@@ -318,5 +335,9 @@ const s = StyleSheet.create({
         translateX: -width,
       },
     ],
+  },
+  iconDimension: {
+    width: 15,
+    height: 15,
   },
 });
