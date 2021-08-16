@@ -4,27 +4,29 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   RefreshControl,
 } from 'react-native';
 import { Portal } from 'react-native-portalize';
-import Clipboard from '@react-native-community/clipboard';
 
 import { FixedContent } from '../../components/Modals/FixedContent';
+import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
-import { grid, typo } from '../../components/Styles';
+import { grid } from '../../components/Styles';
 import { price } from '../../utils/autoRound';
-import imgDelivering from '../../assets/clip-message-sent.png';
 import { TransferAction } from '../Wallet';
 import { CryptoIcon } from '../../components/CryptoIcon';
+import { useApp } from '../../core/AppProvider';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
-import { useApp } from '../../core/AppProvider';
+import { Market } from './Market';
 
 const s = StyleSheet.create({
-  header: {},
+  header: {
+    ...grid.header,
+    paddingBottom: 20,
+  },
   info: {
     flex: 1,
     alignItems: 'center',
@@ -46,21 +48,6 @@ const s = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
   },
-  messageWrp: {
-    marginTop: 80,
-  },
-  placeholderImage: {
-    width: 240,
-    height: 120,
-    marginBottom: 16,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    opacity: 0.75,
-  },
-  helper: {
-    textAlign: 'center',
-    opacity: 0.75,
-  },
 });
 
 const Token = ({ route }) => {
@@ -69,6 +56,7 @@ const Token = ({ route }) => {
   const [account, setAccount] = useState(token);
   const { getAccountByPk } = useApp();
 
+  const refTransactionHistory = useRef();
   const refSend = useRef();
   const refReceived = useRef();
   const { symbol = '$$$', logoURI = '', amount = 0, decimals } = account;
@@ -83,7 +71,7 @@ const Token = ({ route }) => {
 
   const onRefresh = async () => {
     setLoading(true);
-    const acc = await getAccountByPk(token.publicKey);
+    const acc = await getAccountByPk(account.publicKey);
     setAccount({ ...account, ...acc });
     setLoading(false);
   };
@@ -111,7 +99,7 @@ const Token = ({ route }) => {
           />
         }
       >
-        <View style={grid.header}>
+        <View style={s.header}>
           <View style={s.info}>
             <CryptoIcon uri={logoURI} size={56} />
             <Text style={s.infoBalance}>
@@ -138,22 +126,18 @@ const Token = ({ route }) => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  Clipboard.setString(token.publicKey);
+                  refTransactionHistory.current?.open();
                 }}
-                title="Copy"
-                iconName="copy"
+                title="TX"
+                iconName="zap"
                 type="feather"
               />
             </View>
           </View>
         </View>
+
         <View style={grid.body}>
-          <View style={s.messageWrp}>
-            <Image source={imgDelivering} style={s.placeholderImage} />
-            <Text style={[typo.normal, s.helper]}>
-              Lịch sử giao dịch sẽ hiển thị ở đây
-            </Text>
-          </View>
+          <Market symbol={symbol} />
         </View>
       </ScrollView>
 
@@ -161,9 +145,15 @@ const Token = ({ route }) => {
         <FixedContent ref={refSend}>
           <Send initStep={1} token={account} />
         </FixedContent>
+
         <FixedContent ref={refReceived}>
           <Receive token={account} />
         </FixedContent>
+
+        <FacebookWebView
+          ref={refTransactionHistory}
+          url={`https://solscan.io/account/${account.publicKey}`}
+        />
       </Portal>
     </View>
   );
