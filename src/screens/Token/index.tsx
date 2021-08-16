@@ -105,6 +105,7 @@ const Token = ({ route }) => {
             <Text style={s.infoBalance}>
               {`${price(
                 amount / Math.pow(10, decimals),
+                decimals,
               )} ${symbol.toUpperCase()}`}
             </Text>
           </View>
