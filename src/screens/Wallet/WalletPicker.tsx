@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { ListItem, Button } from 'react-native-elements';
+import { ListItem, Button, Icon as RNIcon } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,7 +19,7 @@ const s = StyleSheet.create({
   group: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: 8,
+    marginTop: 24,
     marginLeft: -4,
     marginRight: -4,
   },
@@ -62,12 +62,18 @@ const s = StyleSheet.create({
     borderBottomColor: COLORS.dark2,
     borderBottomWidth: 2,
   },
+
+  listItemTitle: {
+    color: COLORS.white2,
+    fontSize: 18,
+  },
+  listItemTitleCheck: {},
 });
 
 const WalletPicker: React.FC = () => {
   const ref = useRef();
   const navigation = useNavigation();
-  const { wallet, addressList, setAddressId } = useApp();
+  const { wallet, addressList, setAddressId, addressId } = useApp();
 
   return (
     <View>
@@ -110,10 +116,18 @@ const WalletPicker: React.FC = () => {
                   color={COLORS.white2}
                 />
                 <ListItem.Content>
-                  <ListItem.Title style={{ color: COLORS.white2 }}>
+                  <ListItem.Title style={s.listItemTitle}>
                     {w.name || 'Solareum Wallet'}
                   </ListItem.Title>
                 </ListItem.Content>
+                {addressId === w.id ? (
+                  <RNIcon
+                    type="feather"
+                    name="check-circle"
+                    size={16}
+                    color={COLORS.success}
+                  />
+                ) : null}
               </ListItem>
             ))}
 

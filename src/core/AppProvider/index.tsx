@@ -216,7 +216,7 @@ export const AppProvider: React.FC = (props) => {
   useInterval(() => {
     (async () => {
       const priceMapping = await fetchPriceData(tokenInfos);
-      const accList = createAccountList(tokenInfos, [], priceMapping);
+      const accList = createAccountList(tokenInfos, accountList, priceMapping);
       setPriceData(priceMapping);
       setAccountList(accList);
     })();
