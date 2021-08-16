@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
 import { PublicKey } from '@solana/web3.js';
 
+import { useInterval } from '../../hooks/useInterval';
 import { getItem, setItem } from '../../storage/Collection';
 import {
   getListWallet,
@@ -69,6 +70,21 @@ const SOL_TOKEN = {
     'https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png',
 };
 
+const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
+  const list = tokenList.map((i) => i.extensions?.coingeckoId) || [];
+  const filtered = list.filter((i) => i !== undefined);
+  const price = await fetch(
+    `https://api.coingecko.com/api/v3/simple/price?ids=${filtered.join(
+      ',',
+    )}&vs_currencies=usd,vnd`,
+  )
+    .then((resp) => resp.json())
+    .then((data) => {
+      return data;
+    });
+  return price;
+};
+
 export const AppProvider: React.FC = (props) => {
   const { endpoint } = useConnectionConfig();
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
@@ -112,7 +128,10 @@ export const AppProvider: React.FC = (props) => {
 
     // get data from the chain
     const accs = await getAccountList(wallet);
-    const accList = createAccountList(tokenInfos, accs, priceData);
+    const priceMapping = await fetchPriceData(tokenInfos);
+    const accList = createAccountList(tokenInfos, accs, priceMapping);
+
+    setPriceData(priceMapping);
     setAccountList(accList);
     return accList;
   };
@@ -172,21 +191,6 @@ export const AppProvider: React.FC = (props) => {
     }
   };
 
-  const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
-    const list = tokenList.map((i) => i.extensions?.coingeckoId) || [];
-    const filtered = list.filter((i) => i !== undefined);
-    const price = await fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${filtered.join(
-        ',',
-      )}&vs_currencies=usd,vnd`,
-    )
-      .then((resp) => resp.json())
-      .then((data) => {
-        return data;
-      });
-    return price;
-  };
-
   useEffect(() => {
     const tokenListProvider = new TokenListProvider();
     tokenListProvider.resolve().then(async (tokenListContainer) => {
@@ -208,12 +212,15 @@ export const AppProvider: React.FC = (props) => {
     });
   }, [endpoint]);
 
-  // calculate account list
-  useEffect(() => {
-    const accList = createAccountList(tokenInfos, accountList, priceData);
-    setAccountList(accList);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tokenInfos, priceData]);
+  // fetch new price every 5 mins = 5 * 60.000
+  useInterval(() => {
+    (async () => {
+      const priceMapping = await fetchPriceData(tokenInfos);
+      const accList = createAccountList(tokenInfos, [], priceMapping);
+      setPriceData(priceMapping);
+      setAccountList(accList);
+    })();
+  }, 300000);
 
   useEffect(() => {
     initWallet();
