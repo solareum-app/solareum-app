@@ -122,7 +122,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   const onPaste = async () => {
     const text = await Clipboard.getString();
     setAddress(text);
-  }
+  };
 
   const closeQrCodeView = () => {
     setIsShowQrCode(false);
@@ -135,7 +135,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
           containerStyle={qr.rqCodeScannerContainer}
           cameraStyle={qr.camera}
           onRead={onSuccess}
-          cameraType="front"
+          cameraType="back"
           bottomContent={
             <Text style={qr.bottomText}>
               Place a barcode inside the viewfinder rectangle to scan it
@@ -170,7 +170,9 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
             onChangeText={(value) => setAddress(value)}
           />
           <View style={s.controls}>
-            <Text onPress={() => onPaste()} style={s.pasteTxt}>Paste</Text>
+            <Text onPress={() => onPaste()} style={s.pasteTxt}>
+              Paste
+            </Text>
             <Icon
               type="feather"
               name="camera"
