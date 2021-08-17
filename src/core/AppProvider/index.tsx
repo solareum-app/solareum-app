@@ -10,7 +10,6 @@ import {
   createWallet,
   updateWallet,
 } from '../../storage/WalletCollection';
-import { useConnectionConfig } from '../ConnectionProvider';
 import { clusterForEndpoint } from './clusters';
 import {
   getWallet,
@@ -25,6 +24,7 @@ import {
   storeAccountList,
   getAccountListByOwner,
 } from '../../storage/AccountCollection';
+import { MAINNET_URL } from '../../config';
 
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
@@ -86,7 +86,6 @@ const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
 };
 
 export const AppProvider: React.FC = (props) => {
-  const { endpoint } = useConnectionConfig();
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
   const [accountList, setAccountListSource] = useState<IAccount[]>([]);
   const [priceData, setPriceData] = useState({});
@@ -194,7 +193,7 @@ export const AppProvider: React.FC = (props) => {
   useEffect(() => {
     const tokenListProvider = new TokenListProvider();
     tokenListProvider.resolve().then(async (tokenListContainer) => {
-      const cluster: Cluster | undefined = clusterForEndpoint(endpoint);
+      const cluster: Cluster | undefined = clusterForEndpoint(MAINNET_URL);
       const filteredTokenListContainer =
         tokenListContainer?.filterByClusterSlug(cluster ? cluster.name : '');
       const listOfTokens =
@@ -204,13 +203,13 @@ export const AppProvider: React.FC = (props) => {
 
       const tokenList = [SOL_TOKEN, ...listOfTokens];
       const priceMapping = await fetchPriceData(tokenList);
-      const accList = createAccountList(tokenList, [], priceMapping);
+      const accList = createAccountList(tokenList, accountList, priceMapping);
 
-      setPriceData(priceMapping);
       setTokenInfos(tokenList);
+      setPriceData(priceMapping);
       setAccountList(accList);
     });
-  }, [endpoint]);
+  }, []);
 
   // fetch new price every 5 mins = 5 * 60.000
   useInterval(() => {
