@@ -115,9 +115,12 @@ export const AppProvider: React.FC = (props) => {
   };
 
   const loadAccountFromStore = async (owner: string) => {
+    const priceMapping = await fetchPriceData(tokenInfos);
     const list = await getAccountListByOwner(owner);
-    const storeAccList = createAccountList(tokenInfos, list, priceData);
+    const storeAccList = createAccountList(tokenInfos, list, priceMapping);
+
     setAccountListSource(storeAccList);
+    setPriceData(priceMapping);
   };
 
   const loadAccountList = async () => {
