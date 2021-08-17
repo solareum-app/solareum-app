@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import { Input, Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
 import LottieView from 'lottie-react-native';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { RNCamera } from 'react-native-camera';
 
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
@@ -48,19 +50,78 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   const { symbol, usd } = token;
   const estValue = amount * usd;
 
+  const openCameraQrCode = () => {
+    console.log('log');
+  };
+
+  const onSuccess = (e: any) => {
+    Linking.openURL(e.data).catch((err) =>
+      console.error('An error occured', err),
+    );
+  };
+
   return (
     <View style={s.main}>
       <Text style={typo.title}>Chuyển {symbol}</Text>
       <View style={s.body}>
-        <Input
-          label="Địa chỉ ví"
-          placeholder=""
-          style={typo.input}
-          labelStyle={s.inputLabel}
-          containerStyle={s.inputContainer}
-          value={address}
-          onChangeText={(value) => setAddress(value)}
-        />
+        <View
+          style={{
+            position: 'relative',
+          }}
+        >
+          <Input
+            label="Địa chỉ ví"
+            placeholder=""
+            style={typo.input}
+            labelStyle={s.inputLabel}
+            containerStyle={s.inputContainer}
+            value={address}
+            onChangeText={(value) => setAddress(value)}
+          />
+          <Icon
+            type="feather"
+            name="camera"
+            color={COLORS.white4}
+            size={20}
+            style={{
+              position: 'relative',
+              top: 5,
+            }}
+            onPress={() => openCameraQrCode()}
+          />
+          <QRCodeScanner
+            onRead={(e) => onSuccess(e)}
+            flashMode={RNCamera.Constants.FlashMode.torch}
+            cameraType="front"
+            topContent={
+              <Text
+                style={{
+                  color: 'white',
+                }}
+              >
+                Go to{' '}
+                <Text
+                  style={{
+                    color: 'white',
+                  }}
+                >
+                  wikipedia.org/wiki/QR_code
+                </Text>{' '}
+                on your computer and scan the QR code.
+              </Text>
+            }
+            bottomContent={
+              <Text
+                style={{
+                  color: 'white',
+                }}
+              >
+                OK. Got it!
+              </Text>
+            }
+          />
+        </View>
+
         <Input
           label="Số lượng"
           placeholder=""
