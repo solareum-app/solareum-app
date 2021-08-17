@@ -20,9 +20,9 @@ export const createAccountList = (
 ): IAccount[] => {
   return tokenList.map((i) => {
     const id = i.extensions?.coingeckoId || '-';
-    const price = priceData[id] || {};
     const address = i.address ? i.address : '';
     const account = accountList?.find((acc) => acc.mint === address) || {};
+    const price = priceData[id] || account;
     const usd = price.usd || 0;
     const amount = account.amount || 0;
     const decimals = account.decimals || 0;
