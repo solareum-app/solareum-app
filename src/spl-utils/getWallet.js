@@ -92,6 +92,6 @@ export const getAccountList = async (wallet) => {
 
     return balanceList;
   } catch (err) {
-    return [];
+    throw err;
   }
 };

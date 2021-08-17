@@ -127,13 +127,17 @@ export const AppProvider: React.FC = (props) => {
     loadAccountFromStore(owner);
 
     // get data from the chain
-    const accs = await getAccountList(wallet);
-    const priceMapping = await fetchPriceData(tokenInfos);
-    const accList = createAccountList(tokenInfos, accs, priceMapping);
+    try {
+      const accs = await getAccountList(wallet);
+      const priceMapping = await fetchPriceData(tokenInfos);
+      const accList = createAccountList(tokenInfos, accs, priceMapping);
 
-    setPriceData(priceMapping);
-    setAccountList(accList);
-    return accList;
+      setPriceData(priceMapping);
+      setAccountList(accList);
+      return accList;
+    } catch {
+      return accountList;
+    }
   };
 
   const createAddress = async (
