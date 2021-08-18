@@ -4,13 +4,13 @@ import Clipboard from '@react-native-community/clipboard';
 import { Input, Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
 import LottieView from 'lottie-react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-// import { RNCamera } from 'react-native-camera';
 
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { price } from '../../utils/autoRound';
 import { useApp } from '../../core/AppProvider';
+
+import { QRScan } from './QRScan';
 
 const s = StyleSheet.create({
   main: {
@@ -64,142 +64,86 @@ const s = StyleSheet.create({
     marginLeft: 20,
   },
   pasteTxt: {
-    color: COLORS.white0,
-  },
-});
-
-const qr = StyleSheet.create({
-  qrContainer: {
-    position: 'absolute',
-    zIndex: 10,
-    backgroundColor: COLORS.dark0,
-    flex: 1,
-    height: '120%',
-    marginRight: 20,
-  },
-  rqCodeScannerContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-    width: '100%',
-  },
-  camera: {
-    position: 'relative',
-    width: 200,
-    height: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bottomText: {
-    color: COLORS.white0,
-    top: 40,
-    maxWidth: 300,
-    textAlign: 'center',
-  },
-  iconBack: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
+    color: COLORS.white4,
   },
 });
 
 const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
-  const [isShowQrCode, setIsShowQrCode] = useState(false);
+  const [camera, setCamera] = useState(false);
   const { symbol, usd } = token;
   const estValue = amount * usd;
-
-  const openCameraQrCode = () => {
-    setIsShowQrCode(true);
-  };
-
-  const onSuccess = (e: any) => {
-    setAddress(e.data);
-    if (e.data) {
-      setIsShowQrCode(false);
-    }
-  };
 
   const onPaste = async () => {
     const text = await Clipboard.getString();
     setAddress(text);
   };
 
-  const closeQrCodeView = () => {
-    setIsShowQrCode(false);
-  };
-
-  const renderQrCodeCamera = () => {
-    return (
-      <View style={qr.qrContainer}>
-        <QRCodeScanner
-          containerStyle={qr.rqCodeScannerContainer}
-          cameraStyle={qr.camera}
-          onRead={onSuccess}
-          cameraType="back"
-          bottomContent={
-            <Text style={qr.bottomText}>
-              Place a barcode inside the viewfinder rectangle to scan it
-            </Text>
-          }
-        />
-        <Icon
-          type="feather"
-          name="arrow-left"
-          color={COLORS.white4}
-          size={20}
-          onPress={() => closeQrCodeView()}
-          containerStyle={qr.iconBack}
-        />
-      </View>
-    );
-  };
-
   return (
-    <View style={s.main}>
-      {isShowQrCode && renderQrCodeCamera()}
-      <Text style={typo.title}>Chuyển {symbol}</Text>
-      <View style={s.body}>
-        <View style={s.containerInput}>
-          <Input
-            label="Địa chỉ ví"
-            placeholder=""
-            style={typo.input}
-            labelStyle={s.inputLabel}
-            containerStyle={s.inputContainer}
-            value={address}
-            onChangeText={(value) => setAddress(value)}
-          />
-          <View style={s.controls}>
-            <Text onPress={() => onPaste()} style={s.pasteTxt}>
-              Paste
-            </Text>
-            <Icon
-              type="feather"
-              name="camera"
-              color={COLORS.white4}
-              size={20}
-              containerStyle={s.iconQrCamera}
-              onPress={() => openCameraQrCode()}
+    <View>
+      {!camera ? (
+        <View style={s.main}>
+          <Text style={typo.title}>Chuyển {symbol}</Text>
+          <View style={s.body}>
+            <View style={s.containerInput}>
+              <Input
+                label="Địa chỉ ví"
+                placeholder=""
+                style={typo.input}
+                labelStyle={s.inputLabel}
+                containerStyle={s.inputContainer}
+                value={address}
+                onChangeText={(value) => setAddress(value)}
+              />
+              <View style={s.controls}>
+                <Button
+                  title="Dán"
+                  type="clear"
+                  onPress={onPaste}
+                  titleStyle={s.pasteTxt}
+                />
+                <Button
+                  title=""
+                  type="clear"
+                  icon={
+                    <Icon
+                      type="feather"
+                      name="camera"
+                      color={COLORS.white4}
+                      size={20}
+                    />
+                  }
+                  onPress={() => {
+                    setCamera(true);
+                  }}
+                />
+              </View>
+            </View>
+
+            <Input
+              label="Số lượng"
+              placeholder=""
+              keyboardType="numbers-and-punctuation"
+              style={typo.input}
+              labelStyle={s.inputLabel}
+              containerStyle={s.inputContainer}
+              value={amount}
+              onChangeText={(value) => setAmount(value)}
+              errorMessage={`≈$${price(estValue)}`}
+              errorStyle={{ color: COLORS.white4 }}
             />
           </View>
+          <View style={s.footer}>
+            <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
+          </View>
         </View>
-
-        <Input
-          label="Số lượng"
-          placeholder=""
-          keyboardType="numbers-and-punctuation"
-          style={typo.input}
-          labelStyle={s.inputLabel}
-          containerStyle={s.inputContainer}
-          value={amount}
-          onChangeText={(value) => setAmount(value)}
-          errorMessage={`≈$${price(estValue)}`}
-          errorStyle={{ color: COLORS.white4 }}
+      ) : (
+        <QRScan
+          onChange={(value) => {
+            setAddress(value);
+            setCamera(false);
+          }}
         />
-      </View>
-      <View style={s.footer}>
-        <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
-      </View>
+      )}
     </View>
   );
 };
