@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "950192329408",
+    "project_id": "solareum-dev",
+    "storage_bucket": "solareum-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950192329408:android:94300147aa81ed73c75325",
+        "android_client_info": {
+          "package_name": "com.solareum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950192329408-qm41m454uvvkoehnri8hfhk38sl9qglf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solareum",
+            "certificate_hash": "6f6f40674922d26a9116e3eb03a41e1feab86812"
+          }
+        },
+        {
+          "client_id": "950192329408-s4tigc48r9n0q731tc871q89j9h5q0i6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGHhs6hmzlT0Zwga57C-cxPk9Ed3z-yQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950192329408-s4tigc48r9n0q731tc871q89j9h5q0i6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
