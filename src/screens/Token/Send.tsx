@@ -4,8 +4,6 @@ import Clipboard from '@react-native-community/clipboard';
 import { Input, Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
 import LottieView from 'lottie-react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-// import { RNCamera } from 'react-native-camera';
 
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
