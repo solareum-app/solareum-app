@@ -1,38 +1,36 @@
 import React from 'react';
 
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 import { COLORS } from '../../theme';
 
-const w = Dimensions.get('window').width;
-
 const qr = StyleSheet.create({
   qrContainer: {
     backgroundColor: COLORS.dark0,
-    height: 560,
-    position: 'relative',
+    height: 500,
   },
   rqCodeScannerContainer: {
-    height: 250,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   camera: {
     width: 250,
     height: 250,
-    marginBottom: 180,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  textWrp: {
-    textAlign: 'center',
-    position: 'absolute',
-    marginBottom: 40,
-    bottom: 0,
   },
   bottomText: {
-    color: COLORS.white4,
-    width: w,
+    color: COLORS.white0,
+    top: 40,
+    maxWidth: 300,
     textAlign: 'center',
+  },
+  buttonBack: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 99,
+    padding: 20,
   },
 });
 
@@ -49,11 +47,9 @@ export const QRScan = ({ onChange }) => {
         containerStyle={qr.rqCodeScannerContainer}
         cameraStyle={qr.camera}
         onRead={onSuccess}
+        bottomContent={<Text style={qr.bottomText}>Hãy scan mã QR</Text>}
         cameraType="back"
       />
-      <View style={qr.textWrp}>
-        <Text style={qr.bottomText}>Hãy scan mã QR</Text>
-      </View>
     </View>
   );
 };
