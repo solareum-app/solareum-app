@@ -1,6 +1,6 @@
 {
   "name": "solareum",
-  "version": "2.18.9",
+  "version": "2.18.8",
   "private": true,
   "scripts": {
     "postinstall": "rn-nodeify --install --hack --yarn && yarn run cp:superstruct && npx jetify && npx pod-install",
