@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import Clipboard from '@react-native-community/clipboard';
+import { Input, Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
 import LottieView from 'lottie-react-native';
 
@@ -8,6 +9,8 @@ import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { price } from '../../utils/autoRound';
 import { useApp } from '../../core/AppProvider';
+
+import { QRScan } from './QRScan';
 
 const s = StyleSheet.create({
   main: {
@@ -42,41 +45,105 @@ const s = StyleSheet.create({
     marginBottom: 8,
     color: COLORS.white4,
   },
+  containerInput: {
+    position: 'relative',
+  },
+  controls: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 100,
+    zIndex: 1,
+    backgroundColor: COLORS.dark0,
+    paddingLeft: 20,
+  },
+  iconQrCamera: {
+    marginLeft: 20,
+  },
+  pasteTxt: {
+    color: COLORS.white4,
+  },
 });
 
 const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
+  const [camera, setCamera] = useState(false);
   const { symbol, usd } = token;
   const estValue = amount * usd;
 
+  const onPaste = async () => {
+    const text = await Clipboard.getString();
+    setAddress(text);
+  };
+
   return (
-    <View style={s.main}>
-      <Text style={typo.title}>Chuyển {symbol}</Text>
-      <View style={s.body}>
-        <Input
-          label="Địa chỉ ví"
-          placeholder=""
-          style={typo.input}
-          labelStyle={s.inputLabel}
-          containerStyle={s.inputContainer}
-          value={address}
-          onChangeText={(value) => setAddress(value)}
+    <View>
+      {!camera ? (
+        <View style={s.main}>
+          <Text style={typo.title}>Chuyển {symbol}</Text>
+          <View style={s.body}>
+            <View style={s.containerInput}>
+              <Input
+                label="Địa chỉ ví"
+                placeholder=""
+                style={typo.input}
+                labelStyle={s.inputLabel}
+                containerStyle={s.inputContainer}
+                value={address}
+                onChangeText={(value) => setAddress(value)}
+              />
+              <View style={s.controls}>
+                <Button
+                  title="Dán"
+                  type="clear"
+                  onPress={onPaste}
+                  titleStyle={s.pasteTxt}
+                />
+                <Button
+                  title=""
+                  type="clear"
+                  icon={
+                    <Icon
+                      type="feather"
+                      name="camera"
+                      color={COLORS.white4}
+                      size={20}
+                    />
+                  }
+                  onPress={() => {
+                    setCamera(true);
+                  }}
+                />
+              </View>
+            </View>
+
+            <Input
+              label="Số lượng"
+              placeholder=""
+              keyboardType="numbers-and-punctuation"
+              style={typo.input}
+              labelStyle={s.inputLabel}
+              containerStyle={s.inputContainer}
+              value={amount}
+              onChangeText={(value) => setAmount(value)}
+              errorMessage={`≈$${price(estValue)}`}
+              errorStyle={{ color: COLORS.white4 }}
+            />
+          </View>
+          <View style={s.footer}>
+            <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
+          </View>
+        </View>
+      ) : (
+        <QRScan
+          onChange={(value) => {
+            setAddress(value);
+            setCamera(false);
+          }}
         />
-        <Input
-          label="Số lượng"
-          placeholder=""
-          keyboardType="numbers-and-punctuation"
-          style={typo.input}
-          labelStyle={s.inputLabel}
-          containerStyle={s.inputContainer}
-          value={amount}
-          onChangeText={(value) => setAmount(value)}
-          errorMessage={`≈$${price(estValue)}`}
-          errorStyle={{ color: COLORS.white4 }}
-        />
-      </View>
-      <View style={s.footer}>
-        <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
-      </View>
+      )}
     </View>
   );
 };
