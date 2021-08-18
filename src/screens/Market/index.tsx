@@ -11,7 +11,7 @@ import { MarketItem } from './MarketItem';
 export const Market: React.FC = () => {
   const { marketList } = useMarket();
   const [query, setQuery] = useState('');
-  const [tokens, setTokens] = useState<MarketInfo[]>(marketList);
+  const [markets, setMarkets] = useState<MarketInfo[]>(marketList);
 
   useEffect(() => {
     const q = query.toLowerCase();
@@ -20,7 +20,7 @@ export const Market: React.FC = () => {
       return name.indexOf(q) >= 0;
     });
 
-    setTokens(t);
+    setMarkets(t);
   }, [query, marketList]);
 
   return (
@@ -34,7 +34,7 @@ export const Market: React.FC = () => {
         inputContainerStyle={{ backgroundColor: COLORS.dark2 }}
       />
       <ScrollView>
-        {tokens.map((i) => (
+        {markets.map((i) => (
           <MarketItem key={i.id} item={i} />
         ))}
         <View style={{ height: 40 }} />

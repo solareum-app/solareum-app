@@ -35,5 +35,5 @@ export const price = (value: number, sigFig?: number, clamp?: number) => {
     return '0.00';
   }
 
-  return roundDown(value, sigFig, clamp);
+  return roundDown(value, sigFig, clamp).replace(/(\.0+|0+)$/, '');
 };

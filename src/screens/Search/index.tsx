@@ -8,6 +8,8 @@ import { COLORS } from '../../theme';
 import { useApp } from '../../core/AppProvider';
 import { useMarket } from '../../core/AppProvider/MarketProvider';
 
+import { TransferAction } from '../Wallet';
+
 const Search: React.FC = ({ route }) => {
   const [query, setQuery] = useState('');
   const [tokens, setTokens] = useState([]);
@@ -17,7 +19,13 @@ const Search: React.FC = ({ route }) => {
 
   useEffect(() => {
     const q = query.toLowerCase();
-    const t = accountList?.filter((i) => {
+    const accountListByAction = accountList.filter((i) => {
+      if (action === TransferAction.receive) {
+        return true;
+      }
+      return i.publicKey;
+    });
+    const t = accountListByAction?.filter((i) => {
       const name = i.name ? i.name.toLowerCase() : '';
       const symbol = i.symbol ? i.symbol.toLowerCase() : '';
       return name.indexOf(q) >= 0 || symbol.indexOf(q) >= 0;

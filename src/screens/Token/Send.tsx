@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, Linking } from 'react-native';
+import { View, Text, StyleSheet, Linking } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
+import LottieView from 'lottie-react-native';
 
-import imgDone from '../../assets/clip-done.png';
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { price } from '../../utils/autoRound';
@@ -41,28 +41,6 @@ const s = StyleSheet.create({
   groupTitle: {
     marginBottom: 8,
     color: COLORS.white4,
-  },
-});
-
-const s3 = StyleSheet.create({
-  body: {
-    marginTop: 60,
-    marginBottom: 60,
-  },
-  cover: {
-    width: 280,
-    height: 140,
-    marginBottom: 16,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  message: {
-    color: COLORS.white4,
-    textAlign: 'center',
-    fontSize: 18,
-  },
-  footer: {
-    marginTop: 40,
   },
 });
 
@@ -158,20 +136,47 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
   );
 };
 
+const s3 = StyleSheet.create({
+  body: {
+    marginTop: 20,
+    marginBottom: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  img: {
+    width: 220,
+    height: 220,
+  },
+  message: {
+    color: COLORS.white4,
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  footer: {
+    marginTop: 20,
+  },
+});
+
 const Step3 = ({ signature }) => {
   const openBrowser = () => {
-    Linking.openURL(`https://explorer.solana.com/tx/${signature}`);
+    Linking.openURL(`https://solscan.io/tx/${signature}`);
   };
 
   return (
     <View style={s.main}>
       <View style={s3.body}>
-        <Image source={imgDone} style={s3.cover} />
+        <LottieView
+          autoPlay
+          loop
+          source={require('../../theme/lottie/check.json')}
+          style={s3.img}
+        />
         <Text style={s3.message}>Giao dịch thành công</Text>
       </View>
       <View style={s.footer}>
         <Button
-          title="Chi tiết"
+          title="Chi tiết giao dịch"
           buttonStyle={s.button}
           type="clear"
           onPress={openBrowser}
