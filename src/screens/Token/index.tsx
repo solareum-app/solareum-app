@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import { Portal } from 'react-native-portalize';
 
@@ -17,6 +18,7 @@ import { price } from '../../utils/autoRound';
 import { TransferAction } from '../Wallet';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import { useApp } from '../../core/AppProvider';
+import { EventMessage } from '../EventMessage/EventMessage';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -47,6 +49,7 @@ const s = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
   },
+<<<<<<< HEAD
   est: {
     ...typo.normal,
     marginBottom: 0,
@@ -56,6 +59,27 @@ const s = StyleSheet.create({
     ...typo.helper,
     marginTop: 12,
     marginBottom: 0,
+=======
+
+  alertZone: {
+    position: 'absolute',
+    top: 60,
+    width: Dimensions.get('window').width,
+    height: 100,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999,
+  },
+  messageWrp: {
+    backgroundColor: COLORS.dark4,
+    borderRadius: 16,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+  },
+  alertZoneMessage: {
+    color: COLORS.white2,
+>>>>>>> Show message when user copy address
   },
 });
 
@@ -175,6 +199,8 @@ const Token = ({ route }) => {
           ref={refTransactionHistory}
           url={`https://solscan.io/account/${account.publicKey}`}
         />
+
+        <EventMessage />
       </Portal>
     </View>
   );
