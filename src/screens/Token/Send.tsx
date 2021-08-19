@@ -50,8 +50,8 @@ const s = StyleSheet.create({
   },
   controls: {
     position: 'absolute',
-    top: 0,
     right: 0,
+    top: 22,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -65,6 +65,7 @@ const s = StyleSheet.create({
   },
   pasteTxt: {
     color: COLORS.white4,
+    fontSize: 16,
   },
 });
 

@@ -179,8 +179,6 @@ const Token = ({ route }) => {
           ref={refTransactionHistory}
           url={`https://solscan.io/account/${account.publicKey}`}
         />
-
-        <EventMessage />
       </Portal>
     </View>
   );
