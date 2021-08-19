@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   RefreshControl,
-  Dimensions,
 } from 'react-native';
 import { Portal } from 'react-native-portalize';
 
@@ -13,7 +12,7 @@ import { FixedContent } from '../../components/Modals/FixedContent';
 import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
-import { grid } from '../../components/Styles';
+import { grid, typo } from '../../components/Styles';
 import { price } from '../../utils/autoRound';
 import { TransferAction } from '../Wallet';
 import { CryptoIcon } from '../../components/CryptoIcon';
@@ -36,7 +35,6 @@ const s = StyleSheet.create({
     marginBottom: 24,
   },
   infoBalance: {
-    marginTop: 12,
     fontSize: 28,
     color: COLORS.white0,
   },
@@ -50,25 +48,14 @@ const s = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
   },
-
-  alertZone: {
-    position: 'absolute',
-    top: 60,
-    width: Dimensions.get('window').width,
-    height: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 9999,
+  est: {
+    ...typo.normal,
+    marginBottom: 0,
   },
-  messageWrp: {
-    backgroundColor: COLORS.dark4,
-    borderRadius: 16,
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-  },
-  alertZoneMessage: {
-    color: COLORS.white2,
+  name: {
+    ...typo.helper,
+    marginTop: 12,
+    marginBottom: 0,
   },
 });
 
@@ -81,7 +68,15 @@ const Token = ({ route }) => {
   const refTransactionHistory = useRef();
   const refSend = useRef();
   const refReceived = useRef();
-  const { symbol = '$$$', logoURI = '', amount = 0, decimals } = account;
+  const {
+    symbol = '$$$',
+    logoURI = '',
+    amount = 0,
+    decimals,
+    name,
+    usd,
+  } = account;
+  const est = (amount / Math.pow(10, decimals)) * usd;
 
   const openSendScreen = () => {
     refSend?.current?.open();
@@ -125,12 +120,14 @@ const Token = ({ route }) => {
         <View style={s.header}>
           <View style={s.info}>
             <CryptoIcon uri={logoURI} size={56} />
+            <Text style={s.name}>{name}</Text>
             <Text style={s.infoBalance}>
               {`${price(
                 amount / Math.pow(10, decimals),
                 decimals,
               )} ${symbol.toUpperCase()}`}
             </Text>
+            <Text style={s.est}>≈${price(est)}</Text>
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
