@@ -187,6 +187,8 @@ const Token = ({ route }) => {
       </ScrollView>
 
       <Portal>
+        <EventMessage />
+
         <FixedContent ref={refSend}>
           <Send initStep={1} token={account} />
         </FixedContent>
@@ -199,8 +201,6 @@ const Token = ({ route }) => {
           ref={refTransactionHistory}
           url={`https://solscan.io/account/${account.publicKey}`}
         />
-
-        <EventMessage />
       </Portal>
     </View>
   );
