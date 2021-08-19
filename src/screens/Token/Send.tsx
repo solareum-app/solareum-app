@@ -50,8 +50,8 @@ const s = StyleSheet.create({
   },
   controls: {
     position: 'absolute',
-    top: -10,
     right: 0,
+    top: 20,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
