@@ -51,7 +51,7 @@ const s = StyleSheet.create({
   controls: {
     position: 'absolute',
     right: 0,
-    top: 20,
+    top: 22,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
