@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   RefreshControl,
-  Dimensions,
 } from 'react-native';
 import { Portal } from 'react-native-portalize';
 
