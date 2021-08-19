@@ -200,6 +200,11 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
       <View style={s.footer}>
         {error && error.message ? (
           <View style={s.group}>
+            <Text style={[typo.warning]}>{error.message}</Text>
+          </View>
+        ) : null}
+        {error && !error.message ? (
+          <View style={s.group}>
             <Text style={[typo.warning]}>{getErrorMessage(error.message)}</Text>
           </View>
         ) : null}
