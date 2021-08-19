@@ -33,7 +33,7 @@ const s = StyleSheet.create({
   },
   input: {},
   footer: {
-    marginTop: 40,
+    marginTop: 20,
   },
   button: {
     height: 44,
@@ -151,6 +151,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
 
 const Step2 = ({ token, address, amount, next, busy, error }) => {
   const { symbol } = token;
+
   return (
     <View style={s.main}>
       <Text style={typo.title}>Chuyển {symbol}</Text>
@@ -185,7 +186,12 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
         </View>
       </View>
       <View style={s.footer}>
-        {error ? (
+        {error && error.message ? (
+          <View style={s.group}>
+            <Text style={[typo.warning]}>{error.message}</Text>
+          </View>
+        ) : null}
+        {error && !error.message ? (
           <View style={s.group}>
             <Text style={[typo.warning]}>
               Hiện tại chúng tôi chưa hỗ trợ chuyển token thông qua địa chỉ SOL.
@@ -265,11 +271,17 @@ export const Send = ({ initStep = 1, token }) => {
 
   const transfer = async () => {
     setBusy(true);
-    const destination = new PublicKey(address);
+
     let qty = Math.round(parseFloat(amount) * Math.pow(10, token.decimals));
     let sig = '';
 
+    if (qty === 0) {
+      setError({ message: 'Số lượng không đúng, vui lòng sử dụng dấu `.`' });
+      return;
+    }
+
     try {
+      const destination = new PublicKey(address);
       if (token.mint === 'SOL') {
         sig = await wallet.transferSol(destination, qty);
       } else {
