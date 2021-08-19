@@ -15,7 +15,7 @@ import { QRScan } from './QRScan';
 const s = StyleSheet.create({
   main: {
     backgroundColor: COLORS.dark0,
-    minHeight: 400,
+    minHeight: 320,
     padding: 20,
     paddingBottom: 40,
     borderTopLeftRadius: 20,
@@ -74,6 +74,14 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   const { symbol, usd } = token;
   const estValue = amount * usd;
 
+  const onAmountChange = (value) => {
+    // dont allow comma
+    if (value.includes(',')) {
+      return;
+    }
+    setAmount(value);
+  };
+
   const onPaste = async () => {
     const text = await Clipboard.getString();
     setAddress(text);
@@ -123,12 +131,12 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
             <Input
               label="Số lượng"
               placeholder=""
-              keyboardType="numbers-and-punctuation"
+              keyboardType="decimal-pad"
               style={typo.input}
               labelStyle={s.inputLabel}
               containerStyle={s.inputContainer}
               value={amount}
-              onChangeText={(value) => setAmount(value)}
+              onChangeText={(value) => onAmountChange(value)}
               errorMessage={`≈$${price(estValue)}`}
               errorStyle={{ color: COLORS.white4 }}
             />
