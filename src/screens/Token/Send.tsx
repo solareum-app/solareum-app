@@ -82,7 +82,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
 
   const onAmountChange = (value) => {
     // dont allow comma
-    if (value.includes(',')) {
+    if (value.includes(',') || !checkDecimalPlaces(value)) {
       return;
     }
     setAmount(value);
