@@ -69,6 +69,12 @@ const s = StyleSheet.create({
   },
 });
 
+// TODO, currently it only work with `.`
+// We should to make it works with dynamic decimal seperator depends on country
+const checkDecimalPlaces = (valueStr) => {
+  return (valueStr.match(new RegExp('\\.', 'g')) || []).length <= 1;
+};
+
 const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   const [camera, setCamera] = useState(false);
   const { symbol, usd } = token;
@@ -76,7 +82,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
 
   const onAmountChange = (value) => {
     // dont allow comma
-    if (value.includes(',')) {
+    if (value.includes(',') || !checkDecimalPlaces(value)) {
       return;
     }
     setAmount(value);
