@@ -24,7 +24,7 @@ target 'Solareum' do
    post_install do |installer|
      ################### ADD THE FOLLOWING #########################
        installer.pods_project.targets.each do |target|
-         if target.name == "React-Core.common-AccessibilityResources"
+         if target.name == "React-Core-AccessibilityResources"
            target.remove_from_project
          end
        end
