@@ -110,6 +110,13 @@ export const Receive = ({ token }) => {
   };
 
   useEffect(() => {
+    const acc = accountList.find((i) => i.address === token.address);
+    if (acc) {
+      setAccount(acc);
+    }
+  }, [accountList]);
+
+  useEffect(() => {
     (async () => {
       const fee = await wallet.tokenAccountCost();
       setMintAccountFee(fee / Math.pow(10, sol.decimals));
