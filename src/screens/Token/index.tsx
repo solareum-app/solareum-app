@@ -51,6 +51,7 @@ const s = StyleSheet.create({
   est: {
     ...typo.normal,
     marginBottom: 0,
+    lineHeight: 20,
   },
   name: {
     ...typo.helper,
