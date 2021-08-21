@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import Clipboard from '@react-native-community/clipboard';
+import { Input, Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
 import LottieView from 'lottie-react-native';
 
@@ -9,10 +10,12 @@ import { COLORS } from '../../theme';
 import { price } from '../../utils/autoRound';
 import { useApp } from '../../core/AppProvider';
 
+import { QRScan } from './QRScan';
+
 const s = StyleSheet.create({
   main: {
     backgroundColor: COLORS.dark0,
-    minHeight: 400,
+    minHeight: 320,
     padding: 20,
     paddingBottom: 40,
     borderTopLeftRadius: 20,
@@ -30,7 +33,7 @@ const s = StyleSheet.create({
   },
   input: {},
   footer: {
-    marginTop: 40,
+    marginTop: 20,
   },
   button: {
     height: 44,
@@ -42,47 +45,128 @@ const s = StyleSheet.create({
     marginBottom: 8,
     color: COLORS.white4,
   },
+  containerInput: {
+    position: 'relative',
+  },
+  controls: {
+    position: 'absolute',
+    right: 0,
+    top: 22,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 100,
+    zIndex: 1,
+    backgroundColor: COLORS.dark0,
+    paddingLeft: 20,
+  },
+  iconQrCamera: {
+    marginLeft: 20,
+  },
+  pasteTxt: {
+    color: COLORS.white4,
+    fontSize: 16,
+  },
 });
 
+// TODO, currently it only work with `.`
+// We should to make it works with dynamic decimal seperator depends on country
+const checkDecimalPlaces = (valueStr) => {
+  return (valueStr.match(new RegExp('\\.', 'g')) || []).length <= 1;
+};
+
 const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
+  const [camera, setCamera] = useState(false);
   const { symbol, usd } = token;
   const estValue = amount * usd;
 
+  const onAmountChange = (value) => {
+    // dont allow comma
+    const v = value.replace(',', '.');
+    if (!checkDecimalPlaces(v)) {
+      return;
+    }
+    setAmount(v);
+  };
+
+  const onPaste = async () => {
+    const text = await Clipboard.getString();
+    setAddress(text);
+  };
+
   return (
-    <View style={s.main}>
-      <Text style={typo.title}>Chuyển {symbol}</Text>
-      <View style={s.body}>
-        <Input
-          label="Địa chỉ ví"
-          placeholder=""
-          style={typo.input}
-          labelStyle={s.inputLabel}
-          containerStyle={s.inputContainer}
-          value={address}
-          onChangeText={(value) => setAddress(value)}
+    <View>
+      {!camera ? (
+        <View style={s.main}>
+          <Text style={typo.title}>Chuyển {symbol}</Text>
+          <View style={s.body}>
+            <View style={s.containerInput}>
+              <Input
+                label="Địa chỉ ví"
+                placeholder=""
+                style={typo.input}
+                labelStyle={s.inputLabel}
+                containerStyle={s.inputContainer}
+                value={address}
+                onChangeText={(value) => setAddress(value)}
+              />
+              <View style={s.controls}>
+                <Button
+                  title="Dán"
+                  type="clear"
+                  onPress={onPaste}
+                  titleStyle={s.pasteTxt}
+                />
+                <Button
+                  title=""
+                  type="clear"
+                  icon={
+                    <Icon
+                      type="feather"
+                      name="camera"
+                      color={COLORS.white4}
+                      size={20}
+                    />
+                  }
+                  onPress={() => {
+                    setCamera(true);
+                  }}
+                />
+              </View>
+            </View>
+
+            <Input
+              label="Số lượng"
+              placeholder=""
+              keyboardType="decimal-pad"
+              style={typo.input}
+              labelStyle={s.inputLabel}
+              containerStyle={s.inputContainer}
+              value={amount}
+              onChangeText={(value) => onAmountChange(value)}
+              errorMessage={`≈$${price(estValue)}`}
+              errorStyle={{ color: COLORS.white4 }}
+            />
+          </View>
+          <View style={s.footer}>
+            <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
+          </View>
+        </View>
+      ) : (
+        <QRScan
+          onChange={(value) => {
+            setAddress(value);
+            setCamera(false);
+          }}
         />
-        <Input
-          label="Số lượng"
-          placeholder=""
-          keyboardType="numbers-and-punctuation"
-          style={typo.input}
-          labelStyle={s.inputLabel}
-          containerStyle={s.inputContainer}
-          value={amount}
-          onChangeText={(value) => setAmount(value)}
-          errorMessage={`≈$${price(estValue)}`}
-          errorStyle={{ color: COLORS.white4 }}
-        />
-      </View>
-      <View style={s.footer}>
-        <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
-      </View>
+      )}
     </View>
   );
 };
 
 const Step2 = ({ token, address, amount, next, busy, error }) => {
   const { symbol } = token;
+
   return (
     <View style={s.main}>
       <Text style={typo.title}>Chuyển {symbol}</Text>
@@ -117,7 +201,12 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
         </View>
       </View>
       <View style={s.footer}>
-        {error ? (
+        {error && error.message ? (
+          <View style={s.group}>
+            <Text style={[typo.warning]}>{error.message}</Text>
+          </View>
+        ) : null}
+        {error && !error.message ? (
           <View style={s.group}>
             <Text style={[typo.warning]}>
               Hiện tại chúng tôi chưa hỗ trợ chuyển token thông qua địa chỉ SOL.
@@ -197,11 +286,17 @@ export const Send = ({ initStep = 1, token }) => {
 
   const transfer = async () => {
     setBusy(true);
-    const destination = new PublicKey(address);
+
     let qty = Math.round(parseFloat(amount) * Math.pow(10, token.decimals));
     let sig = '';
 
+    if (qty === 0) {
+      setError({ message: 'Số lượng không đúng, vui lòng sử dụng dấu `.`' });
+      return;
+    }
+
     try {
+      const destination = new PublicKey(address);
       if (token.mint === 'SOL') {
         sig = await wallet.transferSol(destination, qty);
       } else {

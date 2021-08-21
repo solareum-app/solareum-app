@@ -11,6 +11,7 @@ export type IAccount = {
   isMinted: boolean;
   usd: number;
   vnd: number;
+  sortName: string;
 } & TokenInfo;
 
 export const createAccountList = (
@@ -27,6 +28,10 @@ export const createAccountList = (
     const amount = account.amount || 0;
     const decimals = account.decimals || 0;
     const value = (amount / Math.pow(10, decimals)) * usd;
+    const sortName = i.name
+      .replace('Wrapped', '')
+      .replace('(Sollet)', '')
+      .trim();
 
     return {
       ...i,
@@ -40,6 +45,7 @@ export const createAccountList = (
       isMinted: !!account.publicKey,
       usd: price.usd || 0,
       vnd: price.vnd || 0,
+      sortName,
     } as IAccount;
   });
 };

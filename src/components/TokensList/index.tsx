@@ -18,6 +18,7 @@ type TokenInfoItemProps = TokenInfo & {
 const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
   const {
     name = '$$$',
+    sortName,
     symbol = '-',
     logoURI = '',
     amount = 0,
@@ -48,7 +49,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
         <ListItem.Title
           style={{ color: COLORS.white0, fontSize: FONT_SIZES.md }}
         >
-          {name}
+          {sortName || name}
         </ListItem.Title>
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}

@@ -24,7 +24,7 @@ const s = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: COLORS.dark0,
+    backgroundColor: 'transparent',
   },
   loading: {
     top: 0,
@@ -119,6 +119,8 @@ export default class SolareumDEX extends Component<Props, State> {
   render() {
     const { marketId } = this.props.route.params;
     let uri = 'https://dex.solareum.app';
+    // let uri = 'http://192.168.33.100:5000';
+
     if (marketId) {
       uri += `/#/market/${marketId}`;
     }
@@ -130,7 +132,6 @@ export default class SolareumDEX extends Component<Props, State> {
           source={{ uri }}
           ref={this.webView}
           style={s.container}
-          containerStyle={s.container}
           injectedJavaScriptBeforeContentLoaded={INJECTED_SCRIPT}
           automaticallyAdjustContentInsets={false}
           onMessage={this.onMessage}

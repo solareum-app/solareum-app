@@ -5,8 +5,10 @@ import {
   View,
   Text,
   StyleSheet,
+  DeviceEventEmitter,
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
+import { Portal } from 'react-native-portalize';
 
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
@@ -19,6 +21,7 @@ import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useNavigation } from '@react-navigation/native';
+import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
 
 const s = StyleSheet.create({
   header: {
@@ -134,7 +137,9 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  Clipboard.setString(wallet.publicKey.toBase58());
+                  const address = wallet.publicKey.toBase58();
+                  Clipboard.setString(address);
+                  DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
                 }}
                 title="Copy"
                 iconName="copy"
@@ -147,6 +152,10 @@ const WalletScreen = () => {
           <TokensList balanceListInfo={activeAccountList} />
         </View>
       </ScrollView>
+
+      <Portal>
+        <EventMessage />
+      </Portal>
     </View>
   );
 };

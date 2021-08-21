@@ -19,12 +19,15 @@ const Search: React.FC = ({ route }) => {
 
   useEffect(() => {
     const q = query.toLowerCase();
-    const accountListByAction = accountList.filter((i) => {
-      if (action === TransferAction.receive) {
-        return true;
-      }
-      return i.publicKey;
-    });
+    const accountListByAction = accountList
+      .filter((i) => {
+        if (action === TransferAction.receive) {
+          return true;
+        }
+        return i.publicKey;
+      })
+      .sort((a, b) => b.value - a.value);
+
     const t = accountListByAction?.filter((i) => {
       const name = i.name ? i.name.toLowerCase() : '';
       const symbol = i.symbol ? i.symbol.toLowerCase() : '';

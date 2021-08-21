@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
 import { Button } from 'react-native-elements';
@@ -11,6 +11,7 @@ import { RoundedButton } from '../../components/RoundedButton';
 import { typo } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider';
 import { wait } from '../../utils';
+import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 
 const s = StyleSheet.create({
   main: {
@@ -75,6 +76,7 @@ export const Receive = ({ token }) => {
 
   const copyToClipboard = () => {
     Clipboard.setString(address);
+    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
   };
 
   const pollingAccount = async (no: number) => {
@@ -106,6 +108,13 @@ export const Receive = ({ token }) => {
   const dismiss = () => {
     setUseSol(true);
   };
+
+  useEffect(() => {
+    const acc = accountList.find((i) => i.address === token.address);
+    if (acc) {
+      setAccount(acc);
+    }
+  }, [accountList]);
 
   useEffect(() => {
     (async () => {

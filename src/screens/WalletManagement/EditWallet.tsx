@@ -7,54 +7,9 @@ import Clipboard from '@react-native-community/clipboard';
 import Icon from '../../components/Icon';
 import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
-import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
+import { COLORS } from '../../theme';
 import { useApp } from '../../core/AppProvider';
-
-const s = StyleSheet.create({
-  main: {
-    flex: 1,
-  },
-  body: {
-    padding: 20,
-  },
-  title: {
-    textAlign: 'left',
-    fontSize: FONT_SIZES.lg,
-  },
-  wrp: {
-    marginBottom: 12,
-  },
-  mnemonicWrp: {
-    backgroundColor: COLORS.dark0,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    overflow: 'hidden',
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  mnemonic: {
-    color: COLORS.white0,
-    fontSize: FONT_SIZES.lg,
-    lineHeight: LINE_HEIGHT.lg,
-  },
-  footer: {
-    backgroundColor: COLORS.dark2,
-    position: 'absolute',
-    bottom: 0,
-    flex: 1,
-    padding: 20,
-    paddingTop: 0,
-    paddingBottom: 40,
-    width: '100%',
-  },
-  checkboxContainer: {
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
-    marginLeft: 0,
-    paddingLeft: 0,
-  },
-});
+import { s } from './CreateWallet';
 
 type Props = {};
 
@@ -91,7 +46,7 @@ const EditWallet: React.FC<Props> = ({ route }) => {
               label="Tên Ví"
               placeholder=""
               style={typo.input}
-              labelStyle={input.label}
+              labelStyle={s.label}
               containerStyle={input.container}
               value={walletName}
               onChangeText={(text: string) => setWalletName(text)}
@@ -128,8 +83,8 @@ const EditWallet: React.FC<Props> = ({ route }) => {
                 bạn bị mất hoặc hư hỏng.
               </Text>
               <Text style={typo.helper}>
-                Mã khôi phục này chỉ được lưu trên thiết bị của bạn, và được mã
-                hóa bằng mã PIN của bạn.
+                Mã khôi phục này chỉ được lưu trên thiết bị của bạn.
+                {/* và được mã hóa bằng mã PIN của bạn. */}
               </Text>
               <Text style={typo.helper}>
                 Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó

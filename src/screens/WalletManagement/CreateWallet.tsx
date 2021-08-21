@@ -11,21 +11,33 @@ import { grid, typo, input } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
 import { useApp } from '../../core/AppProvider';
 
-const s = StyleSheet.create({
+export const s = StyleSheet.create({
   main: {
     flex: 1,
   },
   body: {
     padding: 20,
+    marginBottom: 120,
   },
   title: {
     textAlign: 'left',
     fontSize: FONT_SIZES.lg,
+    color: COLORS.blue2,
+  },
+  label: {
+    ...typo.title,
+    textAlign: 'left',
+    fontSize: FONT_SIZES.lg,
+    color: COLORS.blue2,
+    fontWeight: 'bold',
+    marginBottom: 0,
   },
   wrp: {
     marginBottom: 12,
   },
   mnemonicWrp: {
+    borderWidth: 1,
+    borderColor: COLORS.blue4,
     backgroundColor: COLORS.dark0,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -102,7 +114,7 @@ const CreateWallet: React.FC<Props> = () => {
               label="Tên Ví"
               placeholder=""
               style={typo.input}
-              labelStyle={input.label}
+              labelStyle={s.label}
               containerStyle={input.container}
               value={walletName}
               onChangeText={(text: string) => setWalletName(text)}
@@ -139,8 +151,8 @@ const CreateWallet: React.FC<Props> = () => {
                 bạn bị mất hoặc hư hỏng.
               </Text>
               <Text style={typo.helper}>
-                Mã khôi phục này chỉ được lưu trên thiết bị của bạn, và được mã
-                hóa bằng mã PIN của bạn.
+                Mã khôi phục này chỉ được lưu trên thiết bị của bạn.
+                {/* và được mã hóa bằng mã PIN của bạn. */}
               </Text>
               <Text style={typo.helper}>
                 Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó

@@ -12,11 +12,12 @@ import { FixedContent } from '../../components/Modals/FixedContent';
 import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme/colors';
-import { grid } from '../../components/Styles';
+import { grid, typo } from '../../components/Styles';
 import { price } from '../../utils/autoRound';
 import { TransferAction } from '../Wallet';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import { useApp } from '../../core/AppProvider';
+import { EventMessage } from '../EventMessage/EventMessage';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -34,7 +35,6 @@ const s = StyleSheet.create({
     marginBottom: 24,
   },
   infoBalance: {
-    marginTop: 12,
     fontSize: 28,
     color: COLORS.white0,
   },
@@ -48,6 +48,16 @@ const s = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
   },
+  est: {
+    ...typo.normal,
+    marginBottom: 0,
+    lineHeight: 20,
+  },
+  name: {
+    ...typo.helper,
+    marginTop: 12,
+    marginBottom: 0,
+  },
 });
 
 const Token = ({ route }) => {
@@ -59,7 +69,15 @@ const Token = ({ route }) => {
   const refTransactionHistory = useRef();
   const refSend = useRef();
   const refReceived = useRef();
-  const { symbol = '$$$', logoURI = '', amount = 0, decimals } = account;
+  const {
+    symbol = '$$$',
+    logoURI = '',
+    amount = 0,
+    decimals,
+    name,
+    usd,
+  } = account;
+  const est = (amount / Math.pow(10, decimals)) * usd;
 
   const openSendScreen = () => {
     refSend?.current?.open();
@@ -77,6 +95,7 @@ const Token = ({ route }) => {
   };
 
   useEffect(() => {
+    // open action panel
     setTimeout(() => {
       if (action === TransferAction.send) {
         openSendScreen();
@@ -102,12 +121,14 @@ const Token = ({ route }) => {
         <View style={s.header}>
           <View style={s.info}>
             <CryptoIcon uri={logoURI} size={56} />
+            <Text style={s.name}>{name}</Text>
             <Text style={s.infoBalance}>
               {`${price(
                 amount / Math.pow(10, decimals),
                 decimals,
               )} ${symbol.toUpperCase()}`}
             </Text>
+            <Text style={s.est}>≈${price(est)}</Text>
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
@@ -143,6 +164,8 @@ const Token = ({ route }) => {
       </ScrollView>
 
       <Portal>
+        <EventMessage />
+
         <FixedContent ref={refSend}>
           <Send initStep={1} token={account} />
         </FixedContent>

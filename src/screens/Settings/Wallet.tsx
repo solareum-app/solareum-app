@@ -10,11 +10,14 @@ import {
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
 
+import { ImageCached } from '../../components/ImageCached/ImageCached';
 import Routes from '../../navigators/Routes';
 import { AddressInfo } from '../../storage/WalletCollection';
 import { useApp } from '../../core/AppProvider';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
+import walletIcon from '../../assets/Solareum_Wallet.png';
+import walletIconActive from '../../assets/Solareum_Logo.png';
 
 const s = StyleSheet.create({
   main: {
@@ -24,22 +27,31 @@ const s = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: COLORS.dark4,
-    marginBottom: 16,
+    backgroundColor: COLORS.dark0,
+    borderColor: COLORS.dark0,
+    marginBottom: 12,
   },
   iconLeft: {
     width: 48,
     height: 48,
-    borderRadius: 48,
-    padding: 8,
-    backgroundColor: COLORS.white0,
     marginRight: 16,
     flex: 0,
     position: 'relative',
   },
+  walletIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 48,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: COLORS.dark2,
+  },
+  walletIconActive: {
+    borderColor: COLORS.success,
+  },
   checkItem: {
     position: 'absolute',
-    top: 0,
+    top: -4,
     right: -8,
     width: 20,
     height: 20,
@@ -71,12 +83,10 @@ const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
   return (
     <TouchableOpacity style={s.main} onPress={onSelect}>
       <View style={s.iconLeft}>
-        <Icon type="feather" name="shield" color={COLORS.blue2} size={32} />
-        {active ? (
-          <View style={s.checkItem}>
-            <Icon type="feather" name="check" color={COLORS.white0} size={16} />
-          </View>
-        ) : null}
+        <ImageCached
+          source={active ? walletIconActive : walletIcon}
+          style={[s.walletIcon, active ? s.walletIconActive : {}]}
+        />
       </View>
       <Text style={s.title}>{item.name}</Text>
       <TouchableOpacity
