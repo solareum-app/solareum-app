@@ -82,10 +82,11 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
 
   const onAmountChange = (value) => {
     // dont allow comma
-    if (value.includes(',') || !checkDecimalPlaces(value)) {
+    const v = value.replace(',', '.');
+    if (!checkDecimalPlaces(v)) {
       return;
     }
-    setAmount(value);
+    setAmount(v);
   };
 
   const onPaste = async () => {
