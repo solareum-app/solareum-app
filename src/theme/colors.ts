@@ -7,8 +7,11 @@ export const COLORS = {
   white2: '#c5c4c4',
   white4: '#6E6C6C',
 
-  dark0: '#121010',
-  dark2: '#1B1717',
+  // dark0: '#121010',
+  // dark2: '#1B1717',
+  // dark4: '#312E2E',
+  dark0: '#060404',
+  dark2: '#121010',
   dark4: '#312E2E',
 
   warning: '#F38B00',
@@ -16,4 +19,7 @@ export const COLORS = {
   success: '#22C38E',
   alert: '#F54D4D',
   critical: '#FF0000',
+
+  sell: '#22C38E',
+  buy: '#FF0000',
 };
