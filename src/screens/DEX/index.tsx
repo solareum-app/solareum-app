@@ -111,6 +111,7 @@ export default class SolareumDEX extends Component<Props, State> {
       params: {
         publicKey: this.wallet.publicKey.toBase58(),
         autoApprove: true,
+        autoSettle: true,
       },
       id: payload.id,
     });
