@@ -272,6 +272,7 @@ export async function transferTokens({
   let destinationAccountInfo = await connection.getAccountInfo(
     destinationPublicKey,
   );
+  console.log('destinationAccountInfo', destinationAccountInfo);
   if (
     !!destinationAccountInfo &&
     destinationAccountInfo.owner.equals(TOKEN_PROGRAM_ID)
@@ -295,13 +296,19 @@ export async function transferTokens({
     throw new Error('Cannot send to address with zero SOL balances');
   }
 
+  console.log('findAssociatedTokenAddress');
   const destinationAssociatedTokenAddress = await findAssociatedTokenAddress(
     destinationPublicKey,
     mint,
   );
+  console.log(
+    'destinationAssociatedTokenAddress',
+    destinationAssociatedTokenAddress,
+  );
   destinationAccountInfo = await connection.getAccountInfo(
     destinationAssociatedTokenAddress,
   );
+  console.log('destinationAccountInfo 2', destinationAccountInfo);
   if (
     !!destinationAccountInfo &&
     destinationAccountInfo.owner.equals(TOKEN_PROGRAM_ID)
