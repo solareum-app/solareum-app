@@ -164,6 +164,13 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   );
 };
 
+const getErrorMessage = (message = '') => {
+  if (message.includes('globalThis.crypto')) {
+    return 'Hiện tại chúng tôi chưa hỗ trợ chuyển token thông qua địa chỉ SOL. Hãy dùng địa chỉ SPL token.';
+  }
+  return message;
+};
+
 const Step2 = ({ token, address, amount, next, busy, error }) => {
   const { symbol } = token;
 
@@ -203,15 +210,7 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
       <View style={s.footer}>
         {error && error.message ? (
           <View style={s.group}>
-            <Text style={[typo.warning]}>{error.message}</Text>
-          </View>
-        ) : null}
-        {error && !error.message ? (
-          <View style={s.group}>
-            <Text style={[typo.warning]}>
-              Hiện tại chúng tôi chưa hỗ trợ chuyển token thông qua địa chỉ SOL.
-              Hãy dùng địa chỉ token.
-            </Text>
+            <Text style={[typo.warning]}>{getErrorMessage(error.message)}</Text>
           </View>
         ) : null}
         <Button
