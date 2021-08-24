@@ -27,14 +27,14 @@ PODS:
     - React-Core (= 0.63.4)
     - React-jsi (= 0.63.4)
     - ReactCommon/turbomodule/core (= 0.63.4)
-  - Firebase/CoreOnly (8.5.0):
-    - FirebaseCore (= 8.5.0)
-  - Firebase/RemoteConfig (8.5.0):
+  - Firebase/CoreOnly (8.6.0):
+    - FirebaseCore (= 8.6.0)
+  - Firebase/RemoteConfig (8.6.0):
     - Firebase/CoreOnly
-    - FirebaseRemoteConfig (~> 8.5.0)
+    - FirebaseRemoteConfig (~> 8.6.0)
   - FirebaseABTesting (8.6.0):
     - FirebaseCore (~> 8.0)
-  - FirebaseCore (8.5.0):
+  - FirebaseCore (8.6.0):
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
@@ -48,7 +48,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/UserDefaults (~> 7.4)
     - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseRemoteConfig (8.5.0):
+  - FirebaseRemoteConfig (8.6.0):
     - FirebaseABTesting (~> 8.0)
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
@@ -284,7 +284,7 @@ PODS:
     - React
   - react-native-udp (2.7.0):
     - React
-  - react-native-webview (11.13.0):
+  - react-native-webview (11.6.5):
     - React-Core
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
@@ -346,7 +346,7 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - RNCAsyncStorage (1.15.6):
+  - RNCAsyncStorage (1.15.5):
     - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
@@ -356,11 +356,11 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.8)
     - SDWebImageWebPCoder (~> 0.6.1)
-  - RNFBApp (12.6.1):
-    - Firebase/CoreOnly (= 8.5.0)
+  - RNFBApp (12.7.2):
+    - Firebase/CoreOnly (= 8.6.0)
     - React-Core
-  - RNFBRemoteConfig (12.6.1):
-    - Firebase/RemoteConfig (= 8.5.0)
+  - RNFBRemoteConfig (12.7.2):
+    - Firebase/RemoteConfig (= 8.6.0)
     - React-Core
     - RNFBApp
   - RNGestureHandler (1.10.3):
@@ -606,12 +606,12 @@ SPEC CHECKSUMS:
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
-  Firebase: ff8c73105b90e33e1dc6c8e5445d7adc2ccdc7c1
+  Firebase: 21ac9f28b09a8bdfc005f34c984fca84e7e8786d
   FirebaseABTesting: c3e48ebf5e7e5c674c5a131c68e941d7921d83dc
-  FirebaseCore: 1c1ca72483b59b17050f5b4cec4fb748425a3901
+  FirebaseCore: 620b677f70f5470a8e59cb77f3ddc666f6f09785
   FirebaseCoreDiagnostics: 3721920bde3a9a6d5aa093c1d25e9d3e47f694af
   FirebaseInstallations: 0ede6ffcd215b8f93c19d9b06c1c54e2d4107e98
-  FirebaseRemoteConfig: 693c1f150408e9a727daf4d8c55c7f9c29ef9ad5
+  FirebaseRemoteConfig: 9ee4672d4eacf646256e26cfac61021b3a390ea4
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
@@ -639,7 +639,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-udp: ff9d13e523f2b58e6bc5d4d32321ac60671b5dc9
-  react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9
+  react-native-webview: 2e8fe70dc32b50d3231c23043f8e8b5a5525d346
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
@@ -650,12 +650,12 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  RNCAsyncStorage: b7c6564ce662366dd44d0189456183ef7eda2d4d
+  RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNFastImage: a7384db75df352500261e8e8f1ac2026def26102
-  RNFBApp: 169c26e7f857173bd17b3eb5aba4e80bab598b76
-  RNFBRemoteConfig: 2e2c2df520233083918647752a9b41a54aada45a
+  RNFBApp: 9c4eb84da8418346829c0d0220c4794d1de7b1f6
+  RNFBRemoteConfig: 55ee38e609b1389d287ec3d42ce3d53a4abf42eb
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
