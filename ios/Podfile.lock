@@ -100,6 +100,7 @@ PODS:
   - PromisesObjC (2.0.0)
   - Permission-Camera (3.0.5):
     - RNPermissions
+  - PromisesObjC (2.0.0)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -621,8 +622,8 @@ SPEC CHECKSUMS:
   lottie-react-native: 96361a9891cf651534ea35c4f85f33d4cf14ed13
   Permission-Camera: ac603073e4128e51e6ca3c39129778f05b4082fa
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Permission-Camera: ac603073e4128e51e6ca3c39129778f05b4082fa
+  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -668,6 +669,6 @@ SPEC CHECKSUMS:
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 46609dedcbfed156b9b344309abe19c6a1c96604
+PODFILE CHECKSUM: 516bf46bb962f88f6ddb25a470c277b7d40dfef3
 
 COCOAPODS: 1.10.1
