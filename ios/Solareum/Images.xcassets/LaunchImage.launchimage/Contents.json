@@ -182,7 +182,7 @@
     },
     {
       "extent" : "to-status-bar",
-      "filename" : "LaunchImage~ipad.png",
+      "filename" : "LaunchImage-Portrait@2x~ipad_1536x2008.png",
       "idiom" : "ipad",
       "orientation" : "portrait",
       "scale" : "2x"
