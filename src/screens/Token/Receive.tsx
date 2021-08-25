@@ -12,9 +12,11 @@ import { typo } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider';
 import { wait } from '../../utils';
 import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
+import { EventMessage } from '../EventMessage/EventMessage';
 
 const s = StyleSheet.create({
   main: {
+    position: 'relative',
     backgroundColor: COLORS.dark0,
     minHeight: 400,
     padding: 20,
@@ -55,6 +57,12 @@ const s = StyleSheet.create({
     height: 240,
   },
   warning: { marginBottom: 16 },
+  notificationWrp: {
+    position: 'relative',
+    zIndex: 9999,
+    marginLeft: -20,
+    marginRight: -20,
+  },
 });
 
 const MAX_TRY = 24;
@@ -125,6 +133,9 @@ export const Receive = ({ token }) => {
 
   return (
     <View style={s.main}>
+      <View style={s.notificationWrp}>
+        <EventMessage top={36} />
+      </View>
       <Text style={typo.title}>Nhận {account.symbol}</Text>
 
       {!account.isMinted && !useSol ? (
@@ -171,7 +182,7 @@ export const Receive = ({ token }) => {
               <View style={s.body}>
                 <View style={s.loadingWrp}>
                   <LoadingImage />
-                  <Text style={typo.normal}>Bạn đợi xíu nhé...</Text>
+                  <Text style={typo.normal}>Đang tạo tài khoản...</Text>
                 </View>
               </View>
             </View>

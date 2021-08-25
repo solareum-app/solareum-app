@@ -1,16 +1,12 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import { price } from '../../utils/autoRound';
 import { CryptoIcon } from '../CryptoIcon';
-
-const isValidUrl = (url: string) => {
-  return url.indexOf('.png') >= 0 || url.indexOf('.svg') >= 0;
-};
 
 type TokenInfoItemProps = TokenInfo & {
   action?: string;
@@ -40,11 +36,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
         borderBottomColor: COLORS.dark4,
       }}
     >
-      {logoURI && isValidUrl(logoURI) ? (
-        <CryptoIcon rounded uri={logoURI} />
-      ) : (
-        <Avatar rounded title={symbol.toUpperCase()} />
-      )}
+      <CryptoIcon rounded uri={logoURI} />
       <ListItem.Content>
         <ListItem.Title
           style={{ color: COLORS.white0, fontSize: FONT_SIZES.lg }}

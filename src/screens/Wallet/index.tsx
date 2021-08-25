@@ -8,7 +8,6 @@ import {
   DeviceEventEmitter,
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import { Portal } from 'react-native-portalize';
 
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
@@ -96,6 +95,8 @@ const WalletScreen = () => {
 
   return (
     <View style={grid.container}>
+      <EventMessage />
+
       <Header />
       <ScrollView
         refreshControl={
@@ -152,10 +153,6 @@ const WalletScreen = () => {
           <TokensList balanceListInfo={activeAccountList} />
         </View>
       </ScrollView>
-
-      <Portal>
-        <EventMessage />
-      </Portal>
     </View>
   );
 };

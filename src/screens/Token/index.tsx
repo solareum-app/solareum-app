@@ -17,7 +17,6 @@ import { price } from '../../utils/autoRound';
 import { TransferAction } from '../Wallet';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import { useApp } from '../../core/AppProvider';
-import { EventMessage } from '../EventMessage/EventMessage';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -164,8 +163,6 @@ const Token = ({ route }) => {
       </ScrollView>
 
       <Portal>
-        <EventMessage />
-
         <FixedContent ref={refSend}>
           <Send initStep={1} token={account} />
         </FixedContent>
