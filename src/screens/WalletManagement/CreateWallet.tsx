@@ -155,6 +155,10 @@ const CreateWallet: React.FC<Props> = () => {
                 {/* và được mã hóa bằng mã PIN của bạn. */}
               </Text>
               <Text style={typo.helper}>
+                Bạn có thể dùng mã này để import vào các ví khác, như: Phantom,
+                Sollet, Coin98...
+              </Text>
+              <Text style={typo.helper}>
                 Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó
                 ở phần Cài Đặt sau khi ví được tạo.
               </Text>
