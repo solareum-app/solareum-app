@@ -54,10 +54,10 @@ export const MarketItem = ({ item }: Props) => {
   return (
     <TouchableOpacity style={s.main} onPress={navToDex}>
       <View style={s.iconBase}>
-        <CryptoIcon uri={item.baseInfo?.logoURI} />
+        <CryptoIcon uri={item.baseInfo?.logoURI} size={36} />
       </View>
       <View style={s.iconQuote}>
-        <CryptoIcon uri={item.quoteInfo?.logoURI} />
+        <CryptoIcon uri={item.quoteInfo?.logoURI} size={36} />
       </View>
       <Text style={s.name}>{item.name}</Text>
       <View style={s.icon}>

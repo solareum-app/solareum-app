@@ -47,7 +47,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
       )}
       <ListItem.Content>
         <ListItem.Title
-          style={{ color: COLORS.white0, fontSize: FONT_SIZES.md }}
+          style={{ color: COLORS.white0, fontSize: FONT_SIZES.lg }}
         >
           {sortName || name}
         </ListItem.Title>

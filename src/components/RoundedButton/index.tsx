@@ -10,9 +10,9 @@ const s = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     marginBottom: 4,
     backgroundColor: COLORS.blue2,
   },

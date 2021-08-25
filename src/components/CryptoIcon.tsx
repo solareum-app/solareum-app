@@ -24,7 +24,7 @@ const getWidth = (svgString: string): number => {
   return isNaN(parseInt(w)) ? 18 : parseInt(w);
 };
 
-export const CryptoIcon = ({ uri = '', size = 36, ...props }) => {
+export const CryptoIcon = ({ uri = '', size = 40, ...props }) => {
   const [width, setWidth] = useState(18);
   const [svgFile, setSvgFile] = useState('');
   const [loading, setLoading] = useState(true);

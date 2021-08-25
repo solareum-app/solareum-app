@@ -18,7 +18,7 @@ export enum MESSAGE_TYPE {
 const s = StyleSheet.create({
   alertZone: {
     position: 'absolute',
-    top: 60,
+    top: 70,
     width: Dimensions.get('window').width,
     height: 100,
     display: 'flex',
