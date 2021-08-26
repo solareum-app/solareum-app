@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
 import { View, StyleSheet } from 'react-native';
-import remoteConfig from '@react-native-firebase/remote-config';
+
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -30,25 +30,6 @@ const s = StyleSheet.create({
 const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
-  useEffect(() => {
-    remoteConfig()
-      .setDefaults({
-        awesome_new_feature: 'disabled',
-      })
-      .then(() => {
-        console.log('Default values set.');
-      })
-      .then(() => remoteConfig().fetchAndActivate())
-      .then((_) => {
-        const app_name = remoteConfig().getValue('app_name');
-        const markets = remoteConfig().getValue('markets');
-        const parameters = remoteConfig().getAll();
-        console.log('parameters', parameters);
-        console.log('app_name', app_name);
-        console.log('markets', markets);
-      });
-  }, []);
-
   const navigationRef = useRef(null);
 
   const checkInitScreen = async () => {
