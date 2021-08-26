@@ -11,12 +11,47 @@ import { CryptoIcon } from '../CryptoIcon';
 type TokenInfoItemProps = TokenInfo & {
   action?: string;
 };
+
+const TOKENS = [
+  {
+    sortName: 'Solareum',
+    name: 'Solareum',
+    symbol: 'XSB',
+    amount: 0,
+    usd: 1.18,
+    decimals: 0,
+    value: 0,
+    logoSource: require('../../assets/XSB-G.png'),
+  },
+  {
+    sortName: 'Solareum',
+    name: 'Solareum',
+    symbol: 'XSB',
+    amount: 0,
+    usd: 1.18,
+    decimals: 0,
+    value: 0,
+    logoSource: require('../../assets/XSB-P.png'),
+  },
+  {
+    sortName: 'Solareum',
+    name: 'Solareum',
+    symbol: 'XSB',
+    amount: 0,
+    usd: 1.18,
+    decimals: 0,
+    value: 0,
+    logoSource: require('../../assets/XSB-S.png'),
+  },
+];
+
 const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
   const {
     name = '$$$',
     sortName,
     symbol = '-',
     logoURI = '',
+    logoSource,
     amount = 0,
     decimals,
     usd,
@@ -36,7 +71,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
         borderBottomColor: COLORS.dark4,
       }}
     >
-      <CryptoIcon rounded uri={logoURI} />
+      <CryptoIcon rounded uri={logoURI} source={logoSource} />
       <ListItem.Content>
         <ListItem.Title
           style={{ color: COLORS.white0, fontSize: FONT_SIZES.lg }}
@@ -77,6 +112,9 @@ const TokensList: React.FC<TokensListProps> = ({ balanceListInfo, action }) => {
   return (
     <>
       {balanceListInfo?.map((token, index: number) => (
+        <TokenInfoItem key={index} token={token} action={action} />
+      ))}
+      {TOKENS?.map((token, index: number) => (
         <TokenInfoItem key={index} token={token} action={action} />
       ))}
     </>

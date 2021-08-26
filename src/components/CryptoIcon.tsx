@@ -24,7 +24,7 @@ const getWidth = (svgString: string): number => {
   return isNaN(parseInt(w)) ? 18 : parseInt(w);
 };
 
-export const CryptoIcon = ({ uri = '', size = 40, ...props }) => {
+export const CryptoIcon = ({ source, uri = '', size = 40, ...props }) => {
   const [width, setWidth] = useState(18);
   const [svgFile, setSvgFile] = useState('');
   const [loading, setLoading] = useState(true);
@@ -62,6 +62,18 @@ export const CryptoIcon = ({ uri = '', size = 40, ...props }) => {
   }, []);
 
   if (!uri) {
+    if (source) {
+      return (
+        <View style={[iconStyle.main, { width: size, height: size }]}>
+          <ImageCached
+            {...props}
+            source={source}
+            style={{ width: size, height: size }}
+          />
+        </View>
+      );
+    }
+
     return <View style={[iconStyle.main, { width: size, height: size }]} />;
   }
 

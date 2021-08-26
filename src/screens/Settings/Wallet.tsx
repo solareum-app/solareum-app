@@ -16,8 +16,8 @@ import { AddressInfo } from '../../storage/WalletCollection';
 import { useApp } from '../../core/AppProvider';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
-import walletIcon from '../../assets/Solareum_Wallet.png';
-import walletIconActive from '../../assets/Solareum_Logo.png';
+import walletIcon from '../../assets/XSB-S.png';
+import walletIconActive from '../../assets/XSB-P.png';
 
 const s = StyleSheet.create({
   main: {
