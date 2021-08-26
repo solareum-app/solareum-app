@@ -1,42 +1,41 @@
 {
   "project_info": {
-    "project_number": "950192329408",
-    "project_id": "solareum-dev",
-    "storage_bucket": "solareum-dev.appspot.com"
+    "project_number": "810254902905",
+    "project_id": "solareum-prod",
+    "storage_bucket": "solareum-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:950192329408:android:94300147aa81ed73c75325",
+        "mobilesdk_app_id": "1:810254902905:android:79df05a8dd7ea95c05d6a8",
         "android_client_info": {
           "package_name": "com.solareum"
         }
       },
       "oauth_client": [
         {
-          "client_id": "950192329408-qm41m454uvvkoehnri8hfhk38sl9qglf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.solareum",
-            "certificate_hash": "6f6f40674922d26a9116e3eb03a41e1feab86812"
-          }
-        },
-        {
-          "client_id": "950192329408-s4tigc48r9n0q731tc871q89j9h5q0i6.apps.googleusercontent.com",
+          "client_id": "810254902905-01nu5hbbksar548tfeuj1o9cm9usmnik.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAGHhs6hmzlT0Zwga57C-cxPk9Ed3z-yQs"
+          "current_key": "AIzaSyBtocwel-p6RdtfFGtZwUT4N31M7T9CBxo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "950192329408-s4tigc48r9n0q731tc871q89j9h5q0i6.apps.googleusercontent.com",
+              "client_id": "810254902905-01nu5hbbksar548tfeuj1o9cm9usmnik.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "810254902905-elrv7c1350n0psv2ic15q86a2b8q2bo9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.Solareum.app.reactnative"
+              }
             }
           ]
         }
