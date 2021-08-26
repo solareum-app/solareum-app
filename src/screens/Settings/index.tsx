@@ -1,5 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { ScrollView, View, Text, StyleSheet, Linking } from 'react-native';
+import remoteConfig from '@react-native-firebase/remote-config';
+
 import { ListItem, Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
 import { Portal } from 'react-native-portalize';
@@ -45,6 +47,19 @@ const s = StyleSheet.create({
 const Settings: React.FC = () => {
   const navigation = useNavigation();
   const refPolicy = useRef();
+  const [appPrefix, setAppPrefix] = useState('v');
+
+  useEffect(() => {
+    remoteConfig()
+      .setDefaults({
+        awesome_new_feature: 'disabled',
+      })
+      .then(() => remoteConfig().fetchAndActivate())
+      .then((_) => {
+        const prefix = remoteConfig().getValue('app_prefix');
+        setAppPrefix(prefix._value);
+      });
+  }, []);
 
   return (
     <View style={s.container}>
@@ -144,7 +159,10 @@ const Settings: React.FC = () => {
 
         <View style={s.group}>
           <View style={s.wrp}>
-            <Text style={typo.helper}>v{package.version}</Text>
+            <Text style={typo.helper}>
+              v{package.version}
+              {appPrefix}
+            </Text>
           </View>
         </View>
       </ScrollView>

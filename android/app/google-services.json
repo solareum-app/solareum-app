@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "810254902905",
+    "project_id": "solareum-prod",
+    "storage_bucket": "solareum-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810254902905:android:79df05a8dd7ea95c05d6a8",
+        "android_client_info": {
+          "package_name": "com.solareum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810254902905-01nu5hbbksar548tfeuj1o9cm9usmnik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtocwel-p6RdtfFGtZwUT4N31M7T9CBxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810254902905-01nu5hbbksar548tfeuj1o9cm9usmnik.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "810254902905-elrv7c1350n0psv2ic15q86a2b8q2bo9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.Solareum.app.reactnative"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
