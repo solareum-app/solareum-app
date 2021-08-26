@@ -21,6 +21,7 @@
 		6FD9CD77F3923DE000FFB985 /* libPods-Solareum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9C4F7C01CC49EC7D1BD955 /* libPods-Solareum.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A7BB590D367F08900AFE0E31 /* libPods-Solareum-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B57DBA060FED999A0B8021C /* libPods-Solareum-tvOS.a */; };
+		BC53066F26D7E4DF00678787 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC53066E26D7E4DF00678787 /* GoogleService-Info.plist */; };
 		DA23B7C02563550BF7744734 /* libPods-Solareum-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A61F275DA098CBD271FD1C /* libPods-Solareum-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -66,7 +67,7 @@
 		8261572FA23955A63653572A /* Pods-Solareum-SolareumTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solareum-SolareumTests.release.xcconfig"; path = "Target Support Files/Pods-Solareum-SolareumTests/Pods-Solareum-SolareumTests.release.xcconfig"; sourceTree = "<group>"; };
 		8309F965B295591D14417755 /* Pods-Solareum-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solareum-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Solareum-tvOS/Pods-Solareum-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		AE358CB5C1D9D1DA28E196F3 /* Pods-Solareum-SolareumTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solareum-SolareumTests.debug.xcconfig"; path = "Target Support Files/Pods-Solareum-SolareumTests/Pods-Solareum-SolareumTests.debug.xcconfig"; sourceTree = "<group>"; };
-		BC63DC0826CE610E00A50922 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../prod/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BC53066E26D7E4DF00678787 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../prod/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D7E888E3863333FC883475DE /* libPods-Solareum-SolareumTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Solareum-SolareumTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40C9C4654477591E904E97B /* Pods-Solareum.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solareum.debug.xcconfig"; path = "Target Support Files/Pods-Solareum/Pods-Solareum.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -179,7 +180,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				BC63DC0826CE610E00A50922 /* GoogleService-Info.plist */,
+				BC53066E26D7E4DF00678787 /* GoogleService-Info.plist */,
 				517D8B34263D03CF0086A7A7 /* AppCenter-Config.plist */,
 				51993BBB262AC60400AC7E6B /* Fonts */,
 				13B07FAE1A68108700A75B9A /* Solareum */,
@@ -351,6 +352,7 @@
 			files = (
 				51993BBC262AC60500AC7E6B /* Fonts in Resources */,
 				517D8B35263D03D00086A7A7 /* AppCenter-Config.plist in Resources */,
+				BC53066F26D7E4DF00678787 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
