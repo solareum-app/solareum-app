@@ -1,9 +1,9 @@
 {
   "name": "solareum",
-  "version": "2.18.8",
+  "version": "2.18.9",
   "private": true,
   "scripts": {
-    "postinstall": "rn-nodeify --install --hack --yarn && yarn run cp:superstruct && yarn run cp:solana && npx jetify && npx pod-install",
+    "postinstall": "rn-nodeify --install --hack --yarn && yarn run cp:superstruct && npx jetify && npx pod-install",
     "cp:superstruct": "cp ./node_modules/superstruct/lib/index.cjs ./node_modules/superstruct/lib/index.cjs.js",
     "cp:solana": " cp ./_packages/@solana/web3.js/lib/index.cjs.js ./node_modules/@solana/web3.js/lib/index.cjs.js",
     "pod:install": "cd ./ios && pod install && cd ..",
@@ -23,6 +23,8 @@
     "@react-native-async-storage/async-storage": "^1.15.4",
     "@react-native-community/clipboard": "1.5.1",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-firebase/app": "^12.6.1",
+    "@react-native-firebase/remote-config": "^12.6.1",
     "@react-navigation/bottom-tabs": "5.11.9",
     "@react-navigation/native": "5.9.4",
     "@react-navigation/stack": "5.14.4",

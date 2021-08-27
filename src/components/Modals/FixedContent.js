@@ -32,7 +32,8 @@ export const FixedContent = forwardRef(({ children }, ref) => {
       <TouchableOpacity
         style={s.content__description}
         activeOpacity={0.75}
-        onPress={() => setToggle(!toggle)}>
+        onPress={() => setToggle(!toggle)}
+      >
         <Text>adjustToContentHeight {JSON.stringify(toggle)}</Text>
       </TouchableOpacity>
 
@@ -45,7 +46,8 @@ export const FixedContent = forwardRef(({ children }, ref) => {
       <TouchableOpacity
         style={s.content__button}
         activeOpacity={0.75}
-        onPress={handleClose}>
+        onPress={handleClose}
+      >
         <Text style={s.content__buttonText}>{'Send'.toUpperCase()}</Text>
       </TouchableOpacity>
     </View>
@@ -62,7 +64,8 @@ export const FixedContent = forwardRef(({ children }, ref) => {
           borderTopRightRadius: 10,
           overflow: 'hidden',
         },
-      }}>
+      }}
+    >
       {children ? children : renderContent()}
     </Modalize>
   );

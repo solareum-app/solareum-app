@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -85,6 +85,10 @@ const EditWallet: React.FC<Props> = ({ route }) => {
               <Text style={typo.helper}>
                 Mã khôi phục này chỉ được lưu trên thiết bị của bạn.
                 {/* và được mã hóa bằng mã PIN của bạn. */}
+              </Text>
+              <Text style={typo.helper}>
+                Bạn có thể dùng mã này để import vào các ví khác, như: Phantom,
+                Sollet, Coin98...
               </Text>
               <Text style={typo.helper}>
                 Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó

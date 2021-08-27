@@ -18,7 +18,7 @@ export enum MESSAGE_TYPE {
 const s = StyleSheet.create({
   alertZone: {
     position: 'absolute',
-    top: 60,
+    top: 70,
     width: Dimensions.get('window').width,
     height: 100,
     display: 'flex',
@@ -27,7 +27,8 @@ const s = StyleSheet.create({
     zIndex: 9999,
   },
   messageWrp: {
-    backgroundColor: COLORS.dark4,
+    backgroundColor: COLORS.success,
+    borderColor: COLORS.dark2,
     borderRadius: 16,
     paddingVertical: 4,
     paddingHorizontal: 12,
@@ -35,16 +36,17 @@ const s = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: COLORS.success,
   },
   alertZoneMessage: {
-    color: COLORS.white2,
+    color: COLORS.dark4,
+    fontSize: 14,
+    lineHeight: 20,
     marginLeft: 8,
   },
 });
 
 // place this component into a PORTAL
-export const EventMessage = () => {
+export const EventMessage = ({ top = 70 }) => {
   const [message, setMessage] = useState('');
 
   const handleCopy = (value: string) => {
@@ -64,12 +66,12 @@ export const EventMessage = () => {
   return (
     <View>
       {message ? (
-        <View style={s.alertZone}>
+        <View style={{ ...s.alertZone, top }}>
           <View style={s.messageWrp}>
             <Icon
               type="antdesign"
               name="checkcircle"
-              color={COLORS.success}
+              color={COLORS.white0}
               size={20}
             />
             <Text style={s.alertZoneMessage}>

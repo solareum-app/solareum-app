@@ -20,24 +20,36 @@ const s = StyleSheet.create({
   wrp: {
     marginBottom: 12,
   },
-  label: {
+  title: {
+    ...typo.title,
+    textAlign: 'left',
     fontSize: FONT_SIZES.lg,
-    color: COLORS.white2,
-    marginBottom: 8,
+    color: COLORS.blue2,
+  },
+  label: {
+    ...typo.title,
+    textAlign: 'left',
+    fontSize: FONT_SIZES.lg,
+    color: COLORS.blue2,
+    fontWeight: 'bold',
+    marginBottom: 0,
   },
   recoverPhrase: {
+    borderWidth: 1,
+    borderColor: COLORS.blue4,
     backgroundColor: COLORS.dark0,
     color: COLORS.white2,
     fontSize: FONT_SIZES.lg,
     lineHeight: LINE_HEIGHT.lg,
-    borderColor: COLORS.dark0,
     borderRadius: 4,
-    borderWidth: 2,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    height: 200,
+    height: 180,
     flexWrap: 'wrap',
     marginBottom: 8,
+  },
+  footer: {
+    marginTop: 24,
   },
 });
 
@@ -69,14 +81,15 @@ const ImportWallet: React.FC<Props> = () => {
                 label="Tên Ví"
                 placeholder=""
                 style={typo.input}
-                labelStyle={input.label}
+                labelStyle={s.label}
                 containerStyle={input.container}
                 value={walletName}
                 onChangeText={(text) => setWalletName(text)}
               />
             </View>
+
             <View style={s.wrp}>
-              <Text style={s.label}>Mã khôi phục</Text>
+              <Text style={s.title}>Mã khôi phục</Text>
               <TextInput
                 style={s.recoverPhrase}
                 multiline={true}
@@ -84,11 +97,13 @@ const ImportWallet: React.FC<Props> = () => {
                 onChangeText={(text) => setRecovery(text)}
               />
               <Text style={typo.helper}>
-                Bạn có thể nhập Mã khôi phục từ các SPL wallet khác như: Sollet
+                Bạn có thể nhập Mã khôi phục từ các SPL wallet khác như:
+                Phantom, Sollet, Coin98...
               </Text>
               <Button title="Dán mã khôi phục" type="clear" onPress={paste} />
             </View>
-            <View style={s.wrp}>
+
+            <View style={s.footer}>
               <Button
                 title="Khôi phục Ví"
                 onPress={importWallet}

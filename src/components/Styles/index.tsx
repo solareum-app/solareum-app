@@ -6,6 +6,7 @@ export const grid = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.dark2,
+    position: 'relative',
   },
   header: {
     flex: 0,
