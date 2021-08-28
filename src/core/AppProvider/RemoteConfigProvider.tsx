@@ -1,6 +1,41 @@
 import React, { useContext, useState, useEffect } from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 
+/**
+ * TOKEN structure
+ {
+    "chainId": 101,
+    "address": "FYfQ9uaRaYvRiaEGUmct45F9WKam3BYXArTrotnTNFXF",
+    "symbol": "SOLA",
+    "name": "Sola Token",
+    "decimals": 9,
+    "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/FYfQ9uaRaYvRiaEGUmct45F9WKam3BYXArTrotnTNFXF/logo.png",
+    "tags": [
+      "Solana tokenized",
+      "Solana Community token"
+    ],
+    "extensions": {
+      "website": "https://solatoken.net/",
+      "telegram": "https://t.me/solatokennet",
+      "twitter": "https://twitter.com/EcoSolana"
+    }
+  },
+
+  Market Structure
+  {
+    "address": "B37pZmwrwXHjpgvd9hHDAx1yeDsNevTnbbrN9W12BoGK",
+    "deprecated": true,
+    "name": "ALEPH/WUSDC",
+    "programId": "4ckmDgGdxQoPDLUkDT3vHgSAkzA3QRdNq5ywwY4sUSJn"
+  },
+  {
+    "address": "8BdpjpSD5n3nk8DQLqPUyTZvVqFu6kcff5bzUX5dqDpy",
+    "deprecated": false,
+    "name": "TOMO/USDC",
+    "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin"
+  },
+ */
+
 export type RemoteConfigType = {
   appName: string;
   appPrefix: string;
@@ -49,6 +84,7 @@ export const RemoteConfigProvider = ({ children }) => {
         market_list: '[]',
         links: JSON.stringify(defaultLinks),
       })
+      .then(() => remoteConfig().fetch(300)) // for testing env
       .then(() => remoteConfig().fetchAndActivate())
       .then((_) => {
         const sourceAppName = remoteConfig().getValue('app_name');

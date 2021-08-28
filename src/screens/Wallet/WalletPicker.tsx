@@ -9,7 +9,7 @@ import { getShortPublicKey } from '../../utils';
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
 
 const s = StyleSheet.create({
   content: {

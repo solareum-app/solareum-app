@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { MARKETS as ALL_MARKETS } from '@project-serum/serum';
 import { TokenInfo } from '@solana/spl-token-registry';
-import { useApp } from './index';
+import { useToken } from './TokenProvider';
 
 const MARKETS = ALL_MARKETS.filter((i) => !i.deprecated);
 
@@ -28,7 +28,7 @@ export const useMarket = () => {
 };
 
 export const MarketProvider = ({ children }) => {
-  const { tokenInfos } = useApp();
+  const { tokenInfos } = useToken();
   const [marketList, setMarketList] = useState<MarketInfo[]>([]);
   const [symbolList, setSymbolList] = useState<string[]>([]);
 

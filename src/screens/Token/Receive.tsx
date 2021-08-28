@@ -9,7 +9,8 @@ import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme/colors';
 import { RoundedButton } from '../../components/RoundedButton';
 import { typo } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
 import { wait } from '../../utils';
 import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { EventMessage } from '../EventMessage/EventMessage';
@@ -69,7 +70,8 @@ const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
 export const Receive = ({ token }) => {
-  const { accountList, wallet, loadAccountList } = useApp();
+  const { wallet } = useApp();
+  const { accountList, loadAccountList } = useToken();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [useSol, setUseSol] = useState(false);
