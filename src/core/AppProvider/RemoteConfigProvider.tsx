@@ -82,7 +82,8 @@ export const RemoteConfigProvider = ({ children }) => {
         market_list: '[]',
         links: JSON.stringify(defaultLinks),
       })
-      .then(() => remoteConfig().fetch(0)) // for testing env
+      // .then(() => remoteConfig().fetch(0)) // for testing env
+      .then(() => remoteConfig().fetch(7200)) // caching for 2 hours
       .then(() => remoteConfig().fetchAndActivate())
       .then((_) => {
         const sourceAppName = remoteConfig().getValue('app_name');
