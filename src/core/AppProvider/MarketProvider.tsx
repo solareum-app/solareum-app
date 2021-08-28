@@ -2,6 +2,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import { MARKETS as ALL_MARKETS } from '@project-serum/serum';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { useToken } from './TokenProvider';
+import { useConfig } from './RemoteConfigProvider';
+import { getUniqByAddress } from './getUniqByAddress';
+import { PublicKey } from '@solana/web3.js';
 
 const MARKETS = ALL_MARKETS.filter((i) => !i.deprecated);
 
@@ -29,11 +32,21 @@ export const useMarket = () => {
 
 export const MarketProvider = ({ children }) => {
   const { tokenInfos } = useToken();
+  const { customeMarketList } = useConfig();
   const [marketList, setMarketList] = useState<MarketInfo[]>([]);
   const [symbolList, setSymbolList] = useState<string[]>([]);
 
   useEffect(() => {
-    const list = MARKETS.map((i) => {
+    const filteredCustome = customeMarketList
+      .filter((i) => !i.deprecated)
+      .map((i) => ({
+        ...i,
+        address: new PublicKey(i.address),
+        programId: new PublicKey(i.programId),
+      }));
+    const allMarkets = MARKETS.concat(filteredCustome);
+
+    const list = allMarkets.map((i) => {
       const id = i.address.toBase58();
       const name = i.name;
       const programId = i.programId.toBase58();
@@ -44,6 +57,7 @@ export const MarketProvider = ({ children }) => {
 
       return {
         id,
+        address: id,
         name,
         programId,
         base,
@@ -53,7 +67,7 @@ export const MarketProvider = ({ children }) => {
       } as MarketInfo;
     });
 
-    const m = list
+    const m = getUniqByAddress(list)
       .filter((i) => ['USDC', 'USDT', 'SOL'].indexOf(i.quote) >= 0)
       .sort((a, b) => {
         const ap = a.quote === 'USDC' ? 1 : 0;
