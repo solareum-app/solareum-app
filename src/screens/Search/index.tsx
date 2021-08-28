@@ -5,7 +5,7 @@ import { SearchBar } from 'react-native-elements';
 import TokensList from '../../components/TokensList';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
-import { useApp } from '../../core/AppProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
 import { useMarket } from '../../core/AppProvider/MarketProvider';
 
 import { TransferAction } from '../Wallet';
@@ -13,7 +13,7 @@ import { TransferAction } from '../Wallet';
 const Search: React.FC = ({ route }) => {
   const [query, setQuery] = useState('');
   const [tokens, setTokens] = useState([]);
-  const { accountList } = useApp();
+  const { accountList } = useToken();
   const { symbolList } = useMarket();
   const { action } = route.params;
 
