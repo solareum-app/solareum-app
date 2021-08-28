@@ -203,7 +203,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.3.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-
+    implementation 'com.google.android.gms:play-services-ads:19.8.0'
     implementation project(':lottie-react-native')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
@@ -226,6 +226,11 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+}
+android {
+  defaultConfig {
+    multiDexEnabled true
+  }
 }
 
 // Run this once to be able to run the application with BUCKcheckReleaseBuilds

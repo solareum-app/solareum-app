@@ -8,7 +8,7 @@ import {
   DeviceEventEmitter,
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-
+import { BannerAd, BannerAdSize } from '@react-native-firebase/admob';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
@@ -70,6 +70,8 @@ export enum TransferAction {
   receive = 'receive',
 }
 
+const adUnitId = 'ca-app-pub-8137455675462743/9853888538';
+
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -109,6 +111,10 @@ const WalletScreen = () => {
         }
       >
         <View style={s.header}>
+          <View style={s.info}>
+            <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
+          </View>
+
           <View style={s.info}>
             <Text style={s.infoBalance}>${price(totalEst)}</Text>
           </View>

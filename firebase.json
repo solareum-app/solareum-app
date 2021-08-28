@@ -1,6 +1,8 @@
 {
   "react-native": {
     "android_task_executor_maximum_pool_size": 10,
-    "android_task_executor_keep_alive_seconds": 3
+    "android_task_executor_keep_alive_seconds": 3,
+    "admob_android_app_id": "ca-app-pub-8137455675462743~4686156480",
+    "admob_ios_app_id": ""
   }
 }
