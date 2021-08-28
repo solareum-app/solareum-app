@@ -13,6 +13,7 @@ export enum Routes {
   Wallet = 'Wallet',
   SettingWallet = 'Quản lý Ví',
   Search = 'Tokens',
+  Task = 'Nhiệm vụ'
 }
 
 export default Routes;

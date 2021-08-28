@@ -8,7 +8,7 @@ import Icon from '../../components/Icon';
 import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
 import { COLORS } from '../../theme';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
 import { s } from './CreateWallet';
 
 type Props = {};

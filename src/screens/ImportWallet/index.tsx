@@ -14,7 +14,7 @@ import Clipboard from '@react-native-community/clipboard';
 import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
 
 const s = StyleSheet.create({
   wrp: {
