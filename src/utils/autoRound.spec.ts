@@ -1,4 +1,4 @@
-import { mostSigFig, leastSigFig, roundDown, roundUp } from './autoRounding';
+import { mostSigFig, leastSigFig, roundDown, roundUp } from './autoRound';
 
 describe('Auto Rounding', () => {
   it('mostSigFig', () => {
