@@ -25,6 +25,7 @@ import {
   getAccountListByOwner,
 } from '../../storage/AccountCollection';
 import { MAINNET_URL } from '../../config';
+import { RemoteConfigProvider } from './RemoteConfigProvider';
 
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
@@ -231,24 +232,26 @@ export const AppProvider: React.FC = (props) => {
   }, []);
 
   return (
-    <AppContext.Provider
-      value={{
-        tokenInfos,
-        priceData,
-        wallet,
-        addressId: addressId,
-        setAddressId: setAddressIdWrapper,
-        addressList,
-        createAddress,
-        updateAddress,
-        accountList,
-        getAccountByPk,
-        loadAccountList,
-      }}
-    >
-      <MarketProvider>
-        {tokenInfos.length ? props.children : <LoadingImage />}
-      </MarketProvider>
-    </AppContext.Provider>
+    <RemoteConfigProvider>
+      <AppContext.Provider
+        value={{
+          tokenInfos,
+          priceData,
+          wallet,
+          addressId: addressId,
+          setAddressId: setAddressIdWrapper,
+          addressList,
+          createAddress,
+          updateAddress,
+          accountList,
+          getAccountByPk,
+          loadAccountList,
+        }}
+      >
+        <MarketProvider>
+          {tokenInfos.length ? props.children : <LoadingImage />}
+        </MarketProvider>
+      </AppContext.Provider>
+    </RemoteConfigProvider>
   );
 };

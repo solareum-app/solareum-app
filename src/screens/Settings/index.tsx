@@ -1,18 +1,16 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { ScrollView, View, Text, StyleSheet, Linking } from 'react-native';
-import remoteConfig from '@react-native-firebase/remote-config';
-
 import { ListItem, Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
 import { Portal } from 'react-native-portalize';
 
 import { FacebookWebView } from '../../components/Modals/FacebookWebView';
-
 import { COLORS } from '../../theme';
 import { Routes } from '../../navigators/Routes';
 import { spacings } from '../../theme';
 import { typo } from '../../components/Styles';
 import package from '../../../package.json';
+import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
 
 const s = StyleSheet.create({
   container: {
@@ -47,19 +45,7 @@ const s = StyleSheet.create({
 const Settings: React.FC = () => {
   const navigation = useNavigation();
   const refPolicy = useRef();
-  const [appPrefix, setAppPrefix] = useState('v');
-
-  useEffect(() => {
-    remoteConfig()
-      .setDefaults({
-        awesome_new_feature: 'disabled',
-      })
-      .then(() => remoteConfig().fetchAndActivate())
-      .then((_) => {
-        const prefix = remoteConfig().getValue('app_prefix');
-        setAppPrefix(prefix._value);
-      });
-  }, []);
+  const { appPrefix, links } = useConfig();
 
   return (
     <View style={s.container}>
@@ -86,7 +72,7 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              Linking.openURL('https://wealthclub.vn');
+              Linking.openURL(links.wealthclub);
             }}
           >
             <Icon type="antdesign" name="staro" color="grey" size={16} />
@@ -100,7 +86,7 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              Linking.openURL('https://twitter.com/solareum_wallet');
+              Linking.openURL(links.twitter);
             }}
           >
             <Icon type="feather" name="twitter" color="grey" size={16} />
@@ -114,7 +100,7 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              Linking.openURL('https://t.me/solareum_wallet');
+              Linking.openURL(links.telegram);
             }}
           >
             <Icon type="antdesign" name="hearto" color="grey" size={16} />
@@ -144,7 +130,7 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              Linking.openURL('https://solareum.app');
+              Linking.openURL(links.solareum);
             }}
           >
             <Icon type="feather" name="zap" color="grey" size={16} />
@@ -168,10 +154,7 @@ const Settings: React.FC = () => {
       </ScrollView>
 
       <Portal>
-        <FacebookWebView
-          ref={refPolicy}
-          url="https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418"
-        />
+        <FacebookWebView ref={refPolicy} url={links.policy} />
       </Portal>
     </View>
   );
