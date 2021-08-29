@@ -15,6 +15,12 @@ window.solana = {
     window.ReactNativeWebView.postMessage(JSON.stringify(message));
   },
 };
+window.sollet = {
+  platform: 'solareum',
+  postMessage: (message) => {
+    window.ReactNativeWebView.postMessage(JSON.stringify(message));
+  },
+};
 `;
 
 const s = StyleSheet.create({
@@ -62,6 +68,7 @@ export default class SolareumDEX extends Component<Props, State> {
   }
 
   onMessage = async (event: any) => {
+    console.log('onMessage', event);
     const data = JSON.parse(event.nativeEvent.data);
 
     if (data.method === 'connect') {
@@ -77,6 +84,7 @@ export default class SolareumDEX extends Component<Props, State> {
     if (!this.webView.current) {
       return;
     }
+    console.log('populateMessage', payload);
     this.webView.current.postMessage(
       JSON.stringify({
         isRN: true,
@@ -119,7 +127,8 @@ export default class SolareumDEX extends Component<Props, State> {
 
   render() {
     const { marketId } = this.props.route.params;
-    let uri = 'https://dex.solareum.app';
+    // let uri = 'https://dex.solareum.app';
+    let uri = 'https://raydium.io/swap';
     // let uri = 'http://192.168.33.100:5000';
 
     if (marketId) {
