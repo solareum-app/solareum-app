@@ -33,6 +33,12 @@ export const grid = StyleSheet.create({
   button: {
     height: 44,
   },
+  buttonCritical: {
+    borderColor: COLORS.critical,
+  },
+  buttonCriticalTitle: {
+    color: COLORS.critical,
+  },
 });
 
 export const input = StyleSheet.create({
