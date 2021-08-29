@@ -20,7 +20,7 @@ const EditWallet: React.FC<Props> = ({ route }) => {
   const [walletName, setWalletName] = useState(address?.name || '');
   const [isStored, setIsStored] = useState<boolean>(address?.isStored);
   const [loading, setLoading] = useState(false);
-  const { updateAddress } = useApp();
+  const { updateAddress, removeWallet, addressId } = useApp();
 
   const submit = async () => {
     setLoading(true);
@@ -31,6 +31,11 @@ const EditWallet: React.FC<Props> = ({ route }) => {
     } catch (err) {
       setLoading(false);
     }
+  };
+
+  const remove = async () => {
+    await removeWallet(addressId);
+    navigation.navigate(Routes.Home);
   };
 
   const copyToClipboard = () => {
@@ -94,6 +99,16 @@ const EditWallet: React.FC<Props> = ({ route }) => {
                 Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó
                 ở phần Cài Đặt sau khi ví được tạo.
               </Text>
+            </View>
+            <View style={[s.wrp, { marginTop: 80 }]}>
+              <Button
+                title="Xóa ví"
+                buttonStyle={grid.buttonCritical}
+                containerStyle={grid.buttonCritical}
+                titleStyle={grid.buttonCriticalTitle}
+                onPress={remove}
+                type="outline"
+              />
             </View>
           </View>
         </ScrollView>
