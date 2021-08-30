@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  DeviceEventEmitter,
+  Share,
+} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
 import { Button } from 'react-native-elements';
@@ -119,6 +125,25 @@ export const Receive = ({ token }) => {
     setUseSol(true);
   };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: 'Tiêu đề sharing',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   useEffect(() => {
     const acc = accountList.find((i) => i.address === token.address);
     if (acc) {
@@ -214,7 +239,7 @@ export const Receive = ({ token }) => {
               </View>
               <View style={s.controlItem}>
                 <RoundedButton
-                  onClick={() => null}
+                  onClick={() => onShare()}
                   title="Chia sẻ"
                   iconName="upload"
                 />
