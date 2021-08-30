@@ -15,6 +15,8 @@ import { clusterForEndpoint } from './clusters';
 import { Cluster } from './types';
 import { IAccount, createAccountList } from './IAccount';
 import { useApp } from './AppProvider';
+import { useConfig } from './RemoteConfigProvider';
+import { getUniqByAddress } from './getUniqByAddress';
 
 export type TokenContextType = {
   accountList: IAccount[];
@@ -63,6 +65,7 @@ const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
 
 export const TokenProvider: React.FC = (props) => {
   const { wallet } = useApp();
+  const { customeTokenList } = useConfig();
 
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
   const [accountList, setAccountListSource] = useState<IAccount[]>([]);
@@ -130,11 +133,18 @@ export const TokenProvider: React.FC = (props) => {
           ? filteredTokenListContainer?.getList()
           : null; // Workaround for filter return all on unknown slug
 
-      const tokenList = [SOL_TOKEN, ...listOfTokens];
-      const priceMapping = await fetchPriceData(tokenList);
-      const accList = createAccountList(tokenList, accountList, priceMapping);
+      const tokenList = [SOL_TOKEN]
+        .concat(listOfTokens)
+        .concat(customeTokenList);
+      const uniqTokenList = getUniqByAddress(tokenList);
+      const priceMapping = await fetchPriceData(uniqTokenList).catch(() => []);
+      const accList = createAccountList(
+        uniqTokenList,
+        accountList,
+        priceMapping,
+      );
 
-      setTokenInfos(tokenList);
+      setTokenInfos(uniqTokenList);
       setPriceData(priceMapping);
       setAccountList(accList);
     });

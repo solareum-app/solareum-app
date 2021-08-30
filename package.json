@@ -11,7 +11,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --watch",
     "check-types": "tsc -p tsconfig.json",
     "lint": "npm run check-types && npm run lint:eslint -- . --ext .js,.jsx,.ts,.tsx",
     "lint:eslint": "eslint --ignore-path .gitignore",

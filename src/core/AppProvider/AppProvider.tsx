@@ -5,6 +5,7 @@ import {
   AddressInfo,
   createWallet,
   updateWallet,
+  removeWalletById,
 } from '../../storage/WalletCollection';
 import { getWallet } from '../../spl-utils/getWallet';
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
@@ -16,6 +17,7 @@ export type AppContextType = {
   addressList: AddressInfo[];
   createAddress: Function;
   updateAddress: Function;
+  removeWallet: Function;
 };
 export const AppContext = React.createContext<AppContextType>({
   wallet: null,
@@ -24,6 +26,7 @@ export const AppContext = React.createContext<AppContextType>({
   addressList: [],
   createAddress: () => null,
   updateAddress: () => null,
+  removeWallet: () => null,
 });
 
 export const useApp = () => {
@@ -77,6 +80,13 @@ export const AppProvider: React.FC = (props) => {
     setAddressId(id);
   };
 
+  const removeWallet = async (id: string) => {
+    await removeWalletById(id);
+    await initWallet();
+    // TODO: remove all data related to this wallet
+    return true;
+  };
+
   // init wallet
   const initWallet = async () => {
     const list = await getListWallet();
@@ -103,6 +113,7 @@ export const AppProvider: React.FC = (props) => {
         addressList,
         createAddress,
         updateAddress,
+        removeWallet,
       }}
     >
       {props.children}
