@@ -24,10 +24,16 @@ const DailyMission: React.FC<Props> = () => {
             Mỗi ngày bạn có 5 lượt điểm danh bằng cách xem quảng cáo, với mỗi
             lượt hoàn thành xem quảng cáo bạn sẽ nhận được một lượng token XSB
             nhất định. Khi đủ số lượng XSB bạn có thể bán token này trên tất cả
-            các thị trường hỗ trợ. Số tiền nhận được từ quảng cáo, team Solareum
-            sẽ trích một phần để mua lại XSB trên thị trường. Vừa để tạo thanh
-            khoản cho thị trường, vừa để reward lại cho cộng đồng đã hỗ trợ team
-            Solareum.
+            các thị trường hỗ trợ.
+          </Text>
+          <Text style={typo.normal}>
+            Số tiền nhận được từ quảng cáo, team Solareum sẽ trích một phần để
+            mua lại XSB trên thị trường. Vừa để tạo thanh khoản cho thị trường,
+            vừa để reward lại cho cộng đồng đã hỗ trợ team Solareum.
+          </Text>
+          <Text style={typo.normal}>
+            Bạn lưu ý là hoàn tất quảng cáo - không tắt giữa chừng để hoàn thành
+            nhiệm vụ nhé. Cùng Solareum tích tiểu thành đại.
           </Text>
           <Banner />
         </View>
