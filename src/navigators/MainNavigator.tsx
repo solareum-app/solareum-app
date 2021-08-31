@@ -8,7 +8,6 @@ import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
 import ImportWallet from '../screens/ImportWallet';
 import Notifications from '../screens/Notifications';
-import Task from '../screens/Task';
 import Settings from '../screens/Settings';
 import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
 import Search from '../screens/Search';
@@ -20,6 +19,7 @@ import { HomeScreen } from './HomeScreen';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 import { Icon } from 'react-native-elements';
+import DailyMission from '../screens/DailyMission';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -105,7 +105,7 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.Token} component={Token} />
           <Stack.Screen name={Routes.SettingWallet} component={SettingWallet} />
           <Stack.Screen name={Routes.Search} component={Search} />
-          <Stack.Screen name={Routes.Task} component={Task} />
+          <Stack.Screen name={Routes.Mission} component={DailyMission} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>

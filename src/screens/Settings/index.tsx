@@ -67,6 +67,23 @@ const Settings: React.FC = () => {
         </View>
 
         <View style={s.group}>
+          <Text style={s.groupName}>Đồng hành cùng Solareum</Text>
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              navigation.navigate(Routes.Mission);
+            }}
+          >
+            <Icon type="feather" name="zap" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>Điểm danh</ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
+        </View>
+
+        <View style={s.group}>
           <Text style={s.groupName}>Cộng đồng</Text>
           <ListItem
             bottomDivider
@@ -138,20 +155,6 @@ const Settings: React.FC = () => {
               <ListItem.Title style={s.itemTitle}>
                 Về Solareum Wallet
               </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron color="grey" />
-          </ListItem>
-
-          <ListItem
-            bottomDivider
-            containerStyle={s.item}
-            onPress={() => {
-              navigation.navigate(Routes.Task);
-            }}
-          >
-            <Icon type="feather" name="zap" color="grey" size={16} />
-            <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Điểm danh</ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
