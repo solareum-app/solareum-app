@@ -128,19 +128,20 @@ export const Receive = ({ token }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: 'Tiêu đề sharing',
+        message: `Gởi ${account.symbol} (${account.name} - Solana network) cho mình qua địa chỉ này nhé. ${address}`,
       });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error) {
-      console.log(error.message);
+      return result;
+
+      // ref: https://reactnative.dev/docs/share
+      // if (result.action === Share.sharedAction) {
+      //   if (result.activityType) {
+      //   } else {
+      //   }
+      // }
+      // if (result.action === Share.dismissedAction) {
+      // }
+    } catch {
+      // TODO: track this issue then
     }
   };
 
