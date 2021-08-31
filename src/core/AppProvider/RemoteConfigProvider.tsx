@@ -82,9 +82,20 @@ export const RemoteConfigProvider = ({ children }) => {
         market_list: '[]',
         links: JSON.stringify(defaultLinks),
       })
-      // .then(() => remoteConfig().fetch(0)) // for testing env
-      .then(() => remoteConfig().fetch(7200)) // caching for 2 hours
-      .then(() => remoteConfig().fetchAndActivate())
+      .then(() =>
+        remoteConfig()
+          .fetch(7200)
+          .catch(() => {
+            return true;
+          }),
+      ) // fetch config right after reload app
+      .then(() =>
+        remoteConfig()
+          .fetchAndActivate()
+          .catch(() => {
+            return true;
+          }),
+      )
       .then((_) => {
         const sourceAppName = remoteConfig().getValue('app_name');
         const sourceAppPrefix = remoteConfig().getValue('app_prefix');
@@ -99,6 +110,9 @@ export const RemoteConfigProvider = ({ children }) => {
         setCustomeMarketList(JSON.parse(sourceMarketList._value));
         setCustomeTokenList(JSON.parse(sourceTokenList._value));
         setLinks(JSON.parse(sourceLinks._value));
+        setLoading(false);
+      })
+      .catch(() => {
         setLoading(false);
       });
   }, []);

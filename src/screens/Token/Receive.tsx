@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  DeviceEventEmitter,
+  Share,
+} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
 import { Button } from 'react-native-elements';
@@ -119,6 +125,26 @@ export const Receive = ({ token }) => {
     setUseSol(true);
   };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Gởi ${account.symbol} (${account.name} - Solana network) cho mình qua địa chỉ này nhé. ${address}`,
+      });
+      return result;
+
+      // ref: https://reactnative.dev/docs/share
+      // if (result.action === Share.sharedAction) {
+      //   if (result.activityType) {
+      //   } else {
+      //   }
+      // }
+      // if (result.action === Share.dismissedAction) {
+      // }
+    } catch {
+      // TODO: track this issue then
+    }
+  };
+
   useEffect(() => {
     const acc = accountList.find((i) => i.address === token.address);
     if (acc) {
@@ -214,7 +240,7 @@ export const Receive = ({ token }) => {
               </View>
               <View style={s.controlItem}>
                 <RoundedButton
-                  onClick={() => null}
+                  onClick={() => onShare()}
                   title="Chia sẻ"
                   iconName="upload"
                 />
