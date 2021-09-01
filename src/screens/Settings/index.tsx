@@ -9,8 +9,8 @@ import { COLORS } from '../../theme';
 import { Routes } from '../../navigators/Routes';
 import { spacings } from '../../theme';
 import { typo } from '../../components/Styles';
-import package from '../../../package.json';
 import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
+import package from '../../../package.json';
 
 const s = StyleSheet.create({
   container: {
@@ -18,13 +18,15 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.dark2,
   },
   group: {
-    marginTop: spacings.xlarge,
     backgroundColor: COLORS.dark2,
+    marginBottom: 24,
   },
   groupName: {
     paddingHorizontal: spacings.large,
     paddingBottom: spacings.small,
-    color: COLORS.white2,
+    color: COLORS.blue4,
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   item: {
     backgroundColor: COLORS.dark0,
@@ -35,7 +37,7 @@ const s = StyleSheet.create({
   },
   itemTitle: {
     color: COLORS.white2,
-    fontSize: 14,
+    fontSize: 16,
   },
   wrp: {
     padding: 20,
@@ -61,6 +63,23 @@ const Settings: React.FC = () => {
             <Icon type="antdesign" name="wallet" color="grey" size={20} />
             <ListItem.Content>
               <ListItem.Title style={s.itemWallet}>Ví Crypto</ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
+        </View>
+
+        <View style={s.group}>
+          <Text style={s.groupName}>Cùng Solareum</Text>
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              navigation.navigate(Routes.Mission);
+            }}
+          >
+            <Icon type="feather" name="zap" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>Điểm danh</ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
