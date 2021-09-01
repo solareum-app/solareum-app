@@ -35,13 +35,20 @@ const DailyMission: React.FC<Props> = () => {
             Bạn lưu ý là hoàn tất quảng cáo - không tắt giữa chừng để hoàn thành
             nhiệm vụ nhé. Cùng Solareum tích tiểu thành đại.
           </Text>
-          <Banner />
         </View>
 
-        {!admob ? (
-          <Text style={typo.helper}>Hiện tại tính năng này đang tạm khóa.</Text>
-        ) : null}
-        <Rewarded disabled={!admob} />
+        <View style={s.wrp}>
+          {!admob ? (
+            <Text style={typo.helper}>
+              Hiện tại tính năng này đang tạm khóa.
+            </Text>
+          ) : null}
+          <Rewarded disabled={!admob} />
+        </View>
+
+        <View style={s.wrp}>
+          <Banner />
+        </View>
       </View>
     </View>
   );
