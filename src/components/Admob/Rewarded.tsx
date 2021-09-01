@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from 'react-native';
+import { Button, View, StyleSheet } from 'react-native';
 
 import {
   RewardedAd,
@@ -22,9 +22,19 @@ type Props = {
   disabled?: boolean;
 };
 
+const s = StyleSheet.create({
+  main: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
 export const Banner = () => {
   return (
-    <BannerAd size={BannerAdSize.ADAPTIVE_BANNER} unitId={adBannerUnitId} />
+    <View style={s.main}>
+      <BannerAd size={BannerAdSize.LARGE_BANNER} unitId={adBannerUnitId} />
+    </View>
   );
 };
 
