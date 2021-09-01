@@ -106,7 +106,7 @@ export const RemoteConfigProvider = ({ children }) => {
 
         setAppName(sourceAppName._value);
         setAppPrefix(sourceAppPrefix._value);
-        setAdmob(sourceAdmob._value);
+        setAdmob(sourceAdmob._value === 'true' ? true : false);
         setCustomeMarketList(JSON.parse(sourceMarketList._value));
         setCustomeTokenList(JSON.parse(sourceTokenList._value));
         setLinks(JSON.parse(sourceLinks._value));

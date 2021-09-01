@@ -9,6 +9,10 @@ const s = StyleSheet.create({
   wrp: {
     marginBottom: 24,
   },
+  helper: {
+    ...typo.helper,
+    marginTop: 8,
+  },
 });
 
 type Props = {};
@@ -38,12 +42,10 @@ const DailyMission: React.FC<Props> = () => {
         </View>
 
         <View style={s.wrp}>
-          {!admob ? (
-            <Text style={typo.helper}>
-              Hiện tại tính năng này đang tạm khóa.
-            </Text>
-          ) : null}
           <Rewarded disabled={!admob} />
+          {!admob ? (
+            <Text style={s.helper}>Hiện tại tính năng này đang tạm khóa.</Text>
+          ) : null}
         </View>
 
         <View style={s.wrp}>
