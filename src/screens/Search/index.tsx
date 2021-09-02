@@ -26,7 +26,7 @@ const Search: React.FC = ({ route }) => {
         }
         return i.publicKey;
       })
-      .sort((a, b) => b.value - a.value);
+      .sort((a, b) => b.refValue - a.refValue);
 
     const t = accountListByAction?.filter((i) => {
       const name = i.name ? i.name.toLowerCase() : '';

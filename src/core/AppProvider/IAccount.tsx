@@ -8,6 +8,7 @@ export type IAccount = {
   decimals: number;
   valid: boolean;
   value: number;
+  refValue: number;
   isMinted: boolean;
   usd: number;
   vnd: number;
@@ -30,6 +31,7 @@ export const createAccountList = (
     const amount = account.amount || 0;
     const decimals = account.decimals || 0;
     const value = (amount / Math.pow(10, decimals)) * usd;
+    const refValue = (amount / Math.pow(10, decimals)) * (usd || 0.0001);
     const sortName = token.name
       .replace('Wrapped', '')
       .replace('(Sollet)', '')
@@ -43,6 +45,7 @@ export const createAccountList = (
       amount,
       decimals,
       value,
+      refValue,
       valid: account.valid || false,
       isMinted: !!account.publicKey,
       usd: price.usd || 0,
@@ -62,6 +65,7 @@ export const createAccountList = (
       const amount = account.amount || 0;
       const decimals = account.decimals || 0;
       const value = (amount / Math.pow(10, decimals)) * usd;
+      const refValue = (amount / Math.pow(10, decimals)) * (usd || 0.0001);
       const sortName = i.name
         .replace('Wrapped', '')
         .replace('(Sollet)', '')
@@ -75,6 +79,7 @@ export const createAccountList = (
         amount,
         decimals,
         value,
+        refValue,
         valid: account.valid || false,
         isMinted: !!account.publicKey,
         usd: price.usd || 0,
