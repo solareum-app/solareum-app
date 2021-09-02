@@ -83,6 +83,19 @@ const Settings: React.FC = () => {
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              navigation.navigate(Routes.ChangePinLock);
+            }}
+          >
+            <Icon type="feather" name="zap" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>Đổi mã pin</ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
         </View>
 
         <View style={s.group}>
