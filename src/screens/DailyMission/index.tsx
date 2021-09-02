@@ -21,9 +21,9 @@ const DailyMission: React.FC<Props> = () => {
   const { admob } = useConfig();
 
   return (
-    <ScrollView>
-      <View style={grid.container}>
-        <View style={grid.body}>
+    <View style={grid.container}>
+      <ScrollView>
+        <View style={grid.content}>
           <View style={s.wrp}>
             <Text style={typo.normal}>
               Mỗi ngày bạn có 5 lượt điểm danh bằng cách xem quảng cáo, với mỗi
@@ -55,8 +55,8 @@ const DailyMission: React.FC<Props> = () => {
             <Banner />
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

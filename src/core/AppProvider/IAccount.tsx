@@ -33,9 +33,8 @@ export const createAccountList = (
     const value = (amount / Math.pow(10, decimals)) * usd;
     const refValue = (amount / Math.pow(10, decimals)) * (usd || 0.0001);
     const sortName = token.name
-      .replace('Wrapped', '')
-      .replace('(Sollet)', '')
-      .trim();
+      ? token.name.replace('Wrapped', '').replace('(Sollet)', '').trim()
+      : '-';
 
     return {
       ...token,
@@ -67,9 +66,8 @@ export const createAccountList = (
       const value = (amount / Math.pow(10, decimals)) * usd;
       const refValue = (amount / Math.pow(10, decimals)) * (usd || 0.0001);
       const sortName = i.name
-        .replace('Wrapped', '')
-        .replace('(Sollet)', '')
-        .trim();
+        ? i.name.replace('Wrapped', '').replace('(Sollet)', '').trim()
+        : '-';
 
       return {
         ...i,
