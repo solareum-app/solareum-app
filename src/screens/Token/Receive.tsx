@@ -146,7 +146,12 @@ export const Receive = ({ token }) => {
   };
 
   useEffect(() => {
-    const acc = accountList.find((i) => i.address === token.address);
+    // dont update accoutn when token is created
+    if (token.publicKey) {
+      return;
+    }
+
+    let acc = accountList.find((i) => i.address === token.address);
     if (acc) {
       setAccount(acc);
     }
