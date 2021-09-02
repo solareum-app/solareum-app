@@ -13,6 +13,9 @@ const s = StyleSheet.create({
     ...typo.helper,
     marginTop: 8,
   },
+  scroller: {
+    flex: 1,
+  },
 });
 
 type Props = {};
@@ -22,7 +25,7 @@ const DailyMission: React.FC<Props> = () => {
 
   return (
     <View style={grid.container}>
-      <ScrollView>
+      <ScrollView style={s.scroller}>
         <View style={grid.content}>
           <View style={s.wrp}>
             <Text style={typo.normal}>
