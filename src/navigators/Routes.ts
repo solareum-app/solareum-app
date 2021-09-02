@@ -17,6 +17,7 @@ export enum Routes {
   ManagementTokenList = 'Quản lý Tài Khoản',
   Influencer = 'Giới thiệu nhận thưởng',
   Airdrop = 'Airdrop',
+  ChangePinLock = 'Đổi mã pin',
 }
 
 export default Routes;
