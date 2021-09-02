@@ -12,6 +12,7 @@ export type IAccount = {
   isMinted: boolean;
   usd: number;
   vnd: number;
+  name: string;
   sortName: string;
 } & TokenInfo;
 
@@ -24,7 +25,11 @@ export const createAccountList = (
 
   // filled token info for existing account list
   const filledAccountList = [...accountList].map((account) => {
-    const token = tokenList.find((t) => t.address === account.mint) || {};
+    const token = tokenList.find((t) => t.address === account.mint) || null;
+    if (!token) {
+      return null;
+    }
+
     const id = token.extensions?.coingeckoId || '-';
     const price = priceData[id] || account;
     const usd = price.usd || 0;
@@ -86,5 +91,5 @@ export const createAccountList = (
       } as IAccount;
     });
 
-  return [...filledAccountList, ...filledTokenList];
+  return [...filledAccountList, ...filledTokenList].filter((a) => !!a);
 };
