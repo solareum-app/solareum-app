@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  DeviceEventEmitter,
+  Share,
+} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
 import { Button } from 'react-native-elements';
@@ -9,7 +15,8 @@ import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme/colors';
 import { RoundedButton } from '../../components/RoundedButton';
 import { typo } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
 import { wait } from '../../utils';
 import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { EventMessage } from '../EventMessage/EventMessage';
@@ -69,7 +76,8 @@ const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
 export const Receive = ({ token }) => {
-  const { accountList, wallet, loadAccountList } = useApp();
+  const { wallet } = useApp();
+  const { accountList, loadAccountList } = useToken();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [useSol, setUseSol] = useState(false);
@@ -117,8 +125,33 @@ export const Receive = ({ token }) => {
     setUseSol(true);
   };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Gởi ${account.symbol} (${account.name} - Solana network) cho mình qua địa chỉ này nhé. ${address}`,
+      });
+      return result;
+
+      // ref: https://reactnative.dev/docs/share
+      // if (result.action === Share.sharedAction) {
+      //   if (result.activityType) {
+      //   } else {
+      //   }
+      // }
+      // if (result.action === Share.dismissedAction) {
+      // }
+    } catch {
+      // TODO: track this issue then
+    }
+  };
+
   useEffect(() => {
-    const acc = accountList.find((i) => i.address === token.address);
+    // dont update accoutn when token is created
+    if (token.publicKey) {
+      return;
+    }
+
+    let acc = accountList.find((i) => i.address === token.address);
     if (acc) {
       setAccount(acc);
     }
@@ -212,7 +245,7 @@ export const Receive = ({ token }) => {
               </View>
               <View style={s.controlItem}>
                 <RoundedButton
-                  onClick={() => null}
+                  onClick={() => onShare()}
                   title="Chia sẻ"
                   iconName="upload"
                 />

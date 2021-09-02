@@ -34,6 +34,16 @@ export const setItem = async (collection: string, id: string, value: any) => {
   );
 };
 
+export const removeItem = async (collection: string, id: string) => {
+  try {
+    const key = getKey(collection, id);
+    await AsyncStorage.removeItem(key);
+    return true;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 export const getCollection = async (collection: string) => {
   const keyList = await AsyncStorage.getAllKeys();
   const selectedKeyList = keyList.filter((i) => i.startsWith(collection));

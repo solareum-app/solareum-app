@@ -16,7 +16,7 @@ import { grid, typo } from '../../components/Styles';
 import { price } from '../../utils/autoRound';
 import { TransferAction } from '../Wallet';
 import { CryptoIcon } from '../../components/CryptoIcon';
-import { useApp } from '../../core/AppProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -63,7 +63,7 @@ const Token = ({ route }) => {
   const { action, token } = route.params;
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
-  const { getAccountByPk } = useApp();
+  const { getAccountByPk } = useToken();
 
   const refTransactionHistory = useRef();
   const refSend = useRef();

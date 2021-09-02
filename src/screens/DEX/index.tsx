@@ -5,7 +5,7 @@ import bs58 from 'bs58';
 
 import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
-import { AppContext } from '../../core/AppProvider';
+import { AppContext } from '../../core/AppProvider/AppProvider';
 import { LoadingImage } from '../../components/LoadingIndicator';
 
 const INJECTED_SCRIPT = `

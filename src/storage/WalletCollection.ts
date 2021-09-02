@@ -1,4 +1,4 @@
-import { getItem, setItem, getCollection } from './Collection';
+import { getItem, setItem, removeItem, getCollection } from './Collection';
 import { v4 } from 'uuid';
 
 export const COLLECTION_NAME = 'WALLET';
@@ -46,6 +46,10 @@ export const updateWallet = async (
     isStored,
   });
   return await getWalletById(wallet.id);
+};
+
+export const removeWalletById = async (id: string) => {
+  return await removeItem(COLLECTION_NAME, id);
 };
 
 export const getWalletById = async (id: string): Promise<AddressInfo> => {

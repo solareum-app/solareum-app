@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/core';
 import { ImageCached } from '../../components/ImageCached/ImageCached';
 import Routes from '../../navigators/Routes';
 import { AddressInfo } from '../../storage/WalletCollection';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import walletIcon from '../../assets/Solareum_Wallet.png';
