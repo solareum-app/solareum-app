@@ -21,6 +21,7 @@ import Routes from './Routes';
 import { Icon } from 'react-native-elements';
 import DailyMission from '../screens/DailyMission';
 import LockScreen from '../screens/LockScreen';
+import BiometricPopup from '../screens/BiometricPopup';
 import ChangePinLock from '../screens/ChangePinLock';
 import { hasUserSetPinCode } from '@haskkor/react-native-pincode';
 import BackgroundTimer from 'react-native-background-timer';
@@ -35,8 +36,9 @@ const s = StyleSheet.create({
 const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
+  const [lockedType, setLockedType] = useState('finger');
   const [showPinLock, setShowPinLock] = useState(true);
-  const [hasPinState, setHasPinState] = useState(false);
+  const [showFingerLock, setShowFingerLock] = useState(true);
   const [showPinCodeStatus, setShowPinCodeStatus] = useState('');
 
   const navigationRef = useRef(null);
@@ -69,7 +71,8 @@ const MainNavigator: React.FC = () => {
       console.log('AppState', appState.current);
       if (appState.current === 'background') {
         timeoutId = BackgroundTimer.setTimeout(() => {
-          console.log('lock');
+          console.log('locked');
+          setLockedType('pin');
           setShowPinLock(true);
         }, 2 * 60 * 1000);
       }
@@ -83,7 +86,6 @@ const MainNavigator: React.FC = () => {
 
   const getHasPinState = async () => {
     const hasPin = await hasUserSetPinCode();
-    setHasPinState(hasPin);
     if (hasPin) {
       setShowPinCodeStatus('enter');
     } else {
@@ -110,6 +112,7 @@ const MainNavigator: React.FC = () => {
           onPress: () => {
             setShowPinLock(false);
             getHasPinState();
+            setLockedType('');
           },
         },
       ]);
@@ -135,7 +138,7 @@ const MainNavigator: React.FC = () => {
   return (
     <NavigationContainer ref={navigationRef} onReady={checkInitScreen}>
       <Host>
-        {showPinLock === false && hasPinState === true && (
+        {lockedType === '' && (
           <Stack.Navigator
             screenOptions={{
               headerTitleStyle: {
@@ -193,7 +196,7 @@ const MainNavigator: React.FC = () => {
           </Stack.Navigator>
         )}
 
-        {showPinLock === true && (
+        {showPinLock === true && lockedType === 'pin' && (
           <Stack.Navigator
             screenOptions={{
               headerShown: false,
@@ -204,6 +207,22 @@ const MainNavigator: React.FC = () => {
                 <LockScreen
                   showPinCodeStatus={showPinCodeStatus}
                   finishProcess={finishProcess}
+                />
+              )}
+            </Stack.Screen>
+          </Stack.Navigator>
+        )}
+        {showFingerLock === true && lockedType === 'finger' && (
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name={Routes.Home}>
+              {() => (
+                <BiometricPopup
+                  setShowFingerLock={setShowFingerLock}
+                  setLockedType={setLockedType}
                 />
               )}
             </Stack.Screen>
