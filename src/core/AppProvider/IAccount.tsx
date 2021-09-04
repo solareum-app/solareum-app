@@ -8,9 +8,11 @@ export type IAccount = {
   decimals: number;
   valid: boolean;
   value: number;
+  refValue: number;
   isMinted: boolean;
   usd: number;
   vnd: number;
+  name: string;
   sortName: string;
 } & TokenInfo;
 
@@ -23,17 +25,21 @@ export const createAccountList = (
 
   // filled token info for existing account list
   const filledAccountList = [...accountList].map((account) => {
-    const token = tokenList.find((t) => t.address === account.mint) || {};
+    const token = tokenList.find((t) => t.address === account.mint) || null;
+    if (!token) {
+      return null;
+    }
+
     const id = token.extensions?.coingeckoId || '-';
     const price = priceData[id] || account;
     const usd = price.usd || 0;
     const amount = account.amount || 0;
     const decimals = account.decimals || 0;
     const value = (amount / Math.pow(10, decimals)) * usd;
+    const refValue = (amount / Math.pow(10, decimals)) * (usd || 0.0001);
     const sortName = token.name
-      .replace('Wrapped', '')
-      .replace('(Sollet)', '')
-      .trim();
+      ? token.name.replace('Wrapped', '').replace('(Sollet)', '').trim()
+      : '-';
 
     return {
       ...token,
@@ -43,6 +49,7 @@ export const createAccountList = (
       amount,
       decimals,
       value,
+      refValue,
       valid: account.valid || false,
       isMinted: !!account.publicKey,
       usd: price.usd || 0,
@@ -62,10 +69,10 @@ export const createAccountList = (
       const amount = account.amount || 0;
       const decimals = account.decimals || 0;
       const value = (amount / Math.pow(10, decimals)) * usd;
+      const refValue = (amount / Math.pow(10, decimals)) * (usd || 0.0001);
       const sortName = i.name
-        .replace('Wrapped', '')
-        .replace('(Sollet)', '')
-        .trim();
+        ? i.name.replace('Wrapped', '').replace('(Sollet)', '').trim()
+        : '-';
 
       return {
         ...i,
@@ -75,6 +82,7 @@ export const createAccountList = (
         amount,
         decimals,
         value,
+        refValue,
         valid: account.valid || false,
         isMinted: !!account.publicKey,
         usd: price.usd || 0,
@@ -83,5 +91,5 @@ export const createAccountList = (
       } as IAccount;
     });
 
-  return [...filledAccountList, ...filledTokenList];
+  return [...filledAccountList, ...filledTokenList].filter((a) => !!a);
 };

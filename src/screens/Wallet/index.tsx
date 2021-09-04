@@ -78,7 +78,9 @@ const WalletScreen = () => {
 
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint)
-    .sort((a, b) => b.value - a.value);
+    .sort((a, b) => {
+      return b.refValue - a.refValue;
+    });
   const totalEst = getTotalEstimate(activeAccountList);
 
   const onRefresh = async () => {

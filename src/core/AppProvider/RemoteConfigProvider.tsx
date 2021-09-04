@@ -82,16 +82,18 @@ export const RemoteConfigProvider = ({ children }) => {
         market_list: '[]',
         links: JSON.stringify(defaultLinks),
       })
-      .then(() =>
+      .then(() => {
+        // fetch anyway, the change will be apply for the next start
         remoteConfig()
-          .fetch(7200)
+          .fetch(3600) // cache for 1 hour
           .catch(() => {
             return true;
-          }),
-      ) // fetch config right after reload app
+          });
+        return true;
+      }) // fetch config right after reload app
       .then(() =>
         remoteConfig()
-          .fetchAndActivate()
+          .activate()
           .catch(() => {
             return true;
           }),
