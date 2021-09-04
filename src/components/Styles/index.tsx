@@ -39,6 +39,9 @@ export const grid = StyleSheet.create({
   buttonCriticalTitle: {
     color: COLORS.critical,
   },
+  popover: {
+    paddingBottom: 40,
+  },
 });
 
 export const input = StyleSheet.create({
