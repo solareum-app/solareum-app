@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { typo } from '../../components/Styles';
+import { grid, typo } from '../../components/Styles';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import { SOL_BALANCE_TARGET } from './const';
 
@@ -21,14 +21,18 @@ export const AirdropStepSuccessAndShare = ({ next }) => {
 
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Thành công</Text>
+      <Text style={typo.title}>Nhận Airdrop thành công</Text>
+      <Text style={typo.normal}>Cảm ơn bạn đã tham gia chương trình.</Text>
+      <View style={grid.group}>
+        <Text style={grid.groupTitle}>Bạn nhận được</Text>
+        <Text style={grid.groupValue}>+20 XSB</Text>
+        <Text style={grid.groupTitle}>Người giới thiệu nhận được</Text>
+        <Text style={grid.groupValue}>+75 XSB</Text>
+      </View>
       <Text style={typo.normal}>
-        Bạn đã nhận được +20 XSB airdrop. Người giới thiệu bạn đã nhận được +75
-        XSB. Hãy trở thành người giới thiệu bằng cách chia sẻ app Solareum tới
-        bạn bè và người thân, để nhận được phần thưởng không giới hạn
-        từ&nbsp;Solareum.
+        Hãy trở thành người giới thiệu bằng cách chia sẻ app Solareum tới bạn bè
+        và người thân, để nhận được phần thưởng không giới hạn từ&nbsp;Solareum.
       </Text>
-      <Text style={typo.normal}>Thông tin chi tiết</Text>
       <View style={s.footer}>
         <Button
           type="outline"
