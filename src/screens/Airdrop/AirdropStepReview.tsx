@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { typo } from '../../components/Styles';
+import { grid, typo } from '../../components/Styles';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import { SOL_BALANCE_TARGET } from './const';
 
@@ -22,7 +22,12 @@ export const AirdropStepReview = ({ next }) => {
   return (
     <View style={s.main}>
       <Text style={typo.title}>Xem lại thông tin đã nhập</Text>
-      <Text style={typo.normal}>Bạn vui lòng xác nhận lại thông tin.</Text>
+      <View style={grid.group}>
+        <Text style={grid.groupTitle}>Địa chỉ người giới thiệu cho bạn</Text>
+        <Text style={grid.groupValue}>
+          65u1qSH13bmWAQcPfZFoCfETJYXgWDXEuL4UAc5KfAHq
+        </Text>
+      </View>
       <View style={s.footer}>
         <Button
           type="outline"
