@@ -20,7 +20,7 @@ import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 import { Icon } from 'react-native-elements';
 import DailyMission from '../screens/DailyMission';
-
+import linking from '../linking';
 const s = StyleSheet.create({
   backWrp: {
     marginLeft: 20,
@@ -30,7 +30,6 @@ const s = StyleSheet.create({
 const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
-
   const navigationRef = useRef(null);
 
   const checkInitScreen = async () => {
@@ -60,7 +59,11 @@ const MainNavigator: React.FC = () => {
   // }, []);
 
   return (
-    <NavigationContainer ref={navigationRef} onReady={checkInitScreen}>
+    <NavigationContainer
+      linking={linking}
+      ref={navigationRef}
+      onReady={checkInitScreen}
+    >
       <Host>
         <Stack.Navigator
           screenOptions={{
