@@ -67,6 +67,7 @@
 		8261572FA23955A63653572A /* Pods-Solareum-SolareumTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solareum-SolareumTests.release.xcconfig"; path = "Target Support Files/Pods-Solareum-SolareumTests/Pods-Solareum-SolareumTests.release.xcconfig"; sourceTree = "<group>"; };
 		8309F965B295591D14417755 /* Pods-Solareum-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solareum-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Solareum-tvOS/Pods-Solareum-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		AE358CB5C1D9D1DA28E196F3 /* Pods-Solareum-SolareumTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solareum-SolareumTests.debug.xcconfig"; path = "Target Support Files/Pods-Solareum-SolareumTests/Pods-Solareum-SolareumTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BC51659E26ECAA4100DB7E4C /* Solareum.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Solareum.entitlements; path = Solareum/Solareum.entitlements; sourceTree = "<group>"; };
 		BC53066E26D7E4DF00678787 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "./GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D7E888E3863333FC883475DE /* libPods-Solareum-SolareumTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Solareum-SolareumTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40C9C4654477591E904E97B /* Pods-Solareum.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Solareum.debug.xcconfig"; path = "Target Support Files/Pods-Solareum/Pods-Solareum.debug.xcconfig"; sourceTree = "<group>"; };
@@ -131,6 +132,7 @@
 		13B07FAE1A68108700A75B9A /* Solareum */ = {
 			isa = PBXGroup;
 			children = (
+				BC51659E26ECAA4100DB7E4C /* Solareum.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -304,6 +306,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 8EET35W9C2;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -770,7 +773,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Solareum/Solareum.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8EET35W9C2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -795,7 +800,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Solareum/Solareum.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8EET35W9C2;
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.18.12;
