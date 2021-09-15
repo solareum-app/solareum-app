@@ -7,6 +7,8 @@ import {
   StyleSheet,
   DeviceEventEmitter,
 } from 'react-native';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Clipboard from '@react-native-community/clipboard';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
@@ -52,6 +54,16 @@ const s = StyleSheet.create({
   controlItem: {
     marginLeft: 12,
     marginRight: 12,
+  },
+  manageBtn: {
+    backgroundColor: COLORS.dark2,
+    borderColor: COLORS.dark4,
+  },
+  manageIcon: {
+    marginRight: 10,
+  },
+  txtManageBtn: {
+    color: COLORS.white0,
   },
 });
 
@@ -155,6 +167,20 @@ const WalletScreen = () => {
         </View>
         <View style={[grid.body, s.body]}>
           <TokensList balanceListInfo={activeAccountList} />
+          <Button
+            buttonStyle={s.manageBtn}
+            onPress={() => navigation.navigate(Routes.ManagementTokenList)}
+            icon={
+              <Icon
+                name="sliders"
+                size={15}
+                style={s.manageIcon}
+                color="white"
+              />
+            }
+            title="Manage token list"
+            titleStyle={s.txtManageBtn}
+          />
         </View>
       </ScrollView>
     </View>

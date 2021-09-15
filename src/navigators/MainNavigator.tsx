@@ -20,6 +20,7 @@ import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 import { Icon } from 'react-native-elements';
 import DailyMission from '../screens/DailyMission';
+import ManageTokenList from '../screens/ManageTokenList';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -30,7 +31,6 @@ const s = StyleSheet.create({
 const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
-
   const navigationRef = useRef(null);
 
   const checkInitScreen = async () => {
@@ -106,6 +106,7 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.SettingWallet} component={SettingWallet} />
           <Stack.Screen name={Routes.Search} component={Search} />
           <Stack.Screen name={Routes.Mission} component={DailyMission} />
+          <Stack.Screen name={Routes.ManagementTokenList} component={ManageTokenList} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>
