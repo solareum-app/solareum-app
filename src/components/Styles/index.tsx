@@ -6,6 +6,7 @@ export const grid = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.dark2,
+    position: 'relative',
   },
   header: {
     flex: 0,
@@ -31,6 +32,12 @@ export const grid = StyleSheet.create({
   },
   button: {
     height: 44,
+  },
+  buttonCritical: {
+    borderColor: COLORS.critical,
+  },
+  buttonCriticalTitle: {
+    color: COLORS.critical,
   },
 });
 

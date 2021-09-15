@@ -8,9 +8,11 @@ export type IAccount = {
   decimals: number;
   valid: boolean;
   value: number;
+  refValue: number;
   isMinted: boolean;
   usd: number;
   vnd: number;
+  name: string;
   sortName: string;
 } & TokenInfo;
 
@@ -19,28 +21,35 @@ export const createAccountList = (
   accountList: any[],
   priceData = {},
 ): IAccount[] => {
-  return tokenList.map((i) => {
-    const id = i.extensions?.coingeckoId || '-';
-    const address = i.address ? i.address : '';
-    const account = accountList?.find((acc) => acc.mint === address) || {};
+  const accountIdList = accountList.map((i) => i.mint).join(',');
+
+  // filled token info for existing account list
+  const filledAccountList = [...accountList].map((account) => {
+    const token = tokenList.find((t) => t.address === account.mint) || null;
+    if (!token) {
+      return null;
+    }
+
+    const id = token.extensions?.coingeckoId || '-';
     const price = priceData[id] || account;
     const usd = price.usd || 0;
     const amount = account.amount || 0;
     const decimals = account.decimals || 0;
     const value = (amount / Math.pow(10, decimals)) * usd;
-    const sortName = i.name
-      .replace('Wrapped', '')
-      .replace('(Sollet)', '')
-      .trim();
+    const refValue = (amount / Math.pow(10, decimals)) * (usd || 0.0001);
+    const sortName = token.name
+      ? token.name.replace('Wrapped', '').replace('(Sollet)', '').trim()
+      : '-';
 
     return {
-      ...i,
+      ...token,
       mint: account.mint || '',
       publicKey: account.publicKey || '',
       owner: account.owner || '',
       amount,
       decimals,
       value,
+      refValue,
       valid: account.valid || false,
       isMinted: !!account.publicKey,
       usd: price.usd || 0,
@@ -48,4 +57,39 @@ export const createAccountList = (
       sortName,
     } as IAccount;
   });
+
+  const filledTokenList = [...tokenList]
+    // filter non-created token
+    .filter((t) => accountIdList.indexOf(t.address) < 0)
+    .map((i) => {
+      const id = i.extensions?.coingeckoId || '-';
+      const account = {};
+      const price = priceData[id] || account;
+      const usd = price.usd || 0;
+      const amount = account.amount || 0;
+      const decimals = account.decimals || 0;
+      const value = (amount / Math.pow(10, decimals)) * usd;
+      const refValue = (amount / Math.pow(10, decimals)) * (usd || 0.0001);
+      const sortName = i.name
+        ? i.name.replace('Wrapped', '').replace('(Sollet)', '').trim()
+        : '-';
+
+      return {
+        ...i,
+        mint: account.mint || '',
+        publicKey: account.publicKey || '',
+        owner: account.owner || '',
+        amount,
+        decimals,
+        value,
+        refValue,
+        valid: account.valid || false,
+        isMinted: !!account.publicKey,
+        usd: price.usd || 0,
+        vnd: price.vnd || 0,
+        sortName,
+      } as IAccount;
+    });
+
+  return [...filledAccountList, ...filledTokenList].filter((a) => !!a);
 };

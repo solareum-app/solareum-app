@@ -9,7 +9,7 @@ import { generateMnemonicAndSeed } from '../../spl-utils/wallet-account';
 import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
 
 export const s = StyleSheet.create({
   main: {
@@ -153,6 +153,10 @@ const CreateWallet: React.FC<Props> = () => {
               <Text style={typo.helper}>
                 Mã khôi phục này chỉ được lưu trên thiết bị của bạn.
                 {/* và được mã hóa bằng mã PIN của bạn. */}
+              </Text>
+              <Text style={typo.helper}>
+                Bạn có thể dùng mã này để import vào các ví khác, như: Phantom,
+                Sollet, Coin98...
               </Text>
               <Text style={typo.helper}>
                 Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó

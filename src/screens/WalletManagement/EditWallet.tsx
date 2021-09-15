@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -8,7 +8,7 @@ import Icon from '../../components/Icon';
 import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
 import { COLORS } from '../../theme';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
 import { s } from './CreateWallet';
 
 type Props = {};
@@ -20,7 +20,7 @@ const EditWallet: React.FC<Props> = ({ route }) => {
   const [walletName, setWalletName] = useState(address?.name || '');
   const [isStored, setIsStored] = useState<boolean>(address?.isStored);
   const [loading, setLoading] = useState(false);
-  const { updateAddress } = useApp();
+  const { updateAddress, removeWallet, addressId } = useApp();
 
   const submit = async () => {
     setLoading(true);
@@ -31,6 +31,11 @@ const EditWallet: React.FC<Props> = ({ route }) => {
     } catch (err) {
       setLoading(false);
     }
+  };
+
+  const remove = async () => {
+    await removeWallet(addressId);
+    navigation.navigate(Routes.Home);
   };
 
   const copyToClipboard = () => {
@@ -87,9 +92,23 @@ const EditWallet: React.FC<Props> = ({ route }) => {
                 {/* và được mã hóa bằng mã PIN của bạn. */}
               </Text>
               <Text style={typo.helper}>
+                Bạn có thể dùng mã này để import vào các ví khác, như: Phantom,
+                Sollet, Coin98...
+              </Text>
+              <Text style={typo.helper}>
                 Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó
                 ở phần Cài Đặt sau khi ví được tạo.
               </Text>
+            </View>
+            <View style={[s.wrp, { marginTop: 80 }]}>
+              <Button
+                title="Xóa ví"
+                buttonStyle={grid.buttonCritical}
+                containerStyle={grid.buttonCritical}
+                titleStyle={grid.buttonCriticalTitle}
+                onPress={remove}
+                type="outline"
+              />
             </View>
           </View>
         </ScrollView>
