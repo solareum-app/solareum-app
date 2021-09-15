@@ -15,6 +15,7 @@ export enum Routes {
   Search = 'Tokens',
   Mission = 'Nhiệm vụ',
   ChangePinLock = 'Đổi mã pin',
+  ManagementTokenList = 'Management Token List',
 }
 
 export default Routes;

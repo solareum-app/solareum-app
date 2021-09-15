@@ -25,6 +25,7 @@ import LockScreen from '../screens/LockScreen';
 import ChangePinLock from '../screens/ChangePinLock';
 import { hasUserSetPinCode } from '@haskkor/react-native-pincode';
 import BackgroundTimer from 'react-native-background-timer';
+import ManageTokenList from '../screens/ManageTokenList';
 
 let timeoutId: any;
 const s = StyleSheet.create({
@@ -188,6 +189,11 @@ const MainNavigator: React.FC = () => {
             />
             <Stack.Screen name={Routes.Search} component={Search} />
             <Stack.Screen name={Routes.Mission} component={DailyMission} />
+            <Stack.Screen
+              name={Routes.ManagementTokenList}
+              component={ManageTokenList}
+            />
+
             <Stack.Screen
               name={Routes.ChangePinLock}
               component={ChangePinLock}
