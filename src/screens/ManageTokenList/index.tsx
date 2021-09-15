@@ -3,6 +3,7 @@ import { RefreshControl, ScrollView, Text, View, Switch } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import { grid } from '../../components/Styles';
+import { IAccount } from '../../core/AppProvider/IAccount';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import { FONT_SIZES } from '../../theme';
 import { COLORS } from '../../theme/colors';
@@ -73,6 +74,12 @@ const ManageTokenList: React.FC = () => {
     onRefresh();
   }, []);
 
+  const activeAccountList = accountList
+    .filter((i: IAccount) => i.mint)
+    .sort((a, b) => {
+      return b.refValue - a.refValue;
+    });
+
   return (
     <View style={grid.container}>
       <ScrollView
@@ -80,11 +87,9 @@ const ManageTokenList: React.FC = () => {
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }
       >
-        {accountList
-          .filter((_item, index) => index < 10)
-          ?.map((token, index: number) => (
-            <TokenInfoItem key={index} token={token} />
-          ))}
+        {activeAccountList.map((token, index: number) => (
+          <TokenInfoItem key={index} token={token} />
+        ))}
       </ScrollView>
     </View>
   );
