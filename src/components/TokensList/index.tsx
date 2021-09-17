@@ -11,7 +11,11 @@ import { CryptoIcon } from '../CryptoIcon';
 type TokenInfoItemProps = TokenInfo & {
   action?: string;
 };
-const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
+const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
+  action,
+  isHideBalance,
+  ...props
+}) => {
   const {
     name = '$$$',
     sortName,
@@ -22,6 +26,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
     usd,
     value,
   } = props.token;
+
   const navigation = useNavigation();
   const onPressHandler = () => {
     navigation.navigate(Routes.Token, { token: props.token, action });
@@ -56,12 +61,16 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
             fontSize: FONT_SIZES.md,
           }}
         >
-          {`${price(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
+          {isHideBalance
+            ? '****'
+            : `$${price(
+                amount / Math.pow(10, decimals),
+              )} ${symbol.toUpperCase()}`}
         </ListItem.Title>
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
         >
-          {`$${price(value)}`}
+          {isHideBalance ? '****' : `$${price(value)}`}
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
@@ -71,13 +80,23 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
 type TokensListProps = {
   balanceListInfo: any[];
   action?: string;
+  isHideBalance: boolean;
 };
 
-const TokensList: React.FC<TokensListProps> = ({ balanceListInfo, action }) => {
+const TokensList: React.FC<TokensListProps> = ({
+  balanceListInfo,
+  action,
+  isHideBalance,
+}) => {
   return (
     <>
       {balanceListInfo?.map((token, index: number) => (
-        <TokenInfoItem key={index} token={token} action={action} />
+        <TokenInfoItem
+          isHideBalance={isHideBalance}
+          key={index}
+          token={token}
+          action={action}
+        />
       ))}
     </>
   );
