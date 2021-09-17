@@ -90,10 +90,10 @@ const TokensList: React.FC<TokensListProps> = ({
 }) => {
   return (
     <>
-      {balanceListInfo?.map((token, index: number) => (
+      {balanceListInfo?.map((token) => (
         <TokenInfoItem
           isHideBalance={isHideBalance}
-          key={index}
+          key={token.publicKey}
           token={token}
           action={action}
         />
