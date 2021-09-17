@@ -23,6 +23,7 @@ import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useNavigation } from '@react-navigation/native';
 import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
+import { Icon } from 'react-native-elements';
 
 const s = StyleSheet.create({
   header: {
@@ -39,11 +40,14 @@ const s = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   infoBalance: {
     marginTop: 12,
     fontSize: 36,
     color: COLORS.white0,
+    alignItems: 'center',
   },
   control: {
     flexDirection: 'row',
@@ -65,6 +69,10 @@ const s = StyleSheet.create({
   txtManageBtn: {
     color: COLORS.white0,
   },
+  eyeIcon: {
+    marginLeft: 10,
+    alignItems: 'center',
+  },
 });
 
 const getTotalEstimate = (balanceListInfo: any[]) => {
@@ -84,6 +92,7 @@ export enum TransferAction {
 
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
+  const [isHideBalance, setIsHideBalance] = useState(false);
   const navigation = useNavigation();
   const { wallet, addressId } = useApp();
   const { loadAccountList, accountList } = useToken();
@@ -103,6 +112,10 @@ const WalletScreen = () => {
     } catch {
       setLoading(false);
     }
+  };
+
+  const onHideBalance = () => {
+    setIsHideBalance(!isHideBalance);
   };
 
   useEffect(() => {
@@ -126,7 +139,21 @@ const WalletScreen = () => {
       >
         <View style={s.header}>
           <View style={s.info}>
-            <Text style={s.infoBalance}>${price(totalEst)}</Text>
+            <Text onPress={() => onHideBalance()} style={s.infoBalance}>
+              {isHideBalance ? '****' : `$${price(totalEst)}`}
+            </Text>
+            {isHideBalance ? (
+              <Icon
+                onPress={() => onHideBalance()}
+                style={s.eyeIcon}
+                type="feather"
+                name="eye"
+                color={COLORS.white0}
+                size={30}
+              />
+            ) : (
+              <View />
+            )}
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
@@ -166,7 +193,10 @@ const WalletScreen = () => {
           </View>
         </View>
         <View style={[grid.body, s.body]}>
-          <TokensList balanceListInfo={activeAccountList} />
+          <TokensList
+            isHideBalance={isHideBalance}
+            balanceListInfo={activeAccountList}
+          />
           <Button
             buttonStyle={s.manageBtn}
             onPress={() => navigation.navigate(Routes.ManagementTokenList)}
