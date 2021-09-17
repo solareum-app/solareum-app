@@ -71,7 +71,6 @@ const s = StyleSheet.create({
   },
   eyeIcon: {
     marginLeft: 10,
-    alignItems: 'center',
   },
 });
 
@@ -143,14 +142,15 @@ const WalletScreen = () => {
               {isHideBalance ? '****' : `$${price(totalEst)}`}
             </Text>
             {isHideBalance ? (
-              <Icon
-                onPress={() => onHideBalance()}
-                style={s.eyeIcon}
-                type="feather"
-                name="eye"
-                color={COLORS.white0}
-                size={30}
-              />
+              <View style={s.eyeIcon}>
+                <Icon
+                  onPress={() => onHideBalance()}
+                  type="feather"
+                  name="eye"
+                  color={COLORS.white0}
+                  size={30}
+                />
+              </View>
             ) : (
               <View />
             )}
