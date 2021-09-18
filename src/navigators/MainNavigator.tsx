@@ -19,7 +19,7 @@ import { HomeScreen } from './HomeScreen';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 import { Icon } from 'react-native-elements';
-import DailyMission from '../screens/DailyMission';
+import DailyMission from '../screens/Settings/DailyMission';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -30,7 +30,6 @@ const s = StyleSheet.create({
 const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
-
   const navigationRef = useRef(null);
 
   const checkInitScreen = async () => {
