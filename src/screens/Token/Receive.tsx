@@ -80,9 +80,10 @@ export const Receive = ({ token }) => {
   const { accountList, loadAccountList } = useToken();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [useSol, setUseSol] = useState(false);
   const [mintAccountFee, setMintAccountFee] = useState<number>(0);
   const [account, setAccount] = useState(token);
+  const [createNewAccount, setCreateNewAccount] = useState(false);
+  const isAccountCreated = account.publicKey;
 
   const sol = accountList.find((i) => i.mint === 'SOL') || {
     publicKey: '-',
@@ -122,7 +123,7 @@ export const Receive = ({ token }) => {
   };
 
   const dismiss = () => {
-    setUseSol(true);
+    setCreateNewAccount(false);
   };
 
   const onShare = async () => {
@@ -171,28 +172,23 @@ export const Receive = ({ token }) => {
       </View>
       <Text style={typo.title}>Nhận {account.symbol}</Text>
 
-      {!account.isMinted && !useSol ? (
+      {createNewAccount ? (
         <View>
           {!loading ? (
             <View>
               <View style={s.body}>
-                <View>
-                  <Text style={[typo.warning, s.warning]}>
-                    Bạn chưa có tài khoản {account.symbol}
-                  </Text>
-                  <Text style={typo.normal}>
-                    Bạn vẫn có thể nhận token từ địa chỉ Solana, nhưng một số
-                    nhà phát hành token sẽ từ chối dùng địa chỉ Solana, vì họ sẽ
-                    phải chịu phí khởi tạo tài&nbsp;khoản.
-                  </Text>
-                  <Text style={typo.normal}>
-                    Việc tạo tài khoản sẽ giúp bạn thuận tiện hơn trong việc
-                    chuyển và nhận token. Chúng tôi khuyên bạn nên thực hiện
-                    hành động này. Bạn có đồng ý tạo tài&nbsp;khoản?
-                  </Text>
-                  <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
-                  {error ? <Text style={typo.critical}>{error}</Text> : null}
-                </View>
+                <Text style={typo.normal}>
+                  Bạn vẫn có thể nhận token từ địa chỉ Solana, nhưng một số nhà
+                  phát hành token sẽ từ chối dùng địa chỉ Solana, vì họ sẽ phải
+                  chịu phí khởi tạo tài&nbsp;khoản.
+                </Text>
+                <Text style={typo.normal}>
+                  Việc tạo tài khoản sẽ giúp bạn thuận tiện hơn trong việc
+                  chuyển và nhận token. Chúng tôi khuyên bạn nên thực hiện hành
+                  động này. Bạn có đồng ý tạo tài&nbsp;khoản?
+                </Text>
+                <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
+                {error ? <Text style={typo.critical}>{error}</Text> : null}
               </View>
               <View style={s.footer}>
                 <Button
@@ -204,7 +200,7 @@ export const Receive = ({ token }) => {
                 />
                 <Button
                   type="clear"
-                  title="Nhận qua địa chỉ Solana"
+                  title="Bỏ qua"
                   containerStyle={s.button}
                   onPress={dismiss}
                 />
@@ -251,6 +247,17 @@ export const Receive = ({ token }) => {
                 />
               </View>
             </View>
+            {!isAccountCreated ? (
+              <View style={s.control}>
+                <Button
+                  type="clear"
+                  title={`Tạo tài khoản ${account.symbol}`}
+                  onPress={() => {
+                    setCreateNewAccount(true);
+                  }}
+                />
+              </View>
+            ) : null}
           </View>
         </View>
       )}
