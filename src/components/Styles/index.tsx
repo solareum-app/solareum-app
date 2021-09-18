@@ -11,6 +11,13 @@ export const typo = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  titleLeft: {
+    color: COLORS.white2,
+    fontSize: 16,
+    lineHeight: 24,
+    marginBottom: 12,
+    fontWeight: 'bold',
+  },
   normal: {
     color: COLORS.white2,
     fontSize: 16,

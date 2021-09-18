@@ -8,7 +8,7 @@ import { SOL_BALANCE_TARGET } from './const';
 
 import { style as s } from './style';
 
-export const AirdropStepReview = ({ next }) => {
+export const AirdropStepReview = ({ next, refAddress }) => {
   const { accountList } = useToken();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
@@ -24,9 +24,11 @@ export const AirdropStepReview = ({ next }) => {
       <Text style={typo.title}>Xem lại thông tin đã nhập</Text>
       <View style={grid.group}>
         <Text style={grid.groupTitle}>Địa chỉ người giới thiệu cho bạn</Text>
-        <Text style={grid.groupValue}>
-          65u1qSH13bmWAQcPfZFoCfETJYXgWDXEuL4UAc5KfAHq
-        </Text>
+        <Text style={grid.groupValue}>{refAddress}</Text>
+        <Text style={grid.groupTitle}>Bạn nhận được</Text>
+        <Text style={grid.groupValue}>+20 XSB</Text>
+        <Text style={grid.groupTitle}>Người giới thiệu nhận được</Text>
+        <Text style={grid.groupValue}>+75 XSB</Text>
       </View>
       <View style={s.footer}>
         <Button
