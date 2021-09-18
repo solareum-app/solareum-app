@@ -119,6 +119,7 @@ export const Receive = ({ token }) => {
       setError('Có lỗi xảy ra, vui lòng thử lại sau!');
     } finally {
       setLoading(false);
+      setCreateNewAccount(false);
     }
   };
 
