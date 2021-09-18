@@ -70,7 +70,7 @@ const Influencer: React.FC<Props> = () => {
               </Text>
               <Text style={typo.normal}>
                 Không chỉ vậy XSB còn được sử dụng trong hệ sinh thái Solareum
-                Wallet, một ứng dụng web3.0, giúp mọi người có thể thưởng cho
+                Lightning, một ứng dụng web3.0, giúp mọi người có thể thưởng cho
                 những nhà phát triển nội dung số.
               </Text>
               <Text style={typo.normal}>

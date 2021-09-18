@@ -39,11 +39,15 @@ const s = StyleSheet.create({
     height: 44,
   },
   group: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
   groupTitle: {
     marginBottom: 8,
     color: COLORS.white4,
+  },
+  groupValue: {
+    lineHeight: 20,
+    fontSize: 17,
   },
   containerInput: {
     position: 'relative',
@@ -180,25 +184,21 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
       <View style={s.body}>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Token</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>
-            {symbol} / Native
-          </Text>
+          <Text style={[typo.normal, s.groupValue]}>{symbol} / Native</Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Từ Ví</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>
+          <Text style={[typo.normal, s.groupValue]}>
             {token.publicKey || '-'}
           </Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Chuyển đến Ví</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>
-            {address || '-'}
-          </Text>
+          <Text style={[typo.normal, s.groupValue]}>{address || '-'}</Text>
         </View>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Số lượng</Text>
-          <Text style={[typo.normal, { lineHeight: 18 }]}>
+          <Text style={[typo.normal, s.groupValue]}>
             {amount || 0} {symbol}
           </Text>
         </View>
