@@ -67,13 +67,16 @@ const s = StyleSheet.create({
   },
 });
 
-export const AirdropStepInputRefAddress = ({ next }) => {
+export const AirdropStepInputRefAddress = ({
+  next,
+  refAddress,
+  setRefAddress,
+}) => {
   const [camera, setCamera] = useState(false);
-  const [address, setAddress] = useState('');
 
   const onPaste = async () => {
     const text = await Clipboard.getString();
-    setAddress(text);
+    setRefAddress(text);
   };
 
   return (
@@ -82,9 +85,9 @@ export const AirdropStepInputRefAddress = ({ next }) => {
         <View style={s.main}>
           <Text style={typo.title}>Nhập địa chỉ người giới thiệu</Text>
           <Text style={typo.normal}>
-            Hãy nhập địa chỉ của người đã giới thiệu bạn đến với Solareum, để cả
-            2 cùng nhận được Airdrop. Nếu bạn không có người giới thiệu hãy để
-            trống và tiếp tục.
+            Hãy nhập địa chỉ của người đã giới thiệu bạn đến với Solareum - SOL
+            hoặc XSB address, để cả 2 cùng nhận được Airdrop. Nếu bạn không có
+            người giới thiệu hãy để trống và tiếp tục.
           </Text>
           <View style={s.containerInput}>
             <Input
@@ -93,8 +96,8 @@ export const AirdropStepInputRefAddress = ({ next }) => {
               style={typo.input}
               labelStyle={s.inputLabel}
               containerStyle={s.inputContainer}
-              value={address}
-              onChangeText={(value) => setAddress(value)}
+              value={refAddress}
+              onChangeText={(value) => setRefAddress(value)}
             />
             <View style={s.controls}>
               <Button
@@ -132,7 +135,7 @@ export const AirdropStepInputRefAddress = ({ next }) => {
       ) : (
         <QRScan
           onChange={(value) => {
-            setAddress(value);
+            setRefAddress(value);
             setCamera(false);
           }}
         />

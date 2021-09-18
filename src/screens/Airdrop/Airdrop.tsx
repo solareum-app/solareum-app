@@ -1,39 +1,27 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import LottieView from 'lottie-react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Portal } from 'react-native-portalize';
+import { Button } from 'react-native-elements';
 
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { COLORS } from '../../theme';
-import Icon from '../../components/Icon';
+import { typo } from '../../components/Styles';
 import { AirdropStepInfo } from './AirdropStepInfo';
 import { AirdropStepCreateAccount } from './AirdropStepCreateAccount';
 import { AirdropStepInputRefAddress } from './AirdropStepInputRefAddress';
 import { AirdropStepReview } from './AirdropStepReview';
 import { AirdropStepSuccessAndShare } from './AirdropStepSuccessAndShare';
+import ImgPayment from '../../assets/clip-payment.png';
 
 const s = StyleSheet.create({
-  root: {
-    padding: 8,
+  main: {
     marginTop: -36,
     marginBottom: 40,
-  },
-  main: {
-    borderRadius: 16,
-    padding: 0,
-    borderColor: COLORS.dark4,
-    borderWidth: 0.5,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 16,
-  },
-  imgWrp: {
-    flex: 0,
+    padding: 24,
   },
   img: {
-    width: 100,
-    height: 100,
+    width: 140,
+    height: 140,
   },
   message: {
     fontSize: 16,
@@ -54,6 +42,7 @@ enum AIRDROP_STEP {
 export const Airdrop = () => {
   const [airdrop, setAirdrop] = useState(true);
   const [step, setStep] = useState(AIRDROP_STEP.info);
+  const [refAddress, setRefAddress] = useState('');
   const refStepInfo = useRef();
 
   const dismiss = () => {
@@ -66,23 +55,22 @@ export const Airdrop = () => {
 
   return (
     <View>
-      <TouchableOpacity
-        style={s.root}
-        onPress={() => refStepInfo.current?.open()}
-      >
-        <View style={s.main}>
-          <View style={s.imgWrp}>
-            <LottieView
-              autoPlay
-              loop
-              source={require('../../theme/lottie/award-badge.json')}
-              style={s.img}
-            />
-          </View>
-          <Text style={s.message}>Nhận XSB Airdrop</Text>
-          <Icon type="feather" name="chevron-right" color={COLORS.white4} />
-        </View>
-      </TouchableOpacity>
+      <View style={s.main}>
+        <Image style={s.img} source={ImgPayment} />
+        <Text style={typo.titleLeft}>XSB Airdrop</Text>
+        <Text style={typo.normal}>
+          XSB là token sẽ được sử dụng trong Solareum Lightning, một ứng dụng
+          web3.0 giúp thưởng cho những nhà phát triển nội dung kỹ thuật số.
+        </Text>
+        <Button
+          title="Nhận XSB"
+          type="outline"
+          onPress={() => {
+            setStep(AIRDROP_STEP.info);
+            refStepInfo.current?.open();
+          }}
+        />
+      </View>
 
       <Portal>
         <FixedContent ref={refStepInfo}>
@@ -102,12 +90,15 @@ export const Airdrop = () => {
           {step === AIRDROP_STEP.inputRefAddress ? (
             <AirdropStepInputRefAddress
               next={() => setStep(AIRDROP_STEP.review)}
+              refAddress={refAddress}
+              setRefAddress={setRefAddress}
             />
           ) : null}
 
           {step === AIRDROP_STEP.review ? (
             <AirdropStepReview
               next={() => setStep(AIRDROP_STEP.successAndShare)}
+              refAddress={refAddress}
             />
           ) : null}
 

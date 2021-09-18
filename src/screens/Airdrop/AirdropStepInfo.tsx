@@ -21,13 +21,7 @@ export const AirdropStepInfo = ({ dismiss, next }) => {
   return (
     <View style={s.main}>
       <Text style={typo.title}>XSB Airdrop</Text>
-      <Text style={typo.normal}>
-        XSB là native token của Solareum Wallet, token này sẽ được sử dụng trong
-        hệ sinh thái Solareum Lightning, được mở rộng từ Solareum Wallet - một
-        ứng dụng web3.0 giúp bạn thưởng cho những nhà phát triển nội
-        dung&nbsp;số.
-      </Text>
-      <Text style={typo.normal}>Airdrop sẽ gồm 3 bước:</Text>
+      <Text style={typo.normal}>Airdrop sẽ gồm 3 bước</Text>
       <Text style={typo.normal}>
         1. Tạo tài khoản XSB, bạn cần có ít nhất ~{SOL_BALANCE_TARGET} SOL để
         thực hiện việc&nbsp;này. Nếu bạn đã có tài khoản XSB, hệ thống sẽ tự bỏ
