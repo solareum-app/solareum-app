@@ -21,6 +21,7 @@ import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useNavigation } from '@react-navigation/native';
 import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
+import { Airdrop } from '../Airdrop/Airdrop';
 
 const s = StyleSheet.create({
   header: {
@@ -31,6 +32,7 @@ const s = StyleSheet.create({
     padding: 10,
     paddingBottom: 20,
     marginBottom: 40,
+    minHeight: 240,
   },
   info: {
     flex: 1,
@@ -153,9 +155,12 @@ const WalletScreen = () => {
             </View>
           </View>
         </View>
+
         <View style={[grid.body, s.body]}>
           <TokensList balanceListInfo={activeAccountList} />
         </View>
+
+        <Airdrop />
       </ScrollView>
     </View>
   );

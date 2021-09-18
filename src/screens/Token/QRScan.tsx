@@ -2,6 +2,7 @@ import React from 'react';
 
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import { Button } from 'react-native-elements';
 
 import { COLORS } from '../../theme';
 
@@ -23,16 +24,22 @@ const qr = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  textWrp: {
+  footer: {
     textAlign: 'center',
     position: 'absolute',
+    paddingHorizontal: 20,
     marginBottom: 40,
     bottom: 0,
+    left: 0,
+    right: 0,
   },
   bottomText: {
     color: COLORS.white4,
-    width: w,
     textAlign: 'center',
+    marginBottom: 8,
+  },
+  closeButton: {
+    color: COLORS.critical,
   },
 });
 
@@ -51,8 +58,16 @@ export const QRScan = ({ onChange }) => {
         onRead={onSuccess}
         cameraType="back"
       />
-      <View style={qr.textWrp}>
+      <View style={qr.footer}>
         <Text style={qr.bottomText}>Hãy scan mã QR</Text>
+        <Button
+          title="Hủy"
+          titleStyle={qr.closeButton}
+          type="clear"
+          onPress={() => {
+            onChange('');
+          }}
+        />
       </View>
     </View>
   );
