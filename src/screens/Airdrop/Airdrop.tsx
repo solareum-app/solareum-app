@@ -4,6 +4,7 @@ import { Portal } from 'react-native-portalize';
 import { Button } from 'react-native-elements';
 
 import { useToken } from '../../core/AppProvider/TokenProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { COLORS } from '../../theme';
 import { typo } from '../../components/Styles';
@@ -44,6 +45,7 @@ enum AIRDROP_STEP {
 
 export const Airdrop = () => {
   const { accountList } = useToken();
+  const { addressList } = useApp();
   const [airdrop, setAirdrop] = useState(false);
   const [rewardRef, setRewardRef] = useState(0);
   const [step, setStep] = useState(AIRDROP_STEP.info);
@@ -104,15 +106,16 @@ export const Airdrop = () => {
     (async () => {
       const solAccount = accountList.find((i) => i.mint === 'SOL');
       const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
-      const t = await authFetch(service.postCheckAirdrop, {
+      const resp = await authFetch(service.postCheckAirdrop, {
         method: 'POST',
         body: {
+          addressList: addressList.map((i) => i.address),
           solAddress: solAccount?.publicKey,
           xsbAddress: xsbAccount?.publicKey,
         },
       });
-      setAirdrop(t.rewardAirdrop);
-      setRewardRef(t.rewardRef);
+      setAirdrop(resp.rewardAirdrop);
+      setRewardRef(resp.rewardRef);
     })();
   }, []);
 
