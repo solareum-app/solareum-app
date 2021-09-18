@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
-import { AppState, View, StyleSheet } from 'react-native';
-
+import { View, StyleSheet } from 'react-native';
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -20,6 +19,8 @@ import { HomeScreen } from './HomeScreen';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 import { Icon } from 'react-native-elements';
+import DailyMission from '../screens/Settings/DailyMission';
+import Influencer from '../screens/Settings/Influencer';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -104,6 +105,8 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.Token} component={Token} />
           <Stack.Screen name={Routes.SettingWallet} component={SettingWallet} />
           <Stack.Screen name={Routes.Search} component={Search} />
+          <Stack.Screen name={Routes.Mission} component={DailyMission} />
+          <Stack.Screen name={Routes.Influencer} component={Influencer} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>

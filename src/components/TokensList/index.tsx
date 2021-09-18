@@ -111,8 +111,12 @@ type TokensListProps = {
 const TokensList: React.FC<TokensListProps> = ({ balanceListInfo, action }) => {
   return (
     <>
-      {balanceListInfo?.map((token, index: number) => (
-        <TokenInfoItem key={index} token={token} action={action} />
+      {balanceListInfo?.map((token, index) => (
+        <TokenInfoItem
+          key={`${index}-${token.publicKey}`}
+          token={token}
+          action={action}
+        />
       ))}
       {TOKENS?.map((token, index: number) => (
         <TokenInfoItem key={index} token={token} action={action} />

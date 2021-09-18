@@ -13,6 +13,8 @@ export enum Routes {
   Wallet = 'Wallet',
   SettingWallet = 'Quản lý Ví',
   Search = 'Tokens',
+  Mission = 'Nhiệm vụ',
+  Influencer = 'Người tiên phong',
 }
 
 export default Routes;

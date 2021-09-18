@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  DeviceEventEmitter,
+  Share,
+} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
 import { Button } from 'react-native-elements';
@@ -9,7 +15,8 @@ import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme/colors';
 import { RoundedButton } from '../../components/RoundedButton';
 import { typo } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
 import { wait } from '../../utils';
 import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { EventMessage } from '../EventMessage/EventMessage';
@@ -69,18 +76,20 @@ const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
 export const Receive = ({ token }) => {
-  const { accountList, wallet, loadAccountList } = useApp();
+  const { wallet } = useApp();
+  const { accountList, loadAccountList } = useToken();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [useSol, setUseSol] = useState(false);
   const [mintAccountFee, setMintAccountFee] = useState<number>(0);
   const [account, setAccount] = useState(token);
+  const [createNewAccount, setCreateNewAccount] = useState(false);
+  const isAccountCreated = account.publicKey;
 
   const sol = accountList.find((i) => i.mint === 'SOL') || {
     publicKey: '-',
     decimals: 8,
   };
-  const address = account.isMinted ? account.publicKey : sol.publicKey;
+  const address = sol.publicKey;
 
   const copyToClipboard = () => {
     Clipboard.setString(address);
@@ -114,11 +123,36 @@ export const Receive = ({ token }) => {
   };
 
   const dismiss = () => {
-    setUseSol(true);
+    setCreateNewAccount(false);
+  };
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Địa chỉ ${account.symbol}/SPL network: ${address}`,
+      });
+      return result;
+
+      // ref: https://reactnative.dev/docs/share
+      // if (result.action === Share.sharedAction) {
+      //   if (result.activityType) {
+      //   } else {
+      //   }
+      // }
+      // if (result.action === Share.dismissedAction) {
+      // }
+    } catch {
+      // TODO: track this issue then
+    }
   };
 
   useEffect(() => {
-    const acc = accountList.find((i) => i.address === token.address);
+    // dont update accoutn when token is created
+    if (token.publicKey) {
+      return;
+    }
+
+    let acc = accountList.find((i) => i.address === token.address);
     if (acc) {
       setAccount(acc);
     }
@@ -138,28 +172,23 @@ export const Receive = ({ token }) => {
       </View>
       <Text style={typo.title}>Nhận {account.symbol}</Text>
 
-      {!account.isMinted && !useSol ? (
+      {createNewAccount ? (
         <View>
           {!loading ? (
             <View>
               <View style={s.body}>
-                <View>
-                  <Text style={[typo.warning, s.warning]}>
-                    Bạn chưa có tài khoản {account.symbol}
-                  </Text>
-                  <Text style={typo.normal}>
-                    Bạn vẫn có thể nhận token từ địa chỉ Solana, nhưng một số
-                    nhà phát hành token sẽ từ chối dùng địa chỉ Solana, vì họ sẽ
-                    phải chịu phí khởi tạo tài&nbsp;khoản.
-                  </Text>
-                  <Text style={typo.normal}>
-                    Việc tạo tài khoản sẽ giúp bạn thuận tiện hơn trong việc
-                    chuyển và nhận token. Chúng tôi khuyên bạn nên thực hiện
-                    hành động này. Bạn có đồng ý tạo tài&nbsp;khoản?
-                  </Text>
-                  <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
-                  {error ? <Text style={typo.critical}>{error}</Text> : null}
-                </View>
+                <Text style={typo.normal}>
+                  Bạn vẫn có thể nhận token từ địa chỉ Solana, nhưng một số nhà
+                  phát hành token sẽ từ chối dùng địa chỉ Solana, vì họ sẽ phải
+                  chịu phí khởi tạo tài&nbsp;khoản.
+                </Text>
+                <Text style={typo.normal}>
+                  Việc tạo tài khoản sẽ giúp bạn thuận tiện hơn trong việc
+                  chuyển và nhận token. Chúng tôi khuyên bạn nên thực hiện hành
+                  động này. Bạn có đồng ý tạo tài&nbsp;khoản?
+                </Text>
+                <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
+                {error ? <Text style={typo.critical}>{error}</Text> : null}
               </View>
               <View style={s.footer}>
                 <Button
@@ -171,7 +200,7 @@ export const Receive = ({ token }) => {
                 />
                 <Button
                   type="clear"
-                  title="Nhận qua địa chỉ Solana"
+                  title="Bỏ qua"
                   containerStyle={s.button}
                   onPress={dismiss}
                 />
@@ -212,12 +241,23 @@ export const Receive = ({ token }) => {
               </View>
               <View style={s.controlItem}>
                 <RoundedButton
-                  onClick={() => null}
+                  onClick={() => onShare()}
                   title="Chia sẻ"
                   iconName="upload"
                 />
               </View>
             </View>
+            {!isAccountCreated ? (
+              <View style={s.control}>
+                <Button
+                  type="clear"
+                  title={`Tạo tài khoản ${account.symbol}`}
+                  onPress={() => {
+                    setCreateNewAccount(true);
+                  }}
+                />
+              </View>
+            ) : null}
           </View>
         </View>
       )}

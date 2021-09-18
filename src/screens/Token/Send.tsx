@@ -8,7 +8,7 @@ import LottieView from 'lottie-react-native';
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { price } from '../../utils/autoRound';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
 
 import { QRScan } from './QRScan';
 

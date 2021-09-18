@@ -8,19 +8,20 @@ import {
   DeviceEventEmitter,
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
 import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useNavigation } from '@react-navigation/native';
 import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
+import { Airdrop } from '../Airdrop/Airdrop';
 
 const s = StyleSheet.create({
   header: {
@@ -31,6 +32,7 @@ const s = StyleSheet.create({
     padding: 10,
     paddingBottom: 20,
     marginBottom: 40,
+    minHeight: 240,
   },
   info: {
     flex: 1,
@@ -73,10 +75,14 @@ export enum TransferAction {
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const { loadAccountList, wallet, accountList, addressId } = useApp();
+  const { wallet, addressId } = useApp();
+  const { loadAccountList, accountList } = useToken();
+
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint)
-    .sort((a, b) => b.value - a.value);
+    .sort((a, b) => {
+      return b.refValue - a.refValue;
+    });
   const totalEst = getTotalEstimate(activeAccountList);
 
   const onRefresh = async () => {
@@ -149,9 +155,12 @@ const WalletScreen = () => {
             </View>
           </View>
         </View>
+
         <View style={[grid.body, s.body]}>
           <TokensList balanceListInfo={activeAccountList} />
         </View>
+
+        <Airdrop />
       </ScrollView>
     </View>
   );
