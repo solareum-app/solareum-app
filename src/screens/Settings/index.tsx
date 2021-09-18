@@ -87,12 +87,14 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              navigation.navigate(Routes.ChangePinLock);
+              navigation.navigate(Routes.Influencer);
             }}
           >
             <Icon type="feather" name="zap" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Đổi mã pin</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                Người tiên phong
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
