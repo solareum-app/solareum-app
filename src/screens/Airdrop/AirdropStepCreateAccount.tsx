@@ -10,6 +10,7 @@ import { useToken } from '../../core/AppProvider/TokenProvider';
 import { wait } from '../../utils';
 import { typo } from '../../components/Styles';
 import { CryptoIcon } from '../../components/CryptoIcon';
+import { SOL_BALANCE_TARGET } from './const';
 
 import { style as s } from './style';
 
@@ -37,17 +38,19 @@ const WAIT_TIME = 10000; // 10s -> 4mins for total
 export const AirdropStepCreateAccount = ({ next }) => {
   const { wallet } = useApp();
   const { accountList, loadAccountList } = useToken();
-  const token = accountList.find((i) => i.symbol === 'XSB');
-  const sol = accountList.find((i) => i.mint === 'SOL') || {
+
+  const solAccount = accountList.find((i) => i.mint === 'SOL') || {
     publicKey: '-',
     decimals: 8,
+    amount: 0,
   };
-  let isAccountCreated = token ? token.publicKey : false;
+  const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
+  let isAccountCreated = xsbAccount ? xsbAccount.publicKey : false;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [mintAccountFee, setMintAccountFee] = useState<number>(0);
-  const [account, setAccount] = useState(token);
+  const [account, setAccount] = useState(xsbAccount);
 
   const pollingAccount = async (no: number) => {
     if (!account) {
@@ -73,6 +76,12 @@ export const AirdropStepCreateAccount = ({ next }) => {
       return;
     }
 
+    const solBalance = solAccount?.amount * Math.pow(10, solAccount?.decimals);
+    if (solAccount && solBalance <= SOL_BALANCE_TARGET) {
+      setError('Tải khoản bạn không đủ SOL để thực hiện bước này.');
+      return;
+    }
+
     setLoading(true);
     try {
       await wallet.createTokenAccount(new PublicKey(account.address));
@@ -88,7 +97,7 @@ export const AirdropStepCreateAccount = ({ next }) => {
   useEffect(() => {
     (async () => {
       const fee = await wallet.tokenAccountCost();
-      setMintAccountFee(fee / Math.pow(10, sol.decimals));
+      setMintAccountFee(fee / Math.pow(10, solAccount.decimals));
     })();
   }, []);
 
