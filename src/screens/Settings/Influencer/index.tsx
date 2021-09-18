@@ -53,7 +53,6 @@ const Influencer: React.FC<Props> = () => {
           xsbAddress: xsbAccount?.publicKey,
         },
       });
-      console.log('resp', resp);
       setRewardRef(resp.rewardRef);
     })();
   }, []);
