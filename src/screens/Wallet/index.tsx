@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   ScrollView,
   RefreshControl,
   View,
   Text,
   StyleSheet,
-  DeviceEventEmitter,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import Clipboard from '@react-native-community/clipboard';
 import { useNavigation } from '@react-navigation/native';
+import { Portal } from 'react-native-portalize';
 
+import { FixedContent } from '../../components/Modals/FixedContent';
+import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
@@ -22,7 +23,6 @@ import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
-import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { Airdrop } from '../Airdrop/Airdrop';
 
 const s = StyleSheet.create({
@@ -93,6 +93,9 @@ const WalletScreen = () => {
   const navigation = useNavigation();
   const { wallet, addressId } = useApp();
   const { loadAccountList, accountList } = useToken();
+  const refReceived = useRef();
+
+  const solAccount = accountList.find((i) => i.mint === 'SOL');
 
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint)
@@ -121,8 +124,6 @@ const WalletScreen = () => {
 
   return (
     <View style={grid.container}>
-      <EventMessage />
-
       <Header />
       <ScrollView
         refreshControl={
@@ -179,12 +180,10 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  const address = wallet.publicKey.toBase58();
-                  Clipboard.setString(address);
-                  DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
+                  refReceived.current.open();
                 }}
-                title="Copy"
-                iconName="copy"
+                title="QR Code"
+                iconName="square"
                 type="feather"
               />
             </View>
@@ -200,6 +199,12 @@ const WalletScreen = () => {
 
         <Airdrop />
       </ScrollView>
+
+      <Portal>
+        <FixedContent ref={refReceived}>
+          <Receive token={solAccount} />
+        </FixedContent>
+      </Portal>
     </View>
   );
 };

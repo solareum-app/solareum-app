@@ -177,6 +177,9 @@ export const Receive = ({ token }) => {
           {!loading ? (
             <View>
               <View style={s.body}>
+                <Text style={[typo.warning, s.warning]}>
+                  Bạn chưa có tài khoản {account.symbol}
+                </Text>
                 <Text style={typo.normal}>
                   Bạn vẫn có thể nhận token từ địa chỉ Solana, nhưng một số nhà
                   phát hành token sẽ từ chối dùng địa chỉ Solana, vì họ sẽ phải
@@ -227,8 +230,11 @@ export const Receive = ({ token }) => {
           </View>
           <View style={s.footer}>
             <Text style={typo.helper}>
-              Chỉ chuyển {account.name} (SPL) vào địa chỉ này. Việc chuyển token
-              khác vào địa chỉ này có thể dẫn đến mất toàn toàn các
+              Chúng tôi chỉ chấp nhận token trên mạng Solana - SPL.
+            </Text>
+            <Text style={typo.helper}>
+              Chỉ chuyển {account.name} và SPL tokens vào địa chỉ này. Việc
+              chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các
               token&nbsp;đó.
             </Text>
             <View style={s.control}>
