@@ -7,9 +7,10 @@ import {
   StyleSheet,
   DeviceEventEmitter,
 } from 'react-native';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Icon } from 'react-native-elements';
 import Clipboard from '@react-native-community/clipboard';
+import { useNavigation } from '@react-navigation/native';
+
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
@@ -21,7 +22,6 @@ import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
-import { useNavigation } from '@react-navigation/native';
 import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { Airdrop } from '../Airdrop/Airdrop';
 
@@ -37,18 +37,28 @@ const s = StyleSheet.create({
     minHeight: 240,
   },
   info: {
-    flex: 1,
-    alignItems: 'center',
     marginTop: 20,
     marginBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    display: 'flex',
+  },
+  infoWrp: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    position: 'relative',
   },
   infoBalance: {
-    marginTop: 12,
     fontSize: 36,
     color: COLORS.white0,
-    alignItems: 'center',
+    textAlign: 'center',
+  },
+  eyeIcon: {
+    marginLeft: 8,
+    marginBottom: 8,
+    position: 'absolute',
+    right: -24,
+    top: 12,
+    width: 16,
+    height: 16,
   },
   control: {
     flexDirection: 'row',
@@ -59,19 +69,6 @@ const s = StyleSheet.create({
   controlItem: {
     marginLeft: 12,
     marginRight: 12,
-  },
-  manageBtn: {
-    backgroundColor: COLORS.dark2,
-    borderColor: COLORS.dark4,
-  },
-  manageIcon: {
-    marginRight: 10,
-  },
-  txtManageBtn: {
-    color: COLORS.white0,
-  },
-  eyeIcon: {
-    marginLeft: 10,
   },
 });
 
@@ -139,22 +136,22 @@ const WalletScreen = () => {
       >
         <View style={s.header}>
           <View style={s.info}>
-            <Text onPress={() => onHideBalance()} style={s.infoBalance}>
-              {isHideBalance ? '****' : `$${price(totalEst)}`}
-            </Text>
-            {isHideBalance ? (
-              <View style={s.eyeIcon}>
-                <Icon
-                  onPress={() => onHideBalance()}
-                  type="feather"
-                  name="eye"
-                  color={COLORS.white0}
-                  size={30}
-                />
-              </View>
-            ) : (
-              <View />
-            )}
+            <View style={s.infoWrp}>
+              <Text onPress={() => onHideBalance()} style={s.infoBalance}>
+                {isHideBalance ? '****' : `$${price(totalEst)}`}
+              </Text>
+              {isHideBalance ? (
+                <View style={s.eyeIcon}>
+                  <Icon
+                    onPress={() => onHideBalance()}
+                    type="feather"
+                    name="eye"
+                    color={COLORS.white4}
+                    size={16}
+                  />
+                </View>
+              ) : null}
+            </View>
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
@@ -198,20 +195,6 @@ const WalletScreen = () => {
           <TokensList
             isHideBalance={isHideBalance}
             balanceListInfo={activeAccountList}
-          />
-          <Button
-            buttonStyle={s.manageBtn}
-            onPress={() => navigation.navigate(Routes.ManagementTokenList)}
-            icon={
-              <Icon
-                name="sliders"
-                size={15}
-                style={s.manageIcon}
-                color="white"
-              />
-            }
-            title="Manage token list"
-            titleStyle={s.txtManageBtn}
           />
         </View>
 
