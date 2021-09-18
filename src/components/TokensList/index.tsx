@@ -27,6 +27,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
     value,
   } = props.token;
 
+  const displayValue = amount / Math.pow(10, decimals);
   const navigation = useNavigation();
   const onPressHandler = () => {
     navigation.navigate(Routes.Token, { token: props.token, action });
@@ -63,9 +64,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
         >
           {isHideBalance
             ? '****'
-            : `$${price(
-              amount / Math.pow(10, decimals),
-            )} ${symbol.toUpperCase()}`}
+            : `$${price(displayValue)} ${symbol.toUpperCase()}`}
         </ListItem.Title>
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}

@@ -37,18 +37,28 @@ const s = StyleSheet.create({
     minHeight: 240,
   },
   info: {
-    flex: 1,
-    alignItems: 'center',
     marginTop: 20,
     marginBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    display: 'flex',
+  },
+  infoWrp: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    position: 'relative',
   },
   infoBalance: {
-    marginTop: 12,
     fontSize: 36,
     color: COLORS.white0,
-    alignItems: 'center',
+    textAlign: 'center',
+  },
+  eyeIcon: {
+    marginLeft: 8,
+    marginBottom: 8,
+    position: 'absolute',
+    right: -24,
+    top: 12,
+    width: 16,
+    height: 16,
   },
   control: {
     flexDirection: 'row',
@@ -59,9 +69,6 @@ const s = StyleSheet.create({
   controlItem: {
     marginLeft: 12,
     marginRight: 12,
-  },
-  eyeIcon: {
-    marginLeft: 10,
   },
 });
 
@@ -129,22 +136,22 @@ const WalletScreen = () => {
       >
         <View style={s.header}>
           <View style={s.info}>
-            <Text onPress={() => onHideBalance()} style={s.infoBalance}>
-              {isHideBalance ? '****' : `$${price(totalEst)}`}
-            </Text>
-            {isHideBalance ? (
-              <View style={s.eyeIcon}>
-                <Icon
-                  onPress={() => onHideBalance()}
-                  type="feather"
-                  name="eye"
-                  color={COLORS.white0}
-                  size={30}
-                />
-              </View>
-            ) : (
-              <View />
-            )}
+            <View style={s.infoWrp}>
+              <Text onPress={() => onHideBalance()} style={s.infoBalance}>
+                {isHideBalance ? '****' : `$${price(totalEst)}`}
+              </Text>
+              {isHideBalance ? (
+                <View style={s.eyeIcon}>
+                  <Icon
+                    onPress={() => onHideBalance()}
+                    type="feather"
+                    name="eye"
+                    color={COLORS.white4}
+                    size={16}
+                  />
+                </View>
+              ) : null}
+            </View>
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
