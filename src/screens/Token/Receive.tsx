@@ -112,7 +112,7 @@ export const Receive = ({ token }) => {
   const createTokenAccount = async () => {
     setLoading(true);
     try {
-      await wallet.createTokenAccount(new PublicKey(account.address));
+      await wallet.createAssociatedTokenAccount(new PublicKey(account.address));
       const acc = await pollingAccount(MAX_TRY);
       setAccount(acc);
     } catch (err) {
