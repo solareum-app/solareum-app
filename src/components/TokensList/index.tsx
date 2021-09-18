@@ -64,8 +64,8 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
           {isHideBalance
             ? '****'
             : `$${price(
-                amount / Math.pow(10, decimals),
-              )} ${symbol.toUpperCase()}`}
+              amount / Math.pow(10, decimals),
+            )} ${symbol.toUpperCase()}`}
         </ListItem.Title>
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
@@ -90,10 +90,10 @@ const TokensList: React.FC<TokensListProps> = ({
 }) => {
   return (
     <>
-      {balanceListInfo?.map((token) => (
+      {balanceListInfo?.map((token, index) => (
         <TokenInfoItem
+          key={`${index}-${token.publicKey}`}
           isHideBalance={isHideBalance}
-          key={token.publicKey}
           token={token}
           action={action}
         />

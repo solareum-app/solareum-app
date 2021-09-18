@@ -2,55 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import { COLORS } from '../../theme/colors';
 
-export const grid = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.dark2,
-    position: 'relative',
-  },
-  header: {
-    flex: 0,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-  wrp: {
-    flex: 1,
-  },
-  body: {
-    flex: 1,
-    backgroundColor: COLORS.dark0,
-    minHeight: 400,
-    padding: 20,
-    borderRadius: 20,
-  },
-  text: {
-    fontSize: 18,
-    color: COLORS.white2,
-    lineHeight: 28,
-  },
-  button: {
-    height: 44,
-  },
-  buttonCritical: {
-    borderColor: COLORS.critical,
-  },
-  buttonCriticalTitle: {
-    color: COLORS.critical,
-  },
-});
-
-export const input = StyleSheet.create({
-  container: {
-    paddingLeft: 0,
-    paddingRight: 0,
-  },
-  label: {
-    fontWeight: 'normal',
-  },
-});
-
 export const typo = StyleSheet.create({
   title: {
     color: COLORS.white2,
@@ -59,6 +10,13 @@ export const typo = StyleSheet.create({
     marginBottom: 12,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  titleLeft: {
+    color: COLORS.white2,
+    fontSize: 16,
+    lineHeight: 24,
+    marginBottom: 12,
+    fontWeight: 'bold',
   },
   normal: {
     color: COLORS.white2,
@@ -108,5 +66,69 @@ export const typo = StyleSheet.create({
     lineHeight: 18,
     marginLeft: 20,
     marginRight: 20,
+  },
+});
+
+export const grid = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.dark2,
+    position: 'relative',
+  },
+  header: {
+    flex: 0,
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+  },
+  wrp: {
+    flex: 1,
+  },
+  body: {
+    flex: 1,
+    backgroundColor: COLORS.dark0,
+    minHeight: 400,
+    padding: 20,
+    borderRadius: 20,
+  },
+  text: {
+    fontSize: 18,
+    color: COLORS.white2,
+    lineHeight: 28,
+  },
+  button: {
+    height: 44,
+  },
+  buttonCritical: {
+    borderColor: COLORS.critical,
+  },
+  buttonCriticalTitle: {
+    color: COLORS.critical,
+  },
+  popover: {
+    paddingBottom: 40,
+  },
+  group: {
+    marginBottom: 12,
+  },
+  groupTitle: {
+    ...typo.helper,
+    marginBottom: 8,
+    color: COLORS.white4,
+  },
+  groupValue: {
+    ...typo.normal,
+    lineHeight: 18,
+  },
+});
+
+export const input = StyleSheet.create({
+  container: {
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  label: {
+    fontWeight: 'normal',
   },
 });
