@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import { Input, Button, Icon } from 'react-native-elements';
@@ -72,12 +72,25 @@ export const AirdropStepInputRefAddress = ({
   refAddress,
   setRefAddress,
 }) => {
+  const [error, setError] = useState<string>('');
   const [camera, setCamera] = useState(false);
 
   const onPaste = async () => {
     const text = await Clipboard.getString();
     setRefAddress(text);
   };
+
+  const onNext = () => {
+    if (!refAddress) {
+      setError('Bạn chưa nhập địa chỉ người giới thiệu');
+      return;
+    }
+    next();
+  };
+
+  useEffect(() => {
+    setError('');
+  }, [refAddress]);
 
   return (
     <View>
@@ -125,10 +138,11 @@ export const AirdropStepInputRefAddress = ({
           </View>
 
           <View style={s.footer}>
+            {error ? <Text style={typo.critical}>{error}</Text> : null}
             <Button
               type="outline"
               title="Tiếp tục, xem lại thông tin"
-              onPress={next}
+              onPress={onNext}
             />
           </View>
         </View>
