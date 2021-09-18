@@ -89,7 +89,7 @@ export const Receive = ({ token }) => {
     publicKey: '-',
     decimals: 8,
   };
-  const address = account.isMinted ? account.publicKey : sol.publicKey;
+  const address = sol.publicKey;
 
   const copyToClipboard = () => {
     Clipboard.setString(address);
@@ -129,7 +129,7 @@ export const Receive = ({ token }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `Gởi ${account.symbol} (${account.name} - Solana network) cho mình qua địa chỉ này nhé. ${address}`,
+        message: `Địa chỉ ${account.symbol}/SPL network: ${address}`,
       });
       return result;
 
