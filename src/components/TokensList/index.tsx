@@ -11,11 +11,7 @@ import { CryptoIcon } from '../CryptoIcon';
 type TokenInfoItemProps = TokenInfo & {
   action?: string;
 };
-const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
-  action,
-  isHideBalance,
-  ...props
-}) => {
+const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
   const {
     name = '$$$',
     sortName,
@@ -26,7 +22,6 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
     usd,
     value,
   } = props.token;
-
   const navigation = useNavigation();
   const onPressHandler = () => {
     navigation.navigate(Routes.Token, { token: props.token, action });
@@ -61,16 +56,12 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
             fontSize: FONT_SIZES.md,
           }}
         >
-          {isHideBalance
-            ? '****'
-            : `$${price(
-                amount / Math.pow(10, decimals),
-              )} ${symbol.toUpperCase()}`}
+          {`${price(amount / Math.pow(10, decimals))} ${symbol.toUpperCase()}`}
         </ListItem.Title>
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
         >
-          {isHideBalance ? '****' : `$${price(value)}`}
+          {`$${price(value)}`}
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
@@ -80,20 +71,14 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
 type TokensListProps = {
   balanceListInfo: any[];
   action?: string;
-  isHideBalance: boolean;
 };
 
-const TokensList: React.FC<TokensListProps> = ({
-  balanceListInfo,
-  action,
-  isHideBalance,
-}) => {
+const TokensList: React.FC<TokensListProps> = ({ balanceListInfo, action }) => {
   return (
     <>
-      {balanceListInfo?.map((token, index: number) => (
+      {balanceListInfo?.map((token, index) => (
         <TokenInfoItem
-          isHideBalance={isHideBalance}
-          key={index}
+          key={`${index}-${token.publicKey}`}
           token={token}
           action={action}
         />
