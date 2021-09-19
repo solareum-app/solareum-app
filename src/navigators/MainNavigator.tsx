@@ -19,8 +19,9 @@ import { HomeScreen } from './HomeScreen';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 import { Icon } from 'react-native-elements';
-import DailyMission from '../screens/DailyMission';
 import ManageTokenList from '../screens/ManageTokenList';
+import DailyMission from '../screens/Settings/DailyMission';
+import Influencer from '../screens/Settings/Influencer';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -106,7 +107,11 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.SettingWallet} component={SettingWallet} />
           <Stack.Screen name={Routes.Search} component={Search} />
           <Stack.Screen name={Routes.Mission} component={DailyMission} />
-          <Stack.Screen name={Routes.ManagementTokenList} component={ManageTokenList} />
+          <Stack.Screen name={Routes.Influencer} component={Influencer} />
+          <Stack.Screen
+            name={Routes.ManagementTokenList}
+            component={ManageTokenList}
+          />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>

@@ -14,7 +14,8 @@ export enum Routes {
   SettingWallet = 'Quản lý Ví',
   Search = 'Tokens',
   Mission = 'Nhiệm vụ',
-  ManagementTokenList = 'Management Token List',
+  ManagementTokenList = 'Quản lý Tokens',
+  Influencer = 'Người tiên phong',
 }
 
 export default Routes;

@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   ScrollView,
   RefreshControl,
   View,
   Text,
   StyleSheet,
-  DeviceEventEmitter,
 } from 'react-native';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Clipboard from '@react-native-community/clipboard';
+import { Button, Icon } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
+import { Portal } from 'react-native-portalize';
+
+import { FixedContent } from '../../components/Modals/FixedContent';
+import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
@@ -21,8 +23,7 @@ import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
-import { useNavigation } from '@react-navigation/native';
-import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
+import { Airdrop } from '../Airdrop/Airdrop';
 
 const s = StyleSheet.create({
   header: {
@@ -33,17 +34,26 @@ const s = StyleSheet.create({
     padding: 10,
     paddingBottom: 20,
     marginBottom: 40,
+    minHeight: 240,
   },
   info: {
-    flex: 1,
-    alignItems: 'center',
     marginTop: 20,
     marginBottom: 20,
+    display: 'flex',
   },
   infoBalance: {
-    marginTop: 12,
     fontSize: 36,
+    lineHeight: 48,
     color: COLORS.white0,
+    textAlign: 'center',
+  },
+  eyeIcon: {
+    marginLeft: 8,
+    position: 'absolute',
+    right: -24,
+    top: 12,
+    width: 16,
+    height: 16,
   },
   control: {
     flexDirection: 'row',
@@ -55,15 +65,17 @@ const s = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
   },
+  manageBtnWrp: {
+    padding: 20,
+  },
   manageBtn: {
-    backgroundColor: COLORS.dark2,
     borderColor: COLORS.dark4,
   },
   manageIcon: {
     marginRight: 10,
   },
   txtManageBtn: {
-    color: COLORS.white0,
+    color: COLORS.white2,
   },
 });
 
@@ -84,9 +96,12 @@ export enum TransferAction {
 
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
+  const [isHideBalance, setIsHideBalance] = useState(false);
   const navigation = useNavigation();
-  const { wallet, addressId } = useApp();
+  const { addressId } = useApp();
   const { loadAccountList, accountList } = useToken();
+  const refReceived = useRef();
+  const solAccount = accountList.find((i) => i.mint === 'SOL');
 
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint)
@@ -105,14 +120,16 @@ const WalletScreen = () => {
     }
   };
 
+  const onHideBalance = () => {
+    setIsHideBalance(!isHideBalance);
+  };
+
   useEffect(() => {
     onRefresh();
   }, [addressId]);
 
   return (
     <View style={grid.container}>
-      <EventMessage />
-
       <Header />
       <ScrollView
         refreshControl={
@@ -126,7 +143,9 @@ const WalletScreen = () => {
       >
         <View style={s.header}>
           <View style={s.info}>
-            <Text style={s.infoBalance}>${price(totalEst)}</Text>
+            <Text onPress={() => onHideBalance()} style={s.infoBalance}>
+              {isHideBalance ? '****' : `$${price(totalEst)}`}
+            </Text>
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
@@ -154,35 +173,49 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  const address = wallet.publicKey.toBase58();
-                  Clipboard.setString(address);
-                  DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
+                  refReceived.current.open();
                 }}
-                title="Copy"
-                iconName="copy"
+                title="QR Code"
+                iconName="square"
                 type="feather"
               />
             </View>
           </View>
         </View>
+
         <View style={[grid.body, s.body]}>
-          <TokensList balanceListInfo={activeAccountList} />
-          <Button
-            buttonStyle={s.manageBtn}
-            onPress={() => navigation.navigate(Routes.ManagementTokenList)}
-            icon={
-              <Icon
-                name="sliders"
-                size={15}
-                style={s.manageIcon}
-                color="white"
-              />
-            }
-            title="Manage token list"
-            titleStyle={s.txtManageBtn}
+          <TokensList
+            isHideBalance={isHideBalance}
+            balanceListInfo={activeAccountList}
           />
+          <View style={s.manageBtnWrp}>
+            <Button
+              title="Quản lý Tài Khoản"
+              onPress={() => navigation.navigate(Routes.ManagementTokenList)}
+              type="outline"
+              buttonStyle={s.manageBtn}
+              titleStyle={s.txtManageBtn}
+              icon={
+                <Icon
+                  size={16}
+                  style={s.manageIcon}
+                  color={COLORS.white2}
+                  name="eye-off"
+                  type="feather"
+                />
+              }
+            />
+          </View>
         </View>
+
+        <Airdrop />
       </ScrollView>
+
+      <Portal>
+        <FixedContent ref={refReceived}>
+          <Receive token={solAccount} />
+        </FixedContent>
+      </Portal>
     </View>
   );
 };
