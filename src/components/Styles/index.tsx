@@ -119,7 +119,8 @@ export const grid = StyleSheet.create({
   },
   groupValue: {
     ...typo.normal,
-    lineHeight: 18,
+    lineHeight: 20,
+    fontSize: 18,
   },
 });
 

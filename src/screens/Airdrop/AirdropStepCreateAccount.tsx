@@ -84,9 +84,10 @@ export const AirdropStepCreateAccount = ({ next }) => {
 
     setLoading(true);
     try {
-      await wallet.createTokenAccount(new PublicKey(account.address));
+      await wallet.createAssociatedTokenAccount(new PublicKey(account.address));
       const acc = await pollingAccount(MAX_TRY);
       setAccount(acc);
+      next();
     } catch (err) {
       setError('Có lỗi xảy ra, vui lòng thử lại sau!');
     } finally {
