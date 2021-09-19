@@ -66,6 +66,22 @@ const Settings: React.FC = () => {
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
+
+          <ListItem
+            containerStyle={s.item}
+            bottomDivider
+            onPress={() => {
+              navigation.navigate(Routes.ManagementTokenList);
+            }}
+          >
+            <Icon type="feather" name="bookmark" color="grey" size={20} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemWallet}>
+                Quản lý Tài Khoản
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
         </View>
 
         <View style={s.group}>
@@ -90,7 +106,7 @@ const Settings: React.FC = () => {
               navigation.navigate(Routes.Influencer);
             }}
           >
-            <Icon type="feather" name="zap" color="grey" size={16} />
+            <Icon type="antdesign" name="rocket1" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
                 Người tiên phong
@@ -151,7 +167,7 @@ const Settings: React.FC = () => {
               refPolicy.current.open();
             }}
           >
-            <Icon type="antdesign" name="rocket1" color="grey" size={16} />
+            <Icon type="feather" name="compass" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
                 Điều khoản sử dụng
