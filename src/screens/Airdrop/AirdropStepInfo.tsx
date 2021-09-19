@@ -18,7 +18,7 @@ export const AirdropStepInfo = ({ dismiss, next }) => {
       </Text>
       <Text style={typo.normal}>2. Nhập địa chỉ SOL của người giới thiệu.</Text>
       <Text style={typo.normal}>
-        3. Xong, bạn và người giới thiệu sẽ nhận được&nbsp;XSB.
+        3. Hoàn thành, bạn và người giới thiệu sẽ nhận được&nbsp;XSB.
       </Text>
 
       <View style={s.footer}>
