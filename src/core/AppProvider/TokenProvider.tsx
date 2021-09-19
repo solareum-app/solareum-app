@@ -67,7 +67,7 @@ const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
 
 const mergeIsHidingToOnChainData = (onchainList, storeList) => {
   return onchainList.map((i) => {
-    const item = storeList.find((j) => j.publicKey === i.publicKey);
+    const item = storeList.find((j) => j.publicKey === i.publicKey) || {};
     return {
       ...i,
       isHiding: item.isHiding || false,

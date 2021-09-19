@@ -78,13 +78,12 @@ export const getAccountList = async (wallet, storeList) => {
       wallet.publicKey,
       ...tokenAccountInfo.map(({ publicKey }) => publicKey),
     ];
-
     const balanceList = [];
 
     for (let i = 0; i < publicKeys.length; i++) {
       const pk = publicKeys[i];
       const pkStr = pk.toBase58();
-      const storeItem = storeList.find((i) => i.publicKey === pkStr);
+      const storeItem = storeList.find((j) => j.publicKey === pkStr) || {};
       let balance = {
         ...storeItem,
         publicKey: pkStr,
