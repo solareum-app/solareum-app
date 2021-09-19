@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 
-import { Rewarded, Banner } from '../../components/Admob/Rewarded';
-import { grid, typo } from '../../components/Styles';
-import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
+import { Rewarded, Banner } from '../../../components/Admob/Rewarded';
+import { grid, typo } from '../../../components/Styles';
+import { useConfig } from '../../../core/AppProvider/RemoteConfigProvider';
 
 const s = StyleSheet.create({
   wrp: {
