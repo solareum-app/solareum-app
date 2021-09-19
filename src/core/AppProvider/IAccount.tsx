@@ -14,6 +14,7 @@ export type IAccount = {
   vnd: number;
   name: string;
   sortName: string;
+  isHiding: boolean;
 } & TokenInfo;
 
 export const createAccountList = (
@@ -55,6 +56,7 @@ export const createAccountList = (
       usd: price.usd || 0,
       vnd: price.vnd || 0,
       sortName,
+      isHiding: account.isHiding || false,
     } as IAccount;
   });
 

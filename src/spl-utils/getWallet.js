@@ -71,19 +71,28 @@ export const getAccountInfo = async (publicKey) => {
   return null;
 };
 
-export const getAccountList = async (wallet) => {
+export const getAccountList = async (wallet, storeList) => {
   try {
     const tokenAccountInfo = (await wallet.getTokenAccountInfo()) || [];
     const publicKeys = [
       wallet.publicKey,
       ...tokenAccountInfo.map(({ publicKey }) => publicKey),
     ];
-
     const balanceList = [];
 
     for (let i = 0; i < publicKeys.length; i++) {
       const pk = publicKeys[i];
-      const balance = await getAccountInfo(pk);
+      const pkStr = pk.toBase58();
+      const storeItem = storeList.find((j) => j.publicKey === pkStr) || {};
+      let balance = {
+        ...storeItem,
+        publicKey: pkStr,
+      };
+
+      if (!storeItem.isHiding) {
+        balance = await getAccountInfo(pk);
+      }
+
       balanceList.push({
         ...balance,
         publicKey: pk.toBase58(),

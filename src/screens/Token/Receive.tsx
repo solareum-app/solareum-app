@@ -80,15 +80,16 @@ export const Receive = ({ token }) => {
   const { accountList, loadAccountList } = useToken();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [useSol, setUseSol] = useState(false);
   const [mintAccountFee, setMintAccountFee] = useState<number>(0);
   const [account, setAccount] = useState(token);
+  const [createNewAccount, setCreateNewAccount] = useState(false);
+  const isAccountCreated = account.publicKey;
 
   const sol = accountList.find((i) => i.mint === 'SOL') || {
     publicKey: '-',
     decimals: 8,
   };
-  const address = account.isMinted ? account.publicKey : sol.publicKey;
+  const address = sol.publicKey;
 
   const copyToClipboard = () => {
     Clipboard.setString(address);
@@ -111,24 +112,25 @@ export const Receive = ({ token }) => {
   const createTokenAccount = async () => {
     setLoading(true);
     try {
-      await wallet.createTokenAccount(new PublicKey(account.address));
+      await wallet.createAssociatedTokenAccount(new PublicKey(account.address));
       const acc = await pollingAccount(MAX_TRY);
       setAccount(acc);
     } catch (err) {
       setError('Có lỗi xảy ra, vui lòng thử lại sau!');
     } finally {
       setLoading(false);
+      setCreateNewAccount(false);
     }
   };
 
   const dismiss = () => {
-    setUseSol(true);
+    setCreateNewAccount(false);
   };
 
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `Gởi ${account.symbol} (${account.name} - Solana network) cho mình qua địa chỉ này nhé. ${address}`,
+        message: `Địa chỉ ${account.symbol}/SPL network: ${address}`,
       });
       return result;
 
@@ -171,28 +173,26 @@ export const Receive = ({ token }) => {
       </View>
       <Text style={typo.title}>Nhận {account.symbol}</Text>
 
-      {!account.isMinted && !useSol ? (
+      {createNewAccount ? (
         <View>
           {!loading ? (
             <View>
               <View style={s.body}>
-                <View>
-                  <Text style={[typo.warning, s.warning]}>
-                    Bạn chưa có tài khoản {account.symbol}
-                  </Text>
-                  <Text style={typo.normal}>
-                    Bạn vẫn có thể nhận token từ địa chỉ Solana, nhưng một số
-                    nhà phát hành token sẽ từ chối dùng địa chỉ Solana, vì họ sẽ
-                    phải chịu phí khởi tạo tài&nbsp;khoản.
-                  </Text>
-                  <Text style={typo.normal}>
-                    Việc tạo tài khoản sẽ giúp bạn thuận tiện hơn trong việc
-                    chuyển và nhận token. Chúng tôi khuyên bạn nên thực hiện
-                    hành động này. Bạn có đồng ý tạo tài&nbsp;khoản?
-                  </Text>
-                  <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
-                  {error ? <Text style={typo.critical}>{error}</Text> : null}
-                </View>
+                <Text style={[typo.warning, s.warning]}>
+                  Bạn chưa có tài khoản {account.symbol}
+                </Text>
+                <Text style={typo.normal}>
+                  Bạn vẫn có thể nhận token từ địa chỉ Solana, nhưng một số nhà
+                  phát hành token sẽ từ chối dùng địa chỉ Solana, vì họ sẽ phải
+                  chịu phí khởi tạo tài&nbsp;khoản.
+                </Text>
+                <Text style={typo.normal}>
+                  Việc tạo tài khoản sẽ giúp bạn thuận tiện hơn trong việc
+                  chuyển và nhận token. Chúng tôi khuyên bạn nên thực hiện hành
+                  động này. Bạn có đồng ý tạo tài&nbsp;khoản?
+                </Text>
+                <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
+                {error ? <Text style={typo.critical}>{error}</Text> : null}
               </View>
               <View style={s.footer}>
                 <Button
@@ -204,7 +204,7 @@ export const Receive = ({ token }) => {
                 />
                 <Button
                   type="clear"
-                  title="Nhận qua địa chỉ Solana"
+                  title="Bỏ qua"
                   containerStyle={s.button}
                   onPress={dismiss}
                 />
@@ -231,8 +231,11 @@ export const Receive = ({ token }) => {
           </View>
           <View style={s.footer}>
             <Text style={typo.helper}>
-              Chỉ chuyển {account.name} (SPL) vào địa chỉ này. Việc chuyển token
-              khác vào địa chỉ này có thể dẫn đến mất toàn toàn các
+              Solareum chỉ chấp nhận token trên mạng Solana - SPL.
+            </Text>
+            <Text style={typo.helper}>
+              Chỉ chuyển {account.name} và SPL tokens vào địa chỉ này. Việc
+              chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các
               token&nbsp;đó.
             </Text>
             <View style={s.control}>
@@ -251,6 +254,17 @@ export const Receive = ({ token }) => {
                 />
               </View>
             </View>
+            {!isAccountCreated ? (
+              <View style={s.control}>
+                <Button
+                  type="clear"
+                  title={`Tạo tài khoản ${account.symbol}`}
+                  onPress={() => {
+                    setCreateNewAccount(true);
+                  }}
+                />
+              </View>
+            ) : null}
           </View>
         </View>
       )}
