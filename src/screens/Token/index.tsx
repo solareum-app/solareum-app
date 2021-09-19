@@ -63,7 +63,7 @@ const Token = ({ route }) => {
   const { action, token } = route.params;
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
-  const { getAccountByPk } = useToken();
+  const { getAccountByPk, toggleAccountByPk } = useToken();
 
   const refTransactionHistory = useRef();
   const refSend = useRef();
@@ -101,6 +101,9 @@ const Token = ({ route }) => {
       }
       if (action === TransferAction.receive) {
         openReceiveScreen();
+        if (token.publicKey) {
+          toggleAccountByPk(token.publicKey, 1);
+        }
       }
     }, 100);
   }, []);
