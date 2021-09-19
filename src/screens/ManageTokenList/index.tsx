@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RefreshControl, ScrollView, Text, View, Switch } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { CryptoIcon } from '../../components/CryptoIcon';
@@ -9,20 +9,15 @@ import { FONT_SIZES } from '../../theme';
 import { COLORS } from '../../theme/colors';
 import { price } from '../../utils/autoRound';
 
-const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
-  const {
-    name = '$$$',
-    sortName,
-    symbol = '-',
-    logoURI = '',
-    amount = 0,
-    decimals,
-    usd,
-    value,
-  } = props.token;
-
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
+  toggleAccountByPk,
+  token,
+}) => {
+  const { name = '$$$', sortName, logoURI = '', usd } = token;
+  const active = !token.isHiding;
+  const toggleSwitch = () => {
+    toggleAccountByPk(token.publicKey);
+  };
 
   return (
     <ListItem
@@ -46,33 +41,21 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({ action, ...props }) => {
         </ListItem.Subtitle>
       </ListItem.Content>
       <Switch
-        trackColor={{ false: '#767577', true: '#81b0ff' }}
-        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-        ios_backgroundColor="#3e3e3e"
+        trackColor={{ false: COLORS.white4, true: COLORS.white4 }}
+        thumbColor={active ? COLORS.blue4 : COLORS.dark4}
+        ios_backgroundColor={COLORS.dark4}
         onValueChange={toggleSwitch}
-        value={isEnabled}
+        value={active}
       />
     </ListItem>
   );
 };
 
 const ManageTokenList: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const { loadAccountList, accountList } = useToken();
+  const [loading] = useState(false);
+  const { accountList, toggleAccountByPk } = useToken();
 
-  const onRefresh = async () => {
-    try {
-      setLoading(true);
-      await loadAccountList();
-      setLoading(false);
-    } catch {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    onRefresh();
-  }, []);
+  const onRefresh = () => null;
 
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint)
@@ -88,7 +71,11 @@ const ManageTokenList: React.FC = () => {
         }
       >
         {activeAccountList.map((token, index: number) => (
-          <TokenInfoItem key={index} token={token} />
+          <TokenInfoItem
+            key={index}
+            token={token}
+            toggleAccountByPk={toggleAccountByPk}
+          />
         ))}
       </ScrollView>
     </View>
