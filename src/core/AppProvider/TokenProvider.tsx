@@ -135,9 +135,9 @@ export const TokenProvider: React.FC = (props) => {
 
     // get data from the chain
     try {
-      const accs = await getAccountList(wallet);
-      const priceMapping = await fetchPriceData(tokenInfos);
       const storeList = await getAccountListByOwner(owner);
+      const accs = await getAccountList(wallet, storeList);
+      const priceMapping = await fetchPriceData(tokenInfos);
       const mergedAccList = mergeIsHidingToOnChainData(accs, storeList);
       const accList = createAccountList(
         tokenInfos,
