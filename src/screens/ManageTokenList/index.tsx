@@ -50,7 +50,7 @@ const TokenInfoItem = ({ toggleAccountByPk, token }) => {
       </ListItem.Content>
       <Switch
         trackColor={{ false: COLORS.white4, true: COLORS.white4 }}
-        thumbColor={active ? COLORS.blue4 : COLORS.dark4}
+        thumbColor={active ? COLORS.success : COLORS.dark4}
         ios_backgroundColor={COLORS.dark4}
         onValueChange={toggleSwitch}
         value={active}
