@@ -188,24 +188,26 @@ const WalletScreen = () => {
             isHideBalance={isHideBalance}
             balanceListInfo={activeAccountList}
           />
-          <View style={s.manageBtnWrp}>
-            <Button
-              title="Quản lý Tài Khoản"
-              onPress={() => navigation.navigate(Routes.ManagementTokenList)}
-              type="outline"
-              buttonStyle={s.manageBtn}
-              titleStyle={s.txtManageBtn}
-              icon={
-                <Icon
-                  size={16}
-                  style={s.manageIcon}
-                  color={COLORS.white2}
-                  name="eye-off"
-                  type="feather"
-                />
-              }
-            />
-          </View>
+          {activeAccountList.length >= 7 ? (
+            <View style={s.manageBtnWrp}>
+              <Button
+                title="Quản lý Tài Khoản"
+                onPress={() => navigation.navigate(Routes.ManagementTokenList)}
+                type="outline"
+                buttonStyle={s.manageBtn}
+                titleStyle={s.txtManageBtn}
+                icon={
+                  <Icon
+                    size={16}
+                    style={s.manageIcon}
+                    color={COLORS.white2}
+                    name="eye-off"
+                    type="feather"
+                  />
+                }
+              />
+            </View>
+          ) : null}
         </View>
 
         <Airdrop />
