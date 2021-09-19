@@ -9,12 +9,18 @@ import { FONT_SIZES } from '../../theme';
 import { COLORS } from '../../theme/colors';
 import { price } from '../../utils/autoRound';
 
-const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
-  toggleAccountByPk,
-  token,
-}) => {
-  const { name = '$$$', sortName, logoURI = '', usd } = token;
+const TokenInfoItem = ({ toggleAccountByPk, token }) => {
+  const {
+    name = '$$$',
+    sortName,
+    symbol = '-',
+    logoURI = '',
+    amount = 0,
+    decimals,
+  } = token;
+  const displayValue = amount / Math.pow(10, decimals);
   const active = !token.isHiding;
+
   const toggleSwitch = () => {
     toggleAccountByPk(token.publicKey);
   };
@@ -37,7 +43,9 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
         >
-          <Text>{`$${price(usd)}`}</Text>
+          <Text>
+            {price(displayValue)} {symbol.toUpperCase()}
+          </Text>
         </ListItem.Subtitle>
       </ListItem.Content>
       <Switch

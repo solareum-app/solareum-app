@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import { TokenInfo } from '@solana/spl-token-registry';
 
 import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
@@ -10,11 +11,13 @@ import { CryptoIcon } from '../CryptoIcon';
 
 type TokenInfoItemProps = TokenInfo & {
   action?: string;
+  isHideBalance: boolean;
+  token: any;
 };
 const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
   action,
   isHideBalance,
-  ...props
+  token,
 }) => {
   const {
     name = '$$$',
@@ -25,12 +28,12 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
     decimals,
     usd,
     value,
-  } = props.token;
+  } = token;
 
   const displayValue = amount / Math.pow(10, decimals);
   const navigation = useNavigation();
   const onPressHandler = () => {
-    navigation.navigate(Routes.Token, { token: props.token, action });
+    navigation.navigate(Routes.Token, { token, action });
   };
 
   return (
