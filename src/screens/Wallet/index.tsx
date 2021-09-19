@@ -6,7 +6,6 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-portalize';
 
@@ -41,19 +40,14 @@ const s = StyleSheet.create({
     marginBottom: 20,
     display: 'flex',
   },
-  infoWrp: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    position: 'relative',
-  },
   infoBalance: {
     fontSize: 36,
+    lineHeight: 48,
     color: COLORS.white0,
     textAlign: 'center',
   },
   eyeIcon: {
     marginLeft: 8,
-    marginBottom: 8,
     position: 'absolute',
     right: -24,
     top: 12,
@@ -91,7 +85,7 @@ const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const [isHideBalance, setIsHideBalance] = useState(false);
   const navigation = useNavigation();
-  const { wallet, addressId } = useApp();
+  const { addressId } = useApp();
   const { loadAccountList, accountList } = useToken();
   const refReceived = useRef();
 
@@ -137,22 +131,9 @@ const WalletScreen = () => {
       >
         <View style={s.header}>
           <View style={s.info}>
-            <View style={s.infoWrp}>
-              <Text onPress={() => onHideBalance()} style={s.infoBalance}>
-                {isHideBalance ? '****' : `$${price(totalEst)}`}
-              </Text>
-              {isHideBalance ? (
-                <View style={s.eyeIcon}>
-                  <Icon
-                    onPress={() => onHideBalance()}
-                    type="feather"
-                    name="eye"
-                    color={COLORS.white4}
-                    size={16}
-                  />
-                </View>
-              ) : null}
-            </View>
+            <Text onPress={() => onHideBalance()} style={s.infoBalance}>
+              {isHideBalance ? '****' : `$${price(totalEst)}`}
+            </Text>
           </View>
           <View style={s.control}>
             <View style={s.controlItem}>
