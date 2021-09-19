@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-portalize';
 
@@ -64,6 +65,18 @@ const s = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
   },
+  manageBtnWrp: {
+    padding: 20,
+  },
+  manageBtn: {
+    borderColor: COLORS.dark4,
+  },
+  manageIcon: {
+    marginRight: 10,
+  },
+  txtManageBtn: {
+    color: COLORS.white2,
+  },
 });
 
 const getTotalEstimate = (balanceListInfo: any[]) => {
@@ -88,7 +101,6 @@ const WalletScreen = () => {
   const { addressId } = useApp();
   const { loadAccountList, accountList } = useToken();
   const refReceived = useRef();
-
   const solAccount = accountList.find((i) => i.mint === 'SOL');
 
   const activeAccountList = accountList
@@ -176,6 +188,26 @@ const WalletScreen = () => {
             isHideBalance={isHideBalance}
             balanceListInfo={activeAccountList}
           />
+          {activeAccountList.length >= 7 ? (
+            <View style={s.manageBtnWrp}>
+              <Button
+                title="Quản lý Tài Khoản"
+                onPress={() => navigation.navigate(Routes.ManagementTokenList)}
+                type="outline"
+                buttonStyle={s.manageBtn}
+                titleStyle={s.txtManageBtn}
+                icon={
+                  <Icon
+                    size={16}
+                    style={s.manageIcon}
+                    color={COLORS.white2}
+                    name="eye-off"
+                    type="feather"
+                  />
+                }
+              />
+            </View>
+          ) : null}
         </View>
 
         <Airdrop />
