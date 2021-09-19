@@ -1,9 +1,19 @@
+// ref: https://reactnavigation.org/docs/deep-linking/
+
 const config = {
   screens: {
     Token: {
-      path: 'token/:token',
+      path: 'token/:token/:addr',
       parse: {
-        token: (token: any) => token,
+        addr: (addr: any) => {
+          return addr;
+        },
+        token: (token: any) => {
+          return {
+            symbol: token,
+            isLinking: Math.random(),
+          };
+        },
       },
     },
   },

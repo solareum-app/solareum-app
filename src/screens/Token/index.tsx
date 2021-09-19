@@ -60,10 +60,12 @@ const s = StyleSheet.create({
 });
 
 const Token = ({ route }) => {
-  const { action, token } = route.params;
+  // addr is coming from deeplink
+  const { action, token = {}, addr } = route.params;
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
-  const { getAccountByPk, toggleAccountByPk } = useToken();
+  const [initAddress, setInitAddress] = useState('');
+  const { getAccountByPk, toggleAccountByPk, accountList } = useToken();
 
   const refTransactionHistory = useRef();
   const refSend = useRef();
@@ -75,7 +77,7 @@ const Token = ({ route }) => {
     decimals,
     name,
     usd,
-  } = account;
+  } = account || {};
   const est = (amount / Math.pow(10, decimals)) * usd;
 
   const openSendScreen = () => {
@@ -92,6 +94,22 @@ const Token = ({ route }) => {
     setAccount({ ...account, ...acc });
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (!account && !account.isLinking) {
+      return;
+    }
+
+    const deepSymbol = account?.symbol?.toUpperCase();
+    const acc = accountList.find((i) => i.symbol === deepSymbol);
+    setAccount(acc);
+    setTimeout(() => {
+      if (addr) {
+        setInitAddress(addr);
+        openSendScreen();
+      }
+    }, 100);
+  }, [account?.isLinking]);
 
   useEffect(() => {
     // open action panel
@@ -167,7 +185,7 @@ const Token = ({ route }) => {
 
       <Portal>
         <FixedContent ref={refSend}>
-          <Send initStep={1} token={account} />
+          <Send initStep={1} token={account} initAddress={initAddress} />
         </FixedContent>
 
         <FixedContent ref={refReceived}>

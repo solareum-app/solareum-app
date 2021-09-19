@@ -274,9 +274,9 @@ const Step3 = ({ signature }) => {
   );
 };
 
-export const Send = ({ initStep = 1, token }) => {
+export const Send = ({ initStep = 1, token, initAddress = '' }) => {
   const [step, setStep] = useState(initStep);
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState(initAddress);
   const [error, setError] = useState('');
   const [amount, setAmount] = useState('');
   const [signature, setSignature] = useState('');
