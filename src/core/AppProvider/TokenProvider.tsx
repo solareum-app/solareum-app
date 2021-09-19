@@ -89,12 +89,14 @@ export const TokenProvider: React.FC = (props) => {
     return 0;
   };
 
-  const toggleAccountByPk = (pk: string) => {
+  // isHidingValue = 1 => show
+  // isHidingValue = -1 => hide
+  const toggleAccountByPk = (pk: string, isHidingValue: number = 0) => {
     const newAccountList = accountList.map((i) => {
       if (i.publicKey === pk) {
         return {
           ...i,
-          isHiding: !i.isHiding,
+          isHiding: isHidingValue > 0 ? false : !i.isHiding,
         };
       }
       return i;
