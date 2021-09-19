@@ -46,7 +46,7 @@ enum AIRDROP_STEP {
 export const Airdrop = () => {
   const { accountList } = useToken();
   const { addressList } = useApp();
-  const [airdrop, setAirdrop] = useState(false);
+  const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);
   const [step, setStep] = useState(AIRDROP_STEP.info);
   const [refAddress, setRefAddress] = useState('');
@@ -58,7 +58,7 @@ export const Airdrop = () => {
   const refStepInfo = useRef();
 
   const dismiss = () => {
-    setAirdrop(false);
+    setAirdrop(0);
   };
 
   const startAirdrop = () => {
@@ -132,7 +132,11 @@ export const Airdrop = () => {
           XSB là token sẽ được sử dụng trong Solareum Lightning, một ứng dụng
           web3.0 giúp thưởng cho những nhà phát triển nội dung kỹ thuật số.
         </Text>
-        <Button title="Nhận +20 XSB" type="outline" onPress={startAirdrop} />
+        <Button
+          title={`Nhận +${airdrop} XSB`}
+          type="outline"
+          onPress={startAirdrop}
+        />
       </View>
 
       <Portal>

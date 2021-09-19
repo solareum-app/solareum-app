@@ -98,9 +98,9 @@ export const AirdropStepInputRefAddress = ({
         <View style={s.main}>
           <Text style={typo.title}>Nhập địa chỉ người giới thiệu</Text>
           <Text style={typo.normal}>
-            Hãy nhập địa chỉ của người đã giới thiệu bạn đến với Solareum - SOL
-            hoặc XSB address, để cả 2 cùng nhận được Airdrop. Nếu bạn không có
-            người giới thiệu hãy để trống và tiếp tục.
+            Hãy nhập địa chỉ SOL của người giới thiệu, để cả 2 cùng nhận được
+            Airdrop. Nếu bạn không có người giới thiệu hãy nhập `XSB` và tiếp
+            tục.
           </Text>
           <View style={s.containerInput}>
             <Input
