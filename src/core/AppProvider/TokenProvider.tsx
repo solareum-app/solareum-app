@@ -24,6 +24,7 @@ export type TokenContextType = {
   tokenInfos: TokenInfo[];
   priceData: any;
   loadAccountList: Function;
+  toggleAccountByPk: Function;
 };
 export const TokenContext = React.createContext<TokenContextType>({
   accountList: [],
@@ -31,6 +32,7 @@ export const TokenContext = React.createContext<TokenContextType>({
   tokenInfos: [],
   priceData: {},
   loadAccountList: () => null,
+  toggleAccountByPk: () => null,
 });
 
 export const useToken = () => {
@@ -63,6 +65,16 @@ const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
   return price;
 };
 
+const mergeIsHidingToOnChainData = (onchainList, storeList) => {
+  return onchainList.map((i) => {
+    const item = storeList.find((j) => j.publicKey === i.publicKey);
+    return {
+      ...i,
+      isHiding: item.isHiding || false,
+    };
+  });
+};
+
 export const TokenProvider: React.FC = (props) => {
   const { wallet } = useApp();
   const { customeTokenList } = useConfig();
@@ -74,6 +86,20 @@ export const TokenProvider: React.FC = (props) => {
   const setAccountList = async (list: IAccount[]) => {
     setAccountListSource(list);
     await storeAccountList(list);
+    return 0;
+  };
+
+  const toggleAccountByPk = (pk: string) => {
+    const newAccountList = accountList.map((i) => {
+      if (i.publicKey === pk) {
+        return {
+          ...i,
+          isHiding: !i.isHiding,
+        };
+      }
+      return i;
+    });
+    setAccountList(newAccountList);
     return 0;
   };
 
@@ -95,7 +121,6 @@ export const TokenProvider: React.FC = (props) => {
   const loadAccountFromStore = async (owner: string) => {
     const list = await getAccountListByOwner(owner);
     const storeAccList = createAccountList(tokenInfos, list, priceData);
-
     setAccountListSource(storeAccList);
   };
 
@@ -112,7 +137,13 @@ export const TokenProvider: React.FC = (props) => {
     try {
       const accs = await getAccountList(wallet);
       const priceMapping = await fetchPriceData(tokenInfos);
-      const accList = createAccountList(tokenInfos, accs, priceMapping);
+      const storeList = await getAccountListByOwner(owner);
+      const mergedAccList = mergeIsHidingToOnChainData(accs, storeList);
+      const accList = createAccountList(
+        tokenInfos,
+        mergedAccList,
+        priceMapping,
+      );
 
       setPriceData(priceMapping);
       setAccountList(accList);
@@ -176,6 +207,7 @@ export const TokenProvider: React.FC = (props) => {
         accountList,
         getAccountByPk,
         loadAccountList,
+        toggleAccountByPk,
       }}
     >
       {tokenInfos.length ? props.children : <LoadingImage />}

@@ -104,7 +104,7 @@ const WalletScreen = () => {
   const solAccount = accountList.find((i) => i.mint === 'SOL');
 
   const activeAccountList = accountList
-    .filter((i: IAccount) => i.mint)
+    .filter((i: IAccount) => i.mint && !i.isHiding)
     .sort((a, b) => {
       return b.refValue - a.refValue;
     });
