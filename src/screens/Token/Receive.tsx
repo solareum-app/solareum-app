@@ -231,7 +231,7 @@ export const Receive = ({ token }) => {
           </View>
           <View style={s.footer}>
             <Text style={typo.helper}>
-              Chúng tôi chỉ chấp nhận token trên mạng Solana - SPL.
+              Solareum chỉ chấp nhận token trên mạng Solana - SPL.
             </Text>
             <Text style={typo.helper}>
               Chỉ chuyển {account.name} và SPL tokens vào địa chỉ này. Việc
