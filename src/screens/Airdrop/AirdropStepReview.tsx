@@ -23,6 +23,10 @@ export const AirdropStepReview = ({
         <Text style={grid.groupValue}>+{airdrop} XSB</Text>
         <Text style={grid.groupTitle}>Người giới thiệu nhận được</Text>
         <Text style={grid.groupValue}>+{rewardRef} XSB</Text>
+        <Text style={typo.helper}>
+          Số lượng XSB thực tế bạn nhận được có thể sẽ khác so với ước tính ban
+          đầu.
+        </Text>
       </View>
       <View style={s.footer}>
         {error ? <Text style={typo.critical}>{error}</Text> : null}
