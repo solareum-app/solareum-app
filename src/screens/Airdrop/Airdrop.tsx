@@ -43,7 +43,7 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
-export const Airdrop = () => {
+export const Airdrop = ({ isActive }) => {
   const { accountList } = useToken();
   const { addressList } = useApp();
   const [airdrop, setAirdrop] = useState(0);
@@ -119,13 +119,13 @@ export const Airdrop = () => {
     })();
   }, []);
 
-  if (!airdrop) {
+  if (!airdrop && !isActive) {
     return null;
   }
 
   return (
     <View>
-      <View style={s.main}>
+      <View style={{ ...s.main, padding: isActive ? 0 : 24 }}>
         <Image style={s.img} source={ImgPayment} />
         <Text style={typo.titleLeft}>XSB Airdrop</Text>
         <Text style={typo.normal}>
@@ -136,6 +136,7 @@ export const Airdrop = () => {
           title={`Nhận +${airdrop} XSB`}
           type="outline"
           onPress={startAirdrop}
+          disabled={airdrop === 0}
         />
       </View>
 
