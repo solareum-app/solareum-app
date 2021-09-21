@@ -16,6 +16,7 @@ import { AirdropStepSuccessAndShare } from './AirdropStepSuccessAndShare';
 import ImgPayment from '../../assets/clip-payment.png';
 import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
+import { useMetaData } from '../../hooks/useMetaData';
 
 const s = StyleSheet.create({
   main: {
@@ -45,13 +46,13 @@ enum AIRDROP_STEP {
 
 export const Airdrop = ({ isActive }) => {
   const { accountList } = useToken();
-  const { addressList } = useApp();
   const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);
   const [step, setStep] = useState(AIRDROP_STEP.info);
   const [refAddress, setRefAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const metaData = useMetaData();
 
   const [airdropSignature, setAirdropSignature] = useState<string>('');
   const [rewardRefSignature, setRewardRefSignature] = useState<string>('');
@@ -88,6 +89,7 @@ export const Airdrop = ({ isActive }) => {
           solAddress: solAccount?.publicKey,
           xsbAddress: xsbAccount?.publicKey,
           refAddress,
+          meta: metaData,
         },
       });
       setAirdrop(resp.rewardAirdrop);
@@ -109,9 +111,9 @@ export const Airdrop = ({ isActive }) => {
       const resp = await authFetch(service.postCheckAirdrop, {
         method: 'POST',
         body: {
-          addressList: addressList.map((i) => i.address),
           solAddress: solAccount?.publicKey,
           xsbAddress: xsbAccount?.publicKey,
+          meta: metaData,
         },
       });
       setAirdrop(resp.rewardAirdrop);
