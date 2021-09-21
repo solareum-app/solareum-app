@@ -111,10 +111,10 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
                 style={typo.input}
                 labelStyle={s.inputLabel}
                 containerStyle={s.inputContainer}
-                value={address}
-                onChangeText={(value) => setAddress(value)}
                 errorMessage={address}
                 errorStyle={{ color: COLORS.white4 }}
+                value={address}
+                onChangeText={(value) => setAddress(value)}
               />
               <View style={s.controls}>
                 <Button
