@@ -15,7 +15,7 @@ export enum Routes {
   Search = 'Tokens',
   Mission = 'Nhiệm vụ',
   ManagementTokenList = 'Quản lý Tài Khoản',
-  Influencer = 'Người tiên phong',
+  Influencer = 'Airdrop',
 }
 
 export default Routes;
