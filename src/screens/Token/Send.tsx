@@ -113,6 +113,8 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
                 containerStyle={s.inputContainer}
                 value={address}
                 onChangeText={(value) => setAddress(value)}
+                errorMessage={address}
+                errorStyle={{ color: COLORS.white4 }}
               />
               <View style={s.controls}>
                 <Button
