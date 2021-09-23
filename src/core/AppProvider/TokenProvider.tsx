@@ -39,16 +39,35 @@ export const useToken = () => {
   return useContext(TokenContext);
 };
 
-const SOL_TOKEN = {
-  address: 'SOL',
-  symbol: 'SOL',
-  name: 'Solana',
-  extensions: {
-    coingeckoId: 'solana',
+const CUSTOM_TOKENS = [
+  {
+    address: 'SOL',
+    symbol: 'SOL',
+    name: 'Solana',
+    extensions: {
+      coingeckoId: 'solana',
+    },
+    logoURI:
+      'https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png',
   },
-  logoURI:
-    'https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png',
-};
+  {
+    chainId: 101,
+    address: '4UuGQgkD3rSeoXatXRWwRfRd21G87d5LiCfkVzNNv1Tt',
+    symbol: 'XSB',
+    name: 'Solareum',
+    decimals: 9,
+    logoURI: 'https://solareum.app/icons/XSB-G.png',
+    tags: ['Solareum', 'Wallet', 'Serum Dex'],
+    extensions: {
+      wealthclub: 'https://wealthclub.vn',
+      twitter: 'https://twitter.com/solareum_wallet',
+      telegram: 'https://t.me/solareum_wallet',
+      policy:
+        'https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418',
+      website: 'https://solareum.app',
+    },
+  },
+];
 
 const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
   const list = tokenList.map((i) => i.extensions?.coingeckoId) || [];
@@ -166,9 +185,9 @@ export const TokenProvider: React.FC = (props) => {
           ? filteredTokenListContainer?.getList()
           : null; // Workaround for filter return all on unknown slug
 
-      const tokenList = [SOL_TOKEN]
+      const tokenList = [...customeTokenList]
         .concat(listOfTokens)
-        .concat(customeTokenList);
+        .concat(CUSTOM_TOKENS);
       const uniqTokenList = getUniqByAddress(tokenList);
       const priceMapping = await fetchPriceData(uniqTokenList).catch(() => []);
       const accList = createAccountList(
