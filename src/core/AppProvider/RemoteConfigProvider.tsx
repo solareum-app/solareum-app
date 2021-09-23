@@ -85,7 +85,7 @@ export const RemoteConfigProvider = ({ children }) => {
       .then(() => {
         // fetch anyway, the change will be apply for the next start
         remoteConfig()
-          .fetch(3600) // cache for 1 hour
+          .fetch(300) // cache for 5 mins
           .catch(() => {
             return true;
           });
