@@ -776,7 +776,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.18.13;
+				MARKETING_VERSION = 2.18.14;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -801,7 +801,7 @@
 				DEVELOPMENT_TEAM = 9WLRC5ZTG7;
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.18.13;
+				MARKETING_VERSION = 2.18.14;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
