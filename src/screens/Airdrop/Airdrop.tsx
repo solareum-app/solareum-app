@@ -4,7 +4,6 @@ import { Portal } from 'react-native-portalize';
 import { Button } from 'react-native-elements';
 
 import { useToken } from '../../core/AppProvider/TokenProvider';
-import { useApp } from '../../core/AppProvider/AppProvider';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { COLORS } from '../../theme';
 import { typo } from '../../components/Styles';
