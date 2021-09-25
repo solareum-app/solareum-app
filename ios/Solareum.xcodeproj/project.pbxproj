@@ -21,7 +21,6 @@
 		6FD9CD77F3923DE000FFB985 /* libPods-Solareum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9C4F7C01CC49EC7D1BD955 /* libPods-Solareum.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A7BB590D367F08900AFE0E31 /* libPods-Solareum-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B57DBA060FED999A0B8021C /* libPods-Solareum-tvOS.a */; };
-		BCA84BC526FE144C00C8570F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BCA84BC426FE144C00C8570F /* GoogleService-Info.plist */; };
 		DA23B7C02563550BF7744734 /* libPods-Solareum-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A61F275DA098CBD271FD1C /* libPods-Solareum-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -353,7 +352,6 @@
 			files = (
 				51993BBC262AC60500AC7E6B /* Fonts in Resources */,
 				517D8B35263D03D00086A7A7 /* AppCenter-Config.plist in Resources */,
-				BCA84BC526FE144C00C8570F /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
