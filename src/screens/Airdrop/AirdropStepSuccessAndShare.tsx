@@ -82,13 +82,15 @@ export const AirdropStepSuccessAndShare = ({
             <Text style={style.value}>+{airdrop} XSB</Text>
           </View>
           <View style={style.rowItemRight}>
-            <Button
-              title="scan"
-              type="clear"
-              onPress={() => {
-                Linking.openURL(`https://solscan.io/tx/${airdropSignature}`);
-              }}
-            />
+            {airdropSignature ? (
+              <Button
+                title="scan"
+                type="clear"
+                onPress={() => {
+                  Linking.openURL(`https://solscan.io/tx/${airdropSignature}`);
+                }}
+              />
+            ) : null}
           </View>
         </View>
 
@@ -98,13 +100,17 @@ export const AirdropStepSuccessAndShare = ({
             <Text style={style.value}>+{rewardRef} XSB</Text>
           </View>
           <View style={style.rowItemRight}>
-            <Button
-              title="scan"
-              type="clear"
-              onPress={() => {
-                Linking.openURL(`https://solscan.io/tx/${rewardRefSignature}`);
-              }}
-            />
+            {rewardRefSignature ? (
+              <Button
+                title="scan"
+                type="clear"
+                onPress={() => {
+                  Linking.openURL(
+                    `https://solscan.io/tx/${rewardRefSignature}`,
+                  );
+                }}
+              />
+            ) : null}
           </View>
         </View>
       </View>

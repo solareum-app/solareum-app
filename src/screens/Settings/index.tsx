@@ -109,8 +109,21 @@ const Settings: React.FC = () => {
             <Icon type="antdesign" name="rocket1" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                Người tiên phong
+                Giới thiệu nhận thưởng
               </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              navigation.navigate(Routes.Airdrop);
+            }}
+          >
+            <Icon type="antdesign" name="rocket1" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>Airdrop</ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>

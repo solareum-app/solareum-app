@@ -4,7 +4,6 @@ import { Portal } from 'react-native-portalize';
 import { Button } from 'react-native-elements';
 
 import { useToken } from '../../core/AppProvider/TokenProvider';
-import { useApp } from '../../core/AppProvider/AppProvider';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { COLORS } from '../../theme';
 import { typo } from '../../components/Styles';
@@ -16,6 +15,7 @@ import { AirdropStepSuccessAndShare } from './AirdropStepSuccessAndShare';
 import ImgPayment from '../../assets/clip-payment.png';
 import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
+import { useMetaData } from '../../hooks/useMetaData';
 
 const s = StyleSheet.create({
   main: {
@@ -43,15 +43,15 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
-export const Airdrop = () => {
+export const Airdrop = ({ isActive }) => {
   const { accountList } = useToken();
-  const { addressList } = useApp();
   const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);
   const [step, setStep] = useState(AIRDROP_STEP.info);
   const [refAddress, setRefAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const metaData = useMetaData();
 
   const [airdropSignature, setAirdropSignature] = useState<string>('');
   const [rewardRefSignature, setRewardRefSignature] = useState<string>('');
@@ -86,18 +86,25 @@ export const Airdrop = () => {
         method: 'POST',
         body: {
           solAddress: solAccount?.publicKey,
-          xsbAddress: xsbAccount?.publicKey,
           refAddress,
+          meta: {
+            ...metaData,
+            xsbAddress: xsbAccount?.publicKey,
+          },
         },
       });
-      setAirdrop(resp.rewardAirdrop);
-      setRewardRef(resp.rewardRef);
-      setAirdropSignature(resp.rewardAirdropSignature);
-      setRewardRefSignature(resp.rewardRefSignature);
-    } catch {
+      if (resp.status > 0) {
+        setAirdrop(resp.rewardAirdrop);
+        setRewardRef(resp.rewardRef);
+        setAirdropSignature(resp.rewardAirdropSignature);
+        setRewardRefSignature(resp.rewardRefSignature);
+        setStep(AIRDROP_STEP.successAndShare);
+      } else {
+        setError(resp.error);
+      }
+    } catch (err) {
       setError('Có lỗi xảy ra, vui lòng thử lại sau.');
     } finally {
-      setStep(AIRDROP_STEP.successAndShare);
       setLoading(false);
     }
   };
@@ -106,26 +113,33 @@ export const Airdrop = () => {
     (async () => {
       const solAccount = accountList.find((i) => i.mint === 'SOL');
       const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
+      if (!solAccount) {
+        return;
+      }
+
       const resp = await authFetch(service.postCheckAirdrop, {
         method: 'POST',
         body: {
-          addressList: addressList.map((i) => i.address),
           solAddress: solAccount?.publicKey,
-          xsbAddress: xsbAccount?.publicKey,
+          meta: {
+            ...metaData,
+            xsbAddress: xsbAccount?.publicKey,
+          },
         },
       });
+
       setAirdrop(resp.rewardAirdrop);
       setRewardRef(resp.rewardRef);
     })();
-  }, []);
+  }, [accountList]);
 
-  if (!airdrop) {
+  if (!airdrop && !isActive) {
     return null;
   }
 
   return (
     <View>
-      <View style={s.main}>
+      <View style={{ ...s.main, padding: isActive ? 0 : 24 }}>
         <Image style={s.img} source={ImgPayment} />
         <Text style={typo.titleLeft}>XSB Airdrop</Text>
         <Text style={typo.normal}>
@@ -136,6 +150,7 @@ export const Airdrop = () => {
           title={`Nhận +${airdrop} XSB`}
           type="outline"
           onPress={startAirdrop}
+          disabled={airdrop === 0}
         />
       </View>
 

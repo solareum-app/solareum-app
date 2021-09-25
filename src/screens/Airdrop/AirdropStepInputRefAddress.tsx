@@ -109,6 +109,8 @@ export const AirdropStepInputRefAddress = ({
               style={typo.input}
               labelStyle={s.inputLabel}
               containerStyle={s.inputContainer}
+              errorMessage={refAddress}
+              errorStyle={{ color: COLORS.white4 }}
               value={refAddress}
               onChangeText={(value) => setRefAddress(value)}
             />
@@ -138,7 +140,7 @@ export const AirdropStepInputRefAddress = ({
           </View>
 
           <View style={s.footer}>
-            {error ? <Text style={typo.critical}>{error}</Text> : null}
+            {error ? <Text style={typo.warning}>{error}</Text> : null}
             <Button
               type="outline"
               title="Tiếp tục, xem lại thông tin"
