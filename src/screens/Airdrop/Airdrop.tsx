@@ -86,19 +86,25 @@ export const Airdrop = ({ isActive }) => {
         method: 'POST',
         body: {
           solAddress: solAccount?.publicKey,
-          xsbAddress: xsbAccount?.publicKey,
           refAddress,
-          meta: metaData,
+          meta: {
+            ...metaData,
+            xsbAddress: xsbAccount?.publicKey,
+          },
         },
       });
-      setAirdrop(resp.rewardAirdrop);
-      setRewardRef(resp.rewardRef);
-      setAirdropSignature(resp.rewardAirdropSignature);
-      setRewardRefSignature(resp.rewardRefSignature);
-    } catch {
+      if (resp.status > 0) {
+        setAirdrop(resp.rewardAirdrop);
+        setRewardRef(resp.rewardRef);
+        setAirdropSignature(resp.rewardAirdropSignature);
+        setRewardRefSignature(resp.rewardRefSignature);
+        setStep(AIRDROP_STEP.successAndShare);
+      } else {
+        setError(resp.error);
+      }
+    } catch (err) {
       setError('Có lỗi xảy ra, vui lòng thử lại sau.');
     } finally {
-      setStep(AIRDROP_STEP.successAndShare);
       setLoading(false);
     }
   };
@@ -111,12 +117,14 @@ export const Airdrop = ({ isActive }) => {
         method: 'POST',
         body: {
           solAddress: solAccount?.publicKey,
-          xsbAddress: xsbAccount?.publicKey,
-          meta: metaData,
+          meta: {
+            ...metaData,
+            xsbAddress: xsbAccount?.publicKey,
+          },
         },
       });
-      setAirdrop(resp.rewardAirdrop);
-      setRewardRef(resp.rewardRef);
+      setAirdrop(parseFloat(resp.rewardAirdrop));
+      setRewardRef(parseFloat(resp.rewardRef));
     })();
   }, []);
 
