@@ -1,20 +1,22 @@
 export const MAINNET_URL = 'http://api.mainnet-beta.solana.com';
 
-// const servicePathDev =
+// DEV
+// const servicePath =
 //   'https://1t66si6dlc.execute-api.ap-southeast-1.amazonaws.com/dev';
 
-const servicePathPrd =
+// PROD
+const servicePath =
   'https://5oqey668yd.execute-api.ap-southeast-1.amazonaws.com/prd';
 
 export let service = {
-  getHello: `${servicePathPrd}/hello`,
-  getLoadSysAccount: `${servicePathPrd}/loadSysAccount`,
-  getLoadAccountInfo: `${servicePathPrd}/loadAccountInfo`,
-  getSend: `${servicePathPrd}/send`,
-  getTransferSPLTokens: `${servicePathPrd}/transferSPLTokens`,
-  postDeviceRegister: `${servicePathPrd}/deviceRegister`,
-  postCheckAirdrop: `${servicePathPrd}/checkAirdrop`,
-  postAirdrop: `${servicePathPrd}/airdrop`,
-  postCheckMission: `${servicePathPrd}/checkMission`,
-  postMission: `${servicePathPrd}/mission`,
+  getHello: `${servicePath}/hello`,
+  getLoadSysAccount: `${servicePath}/loadSysAccount`,
+  getLoadAccountInfo: `${servicePath}/loadAccountInfo`,
+  getSend: `${servicePath}/send`,
+  getTransferSPLTokens: `${servicePath}/transferSPLTokens`,
+  postDeviceRegister: `${servicePath}/deviceRegister`,
+  postCheckAirdrop: `${servicePath}/checkAirdrop`,
+  postAirdrop: `${servicePath}/airdrop`,
+  postCheckMission: `${servicePath}/checkMission`,
+  postMission: `${servicePath}/mission`,
 };

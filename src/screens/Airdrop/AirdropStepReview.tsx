@@ -29,7 +29,7 @@ export const AirdropStepReview = ({
         </Text>
       </View>
       <View style={s.footer}>
-        {error ? <Text style={typo.critical}>{error}</Text> : null}
+        {error ? <Text style={typo.warning}>{error}</Text> : null}
         <Button
           type="outline"
           title="Chuẩn rồi, nhận thưởng thôi"
