@@ -113,10 +113,6 @@ export const Airdrop = ({ isActive }) => {
     (async () => {
       const solAccount = accountList.find((i) => i.mint === 'SOL');
       const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
-      if (!solAccount) {
-        return;
-      }
-
       const resp = await authFetch(service.postCheckAirdrop, {
         method: 'POST',
         body: {
@@ -127,11 +123,10 @@ export const Airdrop = ({ isActive }) => {
           },
         },
       });
-
-      setAirdrop(resp.rewardAirdrop);
-      setRewardRef(resp.rewardRef);
+      setAirdrop(parseFloat(resp.rewardAirdrop));
+      setRewardRef(parseFloat(resp.rewardRef));
     })();
-  }, [accountList]);
+  }, []);
 
   if (!airdrop && !isActive) {
     return null;
