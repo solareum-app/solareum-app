@@ -55,7 +55,7 @@ const Influencer: React.FC<Props> = () => {
       });
       setRewardRef(resp.rewardRef);
     })();
-  }, []);
+  }, [accountList]);
 
   return (
     <View style={grid.container}>
