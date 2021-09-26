@@ -5,8 +5,7 @@
 
 import AsyncStorage from './';
 
-// AsyncStorage.clear();
-
+// default collection is SYS
 const getKey = (collection: string = 'SYS', id: string) => {
   return `${collection}-${id}`;
 };

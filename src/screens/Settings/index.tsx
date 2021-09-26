@@ -11,6 +11,7 @@ import { spacings } from '../../theme';
 import { typo } from '../../components/Styles';
 import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
 import package from '../../../package.json';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   container: {
@@ -42,12 +43,61 @@ const s = StyleSheet.create({
   wrp: {
     padding: 20,
   },
+  panel: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    flexDirection: 'row',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  panelItem: {
+    flex: 1,
+  },
+  panelLanguage: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginRight: -8,
+  },
+  language: {
+    textAlign: 'right',
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
+    marginBottom: 0,
+    fontSize: 14,
+    textTransform: 'uppercase',
+  },
+  languageActive: {
+    color: COLORS.blue4,
+  },
 });
+
+const Language = ({ value }) => {
+  const { language, setLanguage } = useLocalize();
+
+  return (
+    <Text
+      style={[
+        typo.helper,
+        s.language,
+        language === value ? s.languageActive : {},
+      ]}
+      onPress={() => {
+        setLanguage(value);
+      }}
+    >
+      {value}
+    </Text>
+  );
+};
 
 const Settings: React.FC = () => {
   const navigation = useNavigation();
   const refPolicy = useRef();
   const { appPrefix, links } = useConfig();
+  const { t } = useLocalize();
 
   return (
     <View style={s.container}>
@@ -207,12 +257,22 @@ const Settings: React.FC = () => {
         </View>
 
         <View style={s.group}>
-          <View style={s.wrp}>
-            <Text style={typo.helper}>
-              v{package.version}
-              {appPrefix}
-            </Text>
+          <View style={s.panel}>
+            <View style={s.panelItem}>
+              <Text style={{ ...typo.helper, marginBottom: 0 }}>
+                v{package.version}
+                {appPrefix}
+                {t('prefix')}
+              </Text>
+            </View>
+            <View style={s.panelItem}>
+              <View style={s.panelLanguage}>
+                <Language value="en" />
+                <Language value="vn" />
+              </View>
+            </View>
           </View>
+          <View style={s.wrp} />
         </View>
       </ScrollView>
 
