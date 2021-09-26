@@ -6,13 +6,14 @@ import TokensList from '../../components/TokensList';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { useToken } from '../../core/AppProvider/TokenProvider';
-
+import { useMarket } from '../../core/AppProvider/MarketProvider';
 import { TransferAction } from '../Wallet';
 
 const Search: React.FC = ({ route }) => {
   const [query, setQuery] = useState('');
   const [tokens, setTokens] = useState([]);
   const { accountList } = useToken();
+  const { symbolList } = useMarket();
   const { action } = route.params;
 
   useEffect(() => {
@@ -34,7 +35,25 @@ const Search: React.FC = ({ route }) => {
 
     // sort token by some conditions
     const sortedList = t?.sort((a, b) => {
-      return b.refValue - a.refValue;
+      let ta = symbolList.indexOf(a.symbol) >= 0 ? 10000 : 0;
+      let tb = symbolList.indexOf(b.symbol) >= 0 ? 10000 : 0;
+
+      // move token has account to top
+      if (a.mint) {
+        ta = ta + a.refValue;
+      }
+      if (b.mint) {
+        tb = ta + b.refValue;
+      }
+
+      if (a.name?.includes('Sollet') || a.name?.includes('Wrapped')) {
+        ta -= 0.0001;
+      }
+      if (b.name?.includes('Sollet') || b.name?.includes('Wrapped')) {
+        tb -= 0.0001;
+      }
+
+      return tb - ta;
     });
 
     setTokens(sortedList?.splice(0, 24) || []);
