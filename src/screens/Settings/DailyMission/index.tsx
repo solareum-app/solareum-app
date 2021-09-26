@@ -41,6 +41,9 @@ const DailyMission: React.FC<Props> = () => {
                 Bạn lưu ý là hoàn tất quảng cáo - không tắt giữa chừng để hoàn
                 thành nhiệm vụ nhé. Cùng Solareum tích tiểu thành đại.
               </Text>
+              <Text style={typo.normal}>
+                Với mỗi lần hoàn thành nhiệm vụ bạn sẽ nhận được +0&nbsp;XBS.
+              </Text>
             </View>
 
             <View style={s.wrp}>
