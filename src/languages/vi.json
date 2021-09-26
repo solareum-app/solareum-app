@@ -1,4 +1,8 @@
 {
+  "home-send": "Chuyển",
+  "home-receive": "Nhận",
+  "home-qr-code": "QR Code",
+  "home-manage-accounts": "Quản lý Tài Khoản",
   "prefix": "v",
   "version": "vi.2.0.0"
 }

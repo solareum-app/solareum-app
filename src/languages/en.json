@@ -1,4 +1,8 @@
 {
+  "home-send": "Send",
+  "home-receive": "Receive",
+  "home-qr-code": "QR Code",
+  "home-manage-accounts": "Manage your accounts",
   "prefix": "e",
   "version": "en.2.0.0"
 }

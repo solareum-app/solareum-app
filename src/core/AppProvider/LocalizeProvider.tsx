@@ -13,6 +13,11 @@ import vi from '../../languages/vi.json';
 
 const SELECTED_LANGUAGE = 'SELECTED_LANGUAGE';
 
+/**
+ * HOW TO NAME A KEY IN en.json + vi.json
+ * key = screen-[group]-item
+ */
+
 const i18n = new LocalizedStrings<typeof vi>({ vn: vi, en });
 
 export type i18nType = typeof i18n;
