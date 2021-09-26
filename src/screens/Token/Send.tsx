@@ -9,6 +9,7 @@ import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { price } from '../../utils/autoRound';
 import { useApp } from '../../core/AppProvider/AppProvider';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { QRScan } from './QRScan';
 
@@ -83,6 +84,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   const [camera, setCamera] = useState(false);
   const { symbol, usd } = token;
   const estValue = amount * usd;
+  const { t } = useLocalize();
 
   const onAmountChange = (value) => {
     // dont allow comma
@@ -102,11 +104,11 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
     <View>
       {!camera ? (
         <View style={s.main}>
-          <Text style={typo.title}>Chuyển {symbol}</Text>
+          <Text style={typo.title}>{t('token-send-title', { symbol })}</Text>
           <View style={s.body}>
             <View style={s.containerInput}>
               <Input
-                label="Địa chỉ ví"
+                label={t('token-address-title')}
                 placeholder=""
                 style={typo.input}
                 labelStyle={s.inputLabel}
@@ -118,7 +120,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
               />
               <View style={s.controls}>
                 <Button
-                  title="Dán"
+                  title={t('token-paste-title')}
                   type="clear"
                   onPress={onPaste}
                   titleStyle={s.pasteTxt}
@@ -142,7 +144,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
             </View>
 
             <Input
-              label="Số lượng"
+              label={t('token-amount-title')}
               placeholder=""
               keyboardType="decimal-pad"
               style={typo.input}
@@ -155,7 +157,11 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
             />
           </View>
           <View style={s.footer}>
-            <Button title="Tiếp tục" buttonStyle={s.button} onPress={next} />
+            <Button
+              title={t('token-continue-btn')}
+              buttonStyle={s.button}
+              onPress={next}
+            />
           </View>
         </View>
       ) : (
@@ -170,53 +176,64 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
   );
 };
 
-const getErrorMessage = (message = '') => {
+const getErrorMessage = (message = '', t) => {
   if (message.includes('globalThis.crypto')) {
-    return 'Hiện tại chúng tôi chưa hỗ trợ chuyển token thông qua địa chỉ SOL. Hãy dùng địa chỉ SPL token.';
+    return t('token-error-sol-support');
   }
   return message;
 };
 
 const Step2 = ({ token, address, amount, next, busy, error }) => {
   const { symbol } = token;
+  const { t } = useLocalize();
 
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Chuyển {symbol}</Text>
+      <Text style={typo.title}>{t('token-send-title', { symbol })}</Text>
       <View style={s.body}>
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>Token</Text>
           <Text style={[typo.normal, s.groupValue]}>{symbol} / Native</Text>
         </View>
         <View style={s.group}>
-          <Text style={[typo.helper, s.groupTitle]}>Từ Ví</Text>
+          <Text style={[typo.helper, s.groupTitle]}>
+            {t('token-sender-title')}
+          </Text>
           <Text style={[typo.normal, s.groupValue]}>
             {token.publicKey || '-'}
           </Text>
         </View>
         <View style={s.group}>
-          <Text style={[typo.helper, s.groupTitle]}>Chuyển đến Ví</Text>
+          <Text style={[typo.helper, s.groupTitle]}>
+            {t('token-receiver-title')}
+          </Text>
           <Text style={[typo.normal, s.groupValue]}>{address || '-'}</Text>
         </View>
         <View style={s.group}>
-          <Text style={[typo.helper, s.groupTitle]}>Số lượng</Text>
+          <Text style={[typo.helper, s.groupTitle]}>
+            {t('token-amount-title')}
+          </Text>
           <Text style={[typo.normal, s.groupValue]}>
             {amount || 0} {symbol}
           </Text>
         </View>
         <View style={s.group}>
-          <Text style={[typo.helper, s.groupTitle]}>Phí</Text>
+          <Text style={[typo.helper, s.groupTitle]}>
+            {t('token-fee-title')}
+          </Text>
           <Text style={[typo.normal, { lineHeight: 18 }]}>0.000005 SOL</Text>
         </View>
       </View>
       <View style={s.footer}>
         {error && error.message ? (
           <View style={s.group}>
-            <Text style={[typo.warning]}>{getErrorMessage(error.message)}</Text>
+            <Text style={[typo.warning]}>
+              {getErrorMessage(error.message, t)}
+            </Text>
           </View>
         ) : null}
         <Button
-          title="Xác nhận giao dịch"
+          title={t('token-confirm-title')}
           buttonStyle={s.button}
           onPress={next}
           loading={busy}
@@ -249,6 +266,8 @@ const s3 = StyleSheet.create({
 });
 
 const Step3 = ({ signature }) => {
+  const { t } = useLocalize();
+
   const openBrowser = () => {
     Linking.openURL(`https://solscan.io/tx/${signature}`);
   };
@@ -262,11 +281,11 @@ const Step3 = ({ signature }) => {
           source={require('../../theme/lottie/check.json')}
           style={s3.img}
         />
-        <Text style={s3.message}>Giao dịch thành công</Text>
+        <Text style={s3.message}>{t('token-transaction-done')}</Text>
       </View>
       <View style={s.footer}>
         <Button
-          title="Chi tiết giao dịch"
+          title={t('token-transaction-detail')}
           buttonStyle={s.button}
           type="clear"
           onPress={openBrowser}
@@ -284,6 +303,7 @@ export const Send = ({ initStep = 1, token }) => {
   const [signature, setSignature] = useState('');
   const { wallet } = useApp();
   const [busy, setBusy] = useState(false);
+  const { t } = useLocalize();
 
   const transfer = async () => {
     setBusy(true);
@@ -292,7 +312,7 @@ export const Send = ({ initStep = 1, token }) => {
     let sig = '';
 
     if (qty === 0) {
-      setError({ message: 'Số lượng không đúng, vui lòng sử dụng dấu `.`' });
+      setError({ message: t('token-error-amount') });
       return;
     }
 

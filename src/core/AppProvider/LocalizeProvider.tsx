@@ -25,8 +25,15 @@ export type i18nType = typeof i18n;
 export const LANGUAGE_LIST: string[] = ['en', 'vn'];
 
 // TODO: will implement the options later
-const t = (key: string, options: any) => {
-  return i18n[key];
+const t = (key: string, options: any = {}) => {
+  const keys = Object.keys(options);
+  let s = i18n[key] || '';
+  for (let i = 0; i < keys.length; i++) {
+    const k = keys[i];
+    s = s.replace(`{{${k}}}`, options[k]);
+    s = s.replace(`{{ ${k} }}`, options[k]);
+  }
+  return s;
 };
 
 const LocalizeContext = createContext({

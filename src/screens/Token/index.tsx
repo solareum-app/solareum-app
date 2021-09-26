@@ -17,6 +17,7 @@ import { price } from '../../utils/autoRound';
 import { TransferAction } from '../Wallet';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import { useToken } from '../../core/AppProvider/TokenProvider';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { Send } from './Send';
 import { Receive } from './Receive';
@@ -64,6 +65,7 @@ const Token = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
   const { getAccountByPk, toggleAccountByPk } = useToken();
+  const { t } = useLocalize();
 
   const refTransactionHistory = useRef();
   const refSend = useRef();
@@ -136,14 +138,14 @@ const Token = ({ route }) => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={openSendScreen}
-                title="Chuyển"
+                title={t('sys-send')}
                 iconName="upload"
               />
             </View>
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={openReceiveScreen}
-                title="Nhận"
+                title={t('sys-receive')}
                 iconName="download"
               />
             </View>
@@ -152,7 +154,7 @@ const Token = ({ route }) => {
                 onClick={() => {
                   refTransactionHistory.current?.open();
                 }}
-                title="TX"
+                title={t('sys-tx')}
                 iconName="zap"
                 type="feather"
               />

@@ -20,6 +20,7 @@ import { useToken } from '../../core/AppProvider/TokenProvider';
 import { wait } from '../../utils';
 import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { EventMessage } from '../EventMessage/EventMessage';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -83,6 +84,7 @@ export const Receive = ({ token }) => {
   const [mintAccountFee, setMintAccountFee] = useState<number>(0);
   const [account, setAccount] = useState(token);
   const [createNewAccount, setCreateNewAccount] = useState(false);
+  const { t } = useLocalize();
   const isAccountCreated = account.publicKey;
 
   const sol = accountList.find((i) => i.mint === 'SOL') || {
@@ -116,7 +118,7 @@ export const Receive = ({ token }) => {
       const acc = await pollingAccount(MAX_TRY);
       setAccount(acc);
     } catch (err) {
-      setError('Có lỗi xảy ra, vui lòng thử lại sau!');
+      setError(t('sys-error'));
     } finally {
       setLoading(false);
       setCreateNewAccount(false);
@@ -130,7 +132,10 @@ export const Receive = ({ token }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `Địa chỉ ${account.symbol}/SPL network: ${address}`,
+        message: t('receive-share-message', {
+          symbol: account.symbol,
+          address,
+        }),
       });
       return result;
 
@@ -171,7 +176,9 @@ export const Receive = ({ token }) => {
       <View style={s.notificationWrp}>
         <EventMessage top={36} />
       </View>
-      <Text style={typo.title}>Nhận {account.symbol}</Text>
+      <Text style={typo.title}>
+        {t('receive-title', { symbol: account.symbol })}
+      </Text>
 
       {createNewAccount ? (
         <View>
@@ -179,32 +186,32 @@ export const Receive = ({ token }) => {
             <View>
               <View style={s.body}>
                 <Text style={[typo.warning, s.warning]}>
-                  Bạn chưa có tài khoản {account.symbol}
+                  {t('receive-account-not-created', { symbol: account.symbol })}
                 </Text>
                 <Text style={typo.normal}>
-                  Bạn vẫn có thể nhận token từ địa chỉ Solana, nhưng một số nhà
-                  phát hành token sẽ từ chối dùng địa chỉ Solana, vì họ sẽ phải
-                  chịu phí khởi tạo tài&nbsp;khoản.
+                  {t('receive-account-message-01')}
                 </Text>
                 <Text style={typo.normal}>
-                  Việc tạo tài khoản sẽ giúp bạn thuận tiện hơn trong việc
-                  chuyển và nhận token. Chúng tôi khuyên bạn nên thực hiện hành
-                  động này. Bạn có đồng ý tạo tài&nbsp;khoản?
+                  {t('receive-account-message-02')}
                 </Text>
-                <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
+                <Text style={typo.normal}>
+                  {t('receive-mint-account-fee', { mintAccountFee })}
+                </Text>
                 {error ? <Text style={typo.critical}>{error}</Text> : null}
               </View>
               <View style={s.footer}>
                 <Button
                   type="outline"
-                  title={`Okie, Tạo tài khoản ${account.symbol}`}
+                  title={t('receive-create-account', {
+                    symbol: account.symbol,
+                  })}
                   onPress={() => {
                     createTokenAccount();
                   }}
                 />
                 <Button
                   type="clear"
-                  title="Bỏ qua"
+                  title={t('receive-dismiss')}
                   containerStyle={s.button}
                   onPress={dismiss}
                 />
@@ -215,7 +222,9 @@ export const Receive = ({ token }) => {
               <View style={s.body}>
                 <View style={s.loadingWrp}>
                   <LoadingImage />
-                  <Text style={typo.normal}>Đang tạo tài khoản...</Text>
+                  <Text style={typo.normal}>
+                    {t('receive-account-creating')}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -230,26 +239,22 @@ export const Receive = ({ token }) => {
             <Text style={typo.address}>{address}</Text>
           </View>
           <View style={s.footer}>
+            <Text style={typo.helper}>{t('receive-note-01')}</Text>
             <Text style={typo.helper}>
-              Solareum chỉ chấp nhận token trên mạng Solana - SPL.
-            </Text>
-            <Text style={typo.helper}>
-              Chỉ chuyển {account.name} và SPL tokens vào địa chỉ này. Việc
-              chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các
-              token&nbsp;đó.
+              {t('receive-note-02', { name: account.name })}
             </Text>
             <View style={s.control}>
               <View style={s.controlItem}>
                 <RoundedButton
                   onClick={copyToClipboard}
-                  title="Sao chép"
+                  title={t('receive-copy')}
                   iconName="addfile"
                 />
               </View>
               <View style={s.controlItem}>
                 <RoundedButton
                   onClick={() => onShare()}
-                  title="Chia sẻ"
+                  title={t('receive-share')}
                   iconName="upload"
                 />
               </View>
@@ -258,7 +263,9 @@ export const Receive = ({ token }) => {
               <View style={s.control}>
                 <Button
                   type="clear"
-                  title={`Tạo tài khoản ${account.symbol}`}
+                  title={t('receive-create-account-02', {
+                    symbol: account.symbol,
+                  })}
                   onPress={() => {
                     setCreateNewAccount(true);
                   }}
