@@ -21,8 +21,8 @@ export const ADMOB = {
     rewarded: 'ca-app-pub-8137455675462743/3496078333',
   },
   ios: {
-    banner: 'ca-app-pub-8137455675462743/7952970731',
-    rewarded: 'ca-app-pub-8137455675462743/1659025128',
+    banner: 'ca-app-pub-8137455675462743/2351209553',
+    rewarded: 'ca-app-pub-8137455675462743/3052743670',
   },
 };
 
