@@ -42,6 +42,18 @@
   "receive-share": "Chia sẻ",
   "receive-create-account-02": "Tạo tài khoản {{symbol}}",
   "message-copy": "Đã sao chép: {{message}}",
+  "setting-wallet": "Ví Crypto",
+  "setting-manage-account": "Quản lý Tài Khoản",
+  "setting-with-solareum": "Cùng Solareum",
+  "setting-mission": "Nhiệm vụ",
+  "setting-referral": "Giới thiệu nhận thưởng",
+  "setting-airdrop": "Airdrop",
+  "setting-community": "Cộng đồng",
+  "setting-wealthclub": "WealthClub",
+  "setting-twitter": "Twitter",
+  "setting-telegram": "Telegram",
+  "setting-terms-of-use": "Điều khoản sử dụng",
+  "setting-about-solareum": "Về Solareum Wallet",
   "prefix": "v",
   "version": "vi.2.0.0"
 }

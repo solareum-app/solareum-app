@@ -75,7 +75,7 @@ const s = StyleSheet.create({
 });
 
 const Language = ({ value }) => {
-  const { language, setLanguage } = useLocalize();
+  const { t, language, setLanguage } = useLocalize();
 
   return (
     <Text
@@ -112,7 +112,9 @@ const Settings: React.FC = () => {
           >
             <Icon type="antdesign" name="wallet" color="grey" size={20} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemWallet}>Ví Crypto</ListItem.Title>
+              <ListItem.Title style={s.itemWallet}>
+                {t('setting-wallet')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -127,7 +129,7 @@ const Settings: React.FC = () => {
             <Icon type="feather" name="bookmark" color="grey" size={20} />
             <ListItem.Content>
               <ListItem.Title style={s.itemWallet}>
-                Quản lý Tài Khoản
+                {t('setting-manage-account')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -135,7 +137,7 @@ const Settings: React.FC = () => {
         </View>
 
         <View style={s.group}>
-          <Text style={s.groupName}>Cùng Solareum</Text>
+          <Text style={s.groupName}>{t('setting-with-solareum')}</Text>
           <ListItem
             bottomDivider
             containerStyle={s.item}
@@ -145,7 +147,9 @@ const Settings: React.FC = () => {
           >
             <Icon type="feather" name="zap" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Điểm danh</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-mission')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -156,10 +160,10 @@ const Settings: React.FC = () => {
               navigation.navigate(Routes.Influencer);
             }}
           >
-            <Icon type="antdesign" name="rocket1" color="grey" size={16} />
+            <Icon type="feather" name="users" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                Giới thiệu nhận thưởng
+                {t('setting-referral')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -173,27 +177,16 @@ const Settings: React.FC = () => {
           >
             <Icon type="antdesign" name="rocket1" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Airdrop</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-airdrop')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
         </View>
 
         <View style={s.group}>
-          <Text style={s.groupName}>Cộng đồng</Text>
-          <ListItem
-            bottomDivider
-            containerStyle={s.item}
-            onPress={() => {
-              Linking.openURL(links.wealthclub);
-            }}
-          >
-            <Icon type="antdesign" name="staro" color="grey" size={16} />
-            <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>WealthClub</ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron color="grey" />
-          </ListItem>
+          <Text style={s.groupName}>{t('setting-community')}</Text>
 
           <ListItem
             bottomDivider
@@ -204,7 +197,9 @@ const Settings: React.FC = () => {
           >
             <Icon type="feather" name="twitter" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Twitter</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-twitter')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -218,7 +213,9 @@ const Settings: React.FC = () => {
           >
             <Icon type="antdesign" name="hearto" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Telegram</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-telegram')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -233,7 +230,23 @@ const Settings: React.FC = () => {
             <Icon type="feather" name="compass" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                Điều khoản sử dụng
+                {t('setting-terms-of-use')}
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
+
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              Linking.openURL(links.wealthclub);
+            }}
+          >
+            <Icon type="antdesign" name="staro" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-wealthclub')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -249,7 +262,7 @@ const Settings: React.FC = () => {
             <Icon type="feather" name="zap" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                Về Solareum Wallet
+                {t('setting-about-solareum')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />

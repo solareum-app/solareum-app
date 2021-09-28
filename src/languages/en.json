@@ -42,6 +42,18 @@
   "receive-share": "Share",
   "receive-create-account-02": "Create {{symbol}} account",
   "message-copy": "Copied: {{message}}",
+  "setting-wallet": "Crypto Wallet",
+  "setting-manage-account": "Manage Accounts",
+  "setting-with-solareum": "Growth together",
+  "setting-mission": "Mission",
+  "setting-referral": "Referral",
+  "setting-airdrop": "Airdrop",
+  "setting-community": "Community",
+  "setting-wealthclub": "WealthClub",
+  "setting-twitter": "Twitter",
+  "setting-telegram": "Telegram",
+  "setting-terms-of-use": "Terms of user",
+  "setting-about-solareum": "Solareum Wallet",
   "prefix": "e",
   "version": "en.2.0.0"
 }
