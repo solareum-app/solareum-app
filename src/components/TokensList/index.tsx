@@ -67,7 +67,7 @@ const TokenInfoItem: React.FC<TokenInfoItemProps> = ({
         >
           {isHideBalance
             ? '****'
-            : `${price(displayValue)} ${symbol.toUpperCase()}`}
+            : `${price(displayValue, decimals)} ${symbol.toUpperCase()}`}
         </ListItem.Title>
         <ListItem.Subtitle
           style={{ color: COLORS.white4, fontSize: FONT_SIZES.sm }}
