@@ -24,7 +24,7 @@ import DailyMission from '../screens/Settings/DailyMission';
 import Influencer from '../screens/Settings/Influencer';
 import Airdrop from '../screens/Settings/Airdrop';
 import LockScreen from '../screens/LockScreen';
-import BiometricPopup from '../screens/BiometricPopup';
+// import BiometricPopup from '../screens/BiometricPopup';
 import ChangePinLock from '../screens/ChangePinLock';
 import { hasUserSetPinCode } from '@haskkor/react-native-pincode';
 import BackgroundTimer from 'react-native-background-timer';
@@ -39,9 +39,8 @@ const s = StyleSheet.create({
 const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
-  const [lockedType, setLockedType] = useState('finger');
+  const [lockedType, setLockedType] = useState('pin');
   const [showPinLock, setShowPinLock] = useState(true);
-  const [showFingerLock, setShowFingerLock] = useState(true);
   const [showPinCodeStatus, setShowPinCodeStatus] = useState('');
 
   const navigationRef = useRef(null);
@@ -217,22 +216,6 @@ const MainNavigator: React.FC = () => {
                 <LockScreen
                   showPinCodeStatus={showPinCodeStatus}
                   finishProcess={finishProcess}
-                />
-              )}
-            </Stack.Screen>
-          </Stack.Navigator>
-        )}
-        {showFingerLock === true && lockedType === 'finger' && (
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name={Routes.Home}>
-              {() => (
-                <BiometricPopup
-                  setShowFingerLock={setShowFingerLock}
-                  setLockedType={setLockedType}
                 />
               )}
             </Stack.Screen>
