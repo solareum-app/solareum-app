@@ -7,6 +7,8 @@
   "sys-share": "Share",
   "sys-error": "Server error, please try again later",
   "home-send": "Send",
+  "home-create-wallet": "Create",
+  "home-import-wallet": "Import",
   "home-receive": "Receive",
   "home-qr-code": "QR Code",
   "home-manage-accounts": "Manage your accounts",

@@ -7,6 +7,8 @@
   "sys-share": "Chia sẻ",
   "sys-error": "Có lỗi xảy ra, vui lòng thử lại sau!",
   "home-send": "Chuyển",
+  "home-create-wallet": "Tạo Ví",
+  "home-import-wallet": "Khôi phục",
   "home-receive": "Nhận",
   "home-qr-code": "QR Code",
   "home-manage-accounts": "Quản lý Tài Khoản",
