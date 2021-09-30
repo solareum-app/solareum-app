@@ -26,6 +26,7 @@ import Airdrop from '../screens/Settings/Airdrop';
 import LockScreen from '../screens/LockScreen';
 import { hasUserSetPinCode } from '@haskkor/react-native-pincode';
 import BackgroundTimer from 'react-native-background-timer';
+import ChangePinLock from '../screens/ChangePinLock';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -195,6 +196,10 @@ const MainNavigator: React.FC = () => {
             <Stack.Screen
               name={Routes.ManagementTokenList}
               component={ManageTokenList}
+            />
+            <Stack.Screen
+              name={Routes.ChangePinLock}
+              component={ChangePinLock}
             />
           </Stack.Navigator>
         )}
