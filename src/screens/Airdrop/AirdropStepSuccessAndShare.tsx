@@ -5,6 +5,7 @@ import LottieView from 'lottie-react-native';
 
 import { grid, typo } from '../../components/Styles';
 import { useToken } from '../../core/AppProvider/TokenProvider';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { style as s } from './style';
 import { COLORS } from '../../theme';
@@ -31,7 +32,6 @@ const style = StyleSheet.create({
   },
   rowItem: {
     flex: 1,
-    // backgroundColor: 'blue',
   },
   rowItemRight: {
     flex: 0,
@@ -51,11 +51,14 @@ export const AirdropStepSuccessAndShare = ({
   rewardRefSignature,
 }) => {
   const { accountList } = useToken();
+  const { t } = useLocalize();
   const solAccount = accountList.find((i) => i.mint === 'SOL');
 
   const onShare = async () => {
     try {
-      const message = `Tải Solareum Wallet - https://solareum.app/getwallet. Nhập địa chỉ SOL của mình để nhận Airdrop nhé - ${solAccount?.publicKey}`;
+      const message = t('airdrop-final-share', {
+        address: solAccount?.publicKey,
+      });
 
       const result = await Share.share({
         message,
@@ -66,7 +69,7 @@ export const AirdropStepSuccessAndShare = ({
 
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Nhận Airdrop thành công</Text>
+      <Text style={typo.title}>{t('airdrop-final-title')}</Text>
       <View style={style.imgWrp}>
         <LottieView
           autoPlay
@@ -76,7 +79,7 @@ export const AirdropStepSuccessAndShare = ({
         />
       </View>
       <View style={grid.group}>
-        <Text style={grid.groupTitle}>Bạn nhận được</Text>
+        <Text style={grid.groupTitle}>{t('airdrop-final-you-receive')}</Text>
         <View style={style.row}>
           <View style={style.rowItem}>
             <Text style={style.value}>+{airdrop} XSB</Text>
@@ -94,7 +97,7 @@ export const AirdropStepSuccessAndShare = ({
           </View>
         </View>
 
-        <Text style={grid.groupTitle}>Người giới thiệu nhận được</Text>
+        <Text style={grid.groupTitle}>{t('airdrop-final-ref-receive')}</Text>
         <View style={style.row}>
           <View style={style.rowItem}>
             <Text style={style.value}>+{rewardRef} XSB</Text>
@@ -114,15 +117,12 @@ export const AirdropStepSuccessAndShare = ({
           </View>
         </View>
       </View>
-      <Text style={typo.normal}>Cảm ơn bạn đã tham gia chương trình,</Text>
-      <Text style={typo.normal}>
-        Hãy trở thành người giới thiệu bằng cách chia sẻ app Solareum tới bạn bè
-        và người thân, để nhận được XSB không giới hạn từ&nbsp;Solareum.
-      </Text>
+      <Text style={typo.normal}>{t('airdrop-final-thanks-01')}</Text>
+      <Text style={typo.normal}>{t('airdrop-final-thanks-02')}</Text>
       <View style={s.footer}>
         <Button
           type="outline"
-          title="Chia sẻ Solareum Wallet"
+          title={t('airdrop-final-share-btn')}
           onPress={() => {
             onShare();
             next();

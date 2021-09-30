@@ -4,28 +4,27 @@ import { Button } from 'react-native-elements';
 
 import { typo } from '../../components/Styles';
 import { SOL_BALANCE_TARGET } from './const';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { style as s } from './style';
 
 export const AirdropStepInfo = ({ dismiss, next }) => {
+  const { t } = useLocalize();
+
   return (
     <View style={s.main}>
-      <Text style={typo.title}>XSB Airdrop</Text>
-      <Text style={typo.normal}>Airdrop sẽ gồm 3 bước</Text>
+      <Text style={typo.title}>{t('airdrop-info-title')}</Text>
+      <Text style={typo.normal}>{t('airdrop-info-3steps')}</Text>
       <Text style={typo.normal}>
-        1. Tạo tài khoản XSB. Bạn cần có ít nhất ~{SOL_BALANCE_TARGET} SOL để
-        thực hiện việc&nbsp;này. Nếu bạn đã có tài khoản XSB, hệ thống sẽ tự bỏ
-        qua bước này.
+        {t('airdrop-info-step1', { balance: SOL_BALANCE_TARGET })}
       </Text>
-      <Text style={typo.normal}>2. Nhập địa chỉ SOL của người giới thiệu.</Text>
-      <Text style={typo.normal}>
-        3. Hoàn thành, bạn và người giới thiệu sẽ nhận được&nbsp;XSB.
-      </Text>
+      <Text style={typo.normal}>{t('airdrop-info-step2')}</Text>
+      <Text style={typo.normal}>{t('airdrop-info-step3')}</Text>
 
       <View style={s.footer}>
-        <Button type="outline" title="Okie, Tiếp Tục" onPress={next} />
+        <Button type="outline" title={t('airdrop-info-next')} onPress={next} />
         <Button
           type="clear"
-          title="Không quan tâm"
+          title={t('airdrop-info-dismiss')}
           containerStyle={s.button}
           onPress={dismiss}
         />
