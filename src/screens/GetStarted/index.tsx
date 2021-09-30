@@ -15,6 +15,7 @@ import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { grid, typo } from '../../components/Styles';
 import Routes from '../../navigators/Routes';
 import imgEducation from '../../assets/clip-education.png';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   wrp: {
@@ -38,6 +39,7 @@ type Props = {};
 const GetStarted: React.FC<Props> = () => {
   const navigation = useNavigation();
   const refPolicy = useRef();
+  const { t } = useLocalize();
 
   const createWalletHandler = React.useCallback(() => {
     navigation.navigate(Routes.CreateWallet);
@@ -56,25 +58,14 @@ const GetStarted: React.FC<Props> = () => {
               <Image source={imgEducation} style={s.placeholderImage} />
             </View>
             <View style={s.wrp}>
-              <Text style={[typo.title, s.title]}>
-                Chào mừng tới Solareum Wallet!
-              </Text>
-              <Text style={s.message}>
-                Solareum Wallet được thiết kế đơn giản tập trung vào 2 tính năng
-                chính mà bạn sẽ thực hiện thường xuyên mỗi ngày:
-              </Text>
-              <Text style={s.message}>
-                ▪︎ Lưu trữ, và chuyển nhận SOL cũng như tất cả các SPL tokens.
-              </Text>
-              <Text style={s.message}>
-                ▪︎ Kết nối trực tiếp với Serum DEX, giúp thực hiện nhanh chóng
-                các giao dịch trên nền tảng sàn phi tập trung, ngay trên điện
-                thoại. Giúp bạn không bỏ lỡ bất kỳ cơ hội đầu tư nào.
-              </Text>
+              <Text style={[typo.title, s.title]}>{t('started-title')}</Text>
+              <Text style={s.message}>{t('started-message-01')}</Text>
+              <Text style={s.message}>{t('started-message-02')}</Text>
+              <Text style={s.message}>{t('started-message-03')}</Text>
             </View>
             <View style={s.wrp}>
               <Button
-                title="Điều khoản sử dụng"
+                title={t('started-terms')}
                 type="clear"
                 onPress={() => {
                   refPolicy.current.open();
@@ -84,14 +75,14 @@ const GetStarted: React.FC<Props> = () => {
             </View>
             <View style={s.wrp}>
               <Button
-                title="Tạo Ví"
+                title={t('started-create-wallet')}
                 onPress={createWalletHandler}
                 style={grid.button}
               />
             </View>
             <View style={s.wrp}>
               <Button
-                title="Khôi Phục"
+                title={t('started-import-wallet')}
                 type="outline"
                 onPress={importWalletHandler}
                 style={grid.button}
@@ -102,10 +93,7 @@ const GetStarted: React.FC<Props> = () => {
       </SafeAreaView>
 
       <Portal>
-        <FacebookWebView
-          ref={refPolicy}
-          url="https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418"
-        />
+        <FacebookWebView ref={refPolicy} url={t('started-terms-url')} />
       </Portal>
     </View>
   );

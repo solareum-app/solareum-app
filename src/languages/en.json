@@ -102,6 +102,14 @@
   "setting-ref-message-03": "Please share Solareum Wallet app with friends and family. Become a pioneer and get unlimited XSB.",
   "setting-ref-message-04": "For each successful download and activation you will receive +{{rewardRef}} XBS.",
   "setting-ref-share": "Share",
+  "started-title": "Welcome to Solareum Wallet!",
+  "started-message-01": "Solareum Wallet is designed to be simple focusing on 2 main features that you will do regularly every day:",
+  "started-message-02": "▪︎ Store, and transfer SOL and all SPL tokens.",
+  "started-message-03": "▪︎ Direct connection with Serum DEX, helping to quickly execute transactions on the decentralized exchange platform, right on the phone. Help you not to miss any investment opportunities.",
+  "started-terms": "Terms of use",
+  "started-create-wallet": "Create Wallet",
+  "started-import-wallet": "Import Wallet",
+  "started-terms-url": "https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418",
   "prefix": "e",
   "version": "en.2.0.0"
 }

@@ -102,6 +102,14 @@
   "setting-ref-message-03": "Hãy chia sẻ ứng dụng Solareum Wallet tới bạn bè và người thân. Trở thành người tiên phong và nhận được XSB không giới hạn.",
   "setting-ref-message-04": "Với mỗi lượt tải và kích hoạt thành công bạn sẽ nhận được +{{rewardRef}} XBS.",
   "setting-ref-share": "Chia sẻ ngay",
+  "started-title": "Chào mừng tới Solareum Wallet!",
+  "started-message-01": "Solareum Wallet được thiết kế đơn giản tập trung vào 2 tính năng chính mà bạn sẽ thực hiện thường xuyên mỗi ngày:",
+  "started-message-02": "▪︎ Lưu trữ, và chuyển nhận SOL cũng như tất cả các SPL tokens.",
+  "started-message-03": "▪︎ Kết nối trực tiếp với Serum DEX, giúp thực hiện nhanh chóng các giao dịch trên nền tảng sàn phi tập trung, ngay trên điện thoại. Giúp bạn không bỏ lỡ bất kỳ cơ hội đầu tư nào.",
+  "started-terms": "Điều khoản sử dụng",
+  "started-create-wallet": "Tạo Ví",
+  "started-import-wallet": "Khôi Phục",
+  "started-terms-url": "https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418",
   "prefix": "v",
   "version": "vi.2.0.0"
 }
