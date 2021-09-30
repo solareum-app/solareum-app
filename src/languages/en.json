@@ -110,6 +110,11 @@
   "started-create-wallet": "Create Wallet",
   "started-import-wallet": "Import Wallet",
   "started-terms-url": "https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418",
+  "import-wallet-name": "Wallet Name",
+  "import-seed-phrase": "Seed Phrases",
+  "import-note": "You can enter the Recovery Code (Seed Phrases) from other SPL wallets like: Phantom, Sollet, Coin98...",
+  "import-paste": "Paste the recovery code",
+  "import-btn-label": "Import",
   "prefix": "e",
   "version": "en.2.0.0"
 }

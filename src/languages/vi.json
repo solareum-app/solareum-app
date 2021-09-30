@@ -110,6 +110,11 @@
   "started-create-wallet": "Tạo Ví",
   "started-import-wallet": "Khôi Phục",
   "started-terms-url": "https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418",
+  "import-wallet-name": "Tên Ví",
+  "import-seed-phrase": "Mã khôi phục",
+  "import-note": "Bạn có thể nhập Mã khôi phục từ các SPL wallet khác như: Phantom, Sollet, Coin98...",
+  "import-paste": "Dán mã khôi phục",
+  "import-btn-label": "Khôi phục Ví",
   "prefix": "v",
   "version": "vi.2.0.0"
 }
