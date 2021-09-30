@@ -10,6 +10,7 @@ import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
 import { useApp } from '../../core/AppProvider/AppProvider';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 export const s = StyleSheet.create({
   main: {
@@ -79,6 +80,7 @@ const CreateWallet: React.FC<Props> = () => {
   const [isStored, setIsStored] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const { createAddress } = useApp();
+  const { t } = useLocalize();
 
   const getSeed = async () => {
     const { seed: s, mnemonic: m } = await generateMnemonicAndSeed();
@@ -111,7 +113,7 @@ const CreateWallet: React.FC<Props> = () => {
         <ScrollView>
           <View style={s.body}>
             <Input
-              label="Tên Ví"
+              label={t('create-title')}
               placeholder=""
               style={typo.input}
               labelStyle={s.label}
@@ -119,13 +121,10 @@ const CreateWallet: React.FC<Props> = () => {
               value={walletName}
               onChangeText={(text: string) => setWalletName(text)}
             />
-            <Text style={[typo.title, s.title]}>Lưu mã khôi phục</Text>
+            <Text style={[typo.title, s.title]}>{t('create-store')}</Text>
 
             <View style={s.wrp}>
-              <Text style={typo.normal}>
-                Vui lòng lưu trữ 24 chữ cái bên dưới ở nơi an toàn, và giữ
-                nguyên thứ tự.
-              </Text>
+              <Text style={typo.normal}>{t('create-store-note')}</Text>
             </View>
 
             <View style={s.mnemonicWrp}>
@@ -134,7 +133,7 @@ const CreateWallet: React.FC<Props> = () => {
 
             <View style={s.wrp}>
               <Button
-                title="Sao chép"
+                title={t('create-copy')}
                 type="clear"
                 onPress={copyToClipboard}
                 titleStyle={{ marginLeft: 8 }}
@@ -143,25 +142,11 @@ const CreateWallet: React.FC<Props> = () => {
             </View>
 
             <View style={[s.wrp, { marginTop: 8 }]}>
-              <Text style={typo.warning}>
-                Không chia sẻ các mã khôi phục này với bất kỳ ai.
-              </Text>
-              <Text style={typo.helper}>
-                Bạn cần mã này để khôi phục ví trong trường hợp điện thoại của
-                bạn bị mất hoặc hư hỏng.
-              </Text>
-              <Text style={typo.helper}>
-                Mã khôi phục này chỉ được lưu trên thiết bị của bạn.
-                {/* và được mã hóa bằng mã PIN của bạn. */}
-              </Text>
-              <Text style={typo.helper}>
-                Bạn có thể dùng mã này để import vào các ví khác, như: Phantom,
-                Sollet, Coin98...
-              </Text>
-              <Text style={typo.helper}>
-                Nếu bạn chưa thể lưu nó lúc này, bạn vẫn có thể truy cập lại nó
-                ở phần Cài Đặt sau khi ví được tạo.
-              </Text>
+              <Text style={typo.warning}>{t('create-note-01')}</Text>
+              <Text style={typo.helper}>{t('create-note-02')}</Text>
+              <Text style={typo.helper}>{t('create-note-03')}</Text>
+              <Text style={typo.helper}>{t('create-note-04')}</Text>
+              <Text style={typo.helper}>{t('create-note-05')}</Text>
             </View>
           </View>
         </ScrollView>
@@ -170,12 +155,12 @@ const CreateWallet: React.FC<Props> = () => {
           <CheckBox
             containerStyle={s.checkboxContainer}
             textStyle={{ color: COLORS.white2 }}
-            title="Tôi đã lưu mã khôi phục"
+            title={t('create-store-checked')}
             checked={isStored}
             onPress={() => setIsStored((prev) => !prev)}
           />
           <Button
-            title="Tạo Ví"
+            title={t('create-create-wallet')}
             style={grid.button}
             loading={loading}
             onPress={submit}

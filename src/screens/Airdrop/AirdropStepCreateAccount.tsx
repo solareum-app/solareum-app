@@ -11,6 +11,7 @@ import { wait } from '../../utils';
 import { typo } from '../../components/Styles';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import { SOL_BALANCE_TARGET } from './const';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { style as s } from './style';
 
@@ -38,6 +39,7 @@ const WAIT_TIME = 10000; // 10s -> 4mins for total
 export const AirdropStepCreateAccount = ({ next }) => {
   const { wallet } = useApp();
   const { accountList, loadAccountList } = useToken();
+  const { t } = useLocalize();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL') || {
     publicKey: '-',
@@ -54,7 +56,7 @@ export const AirdropStepCreateAccount = ({ next }) => {
 
   const pollingAccount = async (no: number) => {
     if (!account) {
-      setError('Có lỗi xảy ra, vui lòng thử lại sau!');
+      setError(t('sys-error'));
       return;
     }
     if (no < 0) {
@@ -72,13 +74,13 @@ export const AirdropStepCreateAccount = ({ next }) => {
 
   const createTokenAccount = async () => {
     if (!account) {
-      setError('Có lỗi xảy ra, vui lòng thử lại sau!');
+      setError(t('sys-error'));
       return;
     }
 
     const solBalance = solAccount?.amount * Math.pow(10, solAccount?.decimals);
     if (solAccount && solBalance <= SOL_BALANCE_TARGET) {
-      setError('Tải khoản bạn không đủ SOL để thực hiện bước này.');
+      setError(t('airdrop-sol-balance'));
       return;
     }
 
@@ -89,7 +91,7 @@ export const AirdropStepCreateAccount = ({ next }) => {
       setAccount(acc);
       next();
     } catch (err) {
-      setError('Có lỗi xảy ra, vui lòng thử lại sau!');
+      setError(t('sys-error'));
     } finally {
       setLoading(false);
     }
@@ -104,18 +106,16 @@ export const AirdropStepCreateAccount = ({ next }) => {
 
   return (
     <View style={s.main}>
-      <Text style={typo.title}>Tạo tài khoản XSB</Text>
+      <Text style={typo.title}>{t('airdrop-title-create-xsb')}</Text>
       {!loading ? (
         <View>
           <View style={style.iconWrp}>
             <CryptoIcon uri={account?.logoURI} size={52} />
           </View>
+          <Text style={typo.normal}>{t('airdrop-title-create-xsb-m01')}</Text>
           <Text style={typo.normal}>
-            Tài khoản XSB là bắt buộc khi thực hiện giao dịch trên nền tảng
-            Solana. Việc tạo tài khoản này sẽ giúp chúng tôi có thể chuyển XSB
-            đến với các bạn một cách nhanh chóng và thuận tiện nhất.
+            {t('airdrop-title-create-xsb-fee', { mintAccountFee })}
           </Text>
-          <Text style={typo.normal}>Phí: {mintAccountFee} SOL</Text>
           {error ? <Text style={typo.critical}>{error}</Text> : null}
         </View>
       ) : (
@@ -123,7 +123,9 @@ export const AirdropStepCreateAccount = ({ next }) => {
           <View style={style.body}>
             <View style={style.loadingWrp}>
               <LoadingImage />
-              <Text style={typo.normal}>Đang tạo tài khoản...</Text>
+              <Text style={typo.normal}>
+                {t('airdrop-title-create-xsb-loading')}
+              </Text>
             </View>
           </View>
         </View>
@@ -131,17 +133,23 @@ export const AirdropStepCreateAccount = ({ next }) => {
 
       <View style={s.footer}>
         {isAccountCreated ? (
-          <Text style={typo.caution}>Bạn đã có tài khoản XSB.</Text>
+          <Text style={typo.caution}>
+            {t('airdrop-title-create-xsb-created')}
+          </Text>
         ) : null}
         {!isAccountCreated ? (
           <Button
             type="outline"
-            title="Okie, Tạo tài toản XSB"
+            title={t('airdrop-title-create-xsb-btn')}
             disabled={loading}
             onPress={createTokenAccount}
           />
         ) : (
-          <Button type="outline" title="Okie, Tiếp tục" onPress={next} />
+          <Button
+            type="outline"
+            title={t('airdrop-title-create-xsb-next')}
+            onPress={next}
+          />
         )}
       </View>
     </View>

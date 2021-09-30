@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 import { Rewarded, Banner } from '../../../components/Admob/Rewarded';
 import { grid, typo } from '../../../components/Styles';
 import { useConfig } from '../../../core/AppProvider/RemoteConfigProvider';
+import { useLocalize } from '../../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   wrp: {
@@ -19,6 +20,7 @@ type Props = {};
 
 const DailyMission: React.FC<Props> = () => {
   const { admob } = useConfig();
+  const { t } = useLocalize();
 
   return (
     <View style={grid.container}>
@@ -26,23 +28,11 @@ const DailyMission: React.FC<Props> = () => {
         <ScrollView>
           <View style={grid.content}>
             <View style={s.wrp}>
+              <Text style={typo.normal}>{t('airdrop-mission-message-01')}</Text>
+              <Text style={typo.normal}>{t('airdrop-mission-message-02')}</Text>
+              <Text style={typo.normal}>{t('airdrop-mission-message-03')}</Text>
               <Text style={typo.normal}>
-                Mỗi ngày bạn có 5 lượt điểm danh bằng cách xem quảng cáo, với
-                mỗi lượt hoàn thành xem quảng cáo bạn sẽ nhận được một lượng
-                token XSB nhất định. Khi đủ số lượng XSB bạn có thể bán token
-                này trên tất cả các thị trường hỗ trợ.
-              </Text>
-              <Text style={typo.normal}>
-                Số tiền nhận được từ quảng cáo, team Solareum sẽ trích một phần
-                để mua lại XSB trên thị trường. Vừa để tạo thanh khoản cho thị
-                trường, vừa để reward lại cho cộng đồng đã hỗ trợ team Solareum.
-              </Text>
-              <Text style={typo.normal}>
-                Bạn lưu ý là hoàn tất quảng cáo - không tắt giữa chừng để hoàn
-                thành nhiệm vụ nhé. Cùng Solareum tích tiểu thành đại.
-              </Text>
-              <Text style={typo.normal}>
-                Với mỗi lần hoàn thành nhiệm vụ bạn sẽ nhận được +0&nbsp;XBS.
+                {t('airdrop-mission-message-04', { amount: 0 })}
               </Text>
             </View>
 
@@ -50,7 +40,7 @@ const DailyMission: React.FC<Props> = () => {
               <Rewarded disabled={!admob} />
               {!admob ? (
                 <Text style={s.helper}>
-                  Hiện tại tính năng này đang tạm khóa.
+                  {t('airdrop-mission-lock-message')}
                 </Text>
               ) : null}
             </View>

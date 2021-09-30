@@ -7,10 +7,12 @@ import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { MarketInfo, useMarket } from '../../core/AppProvider/MarketProvider';
 import { MarketItem } from './MarketItem';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 export const Market: React.FC = () => {
-  const { marketList } = useMarket();
   const [query, setQuery] = useState('');
+  const { marketList } = useMarket();
+  const { t } = useLocalize();
   const [markets, setMarkets] = useState<MarketInfo[]>(marketList);
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export const Market: React.FC = () => {
       <SearchBar
         onChangeText={setQuery}
         value={query}
-        placeholder="Nhập SXB/SOL hay Market ID..."
+        placeholder={t('market-placeholder')}
         containerStyle={{ backgroundColor: COLORS.dark0 }}
         inputContainerStyle={{ backgroundColor: COLORS.dark2 }}
       />

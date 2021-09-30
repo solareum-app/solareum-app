@@ -13,6 +13,7 @@ import { grid, typo } from '../../../components/Styles';
 import { useToken } from '../../../core/AppProvider/TokenProvider';
 import { authFetch } from '../../../utils/authfetch';
 import { service } from '../../../config';
+import { useLocalize } from '../../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   wrp: {
@@ -29,11 +30,14 @@ type Props = {};
 const Influencer: React.FC<Props> = () => {
   const { accountList } = useToken();
   const [rewardRef, setRewardRef] = useState(1);
+  const { t } = useLocalize();
 
   const onShare = async () => {
     try {
       const solAccount = accountList.find((i) => i.mint === 'SOL');
-      const message = `Tải Solareum Wallet - https://solareum.app/getwallet. Nhập địa chỉ SOL của mình để nhận Airdrop nhé - ${solAccount?.publicKey}`;
+      const message = t('airdrop-final-share', {
+        address: solAccount?.publicKey,
+      });
 
       const result = await Share.share({
         message,
@@ -63,28 +67,16 @@ const Influencer: React.FC<Props> = () => {
         <ScrollView>
           <View style={grid.content}>
             <View style={s.wrp}>
+              <Text style={typo.normal}>{t('setting-ref-message-01')}</Text>
+              <Text style={typo.normal}>{t('setting-ref-message-02')}</Text>
+              <Text style={typo.normal}>{t('setting-ref-message-03')}</Text>
               <Text style={typo.normal}>
-                Solareum Wallet định hướng trở thành một ứng dụng không thể
-                thiếu trong tương lai. Khi mà mọi người có thể chuyển, nhận SPL
-                token với nhau mỗi ngày.
-              </Text>
-              <Text style={typo.normal}>
-                Không chỉ vậy XSB còn được sử dụng trong hệ sinh thái Solareum
-                Lightning, một ứng dụng web3.0, giúp mọi người có thể thưởng cho
-                những nhà phát triển nội dung số.
-              </Text>
-              <Text style={typo.normal}>
-                Hãy chia sẻ ứng dụng Solareum Wallet tới bạn bè và người thân.
-                Trở thành người tiên phong và nhận được XSB không giới hạn.
-              </Text>
-              <Text style={typo.normal}>
-                Với mỗi lượt tải và kích hoạt thành công bạn sẽ nhận được +
-                {rewardRef}&nbsp;XBS.
+                {t('setting-ref-message-04', { rewardRef })}
               </Text>
             </View>
 
             <View style={s.wrp}>
-              <Button title="Okie, Chia sẻ ngay" onPress={onShare} />
+              <Button title={t('setting-ref-share')} onPress={onShare} />
             </View>
           </View>
         </ScrollView>
