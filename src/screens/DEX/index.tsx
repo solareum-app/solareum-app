@@ -120,7 +120,6 @@ export default class SolareumDEX extends Component<Props, State> {
   render() {
     const { marketId } = this.props.route.params;
     let uri = 'https://dex.solareum.app';
-    // let uri = 'http://192.168.33.100:5000';
 
     if (marketId) {
       uri += `/#/market/${marketId}`;

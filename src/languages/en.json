@@ -130,6 +130,8 @@
   "create-create-wallet": "Create Wallet",
   "create-remove-wallet": "Remove Wallet",
   "create-edit-wallet": "Update Wallet",
+  "search-placeholder": "Input tokens: SOL, XSB...",
+  "market-placeholder": "Input SXB/SOL or Market ID...",
   "prefix": "e",
   "version": "en.2.0.0"
 }

@@ -130,6 +130,8 @@
   "create-create-wallet": "Tạo Ví",
   "create-remove-wallet": "Xóa Ví",
   "create-edit-wallet": "Cập nhật Ví",
+  "search-placeholder": "Nhập tên Tokens: SOL, XSB...",
+  "market-placeholder": "Nhập SXB/SOL hay Market ID...",
   "prefix": "v",
   "version": "vi.2.0.0"
 }

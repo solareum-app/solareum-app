@@ -8,12 +8,14 @@ import { COLORS } from '../../theme';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import { useMarket } from '../../core/AppProvider/MarketProvider';
 import { TransferAction } from '../Wallet';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const Search: React.FC = ({ route }) => {
   const [query, setQuery] = useState('');
   const [tokens, setTokens] = useState([]);
   const { accountList } = useToken();
   const { symbolList } = useMarket();
+  const { t } = useLocalize();
   const { action } = route.params;
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const Search: React.FC = ({ route }) => {
       <SearchBar
         containerStyle={{ backgroundColor: COLORS.dark0 }}
         inputContainerStyle={{ backgroundColor: COLORS.dark2 }}
-        placeholder="Nhập tên Tokens: SOL, XSB..."
+        placeholder={t('search-placeholder')}
         onChangeText={setQuery}
         value={query}
       />
