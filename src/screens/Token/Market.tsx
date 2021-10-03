@@ -5,6 +5,7 @@ import { typo } from '../../components/Styles';
 import { MarketItem } from '../Market/MarketItem';
 import { useMarket } from '../../core/AppProvider/MarketProvider';
 import imgDelivering from '../../assets/clip-message-sent.png';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -40,6 +41,8 @@ const s = StyleSheet.create({
 
 export const Market = ({ symbol }) => {
   const { marketList } = useMarket();
+  const { t } = useLocalize();
+
   const filteredList = marketList.filter(
     (i) => i.base === symbol || i.quote === symbol,
   );
@@ -49,11 +52,11 @@ export const Market = ({ symbol }) => {
       {!filteredList.length ? (
         <View style={s.messageWrp}>
           <Image source={imgDelivering} style={s.placeholderImage} />
-          <Text style={s.helper}>Hiện tại chưa có thị trường nào</Text>
+          <Text style={s.helper}>{t('token-market-empty')}</Text>
         </View>
       ) : (
         <View>
-          <Text style={s.title}>Thị trường</Text>
+          <Text style={s.title}>{t('token-market-title')}</Text>
           <View style={s.market}>
             {filteredList.map((i) => (
               <MarketItem key={i.id} item={i} />

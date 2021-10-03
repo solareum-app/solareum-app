@@ -15,6 +15,7 @@ import Routes from '../../navigators/Routes';
 import { grid, typo, input } from '../../components/Styles';
 import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
 import { useApp } from '../../core/AppProvider/AppProvider';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   wrp: {
@@ -59,6 +60,7 @@ const ImportWallet: React.FC<Props> = () => {
   const [recovery, setRecovery] = useState('');
   const [walletName, setWalletName] = useState('');
   const { createAddress } = useApp();
+  const { t } = useLocalize();
 
   const importWallet = async () => {
     // TODO: Handle the seed later
@@ -78,7 +80,7 @@ const ImportWallet: React.FC<Props> = () => {
           <View style={grid.content}>
             <View style={s.wrp}>
               <Input
-                label="Tên Ví"
+                label={t('import-wallet-name')}
                 placeholder=""
                 style={typo.input}
                 labelStyle={s.label}
@@ -89,23 +91,20 @@ const ImportWallet: React.FC<Props> = () => {
             </View>
 
             <View style={s.wrp}>
-              <Text style={s.title}>Mã khôi phục</Text>
+              <Text style={s.title}>{t('import-seed-phrase')}</Text>
               <TextInput
                 style={s.recoverPhrase}
                 multiline={true}
                 value={recovery}
                 onChangeText={(text) => setRecovery(text)}
               />
-              <Text style={typo.helper}>
-                Bạn có thể nhập Mã khôi phục từ các SPL wallet khác như:
-                Phantom, Sollet, Coin98...
-              </Text>
-              <Button title="Dán mã khôi phục" type="clear" onPress={paste} />
+              <Text style={typo.helper}>{t('import-note')}</Text>
+              <Button title={t('import-paste')} type="clear" onPress={paste} />
             </View>
 
             <View style={s.footer}>
               <Button
-                title="Khôi phục Ví"
+                title={t('import-btn-label')}
                 onPress={importWallet}
                 style={grid.button}
               />

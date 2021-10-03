@@ -1,6 +1,6 @@
 {
   "name": "solareum",
-  "version": "2.18.19",
+  "version": "2.18.20",
   "private": true,
   "scripts": {
     "postinstall": "rn-nodeify --install --hack --yarn && yarn run cp:superstruct && yarn run cp:solana && yarn run cp:crypto && npx jetify && npx pod-install",
@@ -70,6 +70,7 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-progress": "^1.1.1",
     "react-native-level-fs": "^3.0.0",
+    "react-native-localization": "^2.1.7",
     "react-native-modalize": "^2.0.8",
     "react-native-os": "^1.0.1",
     "react-native-pager-view": "^5.1.7",

@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { Button } from 'react-native-elements';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { COLORS } from '../../theme';
 
@@ -44,6 +45,8 @@ const qr = StyleSheet.create({
 });
 
 export const QRScan = ({ onChange }) => {
+  const { t } = useLocalize();
+
   const onSuccess = (e: any) => {
     if (e.data) {
       onChange(e.data);
@@ -59,9 +62,9 @@ export const QRScan = ({ onChange }) => {
         cameraType="back"
       />
       <View style={qr.footer}>
-        <Text style={qr.bottomText}>Hãy scan mã QR</Text>
+        <Text style={qr.bottomText}>{t('token-qr-scan')}</Text>
         <Button
-          title="Hủy"
+          title={t('token-qr-cancel')}
           titleStyle={qr.closeButton}
           type="clear"
           onPress={() => {
