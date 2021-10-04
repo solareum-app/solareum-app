@@ -64,7 +64,7 @@ const ImportWallet: React.FC<Props> = () => {
 
   const importWallet = async () => {
     // TODO: Handle the seed later
-    await createAddress('seed', recovery, walletName, true);
+    await createAddress('seed', recovery.trim(), walletName.trim(), true);
     navigation.navigate(Routes.Home, { screen: Routes.Wallet });
   };
 
