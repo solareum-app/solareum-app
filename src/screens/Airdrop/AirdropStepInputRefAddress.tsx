@@ -79,7 +79,7 @@ export const AirdropStepInputRefAddress = ({
 
   const onPaste = async () => {
     const text = await Clipboard.getString();
-    setRefAddress(text);
+    setRefAddress(text.trim());
   };
 
   const onNext = () => {
