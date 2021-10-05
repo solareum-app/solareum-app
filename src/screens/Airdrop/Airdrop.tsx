@@ -17,6 +17,7 @@ import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -44,6 +45,27 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
+const checkValidAddress = async (solAddress: string, deviceId: string) => {
+  if (!solAddress || !deviceId) {
+    return false;
+  }
+
+  try {
+    const airdropList = await authFetch(
+      `/airdrops?sol_address=${solAddress}&type=airdrop`,
+    );
+    // since the airdrop is so big, so one device receive 1 airdrop
+    // considider to disable this rules then
+    const deviceList = await authFetch(
+      `/airdrops?device_id=${deviceId}&type=airdrop`,
+    );
+
+    return airdropList.length <= 0 && deviceList.length <= 0;
+  } catch {
+    return false;
+  }
+};
+
 export const Airdrop = ({ isActive }) => {
   const { accountList } = useToken();
   const [airdrop, setAirdrop] = useState(0);
@@ -53,6 +75,7 @@ export const Airdrop = ({ isActive }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const metaData = useMetaData();
+  const { rewardAirdrop, rewardRef: ref } = useConfig();
   const { t } = useLocalize();
 
   const [airdropSignature, setAirdropSignature] = useState<string>('');
@@ -112,24 +135,14 @@ export const Airdrop = ({ isActive }) => {
   useEffect(() => {
     (async () => {
       const solAccount = accountList.find((i) => i.mint === 'SOL');
-      const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
-      if (!solAccount) {
-        return;
+      const solAddress = solAccount?.publicKey;
+      const deviceId = metaData.deviceId;
+
+      const valid = await checkValidAddress(solAddress, deviceId);
+      if (valid) {
+        setAirdrop(rewardAirdrop);
+        setRewardRef(ref);
       }
-
-      const resp = await authFetch(service.postCheckAirdrop, {
-        method: 'POST',
-        body: {
-          solAddress: solAccount?.publicKey,
-          meta: {
-            ...metaData,
-            xsbAddress: xsbAccount?.publicKey,
-          },
-        },
-      });
-
-      setAirdrop(resp.rewardAirdrop);
-      setRewardRef(resp.rewardRef);
     })();
   }, [accountList]);
 
