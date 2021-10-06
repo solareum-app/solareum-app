@@ -40,6 +40,8 @@ export type RemoteConfigType = {
   customeMarketList: any[];
   customeTokenList: any[];
   links: any;
+  rewardAirdrop: number;
+  rewardRef: number;
 };
 
 export const RemoteConfigContext = React.createContext<RemoteConfigType>({
@@ -49,6 +51,8 @@ export const RemoteConfigContext = React.createContext<RemoteConfigType>({
   customeMarketList: [],
   customeTokenList: [],
   links: {},
+  rewardAirdrop: 0,
+  rewardRef: 0,
 });
 
 export const useConfig = () => {
@@ -71,6 +75,8 @@ export const RemoteConfigProvider = ({ children }) => {
   const [customeTokenList, setCustomeTokenList] = useState([]);
   const [links, setLinks] = useState({});
   const [loading, setLoading] = useState(true);
+  const [rewardAirdrop, setRewardAirdrop] = useState(0);
+  const [rewardRef, setRewardRef] = useState(0);
 
   useEffect(() => {
     remoteConfig()
@@ -81,6 +87,8 @@ export const RemoteConfigProvider = ({ children }) => {
         token_list: '[]',
         market_list: '[]',
         links: JSON.stringify(defaultLinks),
+        reward_airdrop: '0',
+        reward_ref: '0',
       })
       .then(() => {
         // fetch anyway, the change will be apply for the next start
@@ -105,6 +113,8 @@ export const RemoteConfigProvider = ({ children }) => {
         const sourceMarketList = remoteConfig().getValue('market_list');
         const sourceTokenList = remoteConfig().getValue('token_list');
         const sourceLinks = remoteConfig().getValue('links');
+        const airdrop = remoteConfig().getValue('reward_airdrop');
+        const ref = remoteConfig().getValue('reward_ref');
 
         setAppName(sourceAppName._value);
         setAppPrefix(sourceAppPrefix._value);
@@ -112,6 +122,9 @@ export const RemoteConfigProvider = ({ children }) => {
         setCustomeMarketList(JSON.parse(sourceMarketList._value));
         setCustomeTokenList(JSON.parse(sourceTokenList._value));
         setLinks(JSON.parse(sourceLinks._value));
+        setRewardAirdrop(parseInt(airdrop._value, 16));
+        setRewardRef(parseInt(ref._value, 16));
+
         setLoading(false);
       })
       .catch(() => {
@@ -128,6 +141,8 @@ export const RemoteConfigProvider = ({ children }) => {
         links,
         customeMarketList,
         customeTokenList,
+        rewardAirdrop,
+        rewardRef,
       }}
     >
       {!loading ? children : null}

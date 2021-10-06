@@ -290,7 +290,7 @@ const Settings: React.FC = () => {
       </ScrollView>
 
       <Portal>
-        <FacebookWebView ref={refPolicy} url={links.policy} />
+        <FacebookWebView ref={refPolicy} url={t('started-terms-url')} />
       </Portal>
     </View>
   );
