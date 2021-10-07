@@ -23,7 +23,6 @@ import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
-import { Airdrop } from '../Airdrop/Airdrop';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
@@ -211,8 +210,6 @@ const WalletScreen = () => {
             </View>
           ) : null}
         </View>
-
-        <Airdrop />
       </ScrollView>
 
       <Portal>
