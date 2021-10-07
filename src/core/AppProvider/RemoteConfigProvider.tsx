@@ -122,8 +122,8 @@ export const RemoteConfigProvider = ({ children }) => {
         setCustomeMarketList(JSON.parse(sourceMarketList._value));
         setCustomeTokenList(JSON.parse(sourceTokenList._value));
         setLinks(JSON.parse(sourceLinks._value));
-        setRewardAirdrop(parseInt(airdrop._value, 16));
-        setRewardRef(parseInt(ref._value, 16));
+        setRewardAirdrop(parseInt(airdrop._value, 10));
+        setRewardRef(parseInt(ref._value, 10));
 
         setLoading(false);
       })
