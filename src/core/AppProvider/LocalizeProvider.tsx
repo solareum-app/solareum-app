@@ -59,6 +59,8 @@ export const LocalizeProvider: FunctionComponent = ({ children }) => {
       const lang = await getItem('', SELECTED_LANGUAGE);
       if (lang) {
         setLanguage(lang);
+      } else {
+        setLanguage(LANGUAGE_LIST[0]);
       }
     })();
   }, []);

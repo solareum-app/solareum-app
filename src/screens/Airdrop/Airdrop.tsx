@@ -17,7 +17,6 @@ import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -75,7 +74,6 @@ export const Airdrop = ({ isActive }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const metaData = useMetaData();
-  const { rewardAirdrop, rewardRef: ref } = useConfig();
   const { t } = useLocalize();
 
   const [airdropSignature, setAirdropSignature] = useState<string>('');
@@ -140,8 +138,10 @@ export const Airdrop = ({ isActive }) => {
 
       const valid = await checkValidAddress(solAddress, deviceId);
       if (valid) {
-        setAirdrop(rewardAirdrop);
-        setRewardRef(ref);
+        const resp = await authFetch('/settings?type=airdrop');
+        const settings = resp[0] ? resp[0].settings : {};
+        setAirdrop(settings.rewardAirdrop || 0);
+        setRewardRef(settings.rewardRef || 0);
       }
     })();
   }, [accountList]);
