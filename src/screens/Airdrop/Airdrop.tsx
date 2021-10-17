@@ -44,27 +44,6 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
-const checkValidAddress = async (solAddress: string, deviceId: string) => {
-  if (!solAddress || !deviceId) {
-    return false;
-  }
-
-  try {
-    const airdropList = await authFetch(
-      `/airdrops?sol_address=${solAddress}&type=airdrop`,
-    );
-    // since the airdrop is so big, so one device receive 1 airdrop
-    // considider to disable this rules then
-    const deviceList = await authFetch(
-      `/airdrops?device_id=${deviceId}&type=airdrop`,
-    );
-
-    return airdropList.length <= 0 && deviceList.length <= 0;
-  } catch {
-    return false;
-  }
-};
-
 export const Airdrop = ({ isActive }) => {
   const { accountList } = useToken();
   const [airdrop, setAirdrop] = useState(0);
@@ -134,15 +113,19 @@ export const Airdrop = ({ isActive }) => {
     (async () => {
       const solAccount = accountList.find((i) => i.mint === 'SOL');
       const solAddress = solAccount?.publicKey;
-      const deviceId = metaData.deviceId;
 
-      const valid = await checkValidAddress(solAddress, deviceId);
-      if (valid) {
-        const resp = await authFetch('/settings?type=airdrop');
-        const settings = resp[0] ? resp[0].settings : {};
-        setAirdrop(settings.rewardAirdrop || 0);
-        setRewardRef(settings.rewardRef || 0);
-      }
+      const resp = await authFetch(service.postCheckAirdrop, {
+        method: 'POST',
+        body: {
+          solAddress,
+          meta: {
+            ...metaData,
+          },
+        },
+      });
+
+      setAirdrop(resp.rewardAirdrop || 0);
+      setRewardRef(resp.rewardRef || 0);
     })();
   }, [accountList]);
 
