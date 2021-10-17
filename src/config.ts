@@ -1,24 +1,19 @@
 export const MAINNET_URL = 'http://api.mainnet-beta.solana.com';
 
 // DEV
-// const servicePath =
-//   'https://1t66si6dlc.execute-api.ap-southeast-1.amazonaws.com/dev';
+// export const XSB_PATH = 'https://xsb-stg.solareum.app/api/v1';
 // export const API_PATH = 'https://api-stg.solareum.app';
 
 // PROD
-const servicePath =
-  'https://5oqey668yd.execute-api.ap-southeast-1.amazonaws.com/prd';
+export const XSB_PATH = 'https://xsb.solareum.app/api/v1';
 export const API_PATH = 'https://api.solareum.app';
 
 export let service = {
-  getHello: `${servicePath}/hello`,
-  getLoadSysAccount: `${servicePath}/loadSysAccount`,
-  getLoadAccountInfo: `${servicePath}/loadAccountInfo`,
-  getSend: `${servicePath}/send`,
-  getTransferSPLTokens: `${servicePath}/transferSPLTokens`,
-  postDeviceRegister: `${servicePath}/deviceRegister`,
-  postCheckAirdrop: `${servicePath}/checkAirdrop`,
-  postAirdrop: `${servicePath}/airdrop`,
-  postCheckMission: `${servicePath}/checkMission`,
-  postMission: `${servicePath}/mission`,
+  postDeviceRegister: `${XSB_PATH}/device/register`,
+
+  postCheckAirdrop: `${XSB_PATH}/airdrop/check`,
+  postAirdrop: `${XSB_PATH}/airdrop/get`,
+
+  postCheckMission: `${XSB_PATH}/mission/check`,
+  postMission: `${XSB_PATH}/mission/get`,
 };
