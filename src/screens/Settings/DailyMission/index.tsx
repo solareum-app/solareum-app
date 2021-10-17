@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 
-import { Rewarded, Banner } from '../../../components/Admob/Rewarded';
+import { Banner } from '../../../components/Admob/Rewarded';
 import { grid, typo } from '../../../components/Styles';
 import { useConfig } from '../../../core/AppProvider/RemoteConfigProvider';
 import { useLocalize } from '../../../core/AppProvider/LocalizeProvider';
+import { MissionButton } from '../../../containers/MissionButton';
 
 const s = StyleSheet.create({
   wrp: {
@@ -37,7 +38,7 @@ const DailyMission: React.FC<Props> = () => {
             </View>
 
             <View style={s.wrp}>
-              <Rewarded disabled={!admob} />
+              <MissionButton padding={0} />
               {!admob ? (
                 <Text style={s.helper}>
                   {t('airdrop-mission-lock-message')}
