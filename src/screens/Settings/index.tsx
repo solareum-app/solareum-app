@@ -11,6 +11,7 @@ import { spacings } from '../../theme';
 import { typo } from '../../components/Styles';
 import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
 import package from '../../../package.json';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   container: {
@@ -42,12 +43,61 @@ const s = StyleSheet.create({
   wrp: {
     padding: 20,
   },
+  panel: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    flexDirection: 'row',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  panelItem: {
+    flex: 1,
+  },
+  panelLanguage: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginRight: -8,
+  },
+  language: {
+    textAlign: 'right',
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
+    marginBottom: 0,
+    fontSize: 14,
+    textTransform: 'uppercase',
+  },
+  languageActive: {
+    color: COLORS.blue4,
+  },
 });
+
+const Language = ({ value }) => {
+  const { t, language, setLanguage } = useLocalize();
+
+  return (
+    <Text
+      style={[
+        typo.helper,
+        s.language,
+        language === value ? s.languageActive : {},
+      ]}
+      onPress={() => {
+        setLanguage(value);
+      }}
+    >
+      {value}
+    </Text>
+  );
+};
 
 const Settings: React.FC = () => {
   const navigation = useNavigation();
   const refPolicy = useRef();
   const { appPrefix, links } = useConfig();
+  const { t } = useLocalize();
 
   return (
     <View style={s.container}>
@@ -62,7 +112,9 @@ const Settings: React.FC = () => {
           >
             <Icon type="antdesign" name="wallet" color="grey" size={20} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemWallet}>Ví Crypto</ListItem.Title>
+              <ListItem.Title style={s.itemWallet}>
+                {t('setting-wallet')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -77,7 +129,7 @@ const Settings: React.FC = () => {
             <Icon type="feather" name="bookmark" color="grey" size={20} />
             <ListItem.Content>
               <ListItem.Title style={s.itemWallet}>
-                Quản lý Tài Khoản
+                {t('setting-manage-account')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -85,7 +137,7 @@ const Settings: React.FC = () => {
         </View>
 
         <View style={s.group}>
-          <Text style={s.groupName}>Cùng Solareum</Text>
+          <Text style={s.groupName}>{t('setting-with-solareum')}</Text>
           <ListItem
             bottomDivider
             containerStyle={s.item}
@@ -95,7 +147,9 @@ const Settings: React.FC = () => {
           >
             <Icon type="feather" name="zap" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Điểm danh</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-mission')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -106,10 +160,10 @@ const Settings: React.FC = () => {
               navigation.navigate(Routes.Influencer);
             }}
           >
-            <Icon type="antdesign" name="rocket1" color="grey" size={16} />
+            <Icon type="feather" name="users" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                Giới thiệu nhận thưởng
+                {t('setting-referral')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -123,27 +177,16 @@ const Settings: React.FC = () => {
           >
             <Icon type="antdesign" name="rocket1" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Airdrop</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-airdrop')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
         </View>
 
         <View style={s.group}>
-          <Text style={s.groupName}>Cộng đồng</Text>
-          <ListItem
-            bottomDivider
-            containerStyle={s.item}
-            onPress={() => {
-              Linking.openURL(links.wealthclub);
-            }}
-          >
-            <Icon type="antdesign" name="staro" color="grey" size={16} />
-            <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>WealthClub</ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron color="grey" />
-          </ListItem>
+          <Text style={s.groupName}>{t('setting-community')}</Text>
 
           <ListItem
             bottomDivider
@@ -154,7 +197,9 @@ const Settings: React.FC = () => {
           >
             <Icon type="feather" name="twitter" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Twitter</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-twitter')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -168,7 +213,9 @@ const Settings: React.FC = () => {
           >
             <Icon type="antdesign" name="hearto" color="grey" size={16} />
             <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>Telegram</ListItem.Title>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-telegram')}
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
@@ -183,7 +230,23 @@ const Settings: React.FC = () => {
             <Icon type="feather" name="compass" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                Điều khoản sử dụng
+                {t('setting-terms-of-use')}
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
+
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              Linking.openURL(links.wealthclub);
+            }}
+          >
+            <Icon type="antdesign" name="staro" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>
+                {t('setting-wealthclub')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -199,7 +262,7 @@ const Settings: React.FC = () => {
             <Icon type="feather" name="zap" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                Về Solareum Wallet
+                {t('setting-about-solareum')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -207,17 +270,27 @@ const Settings: React.FC = () => {
         </View>
 
         <View style={s.group}>
-          <View style={s.wrp}>
-            <Text style={typo.helper}>
-              v{package.version}
-              {appPrefix}
-            </Text>
+          <View style={s.panel}>
+            <View style={s.panelItem}>
+              <Text style={{ ...typo.helper, marginBottom: 0 }}>
+                v{package.version}
+                {appPrefix}
+                {t('prefix')}
+              </Text>
+            </View>
+            <View style={s.panelItem}>
+              <View style={s.panelLanguage}>
+                <Language value="en" />
+                <Language value="vn" />
+              </View>
+            </View>
           </View>
+          <View style={s.wrp} />
         </View>
       </ScrollView>
 
       <Portal>
-        <FacebookWebView ref={refPolicy} url={links.policy} />
+        <FacebookWebView ref={refPolicy} url={t('started-terms-url')} />
       </Portal>
     </View>
   );

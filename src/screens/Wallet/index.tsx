@@ -23,7 +23,7 @@ import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
-import { Airdrop } from '../Airdrop/Airdrop';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   header: {
@@ -102,6 +102,7 @@ const WalletScreen = () => {
   const { loadAccountList, accountList } = useToken();
   const refReceived = useRef();
   const solAccount = accountList.find((i) => i.mint === 'SOL');
+  const { t } = useLocalize();
 
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint && !i.isHiding)
@@ -155,7 +156,7 @@ const WalletScreen = () => {
                     action: TransferAction.send,
                   });
                 }}
-                title="Chuyển"
+                title={t('home-send')}
                 iconName="upload"
               />
             </View>
@@ -166,7 +167,7 @@ const WalletScreen = () => {
                     action: TransferAction.receive,
                   });
                 }}
-                title="Nhận"
+                title={t('home-receive')}
                 iconName="download"
               />
             </View>
@@ -175,7 +176,7 @@ const WalletScreen = () => {
                 onClick={() => {
                   refReceived.current.open();
                 }}
-                title="QR Code"
+                title={t('home-qr-code')}
                 iconName="square"
                 type="feather"
               />
@@ -191,7 +192,7 @@ const WalletScreen = () => {
           {activeAccountList.length >= 7 ? (
             <View style={s.manageBtnWrp}>
               <Button
-                title="Quản lý Tài Khoản"
+                title={t('home-manage-accounts')}
                 onPress={() => navigation.navigate(Routes.ManagementTokenList)}
                 type="outline"
                 buttonStyle={s.manageBtn}
@@ -209,8 +210,6 @@ const WalletScreen = () => {
             </View>
           ) : null}
         </View>
-
-        <Airdrop />
       </ScrollView>
 
       <Portal>

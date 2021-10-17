@@ -81,11 +81,13 @@ export const RemoteConfigProvider = ({ children }) => {
         token_list: '[]',
         market_list: '[]',
         links: JSON.stringify(defaultLinks),
+        reward_airdrop: '0',
+        reward_ref: '0',
       })
       .then(() => {
         // fetch anyway, the change will be apply for the next start
         remoteConfig()
-          .fetch(300) // cache for 5 mins
+          .fetch(7200) // cache for 2 hours
           .catch(() => {
             return true;
           });
@@ -112,6 +114,7 @@ export const RemoteConfigProvider = ({ children }) => {
         setCustomeMarketList(JSON.parse(sourceMarketList._value));
         setCustomeTokenList(JSON.parse(sourceTokenList._value));
         setLinks(JSON.parse(sourceLinks._value));
+
         setLoading(false);
       })
       .catch(() => {

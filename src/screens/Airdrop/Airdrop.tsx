@@ -16,6 +16,7 @@ import ImgPayment from '../../assets/clip-payment.png';
 import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -43,6 +44,27 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
+const checkValidAddress = async (solAddress: string, deviceId: string) => {
+  if (!solAddress || !deviceId) {
+    return false;
+  }
+
+  try {
+    const airdropList = await authFetch(
+      `/airdrops?sol_address=${solAddress}&type=airdrop`,
+    );
+    // since the airdrop is so big, so one device receive 1 airdrop
+    // considider to disable this rules then
+    const deviceList = await authFetch(
+      `/airdrops?device_id=${deviceId}&type=airdrop`,
+    );
+
+    return airdropList.length <= 0 && deviceList.length <= 0;
+  } catch {
+    return false;
+  }
+};
+
 export const Airdrop = ({ isActive }) => {
   const { accountList } = useToken();
   const [airdrop, setAirdrop] = useState(0);
@@ -52,6 +74,7 @@ export const Airdrop = ({ isActive }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const metaData = useMetaData();
+  const { t } = useLocalize();
 
   const [airdropSignature, setAirdropSignature] = useState<string>('');
   const [rewardRefSignature, setRewardRefSignature] = useState<string>('');
@@ -74,9 +97,7 @@ export const Airdrop = ({ isActive }) => {
     const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
 
     if (!solAccount?.publicKey || !xsbAccount?.publicKey) {
-      setError(
-        'Tài khoản XSB chưa được khởi tạo, bạn chưa thể hoàn thành airdrop.',
-      );
+      setError(t('airdrop-error-no-account'));
       setLoading(false);
       return;
     }
@@ -103,7 +124,7 @@ export const Airdrop = ({ isActive }) => {
         setError(resp.error);
       }
     } catch (err) {
-      setError('Có lỗi xảy ra, vui lòng thử lại sau.');
+      setError(t('sys-error'));
     } finally {
       setLoading(false);
     }
@@ -112,24 +133,16 @@ export const Airdrop = ({ isActive }) => {
   useEffect(() => {
     (async () => {
       const solAccount = accountList.find((i) => i.mint === 'SOL');
-      const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
-      if (!solAccount) {
-        return;
+      const solAddress = solAccount?.publicKey;
+      const deviceId = metaData.deviceId;
+
+      const valid = await checkValidAddress(solAddress, deviceId);
+      if (valid) {
+        const resp = await authFetch('/settings?type=airdrop');
+        const settings = resp[0] ? resp[0].settings : {};
+        setAirdrop(settings.rewardAirdrop || 0);
+        setRewardRef(settings.rewardRef || 0);
       }
-
-      const resp = await authFetch(service.postCheckAirdrop, {
-        method: 'POST',
-        body: {
-          solAddress: solAccount?.publicKey,
-          meta: {
-            ...metaData,
-            xsbAddress: xsbAccount?.publicKey,
-          },
-        },
-      });
-
-      setAirdrop(resp.rewardAirdrop);
-      setRewardRef(resp.rewardRef);
     })();
   }, [accountList]);
 
@@ -141,13 +154,10 @@ export const Airdrop = ({ isActive }) => {
     <View>
       <View style={{ ...s.main, padding: isActive ? 0 : 24 }}>
         <Image style={s.img} source={ImgPayment} />
-        <Text style={typo.titleLeft}>XSB Airdrop</Text>
-        <Text style={typo.normal}>
-          XSB là token sẽ được sử dụng trong Solareum Lightning, một ứng dụng
-          web3.0 giúp thưởng cho những nhà phát triển nội dung kỹ thuật số.
-        </Text>
+        <Text style={typo.titleLeft}>{t('airdrop-title')}</Text>
+        <Text style={typo.normal}>{t('airdrop-intro')}</Text>
         <Button
-          title={`Nhận +${airdrop} XSB`}
+          title={t('airdrop-receive-btn', { airdrop })}
           type="outline"
           onPress={startAirdrop}
           disabled={airdrop === 0}

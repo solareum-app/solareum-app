@@ -10,6 +10,7 @@ import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
 import Icon from '../../components/Icon';
 import { useApp } from '../../core/AppProvider/AppProvider';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   content: {
@@ -74,6 +75,7 @@ const WalletPicker: React.FC = () => {
   const ref = useRef();
   const navigation = useNavigation();
   const { wallet, addressList, setAddressId, addressId } = useApp();
+  const { t } = useLocalize();
 
   return (
     <View>
@@ -134,7 +136,7 @@ const WalletPicker: React.FC = () => {
             <View style={s.group}>
               <View style={s.groupItem}>
                 <Button
-                  title="Tạo Ví"
+                  title={t('home-create-wallet')}
                   type="clear"
                   onPress={() => {
                     ref.current?.close();
@@ -153,7 +155,7 @@ const WalletPicker: React.FC = () => {
               </View>
               <View style={s.groupItem}>
                 <Button
-                  title="Khôi phục"
+                  title={t('home-import-wallet')}
                   type="clear"
                   onPress={() => {
                     ref.current?.close();

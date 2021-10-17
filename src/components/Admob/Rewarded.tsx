@@ -87,7 +87,7 @@ export const Rewarded: React.FC<Props> = ({ disabled }) => {
 
   return (
     <Button
-      title="Làm nhiệm vụ"
+      title="Okie, Just do it"
       disabled={disabled}
       onPress={showRewardAd}
       type="outline"

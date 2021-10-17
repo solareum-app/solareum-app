@@ -6,6 +6,7 @@ import { Input, Button, Icon } from 'react-native-elements';
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { QRScan } from '../Token/QRScan';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { style } from './style';
 
@@ -74,15 +75,16 @@ export const AirdropStepInputRefAddress = ({
 }) => {
   const [error, setError] = useState<string>('');
   const [camera, setCamera] = useState(false);
+  const { t } = useLocalize();
 
   const onPaste = async () => {
     const text = await Clipboard.getString();
-    setRefAddress(text);
+    setRefAddress(text.trim());
   };
 
   const onNext = () => {
     if (!refAddress) {
-      setError('Bạn chưa nhập địa chỉ người giới thiệu');
+      setError(t('airdrop-ref-error-ref-address'));
       return;
     }
     next();
@@ -96,15 +98,11 @@ export const AirdropStepInputRefAddress = ({
     <View>
       {!camera ? (
         <View style={s.main}>
-          <Text style={typo.title}>Nhập địa chỉ người giới thiệu</Text>
-          <Text style={typo.normal}>
-            Hãy nhập địa chỉ SOL của người giới thiệu, để cả 2 cùng nhận được
-            Airdrop. Nếu bạn không có người giới thiệu hãy nhập `XSB` và tiếp
-            tục.
-          </Text>
+          <Text style={typo.title}>{t('airdrop-ref-title')}</Text>
+          <Text style={typo.normal}>{t('airdrop-ref-message')}</Text>
           <View style={s.containerInput}>
             <Input
-              label="Địa chỉ ví"
+              label={t('airdrop-ref-address')}
               placeholder=""
               style={typo.input}
               labelStyle={s.inputLabel}
@@ -116,7 +114,7 @@ export const AirdropStepInputRefAddress = ({
             />
             <View style={s.controls}>
               <Button
-                title="Dán"
+                title={t('airdrop-ref-paste')}
                 type="clear"
                 onPress={onPaste}
                 titleStyle={s.pasteTxt}
@@ -143,7 +141,7 @@ export const AirdropStepInputRefAddress = ({
             {error ? <Text style={typo.warning}>{error}</Text> : null}
             <Button
               type="outline"
-              title="Tiếp tục, xem lại thông tin"
+              title={t('airdrop-ref-next')}
               onPress={onNext}
             />
           </View>

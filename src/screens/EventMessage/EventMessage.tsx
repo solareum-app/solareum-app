@@ -10,6 +10,7 @@ import { Icon } from 'react-native-elements';
 
 import { COLORS } from '../../theme';
 import { getShortPublicKey } from '../../utils';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 export enum MESSAGE_TYPE {
   copy = 'copy',
@@ -48,6 +49,7 @@ const s = StyleSheet.create({
 // place this component into a PORTAL
 export const EventMessage = ({ top = 70 }) => {
   const [message, setMessage] = useState('');
+  const { t } = useLocalize();
 
   const handleCopy = (value: string) => {
     setMessage(value);
@@ -75,7 +77,7 @@ export const EventMessage = ({ top = 70 }) => {
               size={20}
             />
             <Text style={s.alertZoneMessage}>
-              Đã sao chép: {getShortPublicKey(message)}
+              {t('message-copy', { message: getShortPublicKey(message) })}
             </Text>
           </View>
         </View>
