@@ -116,7 +116,7 @@ export const AirdropStepCreateAccount = ({ next }) => {
           <Text style={typo.normal}>
             {t('airdrop-title-create-xsb-fee', { mintAccountFee })}
           </Text>
-          {error ? <Text style={typo.critical}>{error}</Text> : null}
+          {error ? <Text style={typo.caution}>{error}</Text> : null}
         </View>
       ) : (
         <View>

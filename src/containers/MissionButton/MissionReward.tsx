@@ -49,6 +49,7 @@ export const MissionReward = ({ mission }) => {
 
   const missionReward = mission.missionReward;
   const missionSignature = mission.missionRewardSignature;
+  const missionRewardError = mission.missionRewardError;
 
   return (
     <View style={style.main}>
@@ -63,6 +64,9 @@ export const MissionReward = ({ mission }) => {
       </View>
 
       <Text style={typo.normal}>{t('mission-thanks-01')}</Text>
+      {missionRewardError ? (
+        <Text style={typo.warning}>{missionRewardError}</Text>
+      ) : null}
 
       <View style={grid.group}>
         <Text style={grid.groupTitle}>{t('mission-reward-title')}</Text>

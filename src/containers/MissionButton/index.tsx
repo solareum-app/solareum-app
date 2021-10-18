@@ -18,6 +18,7 @@ import { useToken } from '../../core/AppProvider/TokenProvider';
 import { getAdmobIdByType } from '../../components/Admob/Rewarded';
 import { COLORS } from '../../theme';
 import { MissionReward } from './MissionReward';
+import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
 
 const s = StyleSheet.create({
   manageBtnWrp: {
@@ -50,8 +51,19 @@ export const MissionButton = ({ padding = 20 }) => {
   const { t } = useLocalize();
   const metaData = useMetaData();
   const refMissionReward = useRef();
+  const refCreateAccount = useRef();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
+  const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
+  let isAccountCreated = xsbAccount ? xsbAccount.publicKey : false;
+
+  const checkInitialCondition = () => {
+    if (isAccountCreated) {
+      showRewardAd();
+    } else {
+      refCreateAccount.current?.open();
+    }
+  };
 
   const earnMissionReward = async () => {
     const resp = await authFetch(service.postMission, {
@@ -114,7 +126,7 @@ export const MissionButton = ({ padding = 20 }) => {
     <View style={{ ...s.manageBtnWrp, padding }}>
       <Button
         title={t('mission-label', { missionLeft })}
-        onPress={showRewardAd}
+        onPress={checkInitialCondition}
         type="outline"
         loading={loading}
         disabled={missionLeft === 0}
@@ -135,6 +147,14 @@ export const MissionButton = ({ padding = 20 }) => {
       <Portal>
         <FixedContent ref={refMissionReward}>
           <MissionReward mission={mission} />
+        </FixedContent>
+        <FixedContent ref={refCreateAccount}>
+          <AirdropStepCreateAccount
+            next={() => {
+              refCreateAccount.current?.close();
+              showRewardAd();
+            }}
+          />
         </FixedContent>
       </Portal>
     </View>
