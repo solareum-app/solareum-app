@@ -29,6 +29,10 @@ const s = StyleSheet.create({
   manageIcon: {
     marginRight: 10,
   },
+  btnDisabled: {
+    opacity: 0.25,
+    borderColor: COLORS.dark4,
+  },
   txtManageBtn: {
     color: COLORS.white2,
   },
@@ -116,6 +120,7 @@ export const MissionButton = ({ padding = 20 }) => {
         disabled={missionLeft === 0}
         buttonStyle={s.manageBtn}
         titleStyle={s.txtManageBtn}
+        disabledStyle={s.btnDisabled}
         icon={
           <Icon
             size={16}

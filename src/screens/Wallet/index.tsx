@@ -67,7 +67,8 @@ const s = StyleSheet.create({
     marginRight: 12,
   },
   manageBtnWrp: {
-    padding: 20,
+    margin: 20,
+    marginBottom: 0,
   },
   manageBtn: {
     borderColor: COLORS.dark4,
