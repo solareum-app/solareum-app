@@ -133,6 +133,7 @@
   "search-placeholder": "Input tokens: SOL, XSB...",
   "market-placeholder": "Input XSB/SOL or Market ID...",
   "mission-label": "Take the Mission #{{missionLeft}}",
+  "mission-wait-label": "Plz wait for {{second}} seconds",
   "mission-modal-title": "Mission Completed",
   "mission-reward-title": "You received",
   "mission-thanks-01": "Congratulations on completing the mission. Please wait 5 minutes before doing the next one.",

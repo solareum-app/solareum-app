@@ -43,12 +43,16 @@ const adRewardUnitId = __DEV__
   ? TestIds.REWARDED
   : getAdmobIdByType('rewarded');
 
+const BREAK_TIME = 45000; // 45s
+let lastMissionTs = 0;
+
 export const MissionButton = ({ padding = 20 }) => {
   const [loading, setLoading] = useState(false);
   const [missionLeft, setMissionLeft] = useState(0);
   const [mission, setMission] = useState({});
   const { accountList } = useToken();
   const { t } = useLocalize();
+  const [currentTs, setCurrentTs] = useState(Date.now());
   const metaData = useMetaData();
   const refMissionReward = useRef();
   const refCreateAccount = useRef();
@@ -74,6 +78,12 @@ export const MissionButton = ({ padding = 20 }) => {
           ...metaData,
         },
       },
+    }).catch(() => {
+      return {
+        missionReward: 0,
+        missionSignature: '',
+        missionRewardError: 'Plz wait for an hour an try again.',
+      };
     });
     setMission(resp);
     refMissionReward.current?.open();
@@ -110,8 +120,7 @@ export const MissionButton = ({ padding = 20 }) => {
       if (type === RewardedAdEventType.EARNED_REWARD) {
         await earnMissionReward();
         await loadCheckMission();
-        // User earned reward of 5 lives
-        // TODO: send XSB token to user's address
+        lastMissionTs = Date.now();
       }
     });
     // Load a new advert
@@ -122,14 +131,36 @@ export const MissionButton = ({ padding = 20 }) => {
     loadCheckMission();
   }, [accountList]);
 
+  useEffect(() => {
+    if (missionLeft === 0) {
+      return;
+    }
+
+    let lastMissionInterval = setInterval(() => {
+      setCurrentTs(Date.now());
+    }, 1000);
+
+    return () => {
+      clearInterval(lastMissionInterval);
+    };
+  }, [missionLeft]);
+
+  const delta = currentTs - lastMissionTs;
+  const isActive = delta > BREAK_TIME && missionLeft > 0;
+  const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
+
   return (
     <View style={{ ...s.manageBtnWrp, padding }}>
       <Button
-        title={t('mission-label', { missionLeft })}
+        title={
+          isActive
+            ? t('mission-label', { missionLeft })
+            : t('mission-wait-label', { second: waitingTime })
+        }
         onPress={checkInitialCondition}
         type="outline"
         loading={loading}
-        disabled={missionLeft === 0}
+        disabled={!isActive}
         buttonStyle={s.manageBtn}
         titleStyle={s.txtManageBtn}
         disabledStyle={s.btnDisabled}
