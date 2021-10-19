@@ -147,16 +147,27 @@ export const MissionButton = ({ padding = 20 }) => {
 
   const delta = currentTs - lastMissionTs;
   const isActive = delta > BREAK_TIME && missionLeft > 0;
-  const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
+
+  const getLabel = () => {
+    const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
+    let label = '';
+
+    if (isActive) {
+      label = t('mission-label', { missionLeft });
+    } else {
+      label = t('mission-wait-label', { second: waitingTime });
+    }
+    if (missionLeft === 0) {
+      label = t('mission-label', { missionLeft });
+    }
+
+    return label;
+  };
 
   return (
     <View style={{ ...s.manageBtnWrp, padding }}>
       <Button
-        title={
-          isActive
-            ? t('mission-label', { missionLeft })
-            : t('mission-wait-label', { second: waitingTime })
-        }
+        title={getLabel()}
         onPress={checkInitialCondition}
         type="outline"
         loading={loading}
