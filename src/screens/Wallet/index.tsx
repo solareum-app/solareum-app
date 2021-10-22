@@ -24,7 +24,6 @@ import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { MissionButton } from '../../containers/MissionButton';
 
 const s = StyleSheet.create({
   header: {
@@ -211,8 +210,6 @@ const WalletScreen = () => {
               />
             </View>
           ) : null}
-
-          <MissionButton />
         </View>
       </ScrollView>
 

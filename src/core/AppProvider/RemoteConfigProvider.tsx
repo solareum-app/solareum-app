@@ -45,7 +45,7 @@ export type RemoteConfigType = {
 export const RemoteConfigContext = React.createContext<RemoteConfigType>({
   appName: 'Solareum Wallet',
   appPrefix: 'p',
-  admob: false,
+  admob: true,
   customeMarketList: [],
   customeTokenList: [],
   links: {},
