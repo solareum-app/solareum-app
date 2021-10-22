@@ -56,15 +56,6 @@ const DailyMission: React.FC<Props> = () => {
         <ScrollView>
           <View style={grid.content}>
             <View style={s.wrp}>
-              <Text style={typo.normal}>{t('airdrop-mission-message-01')}</Text>
-              <Text style={typo.normal}>{t('airdrop-mission-message-02')}</Text>
-              <Text style={typo.normal}>{t('airdrop-mission-message-03')}</Text>
-              <Text style={typo.normal}>
-                {t('airdrop-mission-message-04', { amount: missionReward })}
-              </Text>
-            </View>
-
-            <View style={s.wrp}>
               <MissionButton padding={0} />
               {!admob ? (
                 <Text style={s.helper}>
@@ -73,6 +64,14 @@ const DailyMission: React.FC<Props> = () => {
               ) : null}
             </View>
 
+            <View style={s.wrp}>
+              <Text style={typo.normal}>{t('airdrop-mission-message-01')}</Text>
+              <Text style={typo.normal}>{t('airdrop-mission-message-02')}</Text>
+              <Text style={typo.normal}>{t('airdrop-mission-message-03')}</Text>
+              <Text style={typo.normal}>
+                {t('airdrop-mission-message-04', { amount: missionReward })}
+              </Text>
+            </View>
             <View style={s.wrp}>
               <Banner />
             </View>

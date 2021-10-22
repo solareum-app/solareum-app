@@ -24,18 +24,20 @@ const s = StyleSheet.create({
   manageBtnWrp: {
     padding: 20,
   },
-  manageBtn: {
-    borderColor: COLORS.dark4,
-  },
   manageIcon: {
     marginRight: 10,
   },
+  manageBtn: {
+    borderColor: COLORS.dark4,
+  },
   btnDisabled: {
-    opacity: 0.25,
     borderColor: COLORS.dark4,
   },
   txtManageBtn: {
-    color: COLORS.white2,
+    color: COLORS.blue2,
+  },
+  txtManageBtnDisabled: {
+    color: COLORS.blue0,
   },
 });
 
@@ -43,19 +45,21 @@ const adRewardUnitId = __DEV__
   ? TestIds.REWARDED
   : getAdmobIdByType('rewarded');
 
-const BREAK_TIME = 45000; // 45s
-let lastMissionTs = 0;
+const BREAK_TIME = 60000; // 60s
+let lastMissionTs = Date.now();
 
 export const MissionButton = ({ padding = 20 }) => {
   const [loading, setLoading] = useState(false);
   const [missionLeft, setMissionLeft] = useState(0);
   const [mission, setMission] = useState({});
+  const [isShowingAd, setIsShowingAd] = useState(false);
   const { accountList } = useToken();
   const { t } = useLocalize();
   const [currentTs, setCurrentTs] = useState(Date.now());
   const metaData = useMetaData();
   const refMissionReward = useRef();
   const refCreateAccount = useRef();
+  const [number, setNumber] = useState(1);
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
   const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
@@ -63,6 +67,7 @@ export const MissionButton = ({ padding = 20 }) => {
 
   const checkInitialCondition = () => {
     if (isAccountCreated) {
+      setIsShowingAd(true);
       showRewardAd();
     } else {
       refCreateAccount.current?.open();
@@ -110,6 +115,7 @@ export const MissionButton = ({ padding = 20 }) => {
     rewardAd.onAdEvent(async (type: any, error: any) => {
       if (error) {
         setLoading(false);
+        setIsShowingAd(false);
       }
 
       if (type === RewardedAdEventType.LOADED) {
@@ -120,6 +126,8 @@ export const MissionButton = ({ padding = 20 }) => {
       if (type === RewardedAdEventType.EARNED_REWARD) {
         await earnMissionReward();
         await loadCheckMission();
+        setIsShowingAd(false);
+        setNumber(number + 1);
         lastMissionTs = Date.now();
       }
     });
@@ -145,19 +153,28 @@ export const MissionButton = ({ padding = 20 }) => {
     };
   }, [missionLeft]);
 
-  const delta = currentTs - lastMissionTs;
-  const isActive = delta > BREAK_TIME && missionLeft > 0;
+  useEffect(() => {
+    const delta = currentTs - lastMissionTs;
+    const isActive = delta > BREAK_TIME * number && missionLeft > 0;
+    if (isActive && !isShowingAd) {
+      checkInitialCondition();
+    }
+  }, [currentTs]);
+
+  useEffect(() => {
+    lastMissionTs = Date.now();
+  }, []);
 
   const getLabel = () => {
-    const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
+    const delta = currentTs - lastMissionTs;
+    const waitingTime = Math.round(
+      Math.abs((BREAK_TIME * number - delta) / 1000),
+    );
     let label = '';
 
-    if (isActive) {
-      label = t('mission-label', { missionLeft });
-    } else {
-      label = t('mission-wait-label', { second: waitingTime });
-    }
-    if (missionLeft === 0) {
+    label = t('mission-wait-label', { second: waitingTime });
+
+    if (missionLeft <= 0) {
       label = t('mission-label', { missionLeft });
     }
 
@@ -168,18 +185,18 @@ export const MissionButton = ({ padding = 20 }) => {
     <View style={{ ...s.manageBtnWrp, padding }}>
       <Button
         title={getLabel()}
-        onPress={checkInitialCondition}
         type="outline"
         loading={loading}
-        disabled={!isActive}
+        disabled={true}
         buttonStyle={s.manageBtn}
         titleStyle={s.txtManageBtn}
         disabledStyle={s.btnDisabled}
+        disabledTitleStyle={s.txtManageBtnDisabled}
         icon={
           <Icon
             size={16}
             style={s.manageIcon}
-            color={COLORS.white2}
+            color={COLORS.blue2}
             name="zap"
             type="feather"
           />
