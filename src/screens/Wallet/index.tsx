@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-portalize';
 
 import { FixedContent } from '../../components/Modals/FixedContent';
+import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
@@ -99,10 +100,10 @@ const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const [isHideBalance, setIsHideBalance] = useState(false);
   const navigation = useNavigation();
-  const { addressId } = useApp();
+  const refSwap = useRef();
+
   const { loadAccountList, accountList } = useToken();
-  const refReceived = useRef();
-  const solAccount = accountList.find((i) => i.mint === 'SOL');
+  const { addressId } = useApp();
   const { t } = useLocalize();
 
   const activeAccountList = accountList
@@ -175,10 +176,10 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  refReceived.current.open();
+                  refSwap.current.open();
                 }}
-                title={t('home-qr-code')}
-                iconName="square"
+                title={t('home-swap')}
+                iconName="refresh-cw"
                 type="feather"
               />
             </View>
@@ -214,9 +215,7 @@ const WalletScreen = () => {
       </ScrollView>
 
       <Portal>
-        <FixedContent ref={refReceived}>
-          <Receive token={solAccount} />
-        </FixedContent>
+        <FacebookWebView ref={refSwap} url="https://jup.ag/swap/SOL-USDC" />
       </Portal>
     </View>
   );
