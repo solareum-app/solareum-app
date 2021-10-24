@@ -982,6 +982,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(inherited)\"",
 				);
 				MARKETING_VERSION = 2.18.29;
@@ -1036,6 +1037,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(inherited)\"",
 				);
 				MARKETING_VERSION = 2.18.29;
