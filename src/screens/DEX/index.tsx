@@ -11,6 +11,7 @@ import { LoadingImage } from '../../components/LoadingIndicator';
 const INJECTED_SCRIPT = `
 window.solana = {
   platform: 'solareum',
+  autoConnect: true,
   postMessage: (message) => {
     window.ReactNativeWebView.postMessage(JSON.stringify(message));
   },
