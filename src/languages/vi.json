@@ -133,7 +133,7 @@
   "search-placeholder": "Nhập tên Tokens: SOL, XSB...",
   "market-placeholder": "Nhập XSB/SOL hay Market ID...",
   "mission-label": "Nhiệm vụ hoàn thành",
-  "mission-wait-label": "QC sẽ xuất hiện trong #{{second}} giây",
+  "mission-wait-label": "NV bắt đầu trong {{second}} giây",
   "mission-modal-title": "Nhiệm vụ hoàn thành",
   "mission-reward-title": "Bạn nhận được",
   "mission-thanks-01": "Chúc mừng bạn đã hoàn thành nhiệm vụ. Hãy chờ 5 phút để hoàn thành nhiệm vụ tiếp theo nhé.",
