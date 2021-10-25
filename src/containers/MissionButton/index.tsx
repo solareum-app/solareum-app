@@ -19,6 +19,7 @@ import { getAdmobIdByType } from '../../components/Admob/Rewarded';
 import { COLORS } from '../../theme';
 import { MissionReward } from './MissionReward';
 import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
+import { BannerScreen } from './BannerScreen';
 
 const s = StyleSheet.create({
   manageBtnWrp: {
@@ -53,6 +54,7 @@ export const MissionButton = ({ padding = 20 }) => {
   const [missionLeft, setMissionLeft] = useState(0);
   const [mission, setMission] = useState({});
   const [isShowingAd, setIsShowingAd] = useState(false);
+  const [isShowingBanner, setIsShowingBanner] = useState(false);
   const { accountList } = useToken();
   const { t } = useLocalize();
   const [currentTs, setCurrentTs] = useState(Date.now());
@@ -107,6 +109,15 @@ export const MissionButton = ({ padding = 20 }) => {
     setMissionLeft(resp.missionLeft);
   };
 
+  const earnBannerReward = async () => {
+    setLoading(false);
+    setIsShowingBanner(false);
+    await earnMissionReward();
+    await loadCheckMission();
+    setNumber(number + 1);
+    lastMissionTs = Date.now();
+  };
+
   const showRewardAd = async () => {
     setLoading(true);
     // Create a new instance
@@ -116,6 +127,7 @@ export const MissionButton = ({ padding = 20 }) => {
       if (error) {
         setLoading(false);
         setIsShowingAd(false);
+        setIsShowingBanner(true);
       }
 
       if (type === RewardedAdEventType.LOADED) {
@@ -204,9 +216,18 @@ export const MissionButton = ({ padding = 20 }) => {
       />
 
       <Portal>
+        {isShowingBanner ? (
+          <BannerScreen
+            next={() => {
+              earnBannerReward();
+            }}
+          />
+        ) : null}
+
         <FixedContent ref={refMissionReward}>
           <MissionReward mission={mission} />
         </FixedContent>
+
         <FixedContent ref={refCreateAccount}>
           <AirdropStepCreateAccount
             next={() => {
