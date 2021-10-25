@@ -66,14 +66,18 @@ const DailyMission: React.FC<Props> = () => {
 
             <View style={s.wrp}>
               <Text style={typo.normal}>{t('airdrop-mission-message-01')}</Text>
-              <Text style={typo.normal}>{t('airdrop-mission-message-02')}</Text>
-              <Text style={typo.normal}>{t('airdrop-mission-message-03')}</Text>
-              <Text style={typo.normal}>
-                {t('airdrop-mission-message-04', { amount: missionReward })}
-              </Text>
             </View>
+
             <View style={s.wrp}>
               <Banner />
+            </View>
+
+            <View>
+              <Text style={typo.normal}>{t('airdrop-mission-message-02')}</Text>
+              <Text style={typo.normal}>
+                {t('airdrop-mission-message-03')}{' '}
+                {t('airdrop-mission-message-04', { amount: missionReward })}
+              </Text>
             </View>
           </View>
         </ScrollView>
