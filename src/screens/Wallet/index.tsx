@@ -101,10 +101,13 @@ const WalletScreen = () => {
   const [isHideBalance, setIsHideBalance] = useState(false);
   const navigation = useNavigation();
   const refSwap = useRef();
+  const refReceived = useRef();
 
   const { loadAccountList, accountList } = useToken();
   const { addressId } = useApp();
   const { t } = useLocalize();
+
+  const solAccount = accountList.find((i) => i.mint === 'SOL');
 
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint && !i.isHiding)
@@ -155,22 +158,21 @@ const WalletScreen = () => {
               <RoundedButton
                 onClick={() => {
                   navigation.navigate(Routes.Search, {
-                    action: TransferAction.send,
-                  });
-                }}
-                title={t('home-send')}
-                iconName="upload"
-              />
-            </View>
-            <View style={s.controlItem}>
-              <RoundedButton
-                onClick={() => {
-                  navigation.navigate(Routes.Search, {
                     action: TransferAction.receive,
                   });
                 }}
                 title={t('home-receive')}
                 iconName="download"
+              />
+            </View>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => {
+                  refReceived.current.open();
+                }}
+                title={t('home-qr-code')}
+                iconName="square"
+                type="feather"
               />
             </View>
             <View style={s.controlItem}>
@@ -215,6 +217,9 @@ const WalletScreen = () => {
       </ScrollView>
 
       <Portal>
+        <FixedContent ref={refReceived}>
+          <Receive token={solAccount} />
+        </FixedContent>
         <FacebookWebView ref={refSwap} url="https://jup.ag/swap/SOL-USDC" />
       </Portal>
     </View>
