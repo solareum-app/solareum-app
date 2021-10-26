@@ -133,6 +133,7 @@
   "search-placeholder": "Nhập tên Tokens: SOL, XSB...",
   "market-placeholder": "Nhập XSB/SOL hay Market ID...",
   "mission-label": "Nhiệm vụ hoàn thành",
+  "mission-number-label": "Bạn còn {{missionLeft}} nhiệm vụ",
   "mission-wait-label": "NV bắt đầu trong {{second}} giây",
   "mission-close-label": "NV hoàn thành trong {{second}} giây",
   "mission-modal-title": "Nhiệm vụ hoàn thành",

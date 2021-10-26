@@ -49,11 +49,7 @@ export const MissionReward = ({ mission }) => {
 
   const missionReward = mission.missionReward;
   const missionSignature = mission.missionRewardSignature;
-  let missionRewardError = JSON.stringify(mission.missionRewardError);
-
-  if (missionRewardError === '{}') {
-    missionRewardError = 'Server errors, plz try again later!';
-  }
+  let missionRewardError = mission.missionRewardError;
 
   return (
     <View style={style.main}>
