@@ -55,13 +55,15 @@ export const MissionButton = ({ padding = 20 }) => {
   const [mission, setMission] = useState({});
   const [isShowingAd, setIsShowingAd] = useState(false);
   const [isShowingBanner, setIsShowingBanner] = useState(false);
+  const [done, setDone] = useState(false);
+
   const { accountList } = useToken();
   const { t } = useLocalize();
+
   const [currentTs, setCurrentTs] = useState(Date.now());
   const metaData = useMetaData();
   const refMissionReward = useRef();
   const refCreateAccount = useRef();
-  const [number, setNumber] = useState(1);
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
   const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
@@ -93,6 +95,7 @@ export const MissionButton = ({ padding = 20 }) => {
       };
     });
     setMission(resp);
+    setDone(true);
     refMissionReward.current?.open();
   };
 
@@ -114,7 +117,6 @@ export const MissionButton = ({ padding = 20 }) => {
     setIsShowingBanner(false);
     await earnMissionReward();
     await loadCheckMission();
-    setNumber(number + 1);
     lastMissionTs = Date.now();
   };
 
@@ -139,7 +141,6 @@ export const MissionButton = ({ padding = 20 }) => {
         await earnMissionReward();
         await loadCheckMission();
         setIsShowingAd(false);
-        setNumber(number + 1);
         lastMissionTs = Date.now();
       }
     });
@@ -152,9 +153,19 @@ export const MissionButton = ({ padding = 20 }) => {
   }, [accountList]);
 
   useEffect(() => {
-    if (missionLeft === 0) {
+    if (missionLeft <= 0) {
       return;
     }
+
+    const delta = currentTs - lastMissionTs;
+    const isActive = delta > BREAK_TIME && missionLeft > 0;
+    if (isActive && !isShowingAd) {
+      checkInitialCondition();
+    }
+  }, [currentTs]);
+
+  useEffect(() => {
+    lastMissionTs = Date.now();
 
     let lastMissionInterval = setInterval(() => {
       setCurrentTs(Date.now());
@@ -163,30 +174,14 @@ export const MissionButton = ({ padding = 20 }) => {
     return () => {
       clearInterval(lastMissionInterval);
     };
-  }, [missionLeft]);
-
-  useEffect(() => {
-    const delta = currentTs - lastMissionTs;
-    const isActive = delta > BREAK_TIME * number && missionLeft > 0;
-    if (isActive && !isShowingAd) {
-      checkInitialCondition();
-    }
-  }, [currentTs]);
-
-  useEffect(() => {
-    lastMissionTs = Date.now();
   }, []);
 
   const getLabel = () => {
     const delta = currentTs - lastMissionTs;
-    const waitingTime = Math.round(
-      Math.abs((BREAK_TIME * number - delta) / 1000),
-    );
-    let label = '';
+    const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
 
-    label = t('mission-wait-label', { second: waitingTime });
-
-    if (missionLeft <= 0) {
+    let label = t('mission-wait-label', { second: waitingTime });
+    if (missionLeft <= 0 || done) {
       label = t('mission-label', { missionLeft });
     }
 
