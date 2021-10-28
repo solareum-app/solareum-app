@@ -134,7 +134,7 @@
   "market-placeholder": "Input XSB/SOL or Market ID...",
   "mission-label": "Mission completed!",
   "mission-number-label": "You have {{missionLeft}} missions left",
-  "mission-wait-label": "Mission starts in {{second}} seconds",
+  "mission-wait-label": "Mission starts in {{minute}}:{{second}}",
   "mission-close-label": "Mission ends in {{second}} seconds",
   "mission-modal-title": "Mission Completed",
   "mission-reward-title": "You received",

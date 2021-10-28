@@ -19,6 +19,7 @@ import { getAdmobIdByType } from '../../components/Admob/Rewarded';
 import { COLORS } from '../../theme';
 import { MissionReward } from './MissionReward';
 import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
+import { setItem, getItem } from '../../storage/Collection';
 
 const s = StyleSheet.create({
   manageBtnWrp: {
@@ -45,8 +46,9 @@ const adRewardUnitId = __DEV__
   ? TestIds.REWARDED
   : getAdmobIdByType('rewarded');
 
-const BREAK_TIME = 60000; // 60s
-let lastMissionTs = Date.now();
+const MISSION_TS_KEY = 'MISSION_TS_KEY';
+const BREAK_TIME = 3600000; // 1 hour
+const MIN_BREAK_TIME = 60000; // 60 seconds
 
 export const MissionButton = ({ padding = 20 }) => {
   const [loading, setLoading] = useState(false);
@@ -54,6 +56,7 @@ export const MissionButton = ({ padding = 20 }) => {
   const [mission, setMission] = useState({});
   const [isShowingAd, setIsShowingAd] = useState(false);
   const [done, setDone] = useState(false);
+  const [lastMissionTs, setLastMissionTsOrg] = useState<number>(-1);
 
   const { accountList } = useToken();
   const { t } = useLocalize();
@@ -67,6 +70,11 @@ export const MissionButton = ({ padding = 20 }) => {
   const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
   let isAccountCreated = xsbAccount ? xsbAccount.publicKey : false;
 
+  const setLastMissionTs = (value) => {
+    setItem('', MISSION_TS_KEY, value);
+    setLastMissionTsOrg(value);
+  };
+
   const checkInitialCondition = () => {
     if (isAccountCreated) {
       setIsShowingAd(true);
@@ -74,6 +82,28 @@ export const MissionButton = ({ padding = 20 }) => {
     } else {
       refCreateAccount.current?.open();
     }
+  };
+
+  const getWaitingTime = () => {
+    const delta = currentTs - lastMissionTs;
+    const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
+    return waitingTime;
+  };
+
+  const getLabel = () => {
+    const waitingTime = getWaitingTime();
+    const minute = Math.max(0, Math.floor(waitingTime / 60));
+    const second = Math.max(0, Math.round(waitingTime % 60));
+
+    let label = t('mission-wait-label', {
+      minute,
+      second,
+    });
+    if (missionLeft <= 0 || done) {
+      label = t('mission-label', { missionLeft });
+    }
+
+    return label;
   };
 
   const earnMissionReward = async () => {
@@ -130,7 +160,7 @@ export const MissionButton = ({ padding = 20 }) => {
         await earnMissionReward();
         await loadCheckMission();
         setIsShowingAd(false);
-        lastMissionTs = Date.now();
+        setLastMissionTs(Date.now());
       }
     });
     // Load a new advert
@@ -142,40 +172,45 @@ export const MissionButton = ({ padding = 20 }) => {
   }, [accountList]);
 
   useEffect(() => {
-    if (missionLeft <= 0) {
+    if (missionLeft <= 0 && lastMissionTs >= 0) {
       return;
     }
 
-    const delta = currentTs - lastMissionTs;
-    const isActive = delta > BREAK_TIME && missionLeft > 0;
+    const waitingTime = getWaitingTime();
+    const isActive = waitingTime <= 0 && missionLeft > 0;
     if (isActive && !isShowingAd) {
       checkInitialCondition();
     }
-  }, [currentTs]);
+  }, [currentTs, lastMissionTs]);
 
   useEffect(() => {
-    lastMissionTs = Date.now();
+    setLastMissionTsOrg(Date.now());
 
     let lastMissionInterval = setInterval(() => {
       setCurrentTs(Date.now());
     }, 1000);
 
+    (async () => {
+      const missionTsStr = await getItem('', MISSION_TS_KEY);
+      const missionTs = parseInt(missionTsStr, 10);
+      if (missionTsStr) {
+        const delta = currentTs - missionTs;
+        const waitingTime = BREAK_TIME - delta;
+        // to make sure that user have to wait at least MIN_BREAK_TIME
+        if (waitingTime < MIN_BREAK_TIME) {
+          setLastMissionTs(Date.now() - BREAK_TIME + MIN_BREAK_TIME);
+        } else {
+          setLastMissionTs(missionTs);
+        }
+      } else {
+        setLastMissionTs(Date.now());
+      }
+    })();
+
     return () => {
       clearInterval(lastMissionInterval);
     };
   }, []);
-
-  const getLabel = () => {
-    const delta = currentTs - lastMissionTs;
-    const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
-
-    let label = t('mission-wait-label', { second: waitingTime });
-    if (missionLeft <= 0 || done) {
-      label = t('mission-label', { missionLeft });
-    }
-
-    return label;
-  };
 
   return (
     <View style={{ ...s.manageBtnWrp, padding }}>
