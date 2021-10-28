@@ -49,7 +49,7 @@ export const MissionReward = ({ mission }) => {
 
   const missionReward = mission.missionReward;
   const missionSignature = mission.missionRewardSignature;
-  const missionRewardError = mission.missionRewardError;
+  let missionRewardError = mission.missionRewardError;
 
   return (
     <View style={style.main}>
