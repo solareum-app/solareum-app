@@ -29,16 +29,16 @@ const s = StyleSheet.create({
     marginRight: 10,
   },
   manageBtn: {
-    borderColor: COLORS.dark4,
-  },
-  btnDisabled: {
-    borderColor: COLORS.dark4,
+    borderColor: COLORS.blue4,
   },
   txtManageBtn: {
     color: COLORS.blue2,
   },
+  btnDisabled: {
+    borderColor: COLORS.dark4,
+  },
   txtManageBtnDisabled: {
-    color: COLORS.blue0,
+    color: COLORS.white4,
   },
 });
 
@@ -47,11 +47,12 @@ const adRewardUnitId = __DEV__
   : getAdmobIdByType('rewarded');
 
 const MISSION_TS_KEY = 'MISSION_TS_KEY';
-const BREAK_TIME = 3600000; // 1 hour
-const MIN_BREAK_TIME = 60000; // 60 seconds
+const BREAK_TIME = 300000; // 5 mins
+const MIN_BREAK_TIME = 10000; // 60 seconds
 
 export const MissionButton = ({ padding = 20 }) => {
   const [loading, setLoading] = useState(false);
+  const [missionReward, setMissionReward] = useState(0);
   const [missionLeft, setMissionLeft] = useState(0);
   const [mission, setMission] = useState({});
   const [isShowingAd, setIsShowingAd] = useState(false);
@@ -86,19 +87,31 @@ export const MissionButton = ({ padding = 20 }) => {
 
   const getWaitingTime = () => {
     const delta = currentTs - lastMissionTs;
+    if (delta > BREAK_TIME) {
+      return 0;
+    }
     const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
     return waitingTime;
   };
 
+  const getActive = () => {
+    const waitingTime = getWaitingTime();
+    const isActive = waitingTime <= 0 && missionLeft > 0;
+    return isActive && !isShowingAd;
+  };
+
   const getLabel = () => {
     const waitingTime = getWaitingTime();
-    const minute = Math.max(0, Math.floor(waitingTime / 60));
-    const second = Math.max(0, Math.round(waitingTime % 60));
+    const isActive = getActive();
 
     let label = t('mission-wait-label', {
-      minute,
-      second,
+      second: waitingTime,
     });
+
+    if (isActive) {
+      label = t('mission-active-label', { amount: missionReward });
+    }
+
     if (missionLeft <= 0 || done) {
       label = t('mission-label', { missionLeft });
     }
@@ -138,6 +151,7 @@ export const MissionButton = ({ padding = 20 }) => {
       },
     });
     setMissionLeft(resp.missionLeft);
+    setMissionReward(resp.missionReward);
   };
 
   const showRewardAd = async () => {
@@ -170,18 +184,6 @@ export const MissionButton = ({ padding = 20 }) => {
   useEffect(() => {
     loadCheckMission();
   }, [accountList]);
-
-  useEffect(() => {
-    if (missionLeft <= 0 && lastMissionTs >= 0) {
-      return;
-    }
-
-    const waitingTime = getWaitingTime();
-    const isActive = waitingTime <= 0 && missionLeft > 0;
-    if (isActive && !isShowingAd) {
-      checkInitialCondition();
-    }
-  }, [currentTs, lastMissionTs]);
 
   useEffect(() => {
     setLastMissionTsOrg(Date.now());
@@ -218,7 +220,8 @@ export const MissionButton = ({ padding = 20 }) => {
         title={getLabel()}
         type="outline"
         loading={loading}
-        disabled={true}
+        disabled={!getActive()}
+        onPress={checkInitialCondition}
         buttonStyle={s.manageBtn}
         titleStyle={s.txtManageBtn}
         disabledStyle={s.btnDisabled}
@@ -227,7 +230,7 @@ export const MissionButton = ({ padding = 20 }) => {
           <Icon
             size={16}
             style={s.manageIcon}
-            color={COLORS.blue2}
+            color={getActive() ? COLORS.blue2 : COLORS.white4}
             name="zap"
             type="feather"
           />
