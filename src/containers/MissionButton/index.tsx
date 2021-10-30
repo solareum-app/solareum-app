@@ -5,6 +5,8 @@ import { Portal } from 'react-native-portalize';
 import {
   RewardedAd,
   RewardedAdEventType,
+  InterstitialAd,
+  AdEventType,
   TestIds,
 } from '@react-native-firebase/admob';
 
@@ -45,6 +47,9 @@ const s = StyleSheet.create({
 const adRewardUnitId = __DEV__
   ? TestIds.REWARDED
   : getAdmobIdByType('rewarded');
+const adInterUnitId = __DEV__
+  ? TestIds.INTERSTITIAL
+  : getAdmobIdByType('interstitial');
 
 const MISSION_TS_KEY = 'MISSION_TS_KEY';
 const BREAK_TIME = 300000; // 5 mins
@@ -78,7 +83,6 @@ export const MissionButton = ({ padding = 20 }) => {
 
   const checkInitialCondition = () => {
     if (isAccountCreated) {
-      setIsShowingAd(true);
       showRewardAd();
     } else {
       refCreateAccount.current?.open();
@@ -162,12 +166,13 @@ export const MissionButton = ({ padding = 20 }) => {
     rewardAd.onAdEvent(async (type: any, error: any) => {
       if (error) {
         setLoading(false);
-        setIsShowingAd(false);
+        showInterAd();
       }
 
       if (type === RewardedAdEventType.LOADED) {
-        rewardAd.show();
+        setIsShowingAd(true);
         setLoading(false);
+        rewardAd.show();
       }
 
       if (type === RewardedAdEventType.EARNED_REWARD) {
@@ -179,6 +184,34 @@ export const MissionButton = ({ padding = 20 }) => {
     });
     // Load a new advert
     rewardAd.load();
+  };
+
+  const showInterAd = async () => {
+    setLoading(true);
+    // Create a new instance
+    const interAd = InterstitialAd.createForAdRequest(adInterUnitId);
+
+    // Add event handlers
+    interAd.onAdEvent(async (type: any, error: any) => {
+      if (error) {
+        setLoading(false);
+      }
+
+      if (type === AdEventType.LOADED) {
+        setLoading(false);
+        setIsShowingAd(true);
+        interAd.show();
+      }
+
+      if (type === AdEventType.CLOSED) {
+        await earnMissionReward();
+        await loadCheckMission();
+        setIsShowingAd(false);
+        setLastMissionTs(Date.now());
+      }
+    });
+    // Load a new advert
+    interAd.load();
   };
 
   useEffect(() => {
