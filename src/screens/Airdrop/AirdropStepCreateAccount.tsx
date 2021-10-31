@@ -36,7 +36,11 @@ const style = StyleSheet.create({
 const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
-export const AirdropStepCreateAccount = ({ next }) => {
+export const AirdropStepCreateAccount = ({
+  busy,
+  next,
+  error: submitError,
+}) => {
   const { wallet } = useApp();
   const { accountList, loadAccountList } = useToken();
   const { t } = useLocalize();
@@ -137,17 +141,22 @@ export const AirdropStepCreateAccount = ({ next }) => {
             {t('airdrop-title-create-xsb-created')}
           </Text>
         ) : null}
+
+        {submitError ? <Text style={typo.warning}>{submitError}</Text> : null}
+
         {!isAccountCreated ? (
           <Button
             type="outline"
             title={t('airdrop-title-create-xsb-btn')}
             disabled={loading}
+            loading={busy}
             onPress={createTokenAccount}
           />
         ) : (
           <Button
             type="outline"
             title={t('airdrop-title-create-xsb-next')}
+            loading={busy}
             onPress={next}
           />
         )}

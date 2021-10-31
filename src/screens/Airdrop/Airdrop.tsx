@@ -59,8 +59,26 @@ export const Airdrop = ({ isActive }) => {
   const [rewardRefSignature, setRewardRefSignature] = useState<string>('');
   const refStepInfo = useRef();
 
+  const checkAirdrop = async () => {
+    const solAccount = accountList.find((i) => i.mint === 'SOL');
+    const solAddress = solAccount?.publicKey;
+
+    const resp = await authFetch(service.postCheckAirdrop, {
+      method: 'POST',
+      body: {
+        solAddress,
+        meta: {
+          ...metaData,
+        },
+      },
+    });
+
+    setAirdrop(resp.rewardAirdrop || 0);
+    setRewardRef(resp.rewardRef || 0);
+  };
+
   const dismiss = () => {
-    setAirdrop(0);
+    checkAirdrop();
   };
 
   const startAirdrop = () => {
@@ -70,12 +88,40 @@ export const Airdrop = ({ isActive }) => {
     refStepInfo.current?.open();
   };
 
+  const registerWallet = async () => {
+    setLoading(true);
+    const solAccount = accountList.find((i) => i.mint === 'SOL');
+
+    if (!solAccount?.publicKey) {
+      setError(t('airdrop-error-no-account'));
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await authFetch(service.postWalletNew, {
+        method: 'POST',
+        body: {
+          solAddress: solAccount?.publicKey,
+          refAddress,
+          meta: {
+            ...metaData,
+          },
+        },
+      });
+      setStep(AIRDROP_STEP.createAccount);
+    } catch (err) {
+      setError(t('sys-error'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const submit = async () => {
     setLoading(true);
     const solAccount = accountList.find((i) => i.mint === 'SOL');
-    const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
 
-    if (!solAccount?.publicKey || !xsbAccount?.publicKey) {
+    if (!solAccount?.publicKey) {
       setError(t('airdrop-error-no-account'));
       setLoading(false);
       return;
@@ -89,7 +135,6 @@ export const Airdrop = ({ isActive }) => {
           refAddress,
           meta: {
             ...metaData,
-            xsbAddress: xsbAccount?.publicKey,
           },
         },
       });
@@ -110,28 +155,8 @@ export const Airdrop = ({ isActive }) => {
   };
 
   useEffect(() => {
-    (async () => {
-      const solAccount = accountList.find((i) => i.mint === 'SOL');
-      const solAddress = solAccount?.publicKey;
-
-      const resp = await authFetch(service.postCheckAirdrop, {
-        method: 'POST',
-        body: {
-          solAddress,
-          meta: {
-            ...metaData,
-          },
-        },
-      });
-
-      setAirdrop(resp.rewardAirdrop || 0);
-      setRewardRef(resp.rewardRef || 0);
-    })();
+    checkAirdrop();
   }, [accountList]);
-
-  if (!airdrop && !isActive) {
-    return null;
-  }
 
   return (
     <View>
@@ -152,12 +177,6 @@ export const Airdrop = ({ isActive }) => {
           {step === AIRDROP_STEP.info ? (
             <AirdropStepInfo
               dismiss={dismiss}
-              next={() => setStep(AIRDROP_STEP.createAccount)}
-            />
-          ) : null}
-
-          {step === AIRDROP_STEP.createAccount ? (
-            <AirdropStepCreateAccount
               next={() => setStep(AIRDROP_STEP.inputRefAddress)}
             />
           ) : null}
@@ -172,12 +191,23 @@ export const Airdrop = ({ isActive }) => {
 
           {step === AIRDROP_STEP.review ? (
             <AirdropStepReview
-              next={submit}
+              next={registerWallet}
               airdrop={airdrop}
               rewardRef={rewardRef}
               refAddress={refAddress}
               loading={loading}
               error={error}
+            />
+          ) : null}
+
+          {step === AIRDROP_STEP.createAccount ? (
+            <AirdropStepCreateAccount
+              busy={loading}
+              error={error}
+              next={async () => {
+                await submit();
+                setStep(AIRDROP_STEP.successAndShare);
+              }}
             />
           ) : null}
 

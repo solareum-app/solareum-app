@@ -25,6 +25,7 @@ import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftButton';
+import { Airdrop } from '../Airdrop/Airdrop';
 
 const s = StyleSheet.create({
   header: {
@@ -103,8 +104,11 @@ const WalletScreen = () => {
   const { addressId } = useApp();
   const { loadAccountList, accountList } = useToken();
   const refReceived = useRef();
-  const solAccount = accountList.find((i) => i.mint === 'SOL');
   const { t } = useLocalize();
+
+  const solAccount = accountList.find((i) => i.mint === 'SOL');
+  const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
+  let isAccountCreated = xsbAccount ? xsbAccount.publicKey : false;
 
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint && !i.isHiding)
@@ -212,8 +216,10 @@ const WalletScreen = () => {
             </View>
           ) : null}
 
-          <MissionLeftButton />
+          {isAccountCreated ? <MissionLeftButton /> : null}
         </View>
+
+        {!isAccountCreated ? <Airdrop /> : null}
       </ScrollView>
 
       <Portal>
