@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 
 import { grid, typo } from '../../../components/Styles';
-import { useConfig } from '../../../core/AppProvider/RemoteConfigProvider';
 import { useLocalize } from '../../../core/AppProvider/LocalizeProvider';
-import { MissionButton } from '../../../containers/MissionButton';
 
 import { authFetch } from '../../../utils/authfetch';
 import { service } from '../../../config';
@@ -27,7 +25,6 @@ const DailyMission: React.FC<Props> = () => {
   const [missionReward, setMissionReward] = useState(0);
   const metaData = useMetaData();
   const { accountList } = useToken();
-  const { admob } = useConfig();
   const { t } = useLocalize();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
@@ -62,15 +59,6 @@ const DailyMission: React.FC<Props> = () => {
                 {t('airdrop-mission-message-04', { amount: missionReward })}
               </Text>
               <Text style={typo.normal}>{t('airdrop-mission-message-05')}</Text>
-            </View>
-
-            <View style={s.wrp}>
-              <MissionButton padding={0} />
-              {!admob ? (
-                <Text style={s.helper}>
-                  {t('airdrop-mission-lock-message')}
-                </Text>
-              ) : null}
             </View>
           </View>
         </ScrollView>

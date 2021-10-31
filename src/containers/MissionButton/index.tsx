@@ -53,7 +53,7 @@ const adInterUnitId = __DEV__
 
 const MISSION_TS_KEY = 'MISSION_TS_KEY';
 const BREAK_TIME = 300000; // 5 mins
-const MIN_BREAK_TIME = 10000; // 60 seconds
+const MIN_BREAK_TIME = 0; // 0
 
 export const MissionButton = ({ padding = 20 }) => {
   const [loading, setLoading] = useState(false);
