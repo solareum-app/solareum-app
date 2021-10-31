@@ -4,6 +4,7 @@ import { SafeAreaView, RefreshControl, ScrollView, View } from 'react-native';
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme';
 import { grid } from '../../components/Styles';
+import { MissionButton } from '../../containers/MissionButton';
 import { SocialItem } from './SocialItem';
 import { Header } from './Header';
 
@@ -26,7 +27,7 @@ const Social = () => {
     setFetching(true);
     const oldList = page <= 0 ? [] : articleList;
     const data = await fetch(
-      `https://wealthclub.vn/c/tin-tuc/9.json?page=${page}`,
+      `https://wealthclub.vn/c/news/15.json?page=${page}`,
     ).then((resp) => resp.json());
     setEof(data.topic_list.more_topics_url ? false : true);
     setArticleList(oldList.concat(data.topic_list.topics));
@@ -69,6 +70,13 @@ const Social = () => {
         >
           <View style={grid.content}>
             {fetching ? <LoadingImage /> : null}
+
+            {!fetching ? (
+              <View style={{ marginBottom: 20 }}>
+                <MissionButton padding={0} />
+              </View>
+            ) : null}
+
             {articleList.length
               ? articleList.map((i) => <SocialItem key={i.slug} model={i} />)
               : null}
