@@ -132,7 +132,6 @@ export const Airdrop = ({ isActive }) => {
         method: 'POST',
         body: {
           solAddress: solAccount?.publicKey,
-          refAddress,
           meta: {
             ...metaData,
           },
