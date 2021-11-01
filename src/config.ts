@@ -10,7 +10,8 @@ export const XSB_PATH = 'https://xsb.solareum.app/api/v1';
 export const API_PATH = 'https://api.solareum.app';
 
 export let service = {
-  postDeviceRegister: `${XSB_PATH}/device/register`,
+  postWalletNew: `${XSB_PATH}/wallet/new`,
+  postWalletUpdate: `${XSB_PATH}/wallet/update`,
 
   postCheckAirdrop: `${XSB_PATH}/airdrop/check`,
   postAirdrop: `${XSB_PATH}/airdrop/get`,

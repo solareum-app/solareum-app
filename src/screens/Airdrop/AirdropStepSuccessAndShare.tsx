@@ -41,6 +41,10 @@ const style = StyleSheet.create({
     color: COLORS.white2,
     fontSize: 20,
   },
+  label: {
+    ...typo.normal,
+    marginBottom: 0,
+  },
 });
 
 export const AirdropStepSuccessAndShare = ({
@@ -78,6 +82,7 @@ export const AirdropStepSuccessAndShare = ({
           style={style.img}
         />
       </View>
+
       <View style={grid.group}>
         <Text style={grid.groupTitle}>{t('airdrop-final-you-receive')}</Text>
         <View style={style.row}>
@@ -96,7 +101,6 @@ export const AirdropStepSuccessAndShare = ({
             ) : null}
           </View>
         </View>
-
         <Text style={grid.groupTitle}>{t('airdrop-final-ref-receive')}</Text>
         <View style={style.row}>
           <View style={style.rowItem}>
@@ -117,8 +121,40 @@ export const AirdropStepSuccessAndShare = ({
           </View>
         </View>
       </View>
+
       <Text style={typo.normal}>{t('airdrop-final-thanks-01')}</Text>
+      <View style={grid.group}>
+        <View style={style.row}>
+          <View style={style.rowItem}>
+            <Text style={style.label}>{t('airdrop-final-twitter')}</Text>
+          </View>
+          <View style={style.rowItemRight}>
+            <Button
+              title="check out"
+              type="clear"
+              onPress={() => {
+                Linking.openURL(t('airdrop-final-twitter-link'));
+              }}
+            />
+          </View>
+        </View>
+        <View style={style.row}>
+          <View style={style.rowItem}>
+            <Text style={style.label}>{t('airdrop-final-telegram')}</Text>
+          </View>
+          <View style={style.rowItemRight}>
+            <Button
+              title="check out"
+              type="clear"
+              onPress={() => {
+                Linking.openURL(t('airdrop-final-telegram-link'));
+              }}
+            />
+          </View>
+        </View>
+      </View>
       <Text style={typo.normal}>{t('airdrop-final-thanks-02')}</Text>
+
       <View style={s.footer}>
         <Button
           type="outline"
