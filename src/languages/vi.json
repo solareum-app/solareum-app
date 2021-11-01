@@ -140,7 +140,7 @@
   "mission-label": "Nhiệm vụ hoàn thành",
   "mission-number-label": "Bạn còn {{missionLeft}} nhiệm vụ",
   "mission-wait-label": "Vui lòng chờ trong {{second}} giây",
-  "mission-active-label": "Xem QC để nhận {{amount}}XSB",
+  "mission-active-label": "Nhận thưởng {{amount}}XSB",
   "mission-close-label": "NV hoàn thành trong {{second}} giây",
   "mission-modal-title": "Nhiệm vụ hoàn thành",
   "mission-reward-title": "Bạn nhận được",

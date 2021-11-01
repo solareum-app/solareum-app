@@ -140,7 +140,7 @@
   "mission-label": "Mission completed!",
   "mission-number-label": "You have {{missionLeft}} missions left",
   "mission-wait-label": "Plz wait for {{second}} seconds",
-  "mission-active-label": "View this Ad to receive {{amount}}XSB",
+  "mission-active-label": "Get your rewards of {{amount}}XSB",
   "mission-close-label": "Mission ends in {{second}} seconds",
   "mission-modal-title": "Mission Completed",
   "mission-reward-title": "You received",

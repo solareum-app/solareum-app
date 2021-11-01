@@ -81,9 +81,10 @@ export const MissionButton = ({ padding = 20 }) => {
     setLastMissionTsOrg(value);
   };
 
-  const checkInitialCondition = () => {
+  const checkInitialCondition = async () => {
     if (isAccountCreated) {
-      showRewardAd();
+      await earnMissionReward();
+      setLastMissionTs(Date.now());
     } else {
       refCreateAccount.current?.open();
     }
@@ -124,6 +125,7 @@ export const MissionButton = ({ padding = 20 }) => {
   };
 
   const earnMissionReward = async () => {
+    setLoading(true);
     const resp = await authFetch(service.postMission, {
       method: 'POST',
       body: {
@@ -141,6 +143,7 @@ export const MissionButton = ({ padding = 20 }) => {
     });
     setMission(resp);
     setDone(true);
+    setLoading(false);
     refMissionReward.current?.open();
   };
 
