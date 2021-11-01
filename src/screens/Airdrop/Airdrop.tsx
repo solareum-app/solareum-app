@@ -157,6 +157,10 @@ export const Airdrop = ({ isActive }) => {
     checkAirdrop();
   }, [accountList]);
 
+  if (!airdrop && !isActive) {
+    return null;
+  }
+
   return (
     <View>
       <View style={{ ...s.main, padding: isActive ? 0 : 24 }}>
