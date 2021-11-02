@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { API_PATH } from '../config';
 
 export const authFetch = (url: string, opts: any = {}) => {
@@ -7,13 +8,15 @@ export const authFetch = (url: string, opts: any = {}) => {
   };
   const actualUrl = url.startsWith('/') ? `${API_PATH}${url}` : url;
   const body = opts.body;
-  const bodyRequest = typeof body === 'string' ? body : JSON.stringify(body);
 
-  return fetch(actualUrl, {
+  return axios({
+    method: 'get',
     ...opts,
-    headers,
-    body: bodyRequest,
-  }).then((resp) => {
-    return resp.json();
-  });
+    headers: {
+      ...headers,
+      ...opts.headers,
+    },
+    url: actualUrl,
+    data: body,
+  }).then((resp) => resp.data);
 };
