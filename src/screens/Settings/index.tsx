@@ -142,13 +142,13 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              navigation.navigate(Routes.Mission);
+              navigation.navigate(Routes.Influencer);
             }}
           >
-            <Icon type="feather" name="zap" color="grey" size={16} />
+            <Icon type="feather" name="users" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                {t('setting-mission')}
+                {t('setting-referral')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -157,13 +157,13 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              navigation.navigate(Routes.Influencer);
+              navigation.navigate(Routes.Mission);
             }}
           >
-            <Icon type="feather" name="users" color="grey" size={16} />
+            <Icon type="feather" name="zap" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                {t('setting-referral')}
+                {t('setting-mission')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
