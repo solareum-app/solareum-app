@@ -7,6 +7,7 @@ import { grid } from '../../components/Styles';
 import { MissionButton } from '../../containers/MissionButton';
 import { SocialItem } from './SocialItem';
 import { Header } from './Header';
+import { authFetch } from '../../utils/authfetch';
 
 const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
   const paddingToBottom = 20;
@@ -25,14 +26,19 @@ const Social = () => {
 
   const loadArticle = async (page = 0) => {
     setFetching(true);
-    const oldList = page <= 0 ? [] : articleList;
-    const data = await fetch(
-      `https://wealthclub.vn/c/news/15.json?page=${page}`,
-    ).then((resp) => resp.json());
-    setEof(data.topic_list.more_topics_url ? false : true);
-    setArticleList(oldList.concat(data.topic_list.topics));
-    setPage(page);
-    setFetching(false);
+    try {
+      const oldList = page <= 0 ? [] : articleList;
+      const data = await authFetch(
+        `https://wealthclub.vn/c/news/15.json?page=${page}`,
+      );
+      console.log('data', data);
+      setEof(data.topic_list.more_topics_url ? false : true);
+      setArticleList(oldList.concat(data.topic_list.topics));
+      setPage(page);
+      setFetching(false);
+    } catch (err) {
+      console.log('err', err);
+    }
   };
 
   const init = async () => {

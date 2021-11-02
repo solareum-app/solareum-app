@@ -17,6 +17,7 @@ import { IAccount, createAccountList } from './IAccount';
 import { useApp } from './AppProvider';
 import { useConfig } from './RemoteConfigProvider';
 import { getUniqByAddress } from './getUniqByAddress';
+import { authFetch } from '../../utils/authfetch';
 
 export type TokenContextType = {
   accountList: IAccount[];
@@ -72,15 +73,11 @@ const CUSTOM_TOKENS = [
 const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
   const list = tokenList.map((i) => i.extensions?.coingeckoId) || [];
   const filtered = list.filter((i) => i !== undefined);
-  const price = await fetch(
+  const price = await authFetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=${filtered.join(
       ',',
     )}&vs_currencies=usd,vnd`,
-  )
-    .then((resp) => resp.json())
-    .then((data) => {
-      return data;
-    });
+  );
   return price;
 };
 
