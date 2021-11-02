@@ -65,7 +65,7 @@
   "airdrop-title-create-xsb-m01": "An XSB account is required when making trades on the Solana platform. Creating this account will help us to transfer XSB to you in the fastest and most convenient way.",
   "airdrop-title-create-xsb-fee": "Fee: {{mintAccountFee}} SOL",
   "airdrop-title-create-xsb-loading": "Account creating...",
-  "airdrop-title-create-xsb-created": "You've had XSB account already",
+  "airdrop-title-create-xsb-created": "You've had XSB account already, no need to pay more SOL",
   "airdrop-title-create-xsb-btn": "Create XSB account",
   "airdrop-title-create-xsb-next": "Next",
   "airdrop-info-title": "XSB Airdrop",
