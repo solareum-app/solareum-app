@@ -26,19 +26,14 @@ const Social = () => {
 
   const loadArticle = async (page = 0) => {
     setFetching(true);
-    try {
-      const oldList = page <= 0 ? [] : articleList;
-      const data = await authFetch(
-        `https://wealthclub.vn/c/news/15.json?page=${page}`,
-      );
-      console.log('data', data);
-      setEof(data.topic_list.more_topics_url ? false : true);
-      setArticleList(oldList.concat(data.topic_list.topics));
-      setPage(page);
-      setFetching(false);
-    } catch (err) {
-      console.log('err', err);
-    }
+    const oldList = page <= 0 ? [] : articleList;
+    const data = await authFetch(
+      `https://wealthclub.vn/c/news/15.json?page=${page}`,
+    );
+    setEof(data.topic_list.more_topics_url ? false : true);
+    setArticleList(oldList.concat(data.topic_list.topics));
+    setPage(page);
+    setFetching(false);
   };
 
   const init = async () => {
