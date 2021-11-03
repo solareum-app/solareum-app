@@ -59,10 +59,10 @@ export const Airdrop = ({ isActive }) => {
   const [rewardRefSignature, setRewardRefSignature] = useState<string>('');
   const refStepInfo = useRef();
 
-  const checkAirdrop = async () => {
-    const solAccount = accountList.find((i) => i.mint === 'SOL');
-    const solAddress = solAccount?.publicKey;
+  const solAccount = accountList.find((i) => i.mint === 'SOL');
+  const solAddress = solAccount?.publicKey;
 
+  const checkAirdrop = async () => {
     const resp = await authFetch(service.postCheckAirdrop, {
       method: 'POST',
       body: {
@@ -78,7 +78,9 @@ export const Airdrop = ({ isActive }) => {
   };
 
   const dismiss = () => {
-    checkAirdrop();
+    setTimeout(() => {
+      checkAirdrop();
+    }, 30000);
   };
 
   const startAirdrop = () => {
