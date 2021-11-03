@@ -109,11 +109,10 @@ export const Airdrop = ({ isActive }) => {
           },
         },
       });
-      setStep(AIRDROP_STEP.createAccount);
-    } catch (err) {
-      setError(t('sys-error'));
+    } catch {
     } finally {
       setLoading(false);
+      setStep(AIRDROP_STEP.createAccount);
     }
   };
 

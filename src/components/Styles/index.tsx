@@ -124,6 +124,31 @@ export const grid = StyleSheet.create({
   },
 });
 
+export const row = StyleSheet.create({
+  main: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 40,
+  },
+  left: {
+    flex: 1,
+  },
+  right: {
+    flex: 0,
+  },
+  label: {
+    ...typo.normal,
+    marginBottom: 0,
+  },
+  value: {
+    lineHeight: 40,
+    fontSize: 20,
+    color: COLORS.white2,
+  },
+});
+
 export const input = StyleSheet.create({
   container: {
     paddingLeft: 0,
