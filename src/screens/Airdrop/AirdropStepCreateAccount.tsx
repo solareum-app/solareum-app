@@ -33,8 +33,8 @@ const style = StyleSheet.create({
   },
 });
 
-const MAX_TRY = 24;
-const WAIT_TIME = 10000; // 10s -> 4mins for total
+const MAX_TRY = 12;
+const WAIT_TIME = 15000; // 10s -> 4mins for total
 
 export const AirdropStepCreateAccount = ({
   busy,
@@ -64,7 +64,7 @@ export const AirdropStepCreateAccount = ({
       return;
     }
     if (no < 0) {
-      return;
+      return {};
     }
 
     const list = await loadAccountList();
@@ -93,11 +93,11 @@ export const AirdropStepCreateAccount = ({
       await wallet.createAssociatedTokenAccount(new PublicKey(account.address));
       const acc = await pollingAccount(MAX_TRY);
       setAccount(acc);
-      next();
     } catch (err) {
       setError(t('sys-error'));
     } finally {
       setLoading(false);
+      next();
     }
   };
 
