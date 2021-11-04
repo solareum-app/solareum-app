@@ -17,6 +17,7 @@ import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { SOL_BALANCE_TARGET } from './const';
 
 const s = StyleSheet.create({
   main: {
@@ -44,7 +45,7 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
-export const Airdrop = ({ isActive }) => {
+export const Airdrop = ({ isActive, load }) => {
   const { accountList } = useToken();
   const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);
@@ -59,10 +60,30 @@ export const Airdrop = ({ isActive }) => {
   const [rewardRefSignature, setRewardRefSignature] = useState<string>('');
   const refStepInfo = useRef();
 
-  const solAccount = accountList.find((i) => i.mint === 'SOL');
+  const solAccount = accountList.find((i) => i.mint === 'SOL') || {
+    publicKey: '-',
+    decimals: 8,
+    amount: 0,
+  };
   const solAddress = solAccount?.publicKey;
 
+  const checkBalance = () => {
+    const solBalance = solAccount?.amount * Math.pow(10, solAccount?.decimals);
+
+    if (solBalance <= SOL_BALANCE_TARGET) {
+      setError(t('airdrop-sol-balance'));
+      return;
+    }
+
+    setError('');
+    setStep(AIRDROP_STEP.inputRefAddress);
+  };
+
   const checkAirdrop = async () => {
+    if (!solAddress || airdrop < 0) {
+      return;
+    }
+
     const resp = await authFetch(service.postCheckAirdrop, {
       method: 'POST',
       body: {
@@ -78,9 +99,7 @@ export const Airdrop = ({ isActive }) => {
   };
 
   const dismiss = () => {
-    setTimeout(() => {
-      checkAirdrop();
-    }, 30000);
+    setAirdrop(-1);
   };
 
   const startAirdrop = () => {
@@ -114,6 +133,7 @@ export const Airdrop = ({ isActive }) => {
     } catch {
     } finally {
       setLoading(false);
+      setAirdrop(-1);
       setStep(AIRDROP_STEP.createAccount);
     }
   };
@@ -156,7 +176,7 @@ export const Airdrop = ({ isActive }) => {
 
   useEffect(() => {
     checkAirdrop();
-  }, [accountList]);
+  }, [load, accountList]);
 
   if (!airdrop && !isActive) {
     return null;
@@ -169,10 +189,12 @@ export const Airdrop = ({ isActive }) => {
         <Text style={typo.titleLeft}>{t('airdrop-title')}</Text>
         <Text style={typo.normal}>{t('airdrop-intro')}</Text>
         <Button
-          title={t('airdrop-receive-btn', { airdrop })}
+          title={t('airdrop-receive-btn', {
+            airdrop: airdrop > 0 ? airdrop : 0,
+          })}
           type="outline"
           onPress={startAirdrop}
-          disabled={airdrop === 0}
+          disabled={airdrop <= 0}
         />
       </View>
 
@@ -181,7 +203,8 @@ export const Airdrop = ({ isActive }) => {
           {step === AIRDROP_STEP.info ? (
             <AirdropStepInfo
               dismiss={dismiss}
-              next={() => setStep(AIRDROP_STEP.inputRefAddress)}
+              next={checkBalance}
+              error={error}
             />
           ) : null}
 

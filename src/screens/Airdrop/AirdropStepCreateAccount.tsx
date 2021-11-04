@@ -34,7 +34,7 @@ const style = StyleSheet.create({
 });
 
 const MAX_TRY = 12;
-const WAIT_TIME = 15000; // 10s -> 4mins for total
+const WAIT_TIME = 15000; // 3 mins
 
 export const AirdropStepCreateAccount = ({
   busy,
@@ -83,7 +83,7 @@ export const AirdropStepCreateAccount = ({
     }
 
     const solBalance = solAccount?.amount * Math.pow(10, solAccount?.decimals);
-    if (solAccount && solBalance <= SOL_BALANCE_TARGET) {
+    if (solBalance <= SOL_BALANCE_TARGET) {
       setError(t('airdrop-sol-balance'));
       return;
     }

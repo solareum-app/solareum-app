@@ -100,6 +100,8 @@ export enum TransferAction {
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const [isHideBalance, setIsHideBalance] = useState(false);
+  const [load, setLoad] = useState(0);
+
   const navigation = useNavigation();
   const { addressId } = useApp();
   const { loadAccountList, accountList } = useToken();
@@ -120,6 +122,7 @@ const WalletScreen = () => {
   const onRefresh = async () => {
     try {
       setLoading(true);
+      setLoad(load + 1);
       await loadAccountList();
       setLoading(false);
     } catch {
@@ -219,7 +222,7 @@ const WalletScreen = () => {
           {isAccountCreated ? <MissionLeftButton /> : null}
         </View>
 
-        <Airdrop />
+        <Airdrop load={load} />
       </ScrollView>
 
       <Portal>
