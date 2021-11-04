@@ -83,7 +83,7 @@ export const AirdropStepCreateAccount = ({
     }
 
     const solBalance = solAccount?.amount * Math.pow(10, solAccount?.decimals);
-    if (solAccount && solBalance <= SOL_BALANCE_TARGET) {
+    if (solBalance <= SOL_BALANCE_TARGET) {
       setError(t('airdrop-sol-balance'));
       return;
     }
