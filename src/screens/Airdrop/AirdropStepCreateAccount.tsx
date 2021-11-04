@@ -33,7 +33,7 @@ const style = StyleSheet.create({
   },
 });
 
-const MAX_TRY = 12;
+const MAX_TRY = 8;
 const WAIT_TIME = 15000; // 10s -> 4mins for total
 
 export const AirdropStepCreateAccount = ({
