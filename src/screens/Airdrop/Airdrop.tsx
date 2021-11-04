@@ -44,7 +44,7 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
-export const Airdrop = ({ isActive }) => {
+export const Airdrop = ({ isActive, load, isAccountCreated }) => {
   const { accountList } = useToken();
   const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);
@@ -63,6 +63,10 @@ export const Airdrop = ({ isActive }) => {
   const solAddress = solAccount?.publicKey;
 
   const checkAirdrop = async () => {
+    if (isAccountCreated) {
+      return;
+    }
+
     const resp = await authFetch(service.postCheckAirdrop, {
       method: 'POST',
       body: {
@@ -78,9 +82,7 @@ export const Airdrop = ({ isActive }) => {
   };
 
   const dismiss = () => {
-    setTimeout(() => {
-      checkAirdrop();
-    }, 30000);
+    setAirdrop(-1);
   };
 
   const startAirdrop = () => {
@@ -156,7 +158,7 @@ export const Airdrop = ({ isActive }) => {
 
   useEffect(() => {
     checkAirdrop();
-  }, [accountList]);
+  }, [load]);
 
   if (!airdrop && !isActive) {
     return null;
@@ -172,7 +174,7 @@ export const Airdrop = ({ isActive }) => {
           title={t('airdrop-receive-btn', { airdrop })}
           type="outline"
           onPress={startAirdrop}
-          disabled={airdrop === 0}
+          disabled={airdrop <= 0}
         />
       </View>
 
