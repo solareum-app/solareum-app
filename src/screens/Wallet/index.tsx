@@ -222,7 +222,7 @@ const WalletScreen = () => {
           {isAccountCreated ? <MissionLeftButton /> : null}
         </View>
 
-        <Airdrop load={load} isAccountCreated={isAccountCreated} />
+        <Airdrop load={load} />
       </ScrollView>
 
       <Portal>

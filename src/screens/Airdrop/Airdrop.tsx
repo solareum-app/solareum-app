@@ -44,7 +44,7 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
-export const Airdrop = ({ isActive, load, isAccountCreated }) => {
+export const Airdrop = ({ isActive, load }) => {
   const { accountList } = useToken();
   const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);
@@ -63,7 +63,7 @@ export const Airdrop = ({ isActive, load, isAccountCreated }) => {
   const solAddress = solAccount?.publicKey;
 
   const checkAirdrop = async () => {
-    if (isAccountCreated) {
+    if (!solAddress || airdrop < 0) {
       return;
     }
 
@@ -81,9 +81,7 @@ export const Airdrop = ({ isActive, load, isAccountCreated }) => {
     setRewardRef(resp.rewardRef || 0);
   };
 
-  const dismiss = () => {
-    setAirdrop(-1);
-  };
+  const dismiss = () => { };
 
   const startAirdrop = () => {
     setError('');
@@ -116,6 +114,7 @@ export const Airdrop = ({ isActive, load, isAccountCreated }) => {
     } catch {
     } finally {
       setLoading(false);
+      setAirdrop(airdrop * -1);
       setStep(AIRDROP_STEP.createAccount);
     }
   };
@@ -158,7 +157,7 @@ export const Airdrop = ({ isActive, load, isAccountCreated }) => {
 
   useEffect(() => {
     checkAirdrop();
-  }, [load]);
+  }, [load, accountList]);
 
   if (!airdrop && !isActive) {
     return null;
