@@ -98,7 +98,9 @@ export const Airdrop = ({ isActive, load }) => {
     setRewardRef(resp.rewardRef || 0);
   };
 
-  const dismiss = () => { };
+  const dismiss = () => {
+    setAirdrop(-1);
+  };
 
   const startAirdrop = () => {
     setError('');
@@ -131,7 +133,7 @@ export const Airdrop = ({ isActive, load }) => {
     } catch {
     } finally {
       setLoading(false);
-      setAirdrop(airdrop * -1);
+      setAirdrop(-1);
       setStep(AIRDROP_STEP.createAccount);
     }
   };
@@ -187,7 +189,9 @@ export const Airdrop = ({ isActive, load }) => {
         <Text style={typo.titleLeft}>{t('airdrop-title')}</Text>
         <Text style={typo.normal}>{t('airdrop-intro')}</Text>
         <Button
-          title={t('airdrop-receive-btn', { airdrop })}
+          title={t('airdrop-receive-btn', {
+            airdrop: airdrop > 0 ? airdrop : 0,
+          })}
           type="outline"
           onPress={startAirdrop}
           disabled={airdrop <= 0}
