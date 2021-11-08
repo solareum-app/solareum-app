@@ -10,6 +10,7 @@ import { Button, Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-portalize';
 
+import { LoadingImage } from '../../components/LoadingIndicator';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
@@ -26,6 +27,7 @@ import { IAccount } from '../../core/AppProvider/IAccount';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftButton';
 import { Airdrop } from '../Airdrop/Airdrop';
+import { typo } from '../../components/Styles';
 
 const s = StyleSheet.create({
   header: {
@@ -79,6 +81,12 @@ const s = StyleSheet.create({
   },
   txtManageBtn: {
     color: COLORS.white2,
+  },
+  loadingWrp: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 240,
   },
 });
 
@@ -194,6 +202,13 @@ const WalletScreen = () => {
         </View>
 
         <View style={[grid.body, s.body]}>
+          {loading && !activeAccountList.length ? (
+            <View style={s.loadingWrp}>
+              <LoadingImage />
+              <Text style={typo.normal}>{t('home-account-loading')}</Text>
+            </View>
+          ) : null}
+
           <TokensList
             isHideBalance={isHideBalance}
             balanceListInfo={activeAccountList}

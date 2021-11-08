@@ -12,6 +12,7 @@
   "home-receive": "Nhận",
   "home-qr-code": "QR Code",
   "home-manage-accounts": "Quản lý Tài Khoản",
+  "home-account-loading": "Đang lấy thông tin ví...",
   "token-market-title": "Thị trường",
   "token-market-empty": "Hiện tại chưa có thị trường nào",
   "token-send-title": "Chuyển {{symbol}}",

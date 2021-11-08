@@ -47,6 +47,7 @@ enum AIRDROP_STEP {
 
 export const Airdrop = ({ isActive, load }) => {
   const { accountList } = useToken();
+  const [airdropActive, setAirdropActive] = useState(true);
   const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);
   const [step, setStep] = useState(AIRDROP_STEP.info);
@@ -99,7 +100,7 @@ export const Airdrop = ({ isActive, load }) => {
   };
 
   const dismiss = () => {
-    setAirdrop(-1);
+    setAirdropActive(false);
   };
 
   const startAirdrop = () => {
@@ -133,7 +134,7 @@ export const Airdrop = ({ isActive, load }) => {
     } catch {
     } finally {
       setLoading(false);
-      setAirdrop(-1);
+      setAirdropActive(false);
       setStep(AIRDROP_STEP.createAccount);
     }
   };
@@ -194,7 +195,7 @@ export const Airdrop = ({ isActive, load }) => {
           })}
           type="outline"
           onPress={startAirdrop}
-          disabled={airdrop <= 0}
+          disabled={airdrop === 0 || !airdropActive}
         />
       </View>
 
