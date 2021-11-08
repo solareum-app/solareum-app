@@ -1,4 +1,10 @@
-import { mostSigFig, leastSigFig, roundDown, roundUp } from './autoRound';
+import {
+  mostSigFig,
+  leastSigFig,
+  roundDown,
+  roundUp,
+  price,
+} from './autoRound';
 
 describe('Auto Rounding', () => {
   it('mostSigFig', () => {
@@ -57,5 +63,16 @@ describe('Auto Rounding', () => {
     expect(roundUp(0.012333333322)).toBe('0.012334');
     expect(roundUp(0.00113301)).toBe('0.0011331');
     expect(roundUp(0.00000177)).toBe('0.0000017700');
+  });
+  it('price', () => {
+    expect(price(12.3456)).toBe('12.345');
+    expect(price(0.485)).toBe('0.485');
+    expect(price(7.088)).toBe('7.088');
+    expect(price(-7.088)).toBe('-7.088');
+    expect(price(10000)).toBe('10000');
+    expect(price(10008)).toBe('10008');
+    expect(price(10008.66)).toBe('10008');
+    expect(price(10058.66)).toBe('10058');
+    expect(price(100058.66)).toBe('100050');
   });
 });

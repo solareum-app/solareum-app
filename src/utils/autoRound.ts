@@ -17,17 +17,19 @@ export const leastSigFig = (value: number, sigFig?: number, clamp?: number) => {
 export const roundDown = (value: number, sigFig?: number, clamp?: number) => {
   const lsf = leastSigFig(value, sigFig, clamp);
   const fixed = lsf < 0 ? 0 : lsf;
-  return (Math.floor(value * Math.pow(10, lsf)) / Math.pow(10, lsf)).toFixed(
-    fixed,
-  );
+  const roundedValue = (
+    Math.floor(value * Math.pow(10, lsf)) / Math.pow(10, lsf)
+  ).toFixed(fixed);
+  return roundedValue;
 };
 
 export const roundUp = (value: number, sigFig?: number, clamp?: number) => {
   const lsf = leastSigFig(value, sigFig, clamp);
   const fixed = lsf < 0 ? 0 : lsf;
-  return (Math.ceil(value * Math.pow(10, lsf)) / Math.pow(10, lsf)).toFixed(
-    fixed,
-  );
+  const roundedValue = (
+    Math.ceil(value * Math.pow(10, lsf)) / Math.pow(10, lsf)
+  ).toFixed(fixed);
+  return roundedValue;
 };
 
 export const price = (value: number, sigFig?: number, clamp?: number) => {
@@ -35,5 +37,6 @@ export const price = (value: number, sigFig?: number, clamp?: number) => {
     return '0.00';
   }
 
-  return roundDown(value, sigFig, clamp).replace(/(\.0+|0+)$/, '');
+  const p = roundDown(value, sigFig, clamp);
+  return parseFloat(p).toString();
 };
