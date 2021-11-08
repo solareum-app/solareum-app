@@ -12,6 +12,7 @@
   "home-receive": "Receive",
   "home-qr-code": "QR Code",
   "home-manage-accounts": "Manage your accounts",
+  "home-account-loading": "Fetching wallet information...",
   "token-market-title": "Markets",
   "token-market-empty": "No market found",
   "token-send-title": "Send {{symbol}}",
