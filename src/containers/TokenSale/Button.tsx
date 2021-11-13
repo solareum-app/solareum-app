@@ -24,7 +24,6 @@ import { ReceiveMessage } from './ReceiveMessage';
 const s = StyleSheet.create({
   main: {
     marginTop: -36,
-    marginBottom: 40,
     padding: 24,
   },
   img: {
@@ -37,11 +36,14 @@ const s = StyleSheet.create({
     marginBottom: 0,
     flex: 1,
   },
+  bodyWrp: {
+    minHeight: 400,
+  },
   loadingWrp: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 240,
+    minHeight: 240,
   },
 });
 
@@ -199,10 +201,12 @@ export const TokenSaleButton = () => {
           ) : null}
 
           {step === TOKEN_SALE_STEP.distributing ? (
-            <View style={s.loadingWrp}>
-              <LoadingImage />
-              <Text style={typo.normal}>All set! Your XSB is coming...</Text>
-              {error ? <Text style={typo.warning}>{error}</Text> : null}
+            <View style={s.bodyWrp}>
+              <View style={s.loadingWrp}>
+                <LoadingImage />
+                <Text style={typo.normal}>All set! Your XSB is coming...</Text>
+                {error ? <Text style={typo.warning}>{error}</Text> : null}
+              </View>
             </View>
           ) : null}
 

@@ -132,6 +132,14 @@ export const row = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
+  mainContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+    minHeight: 40,
+  },
   left: {
     flex: 1,
   },

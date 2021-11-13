@@ -17,7 +17,7 @@ export const TokenSaleStepInfo = ({ dismiss, next, error }) => {
         below before participating in the Token Sales.
       </Text>
       <View style={s.body}>
-        <View style={row.main}>
+        <View style={row.mainContent}>
           <View style={row.left}>
             <Text style={row.label}>
               1. Check the ability to recover your wallet.
@@ -33,7 +33,7 @@ export const TokenSaleStepInfo = ({ dismiss, next, error }) => {
             />
           </View>
         </View>
-        <View style={row.main}>
+        <View style={row.mainContent}>
           <View style={row.left}>
             <Text style={row.label}>
               2. Your wallet should be able to access via Phantom, Sollet, or
@@ -41,14 +41,14 @@ export const TokenSaleStepInfo = ({ dismiss, next, error }) => {
             </Text>
           </View>
         </View>
-        <View style={row.main}>
+        <View style={row.mainContent}>
           <View style={row.left}>
             <Text style={row.label}>
               3. You can purchase multiple times, a maximum of 5 times per day.
             </Text>
           </View>
         </View>
-        <View style={row.main}>
+        <View style={row.mainContent}>
           <View style={row.left}>
             <Text style={row.label}>
               4. You need to create XSB account before participating in the
