@@ -15,6 +15,7 @@ import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
 
 import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
 import { TokenSaleStepInfo } from './TokenSaleStepInfo';
@@ -65,6 +66,7 @@ export const TokenSaleButton = () => {
   const [error, setError] = useState<string>('');
   const metaData = useMetaData();
   const { t } = useLocalize();
+  const { presale } = useConfig();
   const refTokenSale = useRef();
 
   const emtpyAccount = { publicKey: '-', decimals: 8, amount: 0 };
@@ -159,6 +161,10 @@ export const TokenSaleButton = () => {
     setStep(TOKEN_SALE_STEP.successAndShare);
   };
 
+  if (!presale.active) {
+    return null;
+  }
+
   return (
     <View>
       <View style={{ ...s.main, padding: 24 }}>
@@ -177,6 +183,7 @@ export const TokenSaleButton = () => {
         <FixedContent ref={refTokenSale}>
           {step === TOKEN_SALE_STEP.info ? (
             <TokenSaleStepInfo
+              presale={presale}
               error={error}
               next={() => {
                 checkAccountAndNext();
@@ -197,7 +204,11 @@ export const TokenSaleButton = () => {
           ) : null}
 
           {step === TOKEN_SALE_STEP.form ? (
-            <TokenSaleForm token={usdcAccount} next={submit} />
+            <TokenSaleForm
+              presale={presale}
+              token={usdcAccount}
+              next={submit}
+            />
           ) : null}
 
           {step === TOKEN_SALE_STEP.distributing ? (

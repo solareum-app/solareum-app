@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, Linking } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { typo, grid, row } from '../../components/Styles';
+import { typo, row } from '../../components/Styles';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { style as s } from './style';
 
-export const TokenSaleStepInfo = ({ dismiss, next, error }) => {
+export const TokenSaleStepInfo = ({ dismiss, next, error, presale }) => {
   const { t } = useLocalize();
 
   return (
@@ -61,7 +61,9 @@ export const TokenSaleStepInfo = ({ dismiss, next, error }) => {
             <Text style={row.label}>5. Price</Text>
           </View>
           <View style={row.right}>
-            <Text style={row.value2}>0.0075USDC / 1XSB</Text>
+            <Text style={row.value2}>
+              {presale.price || '0.0075'} USDC / 1XSB
+            </Text>
           </View>
         </View>
         <View style={row.main}>
@@ -69,7 +71,7 @@ export const TokenSaleStepInfo = ({ dismiss, next, error }) => {
             <Text style={row.label}>6. Minimum Order</Text>
           </View>
           <View style={row.right}>
-            <Text style={row.value2}>0.1 USDC</Text>
+            <Text style={row.value2}>{presale.min_order || '0.1'} USDC</Text>
           </View>
         </View>
         <View style={row.main}>
@@ -77,7 +79,7 @@ export const TokenSaleStepInfo = ({ dismiss, next, error }) => {
             <Text style={row.label}>7. Maximum Order</Text>
           </View>
           <View style={row.right}>
-            <Text style={row.value2}>250.0 USDC</Text>
+            <Text style={row.value2}>{presale.max_order || '250.0'} USDC</Text>
           </View>
         </View>
       </View>

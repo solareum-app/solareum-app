@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
-import LottieView from 'lottie-react-native';
 
 import { typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
@@ -77,12 +76,29 @@ const checkDecimalPlaces = (valueStr) => {
   return (valueStr.match(new RegExp('\\.', 'g')) || []).length <= 1;
 };
 
-const getXSBAmount = (value) => {
-  const qty = value ? Math.ceil(parseFloat(value) / 0.0075).toString() : '0';
-  return qty;
+const getXSBAmount = (value = '0', minOrder = 0.1, maxOrder = 250) => {
+  if (isNaN(parseFloat(value))) {
+    return 0;
+  }
+
+  const v = parseFloat(value);
+  if (v < minOrder || v > maxOrder) {
+    return 0;
+  }
+
+  return Math.ceil(v / 0.0075).toString();
 };
 
-const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
+const Step1 = ({
+  address,
+  setAddress,
+  amount,
+  setAmount,
+  next,
+  token,
+  presale,
+  error,
+}) => {
   const [xsbAmount, setXsbAmount] = useState('0');
   const { symbol, usd } = token;
   const { t } = useLocalize();
@@ -97,7 +113,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
     }
     setAmount(v);
 
-    setXsbAmount(getXSBAmount(v));
+    setXsbAmount(getXSBAmount(v, presale.min_order, presale.max_order));
   };
 
   return (
@@ -126,11 +142,18 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
             style={typo.input}
             labelStyle={s.inputLabel}
             containerStyle={s.inputContainer}
-            value={xsbAmount}
+            value={xsbAmount || '0'}
           />
         </View>
 
         <View style={s.footer}>
+          {error && error.message ? (
+            <View style={s.group}>
+              <Text style={[typo.warning]}>
+                {getErrorMessage(error.message, t)}
+              </Text>
+            </View>
+          ) : null}
           <Button
             title={t('token-continue-btn')}
             buttonStyle={s.button}
@@ -149,7 +172,7 @@ const getErrorMessage = (message = '', t) => {
   return message;
 };
 
-const Step2 = ({ token, address, amount, next, busy, error }) => {
+const Step2 = ({ token, address, amount, next, busy, error, presale }) => {
   const { symbol } = token;
   const { t } = useLocalize();
 
@@ -180,7 +203,8 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
         <View style={s.group}>
           <Text style={[typo.helper, s.groupTitle]}>You Receive</Text>
           <Text style={[typo.normal, s.groupValue]}>
-            {getXSBAmount(amount) || 0} XSB
+            {getXSBAmount(amount, presale.min_order, presale.max_order) || 0}{' '}
+            XSB
           </Text>
         </View>
         <View style={s.group}>
@@ -207,7 +231,7 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
   );
 };
 
-export const TokenSaleForm = ({ initStep = 1, token, next }) => {
+export const TokenSaleForm = ({ initStep = 1, token, next, presale }) => {
   const [step, setStep] = useState(initStep);
   const [error, setError] = useState('');
   const [amount, setAmount] = useState('');
@@ -217,6 +241,16 @@ export const TokenSaleForm = ({ initStep = 1, token, next }) => {
 
   // Solareum hot wallet
   const address = '7Kwq7Hj6q2u2tx35zZvFHsKLseKm3Y753aQTVEcy8rtv';
+
+  const validateOrder = () => {
+    const t = getXSBAmount(amount, presale.min_order, presale.max_order);
+    if (t === 0) {
+      setError({ message: 'Your input is not valid.' });
+      return;
+    }
+
+    setStep(2);
+  };
 
   const transfer = async () => {
     setBusy(true);
@@ -250,7 +284,7 @@ export const TokenSaleForm = ({ initStep = 1, token, next }) => {
         account: token,
         amount,
         amountCurrency: 'USDC',
-        qty: getXSBAmount(amount),
+        qty: getXSBAmount(amount, presale.min_order, presale.max_order),
         qtyCurrency: 'XSB',
       });
     } catch (err) {
@@ -259,29 +293,37 @@ export const TokenSaleForm = ({ initStep = 1, token, next }) => {
     }
   };
 
+  useEffect(() => {
+    const t = getXSBAmount(amount, presale.min_order, presale.max_order);
+    if (t !== 0) {
+      setError('');
+    }
+  }, [amount]);
+
   if (step === 1) {
     return (
       <Step1
-        next={() => setStep(2)}
+        next={validateOrder}
+        error={error}
         address={address}
         setAddress={() => null}
         amount={amount}
         setAmount={setAmount}
         token={token}
+        presale={presale}
       />
     );
   }
 
-  if (step === 2) {
-    return (
-      <Step2
-        token={token}
-        address={address}
-        amount={amount}
-        next={transfer}
-        busy={busy}
-        error={error}
-      />
-    );
-  }
+  return (
+    <Step2
+      token={token}
+      address={address}
+      amount={amount}
+      next={transfer}
+      busy={busy}
+      error={error}
+      presale={presale}
+    />
+  );
 };
