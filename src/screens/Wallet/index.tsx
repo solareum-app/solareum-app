@@ -28,6 +28,7 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftButton';
 import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
+import { TokenSaleButton } from '../../containers/TokenSale/Button';
 
 const s = StyleSheet.create({
   header: {
@@ -235,6 +236,7 @@ const WalletScreen = () => {
           ) : null}
 
           {isAccountCreated ? <MissionLeftButton /> : null}
+          {<TokenSaleButton />}
         </View>
 
         <Airdrop load={load} />

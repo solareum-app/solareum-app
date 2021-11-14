@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 
+import { authFetch } from '../../utils/authfetch';
+
 /**
  * TOKEN structure
  {
@@ -40,6 +42,7 @@ export type RemoteConfigType = {
   customeMarketList: any[];
   customeTokenList: any[];
   links: any;
+  presale: any;
 };
 
 export const RemoteConfigContext = React.createContext<RemoteConfigType>({
@@ -49,6 +52,7 @@ export const RemoteConfigContext = React.createContext<RemoteConfigType>({
   customeMarketList: [],
   customeTokenList: [],
   links: {},
+  presale: {},
 });
 
 export const useConfig = () => {
@@ -70,6 +74,7 @@ export const RemoteConfigProvider = ({ children }) => {
   const [customeMarketList, setCustomeMarketList] = useState([]);
   const [customeTokenList, setCustomeTokenList] = useState([]);
   const [links, setLinks] = useState({});
+  const [presale, setPresale] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -114,6 +119,15 @@ export const RemoteConfigProvider = ({ children }) => {
         setCustomeMarketList(JSON.parse(sourceMarketList._value));
         setCustomeTokenList(JSON.parse(sourceTokenList._value));
         setLinks(JSON.parse(sourceLinks._value));
+      })
+      .then(async () => {
+        const configs = await authFetch('/settings?type=presale', {
+          method: 'get',
+        });
+        if (configs.length) {
+          const p = configs[0];
+          setPresale(p.settings);
+        }
 
         setLoading(false);
       })
@@ -131,6 +145,7 @@ export const RemoteConfigProvider = ({ children }) => {
         links,
         customeMarketList,
         customeTokenList,
+        presale,
       }}
     >
       {!loading ? children : null}

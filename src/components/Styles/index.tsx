@@ -130,7 +130,15 @@ export const row = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 40,
+    marginBottom: 8,
+  },
+  mainContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+    minHeight: 40,
   },
   left: {
     flex: 1,
@@ -141,11 +149,16 @@ export const row = StyleSheet.create({
   label: {
     ...typo.normal,
     marginBottom: 0,
+    lineHeight: 20,
   },
   value: {
     lineHeight: 40,
     fontSize: 20,
     color: COLORS.white2,
+  },
+  value2: {
+    fontSize: 16,
+    color: COLORS.blue2,
   },
 });
 
