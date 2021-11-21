@@ -136,25 +136,6 @@ const WalletPicker: React.FC = () => {
             <View style={s.group}>
               <View style={s.groupItem}>
                 <Button
-                  title={t('home-create-wallet')}
-                  type="clear"
-                  onPress={() => {
-                    ref.current?.close();
-                    navigation.navigate(Routes.CreateWallet);
-                  }}
-                  titleStyle={{ color: COLORS.white2 }}
-                  icon={
-                    <Icon
-                      size={FONT_SIZES.md}
-                      name="plus"
-                      color={COLORS.white2}
-                      style={{ marginRight: 6 }}
-                    />
-                  }
-                />
-              </View>
-              <View style={s.groupItem}>
-                <Button
                   title={t('home-import-wallet')}
                   type="clear"
                   onPress={() => {
@@ -166,6 +147,25 @@ const WalletPicker: React.FC = () => {
                     <Icon
                       size={FONT_SIZES.md}
                       name="download"
+                      color={COLORS.white2}
+                      style={{ marginRight: 6 }}
+                    />
+                  }
+                />
+              </View>
+              <View style={s.groupItem}>
+                <Button
+                  title={t('home-create-wallet')}
+                  type="clear"
+                  onPress={() => {
+                    ref.current?.close();
+                    navigation.navigate(Routes.CreateWallet);
+                  }}
+                  titleStyle={{ color: COLORS.white2 }}
+                  icon={
+                    <Icon
+                      size={FONT_SIZES.md}
+                      name="plus"
                       color={COLORS.white2}
                       style={{ marginRight: 6 }}
                     />

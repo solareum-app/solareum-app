@@ -36,6 +36,13 @@ export const s = StyleSheet.create({
   wrp: {
     marginBottom: 12,
   },
+  warningWrp: {
+    borderColor: COLORS.warning,
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 4,
+    marginBottom: 24,
+  },
   mnemonicWrp: {
     borderWidth: 1,
     borderColor: COLORS.blue4,
@@ -112,6 +119,25 @@ const CreateWallet: React.FC<Props> = () => {
       <SafeAreaView style={grid.wrp}>
         <ScrollView>
           <View style={s.body}>
+            <View style={s.warningWrp}>
+              <Text style={typo.warning}>{t('create-warning-message')}</Text>
+              <Button
+                title={t('home-import-wallet')}
+                type="outline"
+                onPress={() => {
+                  navigation.navigate(Routes.ImportWallet);
+                }}
+                titleStyle={{ color: COLORS.blue2 }}
+                icon={
+                  <Icon
+                    size={FONT_SIZES.md}
+                    name="download"
+                    color={COLORS.blue2}
+                    style={{ marginRight: 6 }}
+                  />
+                }
+              />
+            </View>
             <Input
               label={t('create-title')}
               placeholder=""
