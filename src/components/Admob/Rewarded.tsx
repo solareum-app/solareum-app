@@ -19,10 +19,12 @@ export const ADMOB = {
   android: {
     banner: 'ca-app-pub-8137455675462743/9853888538',
     rewarded: 'ca-app-pub-8137455675462743/3496078333',
+    interstitial: 'ca-app-pub-8137455675462743/1859342232',
   },
   ios: {
     banner: 'ca-app-pub-8137455675462743/2351209553',
     rewarded: 'ca-app-pub-8137455675462743/3052743670',
+    interstitial: 'ca-app-pub-8137455675462743/9163117184',
   },
 };
 

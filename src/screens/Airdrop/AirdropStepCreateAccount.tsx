@@ -33,10 +33,14 @@ const style = StyleSheet.create({
   },
 });
 
-const MAX_TRY = 24;
-const WAIT_TIME = 10000; // 10s -> 4mins for total
+const MAX_TRY = 12;
+const WAIT_TIME = 15000; // 3 mins
 
-export const AirdropStepCreateAccount = ({ next }) => {
+export const AirdropStepCreateAccount = ({
+  busy,
+  next,
+  error: submitError,
+}) => {
   const { wallet } = useApp();
   const { accountList, loadAccountList } = useToken();
   const { t } = useLocalize();
@@ -60,7 +64,7 @@ export const AirdropStepCreateAccount = ({ next }) => {
       return;
     }
     if (no < 0) {
-      return;
+      return {};
     }
 
     const list = await loadAccountList();
@@ -79,7 +83,7 @@ export const AirdropStepCreateAccount = ({ next }) => {
     }
 
     const solBalance = solAccount?.amount * Math.pow(10, solAccount?.decimals);
-    if (solAccount && solBalance <= SOL_BALANCE_TARGET) {
+    if (solBalance <= SOL_BALANCE_TARGET) {
       setError(t('airdrop-sol-balance'));
       return;
     }
@@ -89,11 +93,11 @@ export const AirdropStepCreateAccount = ({ next }) => {
       await wallet.createAssociatedTokenAccount(new PublicKey(account.address));
       const acc = await pollingAccount(MAX_TRY);
       setAccount(acc);
-      next();
     } catch (err) {
       setError(t('sys-error'));
     } finally {
       setLoading(false);
+      next();
     }
   };
 
@@ -137,17 +141,22 @@ export const AirdropStepCreateAccount = ({ next }) => {
             {t('airdrop-title-create-xsb-created')}
           </Text>
         ) : null}
+
+        {submitError ? <Text style={typo.warning}>{submitError}</Text> : null}
+
         {!isAccountCreated ? (
           <Button
             type="outline"
             title={t('airdrop-title-create-xsb-btn')}
             disabled={loading}
+            loading={busy}
             onPress={createTokenAccount}
           />
         ) : (
           <Button
             type="outline"
             title={t('airdrop-title-create-xsb-next')}
+            loading={busy}
             onPress={next}
           />
         )}

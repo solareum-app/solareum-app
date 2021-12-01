@@ -6,6 +6,7 @@ import { getIcon, setIcon } from '../storage/SvgIconCollection';
 import { COLORS } from '../theme';
 import LoadingIndicator from './LoadingIndicator';
 import { ImageCached } from './ImageCached/ImageCached';
+import { authFetch } from '../utils/authfetch';
 
 const iconStyle = StyleSheet.create({
   main: {
@@ -31,13 +32,7 @@ export const CryptoIcon = ({ uri = '', size = 40, ...props }) => {
   const isSVG = uri.indexOf('.svg') >= 0;
 
   const fetchIcon = async (uri) => {
-    return await fetch(uri, { method: 'GET' })
-      .then((res) => {
-        return res.text();
-      })
-      .then((svg) => {
-        return svg;
-      });
+    return await authFetch(uri, { method: 'GET' });
   };
 
   useEffect(() => {

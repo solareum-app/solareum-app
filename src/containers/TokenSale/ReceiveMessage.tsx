@@ -44,16 +44,16 @@ const style = StyleSheet.create({
   },
 });
 
-export const MissionReward = ({ mission }) => {
+export const ReceiveMessage = ({ purchase }) => {
   const { t } = useLocalize();
 
-  const missionReward = mission.missionReward;
-  const missionSignature = mission.missionRewardSignature;
-  let missionRewardError = mission.missionRewardError;
+  const qty = purchase.qty;
+  const signature = purchase.signature;
+  let error = purchase.error;
 
   return (
     <View style={style.main}>
-      <Text style={typo.title}>{t('mission-modal-title')}</Text>
+      <Text style={typo.title}>Your Purchase Completed</Text>
       <View style={style.imgWrp}>
         <LottieView
           autoPlay
@@ -63,24 +63,25 @@ export const MissionReward = ({ mission }) => {
         />
       </View>
 
-      <Text style={typo.normal}>{t('mission-thanks-01')}</Text>
-      {missionRewardError ? (
-        <Text style={typo.warning}>{missionRewardError}</Text>
-      ) : null}
+      <Text style={typo.normal}>
+        Thank you for participating in the Token Sales, we highly appreciate it.
+        Let's stay strong together in the adventures journey ahead.
+      </Text>
+      {error ? <Text style={typo.warning}>{error}</Text> : null}
 
       <View style={grid.group}>
         <Text style={grid.groupTitle}>{t('mission-reward-title')}</Text>
         <View style={style.row}>
           <View style={style.rowItem}>
-            <Text style={style.value}>+{missionReward} XSB</Text>
+            <Text style={style.value}>+{qty} XSB</Text>
           </View>
           <View style={style.rowItemRight}>
-            {missionSignature ? (
+            {signature ? (
               <Button
                 title="scan"
                 type="clear"
                 onPress={() => {
-                  Linking.openURL(`https://solscan.io/tx/${missionSignature}`);
+                  Linking.openURL(`https://solscan.io/tx/${signature}`);
                 }}
               />
             ) : null}

@@ -1,6 +1,6 @@
 {
   "name": "solareum",
-  "version": "2.18.30",
+  "version": "2.18.46",
   "private": true,
   "scripts": {
     "postinstall": "rn-nodeify --install --hack --yarn && yarn run cp:superstruct && yarn run cp:solana && yarn run cp:crypto && npx jetify && npx pod-install",
@@ -30,7 +30,7 @@
     "@react-navigation/bottom-tabs": "5.11.9",
     "@react-navigation/native": "5.9.4",
     "@react-navigation/stack": "5.14.4",
-    "@solana/spl-token-registry": "^0.2.114",
+    "@solana/spl-token-registry": "^0.2.363",
     "@solana/web3.js": "^1.22.0",
     "@tradle/react-native-http": "^2.0.0",
     "appcenter": "4.1.0",
@@ -38,6 +38,7 @@
     "appcenter-crashes": "4.1.0",
     "assert": "^1.1.1",
     "asyncstorage-down": "^4.2.0",
+    "axios": "^0.24.0",
     "bip32": "^2.0.5",
     "bip39": "^3.0.3",
     "bn.js": "^5.1.2",

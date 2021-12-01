@@ -17,6 +17,7 @@ import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { SOL_BALANCE_TARGET } from './const';
 
 const s = StyleSheet.create({
   main: {
@@ -44,8 +45,9 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
-export const Airdrop = ({ isActive }) => {
+export const Airdrop = ({ isActive, load }) => {
   const { accountList } = useToken();
+  const [airdropActive, setAirdropActive] = useState(true);
   const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);
   const [step, setStep] = useState(AIRDROP_STEP.info);
@@ -59,8 +61,46 @@ export const Airdrop = ({ isActive }) => {
   const [rewardRefSignature, setRewardRefSignature] = useState<string>('');
   const refStepInfo = useRef();
 
+  const solAccount = accountList.find((i) => i.mint === 'SOL') || {
+    publicKey: '-',
+    decimals: 8,
+    amount: 0,
+  };
+  const solAddress = solAccount?.publicKey;
+
+  const checkBalance = () => {
+    const solBalance = solAccount?.amount * Math.pow(10, solAccount?.decimals);
+
+    if (solBalance <= SOL_BALANCE_TARGET) {
+      setError(t('airdrop-sol-balance'));
+      return;
+    }
+
+    setError('');
+    setStep(AIRDROP_STEP.inputRefAddress);
+  };
+
+  const checkAirdrop = async () => {
+    if (!solAddress || airdrop < 0) {
+      return;
+    }
+
+    const resp = await authFetch(service.postCheckAirdrop, {
+      method: 'POST',
+      body: {
+        solAddress,
+        meta: {
+          ...metaData,
+        },
+      },
+    });
+
+    setAirdrop(resp.rewardAirdrop || 0);
+    setRewardRef(resp.rewardRef || 0);
+  };
+
   const dismiss = () => {
-    setAirdrop(0);
+    setAirdropActive(false);
   };
 
   const startAirdrop = () => {
@@ -70,12 +110,40 @@ export const Airdrop = ({ isActive }) => {
     refStepInfo.current?.open();
   };
 
+  const registerWallet = async () => {
+    setLoading(true);
+    const solAccount = accountList.find((i) => i.mint === 'SOL');
+
+    if (!solAccount?.publicKey) {
+      setError(t('airdrop-error-no-account'));
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await authFetch(service.postWalletNew, {
+        method: 'POST',
+        body: {
+          solAddress: solAccount?.publicKey,
+          refAddress,
+          meta: {
+            ...metaData,
+          },
+        },
+      });
+    } catch {
+    } finally {
+      setLoading(false);
+      setAirdropActive(false);
+      setStep(AIRDROP_STEP.createAccount);
+    }
+  };
+
   const submit = async () => {
     setLoading(true);
     const solAccount = accountList.find((i) => i.mint === 'SOL');
-    const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
 
-    if (!solAccount?.publicKey || !xsbAccount?.publicKey) {
+    if (!solAccount?.publicKey) {
       setError(t('airdrop-error-no-account'));
       setLoading(false);
       return;
@@ -86,10 +154,8 @@ export const Airdrop = ({ isActive }) => {
         method: 'POST',
         body: {
           solAddress: solAccount?.publicKey,
-          refAddress,
           meta: {
             ...metaData,
-            xsbAddress: xsbAccount?.publicKey,
           },
         },
       });
@@ -110,24 +176,8 @@ export const Airdrop = ({ isActive }) => {
   };
 
   useEffect(() => {
-    (async () => {
-      const solAccount = accountList.find((i) => i.mint === 'SOL');
-      const solAddress = solAccount?.publicKey;
-
-      const resp = await authFetch(service.postCheckAirdrop, {
-        method: 'POST',
-        body: {
-          solAddress,
-          meta: {
-            ...metaData,
-          },
-        },
-      });
-
-      setAirdrop(resp.rewardAirdrop || 0);
-      setRewardRef(resp.rewardRef || 0);
-    })();
-  }, [accountList]);
+    checkAirdrop();
+  }, [load, accountList]);
 
   if (!airdrop && !isActive) {
     return null;
@@ -140,10 +190,12 @@ export const Airdrop = ({ isActive }) => {
         <Text style={typo.titleLeft}>{t('airdrop-title')}</Text>
         <Text style={typo.normal}>{t('airdrop-intro')}</Text>
         <Button
-          title={t('airdrop-receive-btn', { airdrop })}
+          title={t('airdrop-receive-btn', {
+            airdrop: airdrop > 0 ? airdrop : 0,
+          })}
           type="outline"
           onPress={startAirdrop}
-          disabled={airdrop === 0}
+          disabled={airdrop === 0 || !airdropActive}
         />
       </View>
 
@@ -152,13 +204,8 @@ export const Airdrop = ({ isActive }) => {
           {step === AIRDROP_STEP.info ? (
             <AirdropStepInfo
               dismiss={dismiss}
-              next={() => setStep(AIRDROP_STEP.createAccount)}
-            />
-          ) : null}
-
-          {step === AIRDROP_STEP.createAccount ? (
-            <AirdropStepCreateAccount
-              next={() => setStep(AIRDROP_STEP.inputRefAddress)}
+              next={checkBalance}
+              error={error}
             />
           ) : null}
 
@@ -172,12 +219,23 @@ export const Airdrop = ({ isActive }) => {
 
           {step === AIRDROP_STEP.review ? (
             <AirdropStepReview
-              next={submit}
+              next={registerWallet}
               airdrop={airdrop}
               rewardRef={rewardRef}
               refAddress={refAddress}
               loading={loading}
               error={error}
+            />
+          ) : null}
+
+          {step === AIRDROP_STEP.createAccount ? (
+            <AirdropStepCreateAccount
+              busy={loading}
+              error={error}
+              next={async () => {
+                await submit();
+                setStep(AIRDROP_STEP.successAndShare);
+              }}
             />
           ) : null}
 

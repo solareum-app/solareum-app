@@ -10,6 +10,7 @@ import { Button, Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-portalize';
 
+import { LoadingImage } from '../../components/LoadingIndicator';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { Receive } from '../Token/Receive';
@@ -25,6 +26,10 @@ import { Routes } from '../../navigators/Routes';
 import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftButton';
+import { Airdrop } from '../Airdrop/Airdrop';
+import { typo } from '../../components/Styles';
+import { TokenSaleButton } from '../../containers/TokenSale/Button';
 
 const s = StyleSheet.create({
   header: {
@@ -79,6 +84,12 @@ const s = StyleSheet.create({
   txtManageBtn: {
     color: COLORS.white2,
   },
+  loadingWrp: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 240,
+  },
 });
 
 const getTotalEstimate = (balanceListInfo: any[]) => {
@@ -99,6 +110,8 @@ export enum TransferAction {
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const [isHideBalance, setIsHideBalance] = useState(false);
+  const [load, setLoad] = useState(0);
+
   const navigation = useNavigation();
   const refSwap = useRef();
   const refReceived = useRef();
@@ -108,6 +121,8 @@ const WalletScreen = () => {
   const { t } = useLocalize();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
+  const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
+  let isAccountCreated = xsbAccount ? xsbAccount.publicKey : false;
 
   const activeAccountList = accountList
     .filter((i: IAccount) => i.mint && !i.isHiding)
@@ -119,6 +134,7 @@ const WalletScreen = () => {
   const onRefresh = async () => {
     try {
       setLoading(true);
+      setLoad(load + 1);
       await loadAccountList();
       setLoading(false);
     } catch {
@@ -189,6 +205,13 @@ const WalletScreen = () => {
         </View>
 
         <View style={[grid.body, s.body]}>
+          {loading && !activeAccountList.length ? (
+            <View style={s.loadingWrp}>
+              <LoadingImage />
+              <Text style={typo.normal}>{t('home-account-loading')}</Text>
+            </View>
+          ) : null}
+
           <TokensList
             isHideBalance={isHideBalance}
             balanceListInfo={activeAccountList}
@@ -213,7 +236,12 @@ const WalletScreen = () => {
               />
             </View>
           ) : null}
+
+          {isAccountCreated ? <MissionLeftButton /> : null}
+          {<TokenSaleButton />}
         </View>
+
+        <Airdrop load={load} />
       </ScrollView>
 
       <Portal>

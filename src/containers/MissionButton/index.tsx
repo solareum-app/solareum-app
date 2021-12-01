@@ -5,6 +5,8 @@ import { Portal } from 'react-native-portalize';
 import {
   RewardedAd,
   RewardedAdEventType,
+  InterstitialAd,
+  AdEventType,
   TestIds,
 } from '@react-native-firebase/admob';
 
@@ -19,6 +21,7 @@ import { getAdmobIdByType } from '../../components/Admob/Rewarded';
 import { COLORS } from '../../theme';
 import { MissionReward } from './MissionReward';
 import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
+import { setItem, getItem } from '../../storage/Collection';
 
 const s = StyleSheet.create({
   manageBtnWrp: {
@@ -28,53 +31,101 @@ const s = StyleSheet.create({
     marginRight: 10,
   },
   manageBtn: {
-    borderColor: COLORS.dark4,
-  },
-  btnDisabled: {
-    borderColor: COLORS.dark4,
+    borderColor: COLORS.blue4,
   },
   txtManageBtn: {
     color: COLORS.blue2,
   },
+  btnDisabled: {
+    borderColor: COLORS.dark4,
+  },
   txtManageBtnDisabled: {
-    color: COLORS.blue0,
+    color: COLORS.white4,
   },
 });
 
 const adRewardUnitId = __DEV__
   ? TestIds.REWARDED
   : getAdmobIdByType('rewarded');
+const adInterUnitId = __DEV__
+  ? TestIds.INTERSTITIAL
+  : getAdmobIdByType('interstitial');
 
-const BREAK_TIME = 60000; // 60s
-let lastMissionTs = Date.now();
+const MISSION_TS_KEY = 'MISSION_TS_KEY';
+const BREAK_TIME = 300000; // 5 mins
+const MIN_BREAK_TIME = 0; // 0
 
 export const MissionButton = ({ padding = 20 }) => {
   const [loading, setLoading] = useState(false);
+  const [missionReward, setMissionReward] = useState(0);
   const [missionLeft, setMissionLeft] = useState(0);
   const [mission, setMission] = useState({});
   const [isShowingAd, setIsShowingAd] = useState(false);
+  const [done, setDone] = useState(false);
+  const [lastMissionTs, setLastMissionTsOrg] = useState<number>(-1);
+
   const { accountList } = useToken();
   const { t } = useLocalize();
+
   const [currentTs, setCurrentTs] = useState(Date.now());
   const metaData = useMetaData();
   const refMissionReward = useRef();
   const refCreateAccount = useRef();
-  const [number, setNumber] = useState(1);
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
   const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
   let isAccountCreated = xsbAccount ? xsbAccount.publicKey : false;
 
-  const checkInitialCondition = () => {
+  const setLastMissionTs = (value) => {
+    setItem('', MISSION_TS_KEY, value);
+    setLastMissionTsOrg(value);
+  };
+
+  const checkInitialCondition = async () => {
     if (isAccountCreated) {
-      setIsShowingAd(true);
-      showRewardAd();
+      await earnMissionReward();
+      setLastMissionTs(Date.now());
     } else {
       refCreateAccount.current?.open();
     }
   };
 
+  const getWaitingTime = () => {
+    const delta = currentTs - lastMissionTs;
+    if (delta > BREAK_TIME) {
+      return 0;
+    }
+    const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
+    return waitingTime;
+  };
+
+  const getActive = () => {
+    const waitingTime = getWaitingTime();
+    const isActive = waitingTime <= 0 && missionLeft > 0;
+    return isActive && !isShowingAd;
+  };
+
+  const getLabel = () => {
+    const waitingTime = getWaitingTime();
+    const isActive = getActive();
+
+    let label = t('mission-wait-label', {
+      second: waitingTime,
+    });
+
+    if (isActive) {
+      label = t('mission-active-label', { amount: missionReward });
+    }
+
+    if (missionLeft <= 0 || done) {
+      label = t('mission-label', { missionLeft });
+    }
+
+    return label;
+  };
+
   const earnMissionReward = async () => {
+    setLoading(true);
     const resp = await authFetch(service.postMission, {
       method: 'POST',
       body: {
@@ -91,6 +142,8 @@ export const MissionButton = ({ padding = 20 }) => {
       };
     });
     setMission(resp);
+    setDone(true);
+    setLoading(false);
     refMissionReward.current?.open();
   };
 
@@ -105,6 +158,7 @@ export const MissionButton = ({ padding = 20 }) => {
       },
     });
     setMissionLeft(resp.missionLeft);
+    setMissionReward(resp.missionReward);
   };
 
   const showRewardAd = async () => {
@@ -115,24 +169,52 @@ export const MissionButton = ({ padding = 20 }) => {
     rewardAd.onAdEvent(async (type: any, error: any) => {
       if (error) {
         setLoading(false);
-        setIsShowingAd(false);
+        showInterAd();
       }
 
       if (type === RewardedAdEventType.LOADED) {
-        rewardAd.show();
+        setIsShowingAd(true);
         setLoading(false);
+        rewardAd.show();
       }
 
       if (type === RewardedAdEventType.EARNED_REWARD) {
         await earnMissionReward();
         await loadCheckMission();
         setIsShowingAd(false);
-        setNumber(number + 1);
-        lastMissionTs = Date.now();
+        setLastMissionTs(Date.now());
       }
     });
     // Load a new advert
     rewardAd.load();
+  };
+
+  const showInterAd = async () => {
+    setLoading(true);
+    // Create a new instance
+    const interAd = InterstitialAd.createForAdRequest(adInterUnitId);
+
+    // Add event handlers
+    interAd.onAdEvent(async (type: any, error: any) => {
+      if (error) {
+        setLoading(false);
+      }
+
+      if (type === AdEventType.LOADED) {
+        setLoading(false);
+        setIsShowingAd(true);
+        interAd.show();
+      }
+
+      if (type === AdEventType.CLOSED) {
+        await earnMissionReward();
+        await loadCheckMission();
+        setIsShowingAd(false);
+        setLastMissionTs(Date.now());
+      }
+    });
+    // Load a new advert
+    interAd.load();
   };
 
   useEffect(() => {
@@ -140,46 +222,33 @@ export const MissionButton = ({ padding = 20 }) => {
   }, [accountList]);
 
   useEffect(() => {
-    if (missionLeft === 0) {
-      return;
-    }
+    setLastMissionTsOrg(Date.now());
 
     let lastMissionInterval = setInterval(() => {
       setCurrentTs(Date.now());
     }, 1000);
 
+    (async () => {
+      const missionTsStr = await getItem('', MISSION_TS_KEY);
+      const missionTs = parseInt(missionTsStr, 10);
+      if (missionTsStr) {
+        const delta = currentTs - missionTs;
+        const waitingTime = BREAK_TIME - delta;
+        // to make sure that user have to wait at least MIN_BREAK_TIME
+        if (waitingTime < MIN_BREAK_TIME) {
+          setLastMissionTs(Date.now() - BREAK_TIME + MIN_BREAK_TIME);
+        } else {
+          setLastMissionTs(missionTs);
+        }
+      } else {
+        setLastMissionTs(Date.now());
+      }
+    })();
+
     return () => {
       clearInterval(lastMissionInterval);
     };
-  }, [missionLeft]);
-
-  useEffect(() => {
-    const delta = currentTs - lastMissionTs;
-    const isActive = delta > BREAK_TIME * number && missionLeft > 0;
-    if (isActive && !isShowingAd) {
-      checkInitialCondition();
-    }
-  }, [currentTs]);
-
-  useEffect(() => {
-    lastMissionTs = Date.now();
   }, []);
-
-  const getLabel = () => {
-    const delta = currentTs - lastMissionTs;
-    const waitingTime = Math.round(
-      Math.abs((BREAK_TIME * number - delta) / 1000),
-    );
-    let label = '';
-
-    label = t('mission-wait-label', { second: waitingTime });
-
-    if (missionLeft <= 0) {
-      label = t('mission-label', { missionLeft });
-    }
-
-    return label;
-  };
 
   return (
     <View style={{ ...s.manageBtnWrp, padding }}>
@@ -187,7 +256,8 @@ export const MissionButton = ({ padding = 20 }) => {
         title={getLabel()}
         type="outline"
         loading={loading}
-        disabled={true}
+        disabled={!getActive()}
+        onPress={checkInitialCondition}
         buttonStyle={s.manageBtn}
         titleStyle={s.txtManageBtn}
         disabledStyle={s.btnDisabled}
@@ -196,7 +266,7 @@ export const MissionButton = ({ padding = 20 }) => {
           <Icon
             size={16}
             style={s.manageIcon}
-            color={COLORS.blue2}
+            color={getActive() ? COLORS.blue2 : COLORS.white4}
             name="zap"
             type="feather"
           />
@@ -207,6 +277,7 @@ export const MissionButton = ({ padding = 20 }) => {
         <FixedContent ref={refMissionReward}>
           <MissionReward mission={mission} />
         </FixedContent>
+
         <FixedContent ref={refCreateAccount}>
           <AirdropStepCreateAccount
             next={() => {

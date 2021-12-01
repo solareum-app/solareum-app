@@ -7,7 +7,7 @@ import { SOL_BALANCE_TARGET } from './const';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { style as s } from './style';
 
-export const AirdropStepInfo = ({ dismiss, next }) => {
+export const AirdropStepInfo = ({ dismiss, next, error }) => {
   const { t } = useLocalize();
 
   return (
@@ -21,6 +21,7 @@ export const AirdropStepInfo = ({ dismiss, next }) => {
       <Text style={typo.normal}>{t('airdrop-info-step3')}</Text>
 
       <View style={s.footer}>
+        {error ? <Text style={typo.caution}>{error}</Text> : null}
         <Button type="outline" title={t('airdrop-info-next')} onPress={next} />
         <Button
           type="clear"
