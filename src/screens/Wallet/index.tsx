@@ -12,7 +12,7 @@ import { Portal } from 'react-native-portalize';
 
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { FixedContent } from '../../components/Modals/FixedContent';
-import { FacebookWebView } from '../../components/Modals/FacebookWebView';
+import { ComplexContent } from '../../components/Modals/ComplexContent';
 import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
@@ -30,6 +30,7 @@ import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftBut
 import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
 import { TokenSaleButton } from '../../containers/TokenSale/Button';
+import SolareumSwap from '../DEX/Swap';
 
 const s = StyleSheet.create({
   header: {
@@ -248,7 +249,8 @@ const WalletScreen = () => {
         <FixedContent ref={refReceived}>
           <Receive token={solAccount} />
         </FixedContent>
-        <FacebookWebView ref={refSwap} url="https://jup.ag/swap/SOL-USDC" />
+
+        <ComplexContent ref={refSwap} Component={SolareumSwap} />
       </Portal>
     </View>
   );
