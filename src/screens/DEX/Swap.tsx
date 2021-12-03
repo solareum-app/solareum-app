@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import bs58 from 'bs58';
 
-import { COLORS } from '../../theme/colors';
 import { AppContext } from '../../core/AppProvider/AppProvider';
 import { LoadingImage } from '../../components/LoadingIndicator';
 
@@ -20,7 +19,7 @@ window.solana = {
 const s = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: COLORS.dark0,
+    backgroundColor: '#282830',
   },
   container: {
     flex: 1,
@@ -123,22 +122,24 @@ export default class SolareumSwap extends Component<Props, State> {
     const uri = `${endpoint}/swap/SOL-USDC`;
 
     return (
-      <WebView
-        source={{ uri }}
-        ref={this.webView}
-        style={{ ...s.container, height: this.props.height }}
-        injectedJavaScriptBeforeContentLoaded={INJECTED_SCRIPT}
-        automaticallyAdjustContentInsets={false}
-        onMessage={this.onMessage}
-        textZoom={100}
-        pullToRefreshEnabled={true}
-        startInLoadingState={true}
-        renderLoading={() => (
-          <View style={s.loading}>
-            <LoadingImage />
-          </View>
-        )}
-      />
+      <View style={s.main}>
+        <WebView
+          source={{ uri }}
+          ref={this.webView}
+          style={{ ...s.container, height: this.props.height }}
+          injectedJavaScriptBeforeContentLoaded={INJECTED_SCRIPT}
+          automaticallyAdjustContentInsets={false}
+          onMessage={this.onMessage}
+          textZoom={100}
+          pullToRefreshEnabled={true}
+          startInLoadingState={true}
+          renderLoading={() => (
+            <View style={s.loading}>
+              <LoadingImage />
+            </View>
+          )}
+        />
+      </View>
     );
   }
 }
