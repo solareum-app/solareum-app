@@ -10,6 +10,15 @@
     <div>Key: <span id="public-key">connecting...</span></div>
 
     <script>
+      const signTransaction = () => {
+        window.solana.postMessage({
+          method: 'signTransaction',
+          params: {
+            message: [transaction]
+          }
+        })
+      };
+
       (() => {
         setTimeout(() => {
           window.solana.postMessage({ method: "connect" });

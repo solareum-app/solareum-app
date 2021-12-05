@@ -119,7 +119,7 @@ export default class SolareumSwap extends Component<Props, State> {
   render() {
     const endpoint =
       'https://jupiter-git-dickson-mer-867-integrate-solareum-wowcats.vercel.app';
-    const uri = `${endpoint}/swap/SOL-USDC`;
+    const uri = `${endpoint}/swap/MILLI-USDC`;
 
     return (
       <View style={s.main}>
