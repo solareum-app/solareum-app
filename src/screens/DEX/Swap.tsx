@@ -77,6 +77,10 @@ export default class SolareumSwap extends Component<Props, State> {
     if (data.method === 'signTransaction') {
       this.sendSignature(data);
     }
+
+    if (data.method === 'signAllTransactions') {
+      this.sendAllSignatures(data);
+    }
   };
 
   populateMessage = (payload) => {
@@ -92,16 +96,47 @@ export default class SolareumSwap extends Component<Props, State> {
   };
 
   sendSignature = async (payload) => {
-    const encodedMessage = payload.params.message;
-    const message = bs58.decode(encodedMessage);
-    const signature = await this.wallet.createSignature(message);
-    this.populateMessage({
-      result: {
-        signature,
-        publicKey: this.wallet.publicKey.toBase58(),
-      },
-      id: payload.id,
-    });
+    try {
+      const encodedMessage = payload.params.message;
+      const message = bs58.decode(encodedMessage);
+      const signature = await this.wallet.createSignature(message);
+
+      this.populateMessage({
+        result: {
+          signature,
+          publicKey: this.wallet.publicKey.toBase58(),
+        },
+        id: payload.id,
+      });
+    } catch {
+      this.populateMessage({
+        error: 'There are some errors, please try again later.',
+        id: payload.id,
+      });
+    }
+  };
+
+  sendAllSignatures = async (payload) => {
+    let signatures;
+    try {
+      const messages = payload.params.messages.map((m) => bs58.decode(m));
+      signatures = await Promise.all(
+        messages.map((m) => this.wallet.createSignature(m)),
+      );
+
+      this.populateMessage({
+        result: {
+          signatures,
+          publicKey: this.wallet.publicKey.toBase58(),
+        },
+        id: payload.id,
+      });
+    } catch {
+      this.populateMessage({
+        error: 'There are some errors, please try again later.',
+        id: payload.id,
+      });
+    }
   };
 
   sendReject = (payload: any) => {
