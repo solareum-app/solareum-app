@@ -40,11 +40,13 @@ type State = {};
 export default class SolareumSwap extends Component<Props, State> {
   state = {
     walletAddress: '',
+    height: 0,
   };
 
   constructor(props) {
     super(props);
 
+    this.state = { height: props.height };
     this.webView = React.createRef();
   }
 
@@ -58,6 +60,11 @@ export default class SolareumSwap extends Component<Props, State> {
       this.setState({ walletAddress: this.context.wallet.address });
       this.webView.current.reload();
     }
+  }
+
+  // no re-render needed
+  shouldComponentUpdate() {
+    return false;
   }
 
   onMessage = async (event: any) => {
@@ -119,14 +126,14 @@ export default class SolareumSwap extends Component<Props, State> {
   render() {
     const endpoint =
       'https://jupiter-git-dickson-mer-867-integrate-solareum-wowcats.vercel.app';
-    const uri = `${endpoint}/swap/MILLI-USDC`;
+    const uri = `${endpoint}/swap/USDC-XSB`;
 
     return (
-      <View style={s.main}>
+      <View style={{ ...s.main, height: this.state.height }}>
         <WebView
           source={{ uri }}
           ref={this.webView}
-          style={{ ...s.container, height: this.props.height }}
+          style={s.container}
           injectedJavaScriptBeforeContentLoaded={INJECTED_SCRIPT}
           automaticallyAdjustContentInsets={false}
           onMessage={this.onMessage}
