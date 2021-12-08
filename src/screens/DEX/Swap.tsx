@@ -6,6 +6,7 @@ import bs58 from 'bs58';
 import Header from '../Wallet/Header';
 import { AppContext } from '../../core/AppProvider/AppProvider';
 import { LoadingImage } from '../../components/LoadingIndicator';
+import { JUPITER } from '../../config';
 
 const INJECTED_SCRIPT = `
 window.solana = {
@@ -160,9 +161,8 @@ export default class SolareumSwap extends Component<Props, State> {
   };
 
   render() {
-    const endpoint =
-      'https://jupiter-git-dickson-mer-867-integrate-solareum-wowcats.vercel.app';
-    const uri = `${endpoint}/swap/USDC-XSB`;
+    // const uri = `${JUPITER}/swap/USDC-XSB`;
+    const uri = `${JUPITER}/swap/USDC-MILLI`;
 
     return (
       <View style={{ ...s.main, height: this.state.height }}>
