@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import bs58 from 'bs58';
 
+import Header from '../Wallet/Header';
 import { AppContext } from '../../core/AppProvider/AppProvider';
 import { LoadingImage } from '../../components/LoadingIndicator';
 
@@ -165,6 +166,7 @@ export default class SolareumSwap extends Component<Props, State> {
 
     return (
       <View style={{ ...s.main, height: this.state.height }}>
+        <Header isBack />
         <WebView
           source={{ uri }}
           ref={this.webView}

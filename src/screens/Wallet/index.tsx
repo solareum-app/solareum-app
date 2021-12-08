@@ -12,7 +12,6 @@ import { Portal } from 'react-native-portalize';
 
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { FixedContent } from '../../components/Modals/FixedContent';
-import { ComplexContent } from '../../components/Modals/ComplexContent';
 import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
@@ -30,7 +29,6 @@ import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftBut
 import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
 import { TokenSaleButton } from '../../containers/TokenSale/Button';
-import SolareumSwap from '../DEX/Swap';
 
 const s = StyleSheet.create({
   header: {
@@ -174,17 +172,6 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  navigation.navigate(Routes.Search, {
-                    action: TransferAction.receive,
-                  });
-                }}
-                title={t('home-receive')}
-                iconName="download"
-              />
-            </View>
-            <View style={s.controlItem}>
-              <RoundedButton
-                onClick={() => {
                   refReceived.current.open();
                 }}
                 title={t('home-qr-code')}
@@ -195,8 +182,17 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  refSwap.current.open();
+                  navigation.navigate(Routes.Search, {
+                    action: TransferAction.receive,
+                  });
                 }}
+                title={t('home-receive')}
+                iconName="download"
+              />
+            </View>
+            <View style={s.controlItem}>
+              <RoundedButton
+                onClick={() => navigation.navigate(Routes.Swap)}
                 title={t('home-swap')}
                 iconName="refresh-cw"
                 type="feather"
@@ -249,8 +245,6 @@ const WalletScreen = () => {
         <FixedContent ref={refReceived}>
           <Receive token={solAccount} />
         </FixedContent>
-
-        <ComplexContent ref={refSwap} Component={SolareumSwap} />
       </Portal>
     </View>
   );
