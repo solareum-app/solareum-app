@@ -35,6 +35,11 @@ import { authFetch } from '../../utils/authfetch';
   }
  */
 
+export enum SWAP_APP {
+  JUPITER = 'jupiter',
+  ONE_SOL = '1sol',
+}
+
 export type RemoteConfigType = {
   appName: string;
   appPrefix: string;
@@ -43,6 +48,8 @@ export type RemoteConfigType = {
   customeTokenList: any[];
   links: any;
   presale: any;
+  swap: SWAP_APP;
+  setSwap: any;
 };
 
 export const RemoteConfigContext = React.createContext<RemoteConfigType>({
@@ -53,6 +60,8 @@ export const RemoteConfigContext = React.createContext<RemoteConfigType>({
   customeTokenList: [],
   links: {},
   presale: {},
+  swap: SWAP_APP.JUPITER,
+  setSwap: () => null,
 });
 
 export const useConfig = () => {
@@ -76,6 +85,12 @@ export const RemoteConfigProvider = ({ children }) => {
   const [links, setLinks] = useState({});
   const [presale, setPresale] = useState({});
   const [loading, setLoading] = useState(true);
+  const [swap, setSwapOrg] = useState(SWAP_APP.JUPITER);
+
+  const setSwap = (value: SWAP_APP) => {
+    setSwapOrg(value);
+    // store user choice into localStore
+  };
 
   useEffect(() => {
     remoteConfig()
@@ -146,6 +161,8 @@ export const RemoteConfigProvider = ({ children }) => {
         customeMarketList,
         customeTokenList,
         presale,
+        swap,
+        setSwap,
       }}
     >
       {!loading ? children : null}

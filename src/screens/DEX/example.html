@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Jupiter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h1>Jupiter</h1>
+    <p>This is the smallest application that indicate how Jupiter and Solareum can work together.</p>
+    <div>Key: <span id="public-key">connecting...</span></div>
+
+    <script>
+      const signTransaction = () => {
+        window.solana.postMessage({
+          method: 'signTransaction',
+          params: {
+            message: [transaction]
+          }
+        })
+      };
+
+      (() => {
+        setTimeout(() => {
+          window.solana.postMessage({ method: "connect" });
+        }, 2000);
+      })();
+
+      const isUIWebView = /\(ip.*applewebkit(?!.*(version|crios))/i.test(
+        navigator.userAgent,
+      );
+      const receiver = isUIWebView ? window : document;
+      receiver.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        document.getElementById('public-key').innerText = data.params.publicKey;
+      })
+    </script>
+  </body>
+</html>

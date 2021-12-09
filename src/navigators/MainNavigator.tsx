@@ -13,6 +13,7 @@ import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
 import Search from '../screens/Search';
 import Token from '../screens/Token';
 import DEX from '../screens/DEX';
+import Swap from '../screens/DEX/Swap';
 import { getListWallet } from '../storage/WalletCollection';
 import SplashScreen from 'react-native-splash-screen';
 import { HomeScreen } from './HomeScreen';
@@ -23,6 +24,7 @@ import ManageTokenList from '../screens/ManageTokenList';
 import DailyMission from '../screens/Settings/DailyMission';
 import Influencer from '../screens/Settings/Influencer';
 import Airdrop from '../screens/Settings/Airdrop';
+import SwapApp from '../screens/Settings/SwapApp';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -98,6 +100,11 @@ const MainNavigator: React.FC = () => {
             component={DEX}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name={Routes.Swap}
+            component={Swap}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen name={Routes.GetStarted} component={GetStarted} />
           <Stack.Screen name={Routes.CreateWallet} component={CreateWallet} />
           <Stack.Screen name={Routes.EditWallet} component={EditWallet} />
@@ -114,6 +121,7 @@ const MainNavigator: React.FC = () => {
             name={Routes.ManagementTokenList}
             component={ManageTokenList}
           />
+          <Stack.Screen name={Routes.SwapApplication} component={SwapApp} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>

@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 
-import { typo } from '../../components/Styles';
-import { MarketItem } from '../Market/MarketItem';
-import { useMarket } from '../../core/AppProvider/MarketProvider';
 import imgDelivering from '../../assets/clip-message-sent.png';
+import { typo } from '../../components/Styles';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { MarketItem } from './MarketItem';
 
 const s = StyleSheet.create({
   main: {
@@ -39,13 +38,12 @@ const s = StyleSheet.create({
   },
 });
 
+const fromList = ['USDC', 'USDT', 'SOL'];
+
 export const Market = ({ symbol }) => {
-  const { marketList } = useMarket();
   const { t } = useLocalize();
 
-  const filteredList = marketList.filter(
-    (i) => i.base === symbol || i.quote === symbol,
-  );
+  const filteredList = fromList.filter((i) => i !== symbol);
 
   return (
     <View style={s.main}>
@@ -59,7 +57,7 @@ export const Market = ({ symbol }) => {
           <Text style={s.title}>{t('token-market-title')}</Text>
           <View style={s.market}>
             {filteredList.map((i) => (
-              <MarketItem key={i.id} item={i} />
+              <MarketItem key={i.id} from={i} to={symbol} />
             ))}
           </View>
         </View>

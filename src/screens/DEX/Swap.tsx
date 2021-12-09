@@ -3,10 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import bs58 from 'bs58';
 
-import { COLORS } from '../../theme/colors';
 import Header from '../Wallet/Header';
 import { AppContext } from '../../core/AppProvider/AppProvider';
 import { LoadingImage } from '../../components/LoadingIndicator';
+import { JUPITER, ONE_SOL } from '../../config';
+import {
+  useConfig,
+  SWAP_APP,
+} from '../../core/AppProvider/RemoteConfigProvider';
 
 const INJECTED_SCRIPT = `
 window.solana = {
@@ -21,7 +25,7 @@ window.solana = {
 const s = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: COLORS.dark0,
+    backgroundColor: '#282830',
   },
   container: {
     flex: 1,
@@ -36,17 +40,22 @@ const s = StyleSheet.create({
   },
 });
 
-type Props = {};
+type Props = {
+  from?: string;
+  to?: string;
+};
 type State = {};
 
-export default class SolareumDEX extends Component<Props, State> {
+class SolareumSwap extends Component<Props, State> {
   state = {
     walletAddress: '',
+    height: 0,
   };
 
   constructor(props) {
     super(props);
 
+    this.state = { height: props.height };
     this.webView = React.createRef();
   }
 
@@ -62,6 +71,11 @@ export default class SolareumDEX extends Component<Props, State> {
     }
   }
 
+  // no re-render needed
+  shouldComponentUpdate() {
+    return false;
+  }
+
   onMessage = async (event: any) => {
     const data = JSON.parse(event.nativeEvent.data);
 
@@ -71,6 +85,10 @@ export default class SolareumDEX extends Component<Props, State> {
 
     if (data.method === 'signTransaction') {
       this.sendSignature(data);
+    }
+
+    if (data.method === 'signAllTransactions') {
+      this.sendAllSignatures(data);
     }
   };
 
@@ -87,16 +105,47 @@ export default class SolareumDEX extends Component<Props, State> {
   };
 
   sendSignature = async (payload) => {
-    const encodedMessage = payload.params.message;
-    const message = bs58.decode(encodedMessage);
-    const signature = await this.wallet.createSignature(message);
-    this.populateMessage({
-      result: {
-        signature,
-        publicKey: this.wallet.publicKey.toBase58(),
-      },
-      id: payload.id,
-    });
+    try {
+      const encodedMessage = payload.params.message;
+      const message = bs58.decode(encodedMessage);
+      const signature = await this.wallet.createSignature(message);
+
+      this.populateMessage({
+        result: {
+          signature,
+          publicKey: this.wallet.publicKey.toBase58(),
+        },
+        id: payload.id,
+      });
+    } catch {
+      this.populateMessage({
+        error: 'There are some errors, please try again later.',
+        id: payload.id,
+      });
+    }
+  };
+
+  sendAllSignatures = async (payload) => {
+    let signatures;
+    try {
+      const messages = payload.params.messages.map((m) => bs58.decode(m));
+      signatures = await Promise.all(
+        messages.map((m) => this.wallet.createSignature(m)),
+      );
+
+      this.populateMessage({
+        result: {
+          signatures,
+          publicKey: this.wallet.publicKey.toBase58(),
+        },
+        id: payload.id,
+      });
+    } catch {
+      this.populateMessage({
+        error: 'There are some errors, please try again later.',
+        id: payload.id,
+      });
+    }
   };
 
   sendReject = (payload: any) => {
@@ -119,15 +168,18 @@ export default class SolareumDEX extends Component<Props, State> {
   };
 
   render() {
-    const { marketId } = this.props.route.params;
-    let uri = 'https://dex.solareum.app';
+    const { route = {} } = this.props;
+    const { from = 'USDC', to = 'XSB' } = route.params || {};
+    let uri = '';
 
-    if (marketId) {
-      uri += `/#/market/${marketId}`;
+    if (this.props.swap === SWAP_APP.JUPITER) {
+      uri = `${JUPITER}/swap/${from}-${to}`;
+    } else {
+      uri = `${ONE_SOL}/trade/${from}-${to}`;
     }
 
     return (
-      <View style={s.main}>
+      <View style={{ ...s.main, height: this.state.height }}>
         <Header isBack />
         <WebView
           source={{ uri }}
@@ -150,4 +202,12 @@ export default class SolareumDEX extends Component<Props, State> {
   }
 }
 
-SolareumDEX.contextType = AppContext;
+SolareumSwap.contextType = AppContext;
+
+const SwapWithConfig = (props) => {
+  const { swap } = useConfig();
+
+  return <SolareumSwap {...props} swap={swap} />;
+};
+
+export default SwapWithConfig;
