@@ -4,15 +4,15 @@ export const MAINNET_URL = 'https://solana-api.projectserum.com';
 // DEV
 // export const XSB_PATH = 'https://xsb-stg.solareum.app/api/v1';
 // export const API_PATH = 'https://api-stg.solareum.app';
-export const JUPITER =
-  'https://jupiter-git-dickson-mer-867-integrate-solareum-wowcats.vercel.app';
-export const ONE_SOL = 'https://dev.1sol.io';
+// export const JUPITER =
+//   'https://jupiter-git-dickson-mer-867-integrate-solareum-wowcats.vercel.app';
+// export const ONE_SOL = 'https://dev.1sol.io';
 
 // PROD
 export const XSB_PATH = 'https://xsb.solareum.app/api/v1';
 export const API_PATH = 'https://api.solareum.app';
-// export const JUPITER = 'https://jup.ag';
-// export const ONE_SOL = 'https://app.1sol.io';
+export const JUPITER = 'https://jup.ag';
+export const ONE_SOL = 'https://app.1sol.io';
 
 export let service = {
   postWalletNew: `${XSB_PATH}/wallet/new`,
