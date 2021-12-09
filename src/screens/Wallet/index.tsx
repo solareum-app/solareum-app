@@ -112,9 +112,11 @@ const WalletScreen = () => {
   const [load, setLoad] = useState(0);
 
   const navigation = useNavigation();
-  const { addressId } = useApp();
-  const { loadAccountList, accountList } = useToken();
+  const refSwap = useRef();
   const refReceived = useRef();
+
+  const { loadAccountList, accountList } = useToken();
+  const { addressId } = useApp();
   const { t } = useLocalize();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
@@ -170,12 +172,11 @@ const WalletScreen = () => {
             <View style={s.controlItem}>
               <RoundedButton
                 onClick={() => {
-                  navigation.navigate(Routes.Search, {
-                    action: TransferAction.send,
-                  });
+                  refReceived.current.open();
                 }}
-                title={t('home-send')}
-                iconName="upload"
+                title={t('home-qr-code')}
+                iconName="square"
+                type="feather"
               />
             </View>
             <View style={s.controlItem}>
@@ -191,11 +192,9 @@ const WalletScreen = () => {
             </View>
             <View style={s.controlItem}>
               <RoundedButton
-                onClick={() => {
-                  refReceived.current.open();
-                }}
-                title={t('home-qr-code')}
-                iconName="square"
+                onClick={() => navigation.navigate(Routes.Swap)}
+                title={t('home-swap')}
+                iconName="refresh-cw"
                 type="feather"
               />
             </View>

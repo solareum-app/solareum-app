@@ -4,10 +4,13 @@ export const MAINNET_URL = 'https://solana-api.projectserum.com';
 // DEV
 // export const XSB_PATH = 'https://xsb-stg.solareum.app/api/v1';
 // export const API_PATH = 'https://api-stg.solareum.app';
+export const JUPITER =
+  'https://jupiter-git-dickson-mer-867-integrate-solareum-wowcats.vercel.app';
 
 // PROD
 export const XSB_PATH = 'https://xsb.solareum.app/api/v1';
 export const API_PATH = 'https://api.solareum.app';
+// export const JUPITER = 'https://jup.ag';
 
 export let service = {
   postWalletNew: `${XSB_PATH}/wallet/new`,

@@ -13,6 +13,7 @@ import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
 import Search from '../screens/Search';
 import Token from '../screens/Token';
 import DEX from '../screens/DEX';
+import Swap from '../screens/DEX/Swap';
 import { getListWallet } from '../storage/WalletCollection';
 import SplashScreen from 'react-native-splash-screen';
 import { HomeScreen } from './HomeScreen';
@@ -96,6 +97,11 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen
             name={Routes.DEX}
             component={DEX}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={Routes.Swap}
+            component={Swap}
             options={{ headerShown: false }}
           />
           <Stack.Screen name={Routes.GetStarted} component={GetStarted} />

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MarketInfo } from '../../core/AppProvider/MarketProvider';
 import { useNavigation } from '@react-navigation/core';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import Icon from '../../components/Icon';
+import { useToken } from '../../core/AppProvider/TokenProvider';
 
 import { COLORS } from '../../theme/colors';
 import Routes from '../../navigators/Routes';
@@ -41,25 +41,32 @@ const s = StyleSheet.create({
 });
 
 type Props = {
-  item: MarketInfo;
+  from: string;
+  to: string;
 };
 
-export const MarketItem = ({ item }: Props) => {
+export const MarketItem = ({ from, to }: Props) => {
+  const { accountList } = useToken();
   const navigation = useNavigation();
 
+  const base = accountList.find((i) => i.symbol === from);
+  const quote = accountList.find((i) => i.symbol === to);
+
   const navToDex = () => {
-    navigation.navigate(Routes.DEX, { marketId: item.id });
+    navigation.navigate(Routes.Swap, { from, to });
   };
 
   return (
     <TouchableOpacity style={s.main} onPress={navToDex}>
       <View style={s.iconBase}>
-        <CryptoIcon uri={item.baseInfo?.logoURI} size={36} />
+        <CryptoIcon uri={base.logoURI} size={36} />
       </View>
       <View style={s.iconQuote}>
-        <CryptoIcon uri={item.quoteInfo?.logoURI} size={36} />
+        <CryptoIcon uri={quote.logoURI} size={36} />
       </View>
-      <Text style={s.name}>{item.name}</Text>
+      <Text style={s.name}>
+        {from}-{to}
+      </Text>
       <View style={s.icon}>
         <Icon type="feather" name="chevron-right" color={COLORS.white4} />
       </View>

@@ -17,6 +17,7 @@ export enum Routes {
   ManagementTokenList = 'Manage Accounts',
   Influencer = 'Referral',
   Airdrop = 'Airdrop',
+  Swap = 'Swap',
 }
 
 export default Routes;
