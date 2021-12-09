@@ -36,7 +36,10 @@ const s = StyleSheet.create({
   },
 });
 
-type Props = {};
+type Props = {
+  from?: string;
+  to?: string;
+};
 type State = {};
 
 export default class SolareumSwap extends Component<Props, State> {
@@ -161,8 +164,9 @@ export default class SolareumSwap extends Component<Props, State> {
   };
 
   render() {
-    // const uri = `${JUPITER}/swap/USDC-XSB`;
-    const uri = `${JUPITER}/swap/USDC-MILLI`;
+    const { route = {} } = this.props;
+    const { from = 'USDC', to = 'XSB' } = route.params || {};
+    const uri = `${JUPITER}/swap/${from}-${to}`;
 
     return (
       <View style={{ ...s.main, height: this.state.height }}>
