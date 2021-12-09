@@ -39,13 +39,12 @@ const s = StyleSheet.create({
   },
 });
 
+const fromList = ['USDC', 'USDT', 'SOL'];
+
 export const Market = ({ symbol }) => {
-  const { marketList } = useMarket();
   const { t } = useLocalize();
 
-  const filteredList = marketList.filter(
-    (i) => i.base === symbol || i.quote === symbol,
-  );
+  const filteredList = fromList.filter((i) => i !== symbol);
 
   return (
     <View style={s.main}>
@@ -59,7 +58,7 @@ export const Market = ({ symbol }) => {
           <Text style={s.title}>{t('token-market-title')}</Text>
           <View style={s.market}>
             {filteredList.map((i) => (
-              <MarketItem key={i.id} item={i} />
+              <MarketItem key={i.id} from={i} to={symbol} />
             ))}
           </View>
         </View>

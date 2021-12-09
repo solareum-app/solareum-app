@@ -40,7 +40,10 @@ const s = StyleSheet.create({
   },
 });
 
-type Props = {};
+type Props = {
+  from?: string;
+  to?: string;
+};
 type State = {};
 
 class SolareumSwap extends Component<Props, State> {
@@ -165,12 +168,14 @@ class SolareumSwap extends Component<Props, State> {
   };
 
   render() {
+    const { route = {} } = this.props;
+    const { from = 'USDC', to = 'XSB' } = route.params || {};
     let uri = '';
 
     if (this.props.swap === SWAP_APP.JUPITER) {
-      uri = `${JUPITER}/swap/USDC-XSB`;
+      uri = `${JUPITER}/swap/${from}-${to}`;
     } else {
-      uri = `${ONE_SOL}/trade/USDC-XSB`;
+      uri = `${ONE_SOL}/trade/${from}-${to}`;
     }
 
     return (
