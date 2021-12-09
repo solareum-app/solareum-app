@@ -134,6 +134,22 @@ const Settings: React.FC = () => {
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
+
+          <ListItem
+            containerStyle={s.item}
+            bottomDivider
+            onPress={() => {
+              navigation.navigate(Routes.SwapApplication);
+            }}
+          >
+            <Icon type="feather" name="refresh-cw" color="grey" size={20} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemWallet}>
+                Swap Application
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
         </View>
 
         <View style={s.group}>

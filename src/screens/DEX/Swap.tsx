@@ -6,7 +6,11 @@ import bs58 from 'bs58';
 import Header from '../Wallet/Header';
 import { AppContext } from '../../core/AppProvider/AppProvider';
 import { LoadingImage } from '../../components/LoadingIndicator';
-import { JUPITER } from '../../config';
+import { JUPITER, ONE_SOL } from '../../config';
+import {
+  useConfig,
+  SWAP_APP,
+} from '../../core/AppProvider/RemoteConfigProvider';
 
 const INJECTED_SCRIPT = `
 window.solana = {
@@ -42,7 +46,7 @@ type Props = {
 };
 type State = {};
 
-export default class SolareumSwap extends Component<Props, State> {
+class SolareumSwap extends Component<Props, State> {
   state = {
     walletAddress: '',
     height: 0,
@@ -166,7 +170,13 @@ export default class SolareumSwap extends Component<Props, State> {
   render() {
     const { route = {} } = this.props;
     const { from = 'USDC', to = 'XSB' } = route.params || {};
-    const uri = `${JUPITER}/swap/${from}-${to}`;
+    let uri = '';
+
+    if (this.props.swap === SWAP_APP.JUPITER) {
+      uri = `${JUPITER}/swap/${from}-${to}`;
+    } else {
+      uri = `${ONE_SOL}/trade/${from}-${to}`;
+    }
 
     return (
       <View style={{ ...s.main, height: this.state.height }}>
@@ -193,3 +203,11 @@ export default class SolareumSwap extends Component<Props, State> {
 }
 
 SolareumSwap.contextType = AppContext;
+
+const SwapWithConfig = (props) => {
+  const { swap } = useConfig();
+
+  return <SolareumSwap {...props} swap={swap} />;
+};
+
+export default SwapWithConfig;

@@ -24,6 +24,7 @@ import ManageTokenList from '../screens/ManageTokenList';
 import DailyMission from '../screens/Settings/DailyMission';
 import Influencer from '../screens/Settings/Influencer';
 import Airdrop from '../screens/Settings/Airdrop';
+import SwapApp from '../screens/Settings/SwapApp';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -120,6 +121,7 @@ const MainNavigator: React.FC = () => {
             name={Routes.ManagementTokenList}
             component={ManageTokenList}
           />
+          <Stack.Screen name={Routes.SwapApplication} component={SwapApp} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>
