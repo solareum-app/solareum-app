@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 
-import { typo } from '../../components/Styles';
-import { MarketItem } from '../Market/MarketItem';
-import { useMarket } from '../../core/AppProvider/MarketProvider';
 import imgDelivering from '../../assets/clip-message-sent.png';
+import { typo } from '../../components/Styles';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { MarketItem } from './MarketItem';
 
 const s = StyleSheet.create({
   main: {
