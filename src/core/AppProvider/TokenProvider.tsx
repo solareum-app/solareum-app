@@ -60,6 +60,7 @@ const CUSTOM_TOKENS = [
     logoURI: 'https://solareum.app/icons/XSB-G.png',
     tags: ['Solareum', 'Wallet', 'Serum Dex'],
     extensions: {
+      coingeckoId: 'solareum-wallet',
       wealthclub: 'https://wealthclub.vn',
       twitter: 'https://twitter.com/solareum_wallet',
       telegram: 'https://t.me/solareum_wallet',
@@ -182,9 +183,8 @@ export const TokenProvider: React.FC = (props) => {
           ? filteredTokenListContainer?.getList()
           : null; // Workaround for filter return all on unknown slug
 
-      const tokenList = [...customeTokenList]
-        .concat(listOfTokens)
-        .concat(CUSTOM_TOKENS);
+      const tokenList =
+        CUSTOM_TOKENS.concat(customeTokenList).concat(listOfTokens);
       const uniqTokenList = getUniqByAddress(tokenList);
       const priceMapping = await fetchPriceData(uniqTokenList).catch(() => []);
       const accList = createAccountList(
