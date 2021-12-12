@@ -40,6 +40,38 @@ export const useToken = () => {
   return useContext(TokenContext);
 };
 
+/**
+ * TOKEN structure
+ {
+    "chainId": 101,
+    "address": "<SOLAREUM>",
+    "symbol": "XSB",
+    "name": "Solareum",
+    "decimals": 9,
+    "logoURI": "https://solareum.app/icons/XSB-P.png",
+    "tags": [
+      "Solareum",
+      "Wallet",
+      "Serum Dex"
+    ],
+    "extensions": {
+      "wealthclub": "https://wealthclub.vn",
+      "twitter": "https://twitter.com/solareum_wallet",
+      "telegram": "https://t.me/solareum_wallet",
+      "policy": "https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418",
+      "website": "https://solareum.app",
+    }
+  },
+
+  Market Structure
+  {
+    "name": "SAMO/USDC",
+    "address": "FR3SPJmgfRSKKQ2ysUZBu7vJLpzTixXnjzb84bY3Diif",
+    "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+    "deprecated": false
+  }
+ */
+
 const CUSTOM_TOKENS = [
   {
     address: 'SOL',
@@ -60,6 +92,7 @@ const CUSTOM_TOKENS = [
     logoURI: 'https://solareum.app/icons/XSB-G.png',
     tags: ['Solareum', 'Wallet', 'Serum Dex'],
     extensions: {
+      coingeckoId: 'solareum-wallet',
       wealthclub: 'https://wealthclub.vn',
       twitter: 'https://twitter.com/solareum_wallet',
       telegram: 'https://t.me/solareum_wallet',
@@ -182,9 +215,8 @@ export const TokenProvider: React.FC = (props) => {
           ? filteredTokenListContainer?.getList()
           : null; // Workaround for filter return all on unknown slug
 
-      const tokenList = [...customeTokenList]
-        .concat(listOfTokens)
-        .concat(CUSTOM_TOKENS);
+      const tokenList =
+        CUSTOM_TOKENS.concat(customeTokenList).concat(listOfTokens);
       const uniqTokenList = getUniqByAddress(tokenList);
       const priceMapping = await fetchPriceData(uniqTokenList).catch(() => []);
       const accList = createAccountList(

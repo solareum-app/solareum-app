@@ -37,22 +37,30 @@ const SwapItem = ({ name, active, onChange }) => {
   );
 };
 
-const ManageSwapApplication: React.FC = () => {
+export const SwapContainer = () => {
   const { swap, setSwap } = useConfig();
 
   return (
+    <View>
+      <SwapItem
+        name="Jupiter"
+        active={swap === SWAP_APP.JUPITER}
+        onChange={() => setSwap(SWAP_APP.JUPITER)}
+      />
+      <SwapItem
+        name="1Sol"
+        active={swap === SWAP_APP.ONE_SOL}
+        onChange={() => setSwap(SWAP_APP.ONE_SOL)}
+      />
+    </View>
+  );
+};
+
+const ManageSwapApplication: React.FC = () => {
+  return (
     <View style={grid.container}>
       <ScrollView>
-        <SwapItem
-          name="Jupiter"
-          active={swap === SWAP_APP.JUPITER}
-          onChange={() => setSwap(SWAP_APP.JUPITER)}
-        />
-        <SwapItem
-          name="1Sol"
-          active={swap === SWAP_APP.ONE_SOL}
-          onChange={() => setSwap(SWAP_APP.ONE_SOL)}
-        />
+        <SwapContainer />
       </ScrollView>
     </View>
   );

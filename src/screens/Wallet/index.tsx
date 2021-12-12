@@ -28,7 +28,7 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftButton';
 import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
-import { TokenSaleButton } from '../../containers/TokenSale/Button';
+import { Onboarding } from './Onboarding';
 
 const s = StyleSheet.create({
   header: {
@@ -112,7 +112,6 @@ const WalletScreen = () => {
   const [load, setLoad] = useState(0);
 
   const navigation = useNavigation();
-  const refSwap = useRef();
   const refReceived = useRef();
 
   const { loadAccountList, accountList } = useToken();
@@ -201,6 +200,10 @@ const WalletScreen = () => {
           </View>
         </View>
 
+        <View>
+          <Onboarding />
+        </View>
+
         <View style={[grid.body, s.body]}>
           {loading && !activeAccountList.length ? (
             <View style={s.loadingWrp}>
@@ -235,7 +238,6 @@ const WalletScreen = () => {
           ) : null}
 
           {isAccountCreated ? <MissionLeftButton /> : null}
-          {<TokenSaleButton />}
         </View>
 
         <Airdrop load={load} />
