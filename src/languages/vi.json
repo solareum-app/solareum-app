@@ -149,6 +149,9 @@
   "mission-modal-title": "Nhiệm vụ hoàn thành",
   "mission-reward-title": "Bạn nhận được",
   "mission-thanks-01": "Chúc mừng bạn đã hoàn thành nhiệm vụ. Hãy chờ 5 phút để hoàn thành nhiệm vụ tiếp theo nhé.",
+  "onboarding-title": "Ứng dụng hoán đổi mà bạn yêu thích?",
+  "onboarding-btn": "Ok, hoàn thành",
+  "onboarding-message": "Ứng dụng được chọn sẽ được sử dụng làm mặc định trong các lần hoán đổi ở tương lai. Bạn có thể cập nhật lại lựa chọn ở phần cấu hình.",
   "prefix": "v",
   "version": "vi.2.0.0"
 }
