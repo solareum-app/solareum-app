@@ -4,7 +4,7 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import { authFetch } from '../../utils/authfetch';
 import { setItem, getItem } from '../../storage/Collection';
 
-const SWAP_KEY = 'swap';
+export const SWAP_APPLICATION_KEY = 'swap';
 
 export enum SWAP_APP {
   JUPITER = 'jupiter',
@@ -60,12 +60,12 @@ export const RemoteConfigProvider = ({ children }) => {
 
   const setSwap = (value: SWAP_APP) => {
     setSwapOrg(value);
-    setItem('', SWAP_KEY, value);
+    setItem('', SWAP_APPLICATION_KEY, value);
   };
 
   useEffect(() => {
     (async () => {
-      const swapApp = (await getItem('', SWAP_KEY)) as SWAP_APP;
+      const swapApp = (await getItem('', SWAP_APPLICATION_KEY)) as SWAP_APP;
       setSwapOrg(swapApp);
     })();
   }, []);
