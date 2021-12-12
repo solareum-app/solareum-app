@@ -2,38 +2,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 
 import { authFetch } from '../../utils/authfetch';
+import { setItem, getItem } from '../../storage/Collection';
 
-/**
- * TOKEN structure
- {
-    "chainId": 101,
-    "address": "<SOLAREUM>",
-    "symbol": "XSB",
-    "name": "Solareum",
-    "decimals": 9,
-    "logoURI": "https://solareum.app/icons/XSB-P.png",
-    "tags": [
-      "Solareum",
-      "Wallet",
-      "Serum Dex"
-    ],
-    "extensions": {
-      "wealthclub": "https://wealthclub.vn",
-      "twitter": "https://twitter.com/solareum_wallet",
-      "telegram": "https://t.me/solareum_wallet",
-      "policy": "https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418",
-      "website": "https://solareum.app",
-    }
-  },
-
-  Market Structure
-  {
-    "name": "SAMO/USDC",
-    "address": "FR3SPJmgfRSKKQ2ysUZBu7vJLpzTixXnjzb84bY3Diif",
-    "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
-    "deprecated": false
-  }
- */
+const SWAP_KEY = 'swap';
 
 export enum SWAP_APP {
   JUPITER = 'jupiter',
@@ -89,8 +60,15 @@ export const RemoteConfigProvider = ({ children }) => {
 
   const setSwap = (value: SWAP_APP) => {
     setSwapOrg(value);
-    // store user choice into localStore
+    setItem('', SWAP_KEY, value);
   };
+
+  useEffect(() => {
+    (async () => {
+      const swapApp = (await getItem('', SWAP_KEY)) as SWAP_APP;
+      setSwapOrg(swapApp);
+    })();
+  }, []);
 
   useEffect(() => {
     remoteConfig()

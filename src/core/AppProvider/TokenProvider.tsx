@@ -40,6 +40,38 @@ export const useToken = () => {
   return useContext(TokenContext);
 };
 
+/**
+ * TOKEN structure
+ {
+    "chainId": 101,
+    "address": "<SOLAREUM>",
+    "symbol": "XSB",
+    "name": "Solareum",
+    "decimals": 9,
+    "logoURI": "https://solareum.app/icons/XSB-P.png",
+    "tags": [
+      "Solareum",
+      "Wallet",
+      "Serum Dex"
+    ],
+    "extensions": {
+      "wealthclub": "https://wealthclub.vn",
+      "twitter": "https://twitter.com/solareum_wallet",
+      "telegram": "https://t.me/solareum_wallet",
+      "policy": "https://www.wealthclub.vn/t/solareum-wallet-dieu-khoan-su-dung/418",
+      "website": "https://solareum.app",
+    }
+  },
+
+  Market Structure
+  {
+    "name": "SAMO/USDC",
+    "address": "FR3SPJmgfRSKKQ2ysUZBu7vJLpzTixXnjzb84bY3Diif",
+    "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+    "deprecated": false
+  }
+ */
+
 const CUSTOM_TOKENS = [
   {
     address: 'SOL',
