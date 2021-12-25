@@ -10,13 +10,13 @@ PODS:
     - AppCenter/Crashes (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - AppCenter/Analytics (4.1.1):
+  - AppCenter/Analytics (4.3.0):
     - AppCenter/Core
-  - AppCenter/Core (4.1.1)
-  - AppCenter/Crashes (4.1.1):
+  - AppCenter/Core (4.3.0)
+  - AppCenter/Crashes (4.3.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (4.1.0):
-    - AppCenter/Core (= 4.1.1)
+  - AppCenterReactNativeShared (4.3.0):
+    - AppCenter/Core (= 4.3.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.63.4)
@@ -88,34 +88,34 @@ PODS:
     - nanopb (~> 2.30908.0)
     - PromisesObjC (~> 1.2)
   - GoogleUserMessagingPlatform (1.4.0)
-  - GoogleUtilities/AppDelegateSwizzler (7.5.1):
+  - GoogleUtilities/AppDelegateSwizzler (7.6.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.5.1):
+  - GoogleUtilities/Environment (7.6.0):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.5.1):
+  - GoogleUtilities/Logger (7.6.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.5.1):
+  - GoogleUtilities/MethodSwizzler (7.6.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.5.1):
+  - GoogleUtilities/Network (7.6.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.5.1)"
-  - GoogleUtilities/Reachability (7.5.1):
+  - "GoogleUtilities/NSData+zlib (7.6.0)"
+  - GoogleUtilities/Reachability (7.6.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.5.1):
+  - GoogleUtilities/UserDefaults (7.6.0):
     - GoogleUtilities/Logger
-  - libwebp (1.2.0):
-    - libwebp/demux (= 1.2.0)
-    - libwebp/mux (= 1.2.0)
-    - libwebp/webp (= 1.2.0)
-  - libwebp/demux (1.2.0):
+  - libwebp (1.2.1):
+    - libwebp/demux (= 1.2.1)
+    - libwebp/mux (= 1.2.1)
+    - libwebp/webp (= 1.2.1)
+  - libwebp/demux (1.2.1):
     - libwebp/webp
-  - libwebp/mux (1.2.0):
+  - libwebp/mux (1.2.1):
     - libwebp/demux
-  - libwebp/webp (1.2.0)
+  - libwebp/webp (1.2.1)
   - lottie-ios (3.2.3)
   - lottie-react-native (4.0.3):
     - lottie-ios (~> 3.2.3)
@@ -442,9 +442,9 @@ PODS:
     - React
   - RNVectorIcons (8.1.0):
     - React-Core
-  - SDWebImage (5.11.1):
-    - SDWebImage/Core (= 5.11.1)
-  - SDWebImage/Core (5.11.1)
+  - SDWebImage (5.12.1):
+    - SDWebImage/Core (= 5.12.1)
+  - SDWebImage/Core (5.12.1)
   - SDWebImageWebPCoder (0.6.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.7)
@@ -648,11 +648,11 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: cd53e3ed3563cc720bcb806c9731a12389b40d44
+  AppCenter: 883369ab78427b0561c688158d689dfe1f993ea9
   appcenter-analytics: aa074250b2cb182d6f7d67d9c236dd4606673ab5
   appcenter-core: c97920e79eba2321a262d3733cb2a6f1097db539
   appcenter-crashes: 804ae51c5d1742ce20fdb6a68b3d06208a404ad5
-  AppCenterReactNativeShared: 2d5a53b6cbd2fe7f63f0033e9f0a40757a4eacf5
+  AppCenterReactNativeShared: a821c7287a296486889ef6339317b701febb0695
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
@@ -669,8 +669,8 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: fd19169c3034975cb934e865e5667bfdce59df7f
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
   GoogleUserMessagingPlatform: b168e8c46cd8f92aa3e34b584c4ca78a411ce367
-  GoogleUtilities: 3df19e3c24f7bbc291d8b5809aa6b0d41e642437
-  libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
+  GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
+  libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   lottie-react-native: 96361a9891cf651534ea35c4f85f33d4cf14ed13
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
@@ -720,11 +720,11 @@ SPEC CHECKSUMS:
   RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 516bf46bb962f88f6ddb25a470c277b7d40dfef3
+PODFILE CHECKSUM: 0fb9446a692a75f795a2f38e024de86de5f86ead
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
