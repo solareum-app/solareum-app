@@ -22,6 +22,7 @@ import { authFetch } from '../../utils/authfetch';
 export type TokenContextType = {
   accountList: IAccount[];
   getAccountByPk: Function;
+  setAccountByPk: Function;
   tokenInfos: TokenInfo[];
   priceData: any;
   loadAccountList: Function;
@@ -30,6 +31,7 @@ export type TokenContextType = {
 export const TokenContext = React.createContext<TokenContextType>({
   accountList: [],
   getAccountByPk: () => null,
+  setAccountByPk: () => null,
   tokenInfos: [],
   priceData: {},
   loadAccountList: () => null,
@@ -169,6 +171,22 @@ export const TokenProvider: React.FC = (props) => {
     return account;
   };
 
+  const setAccountByPk = async (pk: string, account: any) => {
+    const newAccountList = accountList.map((i) => {
+      if (i.publicKey === pk) {
+        return {
+          ...i,
+          ...account,
+        };
+      }
+      return i;
+    });
+
+    setAccountList(newAccountList);
+    const newAccount = newAccountList.find((i) => i.publicKey === pk);
+    return newAccount;
+  };
+
   const loadAccountFromStore = async (owner: string) => {
     const list = await getAccountListByOwner(owner);
     const storeAccList = createAccountList(tokenInfos, list, priceData);
@@ -258,6 +276,7 @@ export const TokenProvider: React.FC = (props) => {
         getAccountByPk,
         loadAccountList,
         toggleAccountByPk,
+        setAccountByPk,
       }}
     >
       {tokenInfos.length ? props.children : <LoadingImage />}

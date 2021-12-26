@@ -64,7 +64,7 @@ const Token = ({ route }) => {
   const { action, token } = route.params;
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
-  const { getAccountByPk, toggleAccountByPk } = useToken();
+  const { getAccountByPk, toggleAccountByPk, accountList } = useToken();
   const { t } = useLocalize();
 
   const refTransactionHistory = useRef();
@@ -94,6 +94,14 @@ const Token = ({ route }) => {
     setAccount({ ...account, ...acc });
     setLoading(false);
   };
+
+  useEffect(() => {
+    const acc = accountList.find((i) => i.publicKey === token.publicKey);
+    if (!acc) {
+      return;
+    }
+    setAccount(acc);
+  }, [accountList]);
 
   useEffect(() => {
     // open action panel
