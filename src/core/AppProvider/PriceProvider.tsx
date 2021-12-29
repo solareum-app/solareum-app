@@ -31,8 +31,7 @@ const fetchPriceData = async (accountList: IAccount[] = []) => {
 
 export const PriceProvider: React.FC = (props) => {
   const { accountList: accountListOrg, tokenInfos } = useToken();
-
-  const [accountList, setAccountList] = useState<IAccount[]>([]);
+  const [accountList, setAccountList] = useState<IAccount[]>(accountListOrg);
   const [priceData, setPriceData] = useState({});
 
   useEffect(() => {
