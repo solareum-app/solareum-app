@@ -4,6 +4,7 @@ import { ListItem } from 'react-native-elements';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import { grid } from '../../components/Styles';
 import { IAccount } from '../../core/AppProvider/IAccount';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import { FONT_SIZES } from '../../theme';
 import { COLORS } from '../../theme/colors';
@@ -61,7 +62,8 @@ const TokenInfoItem = ({ toggleAccountByPk, token }) => {
 
 const ManageTokenList: React.FC = () => {
   const [loading] = useState(false);
-  const { accountList, toggleAccountByPk } = useToken();
+  const { toggleAccountByPk } = useToken();
+  const { accountList } = usePrice();
 
   const onRefresh = () => null;
 

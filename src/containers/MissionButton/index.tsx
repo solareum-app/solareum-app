@@ -15,13 +15,13 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
-import { useToken } from '../../core/AppProvider/TokenProvider';
 
 import { getAdmobIdByType } from '../../components/Admob/Rewarded';
 import { COLORS } from '../../theme';
 import { MissionReward } from './MissionReward';
 import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
 import { setItem, getItem } from '../../storage/Collection';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   manageBtnWrp: {
@@ -64,7 +64,7 @@ export const MissionButton = ({ padding = 20 }) => {
   const [done, setDone] = useState(false);
   const [lastMissionTs, setLastMissionTsOrg] = useState<number>(-1);
 
-  const { accountList } = useToken();
+  const { accountList } = usePrice();
   const { t } = useLocalize();
 
   const [currentTs, setCurrentTs] = useState(Date.now());
