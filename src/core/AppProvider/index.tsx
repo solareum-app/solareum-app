@@ -5,6 +5,7 @@ import { MarketProvider } from './MarketProvider';
 import { RemoteConfigProvider } from './RemoteConfigProvider';
 import { TokenProvider } from './TokenProvider';
 import { LocalizeProvider } from './LocalizeProvider';
+import { PriceProvider } from './PriceProvider';
 
 export const Root: React.FC = (props) => {
   return (
@@ -12,7 +13,9 @@ export const Root: React.FC = (props) => {
       <LocalizeProvider>
         <AppProvider>
           <TokenProvider>
-            <MarketProvider>{props.children}</MarketProvider>
+            <PriceProvider>
+              <MarketProvider>{props.children}</MarketProvider>
+            </PriceProvider>
           </TokenProvider>
         </AppProvider>
       </LocalizeProvider>

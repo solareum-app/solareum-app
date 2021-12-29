@@ -6,8 +6,8 @@ import { useLocalize } from '../../../core/AppProvider/LocalizeProvider';
 
 import { authFetch } from '../../../utils/authfetch';
 import { service } from '../../../config';
-import { useToken } from '../../../core/AppProvider/TokenProvider';
 import { useMetaData } from '../../../hooks/useMetaData';
+import { usePrice } from '../../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   wrp: {
@@ -24,7 +24,7 @@ type Props = {};
 const DailyMission: React.FC<Props> = () => {
   const [missionReward, setMissionReward] = useState(0);
   const metaData = useMetaData();
-  const { accountList } = useToken();
+  const { accountList } = usePrice();
   const { t } = useLocalize();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');

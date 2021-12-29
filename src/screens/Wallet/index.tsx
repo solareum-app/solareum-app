@@ -29,6 +29,7 @@ import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftBut
 import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
 import { Onboarding } from './Onboarding';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   header: {
@@ -114,7 +115,8 @@ const WalletScreen = () => {
   const navigation = useNavigation();
   const refReceived = useRef();
 
-  const { loadAccountList, accountList } = useToken();
+  const { loadAccountList } = useToken();
+  const { accountList } = usePrice();
   const { addressId } = useApp();
   const { t } = useLocalize();
 

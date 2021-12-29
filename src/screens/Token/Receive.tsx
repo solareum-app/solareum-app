@@ -21,6 +21,7 @@ import { wait } from '../../utils';
 import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { EventMessage } from '../EventMessage/EventMessage';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -78,7 +79,8 @@ const WAIT_TIME = 10000; // 10s -> 4mins for total
 
 export const Receive = ({ token }) => {
   const { wallet } = useApp();
-  const { accountList, loadAccountList } = useToken();
+  const { loadAccountList } = useToken();
+  const { accountList } = usePrice();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [mintAccountFee, setMintAccountFee] = useState<number>(0);

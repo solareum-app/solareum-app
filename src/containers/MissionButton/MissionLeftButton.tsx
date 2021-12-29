@@ -7,9 +7,9 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
-import { useToken } from '../../core/AppProvider/TokenProvider';
 import { COLORS } from '../../theme';
 import Routes from '../../navigators/Routes';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   manageBtnWrp: {
@@ -28,7 +28,7 @@ const s = StyleSheet.create({
 
 export const MissionLeftButton = ({ padding = 20 }) => {
   const [missionLeft, setMissionLeft] = useState(0);
-  const { accountList } = useToken();
+  const { accountList } = usePrice();
   const { t } = useLocalize();
   const metaData = useMetaData();
   const navigation = useNavigation();

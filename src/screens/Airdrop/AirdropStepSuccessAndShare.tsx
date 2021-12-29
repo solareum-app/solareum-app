@@ -4,11 +4,11 @@ import { Button } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
 
 import { grid, typo } from '../../components/Styles';
-import { useToken } from '../../core/AppProvider/TokenProvider';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { style as s } from './style';
 import { COLORS } from '../../theme';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const style = StyleSheet.create({
   imgWrp: {
@@ -54,7 +54,7 @@ export const AirdropStepSuccessAndShare = ({
   airdropSignature,
   rewardRefSignature,
 }) => {
-  const { accountList } = useToken();
+  const { accountList } = usePrice();
   const { t } = useLocalize();
   const solAccount = accountList.find((i) => i.mint === 'SOL');
 
