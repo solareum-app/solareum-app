@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { Portal } from 'react-native-portalize';
 import { Button } from 'react-native-elements';
 
-import { useToken } from '../../core/AppProvider/TokenProvider';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { COLORS } from '../../theme';
 import { typo } from '../../components/Styles';
@@ -18,6 +17,7 @@ import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { SOL_BALANCE_TARGET } from './const';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -46,7 +46,7 @@ enum AIRDROP_STEP {
 }
 
 export const Airdrop = ({ isActive, load }) => {
-  const { accountList } = useToken();
+  const { accountList } = usePrice();
   const [airdropActive, setAirdropActive] = useState(true);
   const [airdrop, setAirdrop] = useState(0);
   const [rewardRef, setRewardRef] = useState(0);

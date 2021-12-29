@@ -5,7 +5,6 @@ import { Button } from 'react-native-elements';
 
 import ImgPayment from '../../assets/clip-1.png';
 import { LoadingImage } from '../../components/LoadingIndicator';
-import { useToken } from '../../core/AppProvider/TokenProvider';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { COLORS } from '../../theme';
 import { typo } from '../../components/Styles';
@@ -21,6 +20,7 @@ import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreat
 import { TokenSaleStepInfo } from './TokenSaleStepInfo';
 import { TokenSaleForm } from './TokenSaleForm';
 import { ReceiveMessage } from './ReceiveMessage';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -60,7 +60,7 @@ const MAX_TRY = 8;
 const WAIT_TIME = 15000; // 3 mins
 
 export const TokenSaleButton = () => {
-  const { accountList } = useToken();
+  const { accountList } = usePrice();
   const [step, setStep] = useState(TOKEN_SALE_STEP.info);
   const [purchase, setPurchase] = useState({});
   const [error, setError] = useState<string>('');

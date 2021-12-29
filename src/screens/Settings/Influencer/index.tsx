@@ -10,11 +10,11 @@ import {
 import { Button } from 'react-native-elements';
 
 import { grid, typo, row } from '../../../components/Styles';
-import { useToken } from '../../../core/AppProvider/TokenProvider';
 import { authFetch } from '../../../utils/authfetch';
 import { service } from '../../../config';
 import { useLocalize } from '../../../core/AppProvider/LocalizeProvider';
 import { getShortHash } from '../../../utils/address';
+import { usePrice } from '../../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   wrp: {
@@ -29,7 +29,7 @@ const s = StyleSheet.create({
 type Props = {};
 
 const Influencer: React.FC<Props> = () => {
-  const { accountList } = useToken();
+  const { accountList } = usePrice();
   const [rewardRef, setRewardRef] = useState(1);
   const [nominated, setNominated] = useState('');
   const [noRef, setNoRef] = useState(0);
