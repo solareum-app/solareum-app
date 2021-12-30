@@ -38,12 +38,16 @@ export const PriceProvider: React.FC = (props) => {
   const [accountList, setAccountList] = useState<IAccount[]>(accountListOrg);
   const [priceData, setPriceData] = useState({});
 
-  useInterval(() => {
-    (async () => {
-      const price = await fetchPriceData(accountListOrg).catch(() => { });
-      setPriceData(price);
-    })();
-  }, UPDATE_INTERVAL);
+  useInterval(
+    () => {
+      (async () => {
+        const price = await fetchPriceData(accountListOrg).catch(() => { });
+        setPriceData(price);
+      })();
+    },
+    UPDATE_INTERVAL,
+    accountListOrg,
+  );
 
   useEffect(() => {
     (async () => {
