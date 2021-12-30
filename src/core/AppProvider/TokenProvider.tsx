@@ -195,6 +195,7 @@ export const TokenProvider: React.FC = (props) => {
     }
     const owner = wallet.publicKey.toBase58();
     loadAccountFromStore(owner);
+    loadAccountList();
   }, [wallet]);
 
   return (
