@@ -155,12 +155,9 @@ export const TokenProvider: React.FC = (props) => {
       return;
     }
 
-    // get data from the store
-    const owner = wallet.publicKey.toBase58();
-    loadAccountFromStore(owner);
-
     // get data from the chain
     try {
+      const owner = wallet.publicKey.toBase58();
       const storeList = await getAccountListByOwner(owner);
       const accs = await getAccountList(wallet, storeList);
       const mergedAccList = mergeIsHidingToOnChainData(accs, storeList);
@@ -187,10 +184,8 @@ export const TokenProvider: React.FC = (props) => {
       const tokenList =
         CUSTOM_TOKENS.concat(customeTokenList).concat(listOfTokens);
       const uniqTokenList = getUniqByAddress(tokenList);
-      const accList = createAccountList(uniqTokenList, accountList, {});
 
       setTokenInfos(uniqTokenList);
-      setAccountList(accList);
     });
   }, []);
 

@@ -37,11 +37,8 @@ export const PriceProvider: React.FC = (props) => {
 
   useEffect(() => {
     (async () => {
-      let accList = createAccountList(tokenInfos, accountListOrg, priceData);
-      setAccountList(accList);
-
-      const price = await fetchPriceData(accountListOrg);
-      accList = createAccountList(tokenInfos, accountListOrg, price);
+      const price = await fetchPriceData(accountListOrg).catch(() => priceData);
+      const accList = createAccountList(tokenInfos, accountListOrg, price);
       setPriceData(price);
       setAccountList(accList);
 
