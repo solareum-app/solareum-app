@@ -3,10 +3,7 @@ import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
 import { PublicKey } from '@solana/web3.js';
 
 import { getAccountList, getAccountInfo } from '../../spl-utils/getWallet';
-import {
-  storeAccountList,
-  getAccountListByOwner,
-} from '../../storage/AccountCollection';
+import { getAccountListByOwner } from '../../storage/AccountCollection';
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { MAINNET_URL } from '../../config';
 
@@ -114,13 +111,7 @@ export const TokenProvider: React.FC = (props) => {
   const { customeTokenList } = useConfig();
 
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
-  const [accountList, setAccountListSource] = useState<IAccount[]>([]);
-
-  const setAccountList = async (list: IAccount[]) => {
-    setAccountListSource(list);
-    await storeAccountList(list);
-    return 0;
-  };
+  const [accountList, setAccountList] = useState<IAccount[]>([]);
 
   // isHidingValue = 1 => show
   // isHidingValue = -1 => hide
@@ -156,7 +147,7 @@ export const TokenProvider: React.FC = (props) => {
   const loadAccountFromStore = async (owner: string) => {
     const list = await getAccountListByOwner(owner);
     const storeAccList = createAccountList(tokenInfos, list, {});
-    setAccountListSource(storeAccList);
+    setAccountList(storeAccList);
   };
 
   const loadAccountList = async () => {

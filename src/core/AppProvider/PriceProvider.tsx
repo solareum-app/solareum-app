@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { IAccount, createAccountList } from './IAccount';
 import { authFetch } from '../../utils/authfetch';
 import { useToken } from './TokenProvider';
+import { storeAccountList } from '../../storage/AccountCollection';
 
 export type TokenContextType = {
   accountList: IAccount[];
@@ -36,10 +37,15 @@ export const PriceProvider: React.FC = (props) => {
 
   useEffect(() => {
     (async () => {
+      let accList = createAccountList(tokenInfos, accountListOrg, priceData);
+      setAccountList(accList);
+
       const price = await fetchPriceData(accountListOrg);
-      const accList = createAccountList(tokenInfos, accountListOrg, price);
+      accList = createAccountList(tokenInfos, accountListOrg, price);
       setPriceData(price);
       setAccountList(accList);
+
+      await storeAccountList(accList);
     })();
   }, [tokenInfos, accountListOrg]);
 
