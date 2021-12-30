@@ -7,6 +7,7 @@ import {
   updateWallet,
   removeWalletById,
 } from '../../storage/WalletCollection';
+import { LoadingImage } from '../../components/LoadingIndicator';
 import { getWallet } from '../../spl-utils/getWallet';
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
@@ -37,6 +38,7 @@ export const AppProvider: React.FC = (props) => {
   const [wallet, setWallet] = useState(null);
   const [addressId, setAddressId] = useState('');
   const [addressList, setAddressList] = useState<AddressInfo[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const createAddress = async (
     seed: string,
@@ -96,12 +98,15 @@ export const AppProvider: React.FC = (props) => {
 
     if (data) {
       setAddressList(list);
-      setAddressIdWrapper(data.id);
+      await setAddressIdWrapper(data.id);
     }
   };
 
   useEffect(() => {
-    initWallet();
+    (async () => {
+      await initWallet();
+      setLoading(false);
+    })();
   }, []);
 
   return (
@@ -116,7 +121,7 @@ export const AppProvider: React.FC = (props) => {
         removeWallet,
       }}
     >
-      {props.children}
+      {!loading ? props.children : <LoadingImage />}
     </AppContext.Provider>
   );
 };

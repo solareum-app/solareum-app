@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { CryptoIcon } from '../../components/CryptoIcon';
 import Icon from '../../components/Icon';
-import { useToken } from '../../core/AppProvider/TokenProvider';
 
 import { COLORS } from '../../theme/colors';
 import Routes from '../../navigators/Routes';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -46,7 +46,7 @@ type Props = {
 };
 
 export const MarketItem = ({ from, to }: Props) => {
-  const { accountList } = useToken();
+  const { accountList } = usePrice();
   const navigation = useNavigation();
 
   const base = accountList.find((i) => i.symbol === from);
