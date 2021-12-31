@@ -19,6 +19,8 @@ export const usePrice = () => {
   return useContext(TokenContext);
 };
 
+let priceCache = {};
+
 const fetchPriceData = async (accountList: IAccount[] = []) => {
   const list = accountList
     .filter((i) => i.publicKey)
@@ -28,7 +30,12 @@ const fetchPriceData = async (accountList: IAccount[] = []) => {
   const price = await authFetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=${list}&vs_currencies=usd,vnd`,
   );
-  return price;
+
+  priceCache = {
+    ...priceCache,
+    ...price,
+  };
+  return priceCache;
 };
 
 const UPDATE_INTERVAL = 300000; // 5 mins = 5 * 60.000

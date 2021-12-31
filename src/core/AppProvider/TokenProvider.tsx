@@ -189,6 +189,15 @@ export const TokenProvider: React.FC = (props) => {
   };
 
   useEffect(() => {
+    if (!wallet) {
+      return;
+    }
+    const owner = wallet.publicKey.toBase58();
+    loadAccountFromStore(owner);
+    loadAccountList();
+  }, [wallet, tokenInfos]);
+
+  useEffect(() => {
     const tokenListProvider = new TokenListProvider();
     tokenListProvider.resolve().then(async (tokenListContainer) => {
       const cluster: Cluster | undefined = clusterForEndpoint(MAINNET_URL);
@@ -206,15 +215,6 @@ export const TokenProvider: React.FC = (props) => {
       setTokenInfos(uniqTokenList);
     });
   }, []);
-
-  useEffect(() => {
-    if (!wallet) {
-      return;
-    }
-    const owner = wallet.publicKey.toBase58();
-    loadAccountFromStore(owner);
-    loadAccountList();
-  }, [wallet]);
 
   return (
     <TokenContext.Provider
