@@ -7,21 +7,24 @@ import { TokenProvider } from './TokenProvider';
 import { LocalizeProvider } from './LocalizeProvider';
 import { RealtimeProvider } from './RealtimeProvider';
 import { ConnectionProvider } from './ConnectionProvider';
+import { PriceProvider } from './PriceProvider';
 
 export const Root: React.FC = (props) => {
   return (
     <RemoteConfigProvider>
-      <LocalizeProvider>
-        <ConnectionProvider>
+      <ConnectionProvider>
+        <LocalizeProvider>
           <AppProvider>
             <TokenProvider>
-              <MarketProvider>
-                <RealtimeProvider>{props.children}</RealtimeProvider>
-              </MarketProvider>
+              <RealtimeProvider>
+                <MarketProvider>
+                  <PriceProvider>{props.children}</PriceProvider>
+                </MarketProvider>
+              </RealtimeProvider>
             </TokenProvider>
           </AppProvider>
-        </ConnectionProvider>
-      </LocalizeProvider>
+        </LocalizeProvider>
+      </ConnectionProvider>
     </RemoteConfigProvider>
   );
 };

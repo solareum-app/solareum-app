@@ -14,6 +14,7 @@ import { SOL_BALANCE_TARGET } from './const';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { style as s } from './style';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const style = StyleSheet.create({
   iconWrp: {
@@ -42,7 +43,8 @@ export const AirdropStepCreateAccount = ({
   error: submitError,
 }) => {
   const { wallet } = useApp();
-  const { accountList, loadAccountList } = useToken();
+  const { loadAccountList } = useToken();
+  const { accountList } = usePrice();
   const { t } = useLocalize();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL') || {

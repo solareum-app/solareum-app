@@ -2,12 +2,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
 import { PublicKey } from '@solana/web3.js';
 
-import { useInterval } from '../../hooks/useInterval';
 import { getAccountList, getAccountInfo } from '../../spl-utils/getWallet';
-import {
-  storeAccountList,
-  getAccountListByOwner,
-} from '../../storage/AccountCollection';
+import { getAccountListByOwner } from '../../storage/AccountCollection';
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { MAINNET_URL } from '../../config';
 
@@ -17,14 +13,12 @@ import { IAccount, createAccountList } from './IAccount';
 import { useApp } from './AppProvider';
 import { useConfig } from './RemoteConfigProvider';
 import { getUniqByAddress } from './getUniqByAddress';
-import { authFetch } from '../../utils/authfetch';
 
 export type TokenContextType = {
   accountList: IAccount[];
   getAccountByPk: Function;
   setAccountByPk: Function;
   tokenInfos: TokenInfo[];
-  priceData: any;
   loadAccountList: Function;
   toggleAccountByPk: Function;
 };
@@ -33,7 +27,6 @@ export const TokenContext = React.createContext<TokenContextType>({
   getAccountByPk: () => null,
   setAccountByPk: () => null,
   tokenInfos: [],
-  priceData: {},
   loadAccountList: () => null,
   toggleAccountByPk: () => null,
 });
@@ -105,17 +98,6 @@ const CUSTOM_TOKENS = [
   },
 ];
 
-const fetchPriceData = async (tokenList: TokenInfo[] = []) => {
-  const list = tokenList.map((i) => i.extensions?.coingeckoId) || [];
-  const filtered = list.filter((i) => i !== undefined);
-  const price = await authFetch(
-    `https://api.coingecko.com/api/v3/simple/price?ids=${filtered.join(
-      ',',
-    )}&vs_currencies=usd,vnd`,
-  );
-  return price;
-};
-
 const mergeIsHidingToOnChainData = (onchainList, storeList) => {
   return onchainList.map((i) => {
     const item = storeList.find((j) => j.publicKey === i.publicKey) || {};
@@ -131,14 +113,7 @@ export const TokenProvider: React.FC = (props) => {
   const { customeTokenList } = useConfig();
 
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
-  const [accountList, setAccountListSource] = useState<IAccount[]>([]);
-  const [priceData, setPriceData] = useState({});
-
-  const setAccountList = async (list: IAccount[]) => {
-    setAccountListSource(list);
-    await storeAccountList(list);
-    return 0;
-  };
+  const [accountList, setAccountList] = useState<IAccount[]>([]);
 
   // isHidingValue = 1 => show
   // isHidingValue = -1 => hide
@@ -189,8 +164,8 @@ export const TokenProvider: React.FC = (props) => {
 
   const loadAccountFromStore = async (owner: string) => {
     const list = await getAccountListByOwner(owner);
-    const storeAccList = createAccountList(tokenInfos, list, priceData);
-    setAccountListSource(storeAccList);
+    const storeAccList = createAccountList(tokenInfos, list, {});
+    setAccountList(storeAccList);
   };
 
   const loadAccountList = async () => {
@@ -198,23 +173,14 @@ export const TokenProvider: React.FC = (props) => {
       return;
     }
 
-    // get data from the store
-    const owner = wallet.publicKey.toBase58();
-    loadAccountFromStore(owner);
-
     // get data from the chain
     try {
+      const owner = wallet.publicKey.toBase58();
       const storeList = await getAccountListByOwner(owner);
       const accs = await getAccountList(wallet, storeList);
-      const priceMapping = await fetchPriceData(tokenInfos);
       const mergedAccList = mergeIsHidingToOnChainData(accs, storeList);
-      const accList = createAccountList(
-        tokenInfos,
-        mergedAccList,
-        priceMapping,
-      );
+      const accList = createAccountList(tokenInfos, mergedAccList, {});
 
-      setPriceData(priceMapping);
       setAccountList(accList);
       return accList;
     } catch {
@@ -236,16 +202,8 @@ export const TokenProvider: React.FC = (props) => {
       const tokenList =
         CUSTOM_TOKENS.concat(customeTokenList).concat(listOfTokens);
       const uniqTokenList = getUniqByAddress(tokenList);
-      const priceMapping = await fetchPriceData(uniqTokenList).catch(() => []);
-      const accList = createAccountList(
-        uniqTokenList,
-        accountList,
-        priceMapping,
-      );
 
       setTokenInfos(uniqTokenList);
-      setPriceData(priceMapping);
-      setAccountList(accList);
     });
   }, []);
 
@@ -255,23 +213,13 @@ export const TokenProvider: React.FC = (props) => {
     }
     const owner = wallet.publicKey.toBase58();
     loadAccountFromStore(owner);
+    loadAccountList();
   }, [wallet]);
-
-  // fetch new price every 5 mins = 5 * 60.000
-  useInterval(() => {
-    (async () => {
-      const priceMapping = await fetchPriceData(tokenInfos);
-      const accList = createAccountList(tokenInfos, accountList, priceMapping);
-      setPriceData(priceMapping);
-      setAccountList(accList);
-    })();
-  }, 300000);
 
   return (
     <TokenContext.Provider
       value={{
         tokenInfos,
-        priceData,
         accountList,
         getAccountByPk,
         loadAccountList,

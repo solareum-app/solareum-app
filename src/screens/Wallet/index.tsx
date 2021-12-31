@@ -18,17 +18,16 @@ import { COLORS } from '../../theme';
 import TokensList from '../../components/TokensList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider/AppProvider';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import { price } from '../../utils/autoRound';
 import { Routes } from '../../navigators/Routes';
-import { useEffect } from 'react';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { MissionLeftButton } from '../../containers/MissionButton/MissionLeftButton';
 import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
 import { Onboarding } from './Onboarding';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   header: {
@@ -114,8 +113,8 @@ const WalletScreen = () => {
   const navigation = useNavigation();
   const refReceived = useRef();
 
-  const { loadAccountList, accountList } = useToken();
-  const { addressId } = useApp();
+  const { loadAccountList } = useToken();
+  const { accountList } = usePrice();
   const { t } = useLocalize();
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
@@ -143,10 +142,6 @@ const WalletScreen = () => {
   const onHideBalance = () => {
     setIsHideBalance(!isHideBalance);
   };
-
-  useEffect(() => {
-    onRefresh();
-  }, [addressId]);
 
   return (
     <View style={grid.container}>
@@ -205,7 +200,7 @@ const WalletScreen = () => {
         </View>
 
         <View style={[grid.body, s.body]}>
-          {loading && !activeAccountList.length ? (
+          {!activeAccountList.length ? (
             <View style={s.loadingWrp}>
               <LoadingImage />
               <Text style={typo.normal}>{t('home-account-loading')}</Text>

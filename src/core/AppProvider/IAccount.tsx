@@ -22,6 +22,11 @@ export const createAccountList = (
   accountList: any[],
   priceData = {},
 ): IAccount[] => {
+  // if tokenList is not provided, just use account info
+  if (!tokenList.length) {
+    return accountList;
+  }
+
   const accountIdList = accountList.map((i) => i.mint).join(',');
 
   // filled token info for existing account list
