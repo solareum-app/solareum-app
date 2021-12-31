@@ -15,6 +15,11 @@ export const RealtimeProvider: React.FC = (props) => {
     let { amount } = accountInfo?.owner.equals(TOKEN_PROGRAM_ID)
       ? parseTokenAccountData(accountInfo.data)
       : {};
+
+    if (!amount) {
+      return;
+    }
+
     const account = accountList.find((i) => i.publicKey === pk);
     const newAccount = {
       ...account,
@@ -26,6 +31,7 @@ export const RealtimeProvider: React.FC = (props) => {
 
   useEffect(() => {
     const activeAccountList = accountList.filter((i) => i.publicKey);
+    const subscribers: number[] = [];
     if (!activeAccountList) {
       return;
     }
@@ -34,10 +40,18 @@ export const RealtimeProvider: React.FC = (props) => {
       const item = activeAccountList[i];
       const pk = item?.publicKey;
 
-      connection.onAccountChange(new PublicKey(pk), onChange.bind(null, pk));
+      const id = connection.onAccountChange(
+        new PublicKey(pk),
+        onChange.bind(null, pk),
+      );
+      subscribers.push(id);
     }
 
-    return () => { };
+    return () => {
+      subscribers.forEach((i) => {
+        connection.removeAccountChangeListener(i);
+      });
+    };
   }, [accountList, connection]);
 
   return props.children;
