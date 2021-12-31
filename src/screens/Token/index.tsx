@@ -22,6 +22,7 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { Send } from './Send';
 import { Receive } from './Receive';
 import { Market } from './Market';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   header: {
@@ -64,7 +65,8 @@ const Token = ({ route }) => {
   const { action, token } = route.params;
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
-  const { getAccountByPk, toggleAccountByPk, accountList } = useToken();
+  const { getAccountByPk, toggleAccountByPk } = useToken();
+  const { accountList } = usePrice();
   const { t } = useLocalize();
 
   const refTransactionHistory = useRef();
@@ -90,9 +92,13 @@ const Token = ({ route }) => {
 
   const onRefresh = async () => {
     setLoading(true);
-    const acc = await getAccountByPk(account.publicKey);
-    setAccount({ ...account, ...acc });
-    setLoading(false);
+    try {
+      const acc = await getAccountByPk(account.publicKey);
+      setAccount({ ...account, ...acc });
+    } catch {
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

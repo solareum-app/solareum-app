@@ -8,31 +8,36 @@ import { useToken } from './TokenProvider';
 import { useConnection } from './ConnectionProvider';
 
 export const RealtimeProvider: React.FC = (props) => {
-  const { accountList, setAccountByPk } = useToken();
+  const { setAccountByPk, accountList } = useToken();
   const connection = useConnection();
 
-  const activeAccountList = accountList.filter((i) => i.publicKey);
+  const onChange = (pk, accountInfo) => {
+    let { amount } = accountInfo?.owner.equals(TOKEN_PROGRAM_ID)
+      ? parseTokenAccountData(accountInfo.data)
+      : {};
+    const account = accountList.find((i) => i.publicKey === pk);
+    const newAccount = {
+      ...account,
+      amount,
+    };
+
+    setAccountByPk(pk, newAccount);
+  };
 
   useEffect(() => {
-    const xsbAccount = activeAccountList.find((i) => i.symbol === 'XSB');
-    if (!xsbAccount) {
+    const activeAccountList = accountList.filter((i) => i.publicKey);
+    if (!activeAccountList) {
       return;
     }
 
-    const pk = xsbAccount?.publicKey;
-    const onChange = (accountInfo) => {
-      let { amount } = accountInfo?.owner.equals(TOKEN_PROGRAM_ID)
-        ? parseTokenAccountData(accountInfo.data)
-        : {};
-      const account = accountList.find((i) => i.publicKey === pk);
-      const newAccount = {
-        ...account,
-        amount,
-      };
-      setAccountByPk(pk, newAccount);
-    };
+    for (let i = 0; i < activeAccountList.length; i++) {
+      const item = activeAccountList[i];
+      const pk = item?.publicKey;
 
-    connection.onAccountChange(new PublicKey(xsbAccount?.publicKey), onChange);
+      connection.onAccountChange(new PublicKey(pk), onChange.bind(null, pk));
+    }
+
+    return () => { };
   }, [accountList, connection]);
 
   return props.children;
