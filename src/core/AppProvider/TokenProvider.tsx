@@ -13,6 +13,7 @@ import { IAccount, createAccountList } from './IAccount';
 import { useApp } from './AppProvider';
 import { useConfig } from './RemoteConfigProvider';
 import { getUniqByAddress } from './getUniqByAddress';
+import { AccountFactory } from './AccountFactory';
 
 export type TokenContextType = {
   accountList: IAccount[];
@@ -21,6 +22,8 @@ export type TokenContextType = {
   tokenInfos: TokenInfo[];
   loadAccountList: Function;
   toggleAccountByPk: Function;
+  accountFactory?: AccountFactory;
+  accountStats: number;
 };
 export const TokenContext = React.createContext<TokenContextType>({
   accountList: [],
@@ -29,6 +32,8 @@ export const TokenContext = React.createContext<TokenContextType>({
   tokenInfos: [],
   loadAccountList: () => null,
   toggleAccountByPk: () => null,
+  accountFactory: undefined,
+  accountStats: 0,
 });
 
 export const useToken = () => {
@@ -114,6 +119,8 @@ export const TokenProvider: React.FC = (props) => {
 
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
   const [accountList, setAccountList] = useState<IAccount[]>([]);
+  const [accountFactory, setAccountFactory] = useState<AccountFactory>();
+  const [accountStats, setAccountStats] = useState(0);
 
   // isHidingValue = 1 => show
   // isHidingValue = -1 => hide
@@ -192,9 +199,14 @@ export const TokenProvider: React.FC = (props) => {
     if (!wallet) {
       return;
     }
+
     const owner = wallet.publicKey.toBase58();
     loadAccountFromStore(owner);
     loadAccountList();
+
+    const af = new AccountFactory(wallet);
+    setAccountFactory(af);
+    setAccountStats(accountStats + 1);
   }, [wallet, tokenInfos]);
 
   useEffect(() => {
@@ -225,6 +237,8 @@ export const TokenProvider: React.FC = (props) => {
         loadAccountList,
         toggleAccountByPk,
         setAccountByPk,
+        accountFactory,
+        accountStats,
       }}
     >
       {tokenInfos.length ? props.children : <LoadingImage />}

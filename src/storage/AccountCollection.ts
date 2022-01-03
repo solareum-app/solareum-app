@@ -3,6 +3,11 @@ import { IAccount } from '../core/AppProvider/IAccount';
 
 export const COLLECTION_NAME = 'ACCOUNT';
 
+export const storeAccountItem = async (account: IAccount) => {
+  await setItem(COLLECTION_NAME, account.publicKey, account);
+  return true;
+};
+
 export const storeAccountList = async (accountList: IAccount[]) => {
   for (let i = 0; i < accountList.length; i++) {
     const item = accountList[i];

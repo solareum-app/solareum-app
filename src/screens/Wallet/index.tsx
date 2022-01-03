@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ScrollView,
   RefreshControl,
@@ -28,6 +28,7 @@ import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
 import { Onboarding } from './Onboarding';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { ACCOUNT_EVENT } from '../../core/AppProvider/AccountFactory';
 
 const s = StyleSheet.create({
   header: {
@@ -113,7 +114,7 @@ const WalletScreen = () => {
   const navigation = useNavigation();
   const refReceived = useRef();
 
-  const { loadAccountList } = useToken();
+  const { loadAccountList, accountFactory, accountStats } = useToken();
   const { accountList } = usePrice();
   const { t } = useLocalize();
 
@@ -142,6 +143,14 @@ const WalletScreen = () => {
   const onHideBalance = () => {
     setIsHideBalance(!isHideBalance);
   };
+
+  useEffect(() => {
+    if (!accountStats) {
+      return;
+    }
+
+    accountFactory?.add(ACCOUNT_EVENT.ready, () => { });
+  }, [accountStats]);
 
   return (
     <View style={grid.container}>
