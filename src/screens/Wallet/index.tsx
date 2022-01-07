@@ -12,7 +12,6 @@ import { Portal } from 'react-native-portalize';
 
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { FixedContent } from '../../components/Modals/FixedContent';
-import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
@@ -111,18 +110,15 @@ export enum TransferAction {
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState(0);
+  const [isHideBalance, setIsHideBalance] = useState(false);
 
   const navigation = useNavigation();
   const refReceived = useRef();
-  const refWatch = useRef();
 
   const { isAddressBackup } = useApp();
   const { loadAccountList } = useToken();
   const { accountList } = usePrice();
   const { t } = useLocalize();
-
-  // TODO: will bring this feature back later
-  const isHideBalance = false;
 
   const solAccount = accountList.find((i) => i.mint === 'SOL');
   const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
@@ -146,8 +142,8 @@ const WalletScreen = () => {
     }
   };
 
-  const showAccountDetail = () => {
-    refWatch?.current?.open();
+  const toggleHideBalance = () => {
+    setIsHideBalance(!isHideBalance);
   };
 
   return (
@@ -165,7 +161,7 @@ const WalletScreen = () => {
       >
         <View style={s.header}>
           <View style={s.info}>
-            <Text style={s.infoBalance} onPress={showAccountDetail}>
+            <Text style={s.infoBalance} onPress={toggleHideBalance}>
               {isHideBalance ? '****' : `$${price(totalEst)}`}
             </Text>
           </View>
@@ -251,11 +247,6 @@ const WalletScreen = () => {
         <FixedContent ref={refReceived}>
           <Receive token={solAccount} />
         </FixedContent>
-
-        <FacebookWebView
-          ref={refWatch}
-          url={`https://sonar.watch/dashboard/${solAccount?.publicKey}`}
-        />
       </Portal>
     </View>
   );
