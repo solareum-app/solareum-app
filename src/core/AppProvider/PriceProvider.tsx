@@ -29,7 +29,7 @@ const fetchPriceData = async (accountList: IAccount[] = []) => {
     .join(',');
   const price = await authFetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=${list}&vs_currencies=usd,vnd`,
-  );
+  ).catch(() => { });
 
   priceCache = {
     ...priceCache,
@@ -48,12 +48,12 @@ export const PriceProvider: React.FC = (props) => {
   useInterval(
     () => {
       (async () => {
-        const price = await fetchPriceData(accountListOrg).catch(() => { });
+        const price = await fetchPriceData(accountListOrg);
         setPriceData(price);
       })();
     },
     UPDATE_INTERVAL,
-    accountListOrg,
+    accountListOrg.length,
   );
 
   useEffect(() => {

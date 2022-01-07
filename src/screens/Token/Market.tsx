@@ -56,8 +56,8 @@ export const Market = ({ symbol }) => {
         <View>
           <Text style={s.title}>{t('token-market-title')}</Text>
           <View style={s.market}>
-            {filteredList.map((i) => (
-              <MarketItem key={i.id} from={i} to={symbol} />
+            {filteredList.map((i, index) => (
+              <MarketItem key={index} from={i} to={symbol} />
             ))}
           </View>
         </View>
