@@ -29,6 +29,8 @@ import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
 import { Onboarding } from './Onboarding';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { useApp } from '../../core/AppProvider/AppProvider';
+import { BackupNotice } from './BackupNotice';
 
 const s = StyleSheet.create({
   header: {
@@ -114,6 +116,7 @@ const WalletScreen = () => {
   const refReceived = useRef();
   const refWatch = useRef();
 
+  const { isAddressBackup } = useApp();
   const { loadAccountList } = useToken();
   const { accountList } = usePrice();
   const { t } = useLocalize();
@@ -201,6 +204,7 @@ const WalletScreen = () => {
 
         <View>
           <Onboarding />
+          {!isAddressBackup ? <BackupNotice /> : null}
         </View>
 
         <View style={[grid.body, s.body]}>

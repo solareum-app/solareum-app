@@ -15,6 +15,8 @@ export type AppContextType = {
   wallet: any;
   addressId: string;
   setAddressId: Function;
+  addressName: string;
+  isAddressBackup: boolean;
   addressList: AddressInfo[];
   createAddress: Function;
   updateAddress: Function;
@@ -23,6 +25,8 @@ export type AppContextType = {
 export const AppContext = React.createContext<AppContextType>({
   wallet: null,
   addressId: '',
+  addressName: '',
+  isAddressBackup: false,
   setAddressId: () => null,
   addressList: [],
   createAddress: () => null,
@@ -37,6 +41,8 @@ export const useApp = () => {
 export const AppProvider: React.FC = (props) => {
   const [wallet, setWallet] = useState(null);
   const [addressId, setAddressId] = useState('');
+  const [addressName, setAddressName] = useState('');
+  const [isAddressBackup, setIsAddressBackup] = useState(false);
   const [addressList, setAddressList] = useState<AddressInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,6 +70,8 @@ export const AppProvider: React.FC = (props) => {
     isStored: boolean = false,
   ) => {
     await updateWallet(id, name, isStored);
+    setAddressName(name);
+    setIsAddressBackup(isStored);
     const list = await getListWallet();
 
     setAddressList([...list]);
@@ -77,6 +85,8 @@ export const AppProvider: React.FC = (props) => {
       return;
     }
     setItem('SYS', DEFAULT_WALLET, address.id);
+    setIsAddressBackup(address.isStored);
+    setAddressName(address.name);
     const w = await getWallet(address.mnemonic, address.name);
     setWallet(w);
     setAddressId(id);
@@ -98,6 +108,8 @@ export const AppProvider: React.FC = (props) => {
 
     if (data) {
       setAddressList(list);
+      setIsAddressBackup(data.isStored);
+      setAddressName(data.name);
       await setAddressIdWrapper(data.id);
     }
   };
@@ -115,6 +127,8 @@ export const AppProvider: React.FC = (props) => {
         wallet,
         addressId: addressId,
         setAddressId: setAddressIdWrapper,
+        addressName,
+        isAddressBackup,
         addressList,
         createAddress,
         updateAddress,

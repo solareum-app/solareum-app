@@ -152,6 +152,9 @@
   "onboarding-title": "What is your favorite Swap Application?",
   "onboarding-btn": "Ok, I'm all set",
   "onboarding-message": "The selected application uses for future swap actions. You're able to change it on the settings page then.",
+  "backup-title": "Backup Your Wallet",
+  "backup-message": "For your safety, please store your seed phrases as soon as possible. Seed phrases help you recover your wallets if there are any issues.",
+  "backup-btn-label": "Backup Now",
   "prefix": "e",
   "version": "en.2.0.0"
 }

@@ -152,6 +152,9 @@
   "onboarding-title": "Ứng dụng hoán đổi mà bạn yêu thích?",
   "onboarding-btn": "Ok, hoàn thành",
   "onboarding-message": "Ứng dụng được chọn sẽ được sử dụng làm mặc định trong các lần hoán đổi ở tương lai. Bạn có thể cập nhật lại lựa chọn ở phần cấu hình.",
+  "backup-title": "Sao lưu mã bảo mật",
+  "backup-message": "Vì sự an toàn của bạn, hãy sao lưu mã bảo mật ngay bây giờ. Mã bảo mật sẽ giúp bạn khôi phục lại ví trong trường hợp có bất kỳ vấn đề gì xảy ra.",
+  "backup-btn-label": "Sao lưu ngay",
   "prefix": "v",
   "version": "vi.2.0.0"
 }
