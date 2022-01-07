@@ -135,7 +135,7 @@
   "create-note-03": "This recovery code is only saved on your device.",
   "create-note-04": "You can use this code to import into other wallets, like: Phantom, Sollet, Slope, Coin98...",
   "create-note-05": "If you can't save it now, you can still access it again in Settings once the wallet is created.",
-  "create-store-checked": "I saved the recovery code",
+  "create-store-checked": "I've backed up my seed phrases",
   "create-create-wallet": "Create Wallet",
   "create-remove-wallet": "Remove Wallet",
   "create-edit-wallet": "Update Wallet",
