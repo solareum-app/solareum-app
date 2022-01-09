@@ -4,7 +4,7 @@ import { IAccount, createAccountList } from './IAccount';
 import { authFetch } from '../../utils/authfetch';
 import { useToken } from './TokenProvider';
 import { storeAccountList } from '../../storage/AccountCollection';
-import { useInterval } from '../../hooks/useInterval';
+// import { useInterval } from '../../hooks/useInterval';
 
 export type TokenContextType = {
   accountList: IAccount[];
@@ -38,23 +38,30 @@ const fetchPriceData = async (accountList: IAccount[] = []) => {
   return priceCache;
 };
 
-const UPDATE_INTERVAL = 300000; // 5 mins = 5 * 60.000
+// const UPDATE_INTERVAL = 300000; // 5 mins = 5 * 60.000
 
 export const PriceProvider: React.FC = (props) => {
   const { accountList: accountListOrg, tokenInfos } = useToken();
   const [accountList, setAccountList] = useState<IAccount[]>(accountListOrg);
   const [priceData, setPriceData] = useState({});
 
-  useInterval(
-    () => {
-      (async () => {
-        const price = await fetchPriceData(accountListOrg);
-        setPriceData(price);
-      })();
-    },
-    UPDATE_INTERVAL,
-    accountListOrg.length,
-  );
+  // useInterval(
+  //   () => {
+  //     (async () => {
+  //       const price = await fetchPriceData(accountListOrg);
+  //       setPriceData(price);
+  //     })();
+  //   },
+  //   UPDATE_INTERVAL,
+  //   accountListOrg.length,
+  // );
+
+  useEffect(() => {
+    (async () => {
+      const price = await fetchPriceData(accountListOrg);
+      setPriceData(price);
+    })();
+  }, [accountListOrg.length]);
 
   useEffect(() => {
     (async () => {
