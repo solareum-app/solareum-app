@@ -20,16 +20,23 @@ export const usePrice = () => {
 };
 
 let priceCache = {};
+let totalCache = -1;
 
 const fetchPriceData = async (accountList: IAccount[] = []) => {
-  const list = accountList
-    .filter((i) => i.publicKey)
+  const activeAccounts = accountList.filter((i) => i.publicKey);
+
+  if (activeAccounts.length === totalCache) {
+    return priceCache;
+  }
+
+  totalCache = activeAccounts.length;
+  const list = activeAccounts
     .map((i) => i.extensions?.coingeckoId)
     .filter((i) => i !== undefined)
     .join(',');
   const price = await authFetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=${list}&vs_currencies=usd,vnd`,
-  ).catch(() => { });
+  ).catch(() => {});
 
   priceCache = {
     ...priceCache,
