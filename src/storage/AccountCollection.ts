@@ -4,8 +4,9 @@ import { IAccount } from '../core/AppProvider/IAccount';
 export const COLLECTION_NAME = 'ACCOUNT';
 
 export const storeAccountList = async (accountList: IAccount[]) => {
-  for (let i = 0; i < accountList.length; i++) {
-    const item = accountList[i];
+  const activeAccountList = accountList.filter((i) => i.publicKey);
+  for (let i = 0; i < activeAccountList.length; i++) {
+    const item = activeAccountList[i];
     await setItem(COLLECTION_NAME, item.publicKey, item);
   }
   return true;

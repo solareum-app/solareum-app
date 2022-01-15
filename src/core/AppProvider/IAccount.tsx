@@ -27,10 +27,11 @@ export const createAccountList = (
     return accountList;
   }
 
-  const accountIdList = accountList.map((i) => i.mint).join(',');
+  const activeAccountList = accountList.filter((i) => i.publicKey);
+  const accountIdList = activeAccountList.map((i) => i.mint).join(',');
 
   // filled token info for existing account list
-  const filledAccountList = [...accountList].map((account) => {
+  const filledAccountList = [...activeAccountList].map((account) => {
     const token = tokenList.find((t) => t.address === account.mint) || null;
     if (!token) {
       return null;
