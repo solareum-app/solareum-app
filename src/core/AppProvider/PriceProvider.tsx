@@ -6,17 +6,17 @@ import { useToken } from './TokenProvider';
 import { storeAccountList } from '../../storage/AccountCollection';
 // import { useInterval } from '../../hooks/useInterval';
 
-export type TokenContextType = {
+export type PriceContextType = {
   accountList: IAccount[];
   priceData: any;
 };
-export const TokenContext = React.createContext<TokenContextType>({
+export const PriceContext = React.createContext<PriceContextType>({
   accountList: [],
   priceData: {},
 });
 
 export const usePrice = () => {
-  return useContext(TokenContext);
+  return useContext(PriceContext);
 };
 
 let priceCache = {};
@@ -63,30 +63,33 @@ export const PriceProvider: React.FC = (props) => {
   //   accountListOrg.length,
   // );
 
+  const getPrice = async () => {
+    const price = await fetchPriceData(accountListOrg);
+    setPriceData(price);
+  };
+
+  const getAccountData = async () => {
+    const accList = createAccountList(tokenInfos, accountListOrg, priceData);
+    setAccountList(accList);
+    await storeAccountList(accList);
+  };
+
   useEffect(() => {
-    (async () => {
-      const price = await fetchPriceData(accountListOrg);
-      setPriceData(price);
-    })();
+    getPrice();
   }, [accountListOrg.length]);
 
   useEffect(() => {
-    (async () => {
-      const accList = createAccountList(tokenInfos, accountListOrg, priceData);
-      setPriceData(priceData);
-      setAccountList(accList);
-      await storeAccountList(accList);
-    })();
+    getAccountData();
   }, [tokenInfos, accountListOrg, priceData]);
 
   return (
-    <TokenContext.Provider
+    <PriceContext.Provider
       value={{
-        priceData,
+        priceData: {},
         accountList,
       }}
     >
       {props.children}
-    </TokenContext.Provider>
+    </PriceContext.Provider>
   );
 };
