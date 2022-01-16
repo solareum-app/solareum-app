@@ -84,16 +84,14 @@ export const getAccountList = async (wallet, storeList) => {
       const pk = publicKeys[i];
       const pkStr = pk.toBase58();
       const storeItem = storeList.find((j) => j.publicKey === pkStr) || {};
-      let balance = {
-        ...storeItem,
-        publicKey: pkStr,
-      };
+      let balance = {};
 
       if (!storeItem.isHiding) {
         balance = await getAccountInfo(pk);
       }
 
       balanceList.push({
+        ...storeItem,
         ...balance,
         publicKey: pk.toBase58(),
       });
