@@ -135,7 +135,7 @@
   "create-note-03": "This recovery code is only saved on your device.",
   "create-note-04": "You can use this code to import into other wallets, like: Phantom, Sollet, Slope, Coin98...",
   "create-note-05": "If you can't save it now, you can still access it again in Settings once the wallet is created.",
-  "create-store-checked": "I saved the recovery code",
+  "create-store-checked": "I've backed up my seed phrases",
   "create-create-wallet": "Create Wallet",
   "create-remove-wallet": "Remove Wallet",
   "create-edit-wallet": "Update Wallet",
@@ -152,6 +152,9 @@
   "onboarding-title": "What is your favorite Swap Application?",
   "onboarding-btn": "Ok, I'm all set",
   "onboarding-message": "The selected application uses for future swap actions. You're able to change it on the settings page then.",
+  "backup-title": "Backup Your Wallet",
+  "backup-message": "For your safety, please store your seed phrases as soon as possible. Seed phrases help you recover your wallets if there are any issues.",
+  "backup-btn-label": "Backup Now",
   "prefix": "e",
   "version": "en.2.0.0"
 }

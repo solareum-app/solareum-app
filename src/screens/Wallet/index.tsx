@@ -29,6 +29,8 @@ import { typo } from '../../components/Styles';
 import { Onboarding } from './Onboarding';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { ACCOUNT_EVENT } from '../../core/AppProvider/AccountFactory';
+import { useApp } from '../../core/AppProvider/AppProvider';
+import { BackupNotice } from './BackupNotice';
 
 const s = StyleSheet.create({
   header: {
@@ -108,13 +110,14 @@ export enum TransferAction {
 
 const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
-  const [isHideBalance, setIsHideBalance] = useState(false);
   const [load, setLoad] = useState(0);
+  const [isHideBalance, setIsHideBalance] = useState(false);
 
   const navigation = useNavigation();
   const refReceived = useRef();
 
   const { loadAccountList, accountFactory, accountStats } = useToken();
+  const { isAddressBackup } = useApp();
   const { accountList } = usePrice();
   const { t } = useLocalize();
 
@@ -140,7 +143,7 @@ const WalletScreen = () => {
     }
   };
 
-  const onHideBalance = () => {
+  const toggleHideBalance = () => {
     setIsHideBalance(!isHideBalance);
   };
 
@@ -149,7 +152,7 @@ const WalletScreen = () => {
       return;
     }
 
-    accountFactory?.add(ACCOUNT_EVENT.ready, () => { });
+    accountFactory?.add(ACCOUNT_EVENT.ready, () => {});
   }, [accountStats]);
 
   return (
@@ -167,7 +170,7 @@ const WalletScreen = () => {
       >
         <View style={s.header}>
           <View style={s.info}>
-            <Text onPress={() => onHideBalance()} style={s.infoBalance}>
+            <Text style={s.infoBalance} onPress={toggleHideBalance}>
               {isHideBalance ? '****' : `$${price(totalEst)}`}
             </Text>
           </View>
@@ -206,6 +209,7 @@ const WalletScreen = () => {
 
         <View>
           <Onboarding />
+          {!isAddressBackup ? <BackupNotice /> : null}
         </View>
 
         <View style={[grid.body, s.body]}>
@@ -220,6 +224,7 @@ const WalletScreen = () => {
             isHideBalance={isHideBalance}
             balanceListInfo={activeAccountList}
           />
+
           {activeAccountList.length >= 7 ? (
             <View style={s.manageBtnWrp}>
               <Button

@@ -87,6 +87,7 @@ const EditWallet: React.FC<Props> = ({ route }) => {
             </View>
             <View style={[s.wrp, { marginTop: 80 }]}>
               <Button
+                disabled={!address?.isStored}
                 title={t('create-remove-wallet')}
                 buttonStyle={grid.buttonCritical}
                 containerStyle={grid.buttonCritical}

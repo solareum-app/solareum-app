@@ -77,7 +77,7 @@ const s = StyleSheet.create({
 const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
-export const Receive = ({ token }) => {
+export const Receive = ({ token = {} }) => {
   const { wallet } = useApp();
   const { loadAccountList } = useToken();
   const { accountList } = usePrice();
@@ -87,10 +87,10 @@ export const Receive = ({ token }) => {
   const [account, setAccount] = useState(token);
   const [createNewAccount, setCreateNewAccount] = useState(false);
   const { t } = useLocalize();
-  const isAccountCreated = account.publicKey;
+  const isAccountCreated = account && account.publicKey;
 
   const sol = accountList.find((i) => i.mint === 'SOL') || {
-    publicKey: '-',
+    publicKey: wallet?.publicKey?.toBase58(),
     decimals: 8,
   };
   const address = sol.publicKey;
@@ -179,7 +179,7 @@ export const Receive = ({ token }) => {
         <EventMessage top={36} />
       </View>
       <Text style={typo.title}>
-        {t('receive-title', { symbol: account.symbol })}
+        {t('receive-title', { symbol: account.symbol || 'SOL' })}
       </Text>
 
       {createNewAccount ? (
@@ -261,7 +261,7 @@ export const Receive = ({ token }) => {
                 />
               </View>
             </View>
-            {!isAccountCreated ? (
+            {!isAccountCreated && account.symbol ? (
               <View style={s.control}>
                 <Button
                   type="clear"

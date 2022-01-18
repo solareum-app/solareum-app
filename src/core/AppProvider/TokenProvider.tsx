@@ -200,13 +200,17 @@ export const TokenProvider: React.FC = (props) => {
       return;
     }
 
-    const owner = wallet.publicKey.toBase58();
-    loadAccountFromStore(owner);
-    loadAccountList();
-
     const af = new AccountFactory(wallet);
     setAccountFactory(af);
     setAccountStats(accountStats + 1);
+
+    (async () => {
+      const owner = wallet.publicKey.toBase58();
+      await loadAccountFromStore(owner);
+      if (tokenInfos.length) {
+        await loadAccountList();
+      }
+    })();
   }, [wallet, tokenInfos]);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
-// export const MAINNET_URL = 'http://api.mainnet-beta.solana.com';
-export const MAINNET_URL = 'https://solana-api.projectserum.com';
+export const MAINNET_URL = 'http://api.mainnet-beta.solana.com';
+// export const MAINNET_URL = 'https://solana-api.projectserum.com';
 
 // DEV
 // export const XSB_PATH = 'https://xsb-stg.solareum.app/api/v1';
