@@ -4,7 +4,7 @@ import { IAccount, createAccountList } from './IAccount';
 import { authFetch } from '../../utils/authfetch';
 import { useToken } from './TokenProvider';
 import { storeAccountList } from '../../storage/AccountCollection';
-// import { useInterval } from '../../hooks/useInterval';
+import { useInterval } from '../../hooks/useInterval';
 
 export type PriceContextType = {
   accountList: IAccount[];
@@ -20,16 +20,9 @@ export const usePrice = () => {
 };
 
 let priceCache = {};
-let totalCache = -1;
 
 const fetchPriceData = async (accountList: IAccount[] = []) => {
   const activeAccounts = accountList.filter((i) => i.publicKey);
-
-  if (activeAccounts.length === totalCache) {
-    return priceCache;
-  }
-
-  totalCache = activeAccounts.length;
   const list = activeAccounts
     .map((i) => i.extensions?.coingeckoId)
     .filter((i) => i !== undefined)
@@ -45,23 +38,12 @@ const fetchPriceData = async (accountList: IAccount[] = []) => {
   return priceCache;
 };
 
-// const UPDATE_INTERVAL = 300000; // 5 mins = 5 * 60.000
+const UPDATE_INTERVAL = 900000; // 15 mins = 15 * 60.000
 
 export const PriceProvider: React.FC = (props) => {
   const { accountList: accountListOrg, tokenInfos } = useToken();
   const [accountList, setAccountList] = useState<IAccount[]>(accountListOrg);
   const [priceData, setPriceData] = useState({});
-
-  // useInterval(
-  //   () => {
-  //     (async () => {
-  //       const price = await fetchPriceData(accountListOrg);
-  //       setPriceData(price);
-  //     })();
-  //   },
-  //   UPDATE_INTERVAL,
-  //   accountListOrg.length,
-  // );
 
   const getPrice = async () => {
     const price = await fetchPriceData(accountListOrg);
@@ -74,9 +56,13 @@ export const PriceProvider: React.FC = (props) => {
     await storeAccountList(accList);
   };
 
-  useEffect(() => {
-    getPrice();
-  }, [accountListOrg.length]);
+  useInterval(
+    () => {
+      getPrice();
+    },
+    UPDATE_INTERVAL,
+    accountListOrg.length,
+  );
 
   useEffect(() => {
     getAccountData();
