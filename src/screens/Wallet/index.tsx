@@ -28,7 +28,6 @@ import { Airdrop } from '../Airdrop/Airdrop';
 import { typo } from '../../components/Styles';
 import { Onboarding } from './Onboarding';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { ACCOUNT_EVENT } from '../../core/AppProvider/AccountFactory';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { BackupNotice } from './BackupNotice';
 
@@ -116,7 +115,7 @@ const WalletScreen = () => {
   const navigation = useNavigation();
   const refReceived = useRef();
 
-  const { loadAccountList, accountFactory, accountStats } = useToken();
+  const { loadAccountList } = useToken();
   const { isAddressBackup } = useApp();
   const { accountList } = usePrice();
   const { t } = useLocalize();
@@ -146,14 +145,6 @@ const WalletScreen = () => {
   const toggleHideBalance = () => {
     setIsHideBalance(!isHideBalance);
   };
-
-  useEffect(() => {
-    if (!accountStats) {
-      return;
-    }
-
-    accountFactory?.add(ACCOUNT_EVENT.ready, () => {});
-  }, [accountStats]);
 
   return (
     <View style={grid.container}>
