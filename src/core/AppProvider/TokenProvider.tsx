@@ -108,57 +108,80 @@ const mergeIsHidingToOnChainData = (onchainList, storeList) => {
   });
 };
 
+type AccountData = {
+  [key: string]: IAccount;
+};
+
+const listToObject = (list: IAccount[]): AccountData => {
+  let data: AccountData = {};
+  const activeAccount = list.filter((i) => i.publicKey);
+  for (let i = 0; i < activeAccount.length; i++) {
+    const item = activeAccount[i];
+    data[item.publicKey] = item;
+  }
+  return data;
+};
+
+const objectToList = (data: AccountData): IAccount[] => {
+  const list = Object.keys(data);
+  return list.map((i) => data[i]);
+};
+
+let accountSource: AccountData = {};
+
 export const TokenProvider: React.FC = (props) => {
   const { wallet } = useApp();
   const { customeTokenList } = useConfig();
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
-  const [accountList, setAccountList] = useState<IAccount[]>([]);
+  const [accountList, setAccountListOrg] = useState<IAccount[]>([]);
+
+  const triggerChanges = () => {
+    const activeAccounts = objectToList(accountSource);
+    const l = accountList.map((i) => {
+      const item =
+        activeAccounts.find((j) => j.publicKey === i.publicKey) || {};
+      return {
+        ...i,
+        ...item,
+      };
+    });
+    setAccountListOrg(l);
+  };
+
+  const setAccountList = (list: IAccount[]) => {
+    accountSource = listToObject(list);
+    setAccountListOrg(list);
+  };
 
   // isHidingValue = 1 => show
   // isHidingValue = -1 => hide
   const toggleAccountByPk = (pk: string, isHidingValue: number = 0) => {
-    const newAccountList = accountList.map((i) => {
-      if (i.publicKey === pk) {
-        return {
-          ...i,
-          isHiding: isHidingValue > 0 ? false : !i.isHiding,
-        };
-      }
-      return i;
-    });
-    setAccountList(newAccountList);
+    const item = accountSource[pk] || {};
+    accountSource[pk] = {
+      ...accountSource[pk],
+      isHiding: isHidingValue > 0 ? false : !item.isHiding,
+    };
+    triggerChanges();
     return 0;
   };
 
   const getAccountByPk = async (pk: string) => {
     const account = await getAccountInfo(new PublicKey(pk));
-    const newAccountList = accountList.map((i) => {
-      if (i.publicKey === account?.publicKey) {
-        return {
-          ...i,
-          ...account,
-        };
-      }
-      return i;
-    });
-    setAccountList(newAccountList);
-    return account;
+    accountSource[pk] = {
+      ...accountSource[pk],
+      ...account,
+    };
+    triggerChanges();
+    return accountSource[pk];
   };
 
   const setAccountByPk = async (pk: string, account: any) => {
-    const newAccountList = accountList.map((i) => {
-      if (i.publicKey === pk) {
-        return {
-          ...i,
-          ...account,
-        };
-      }
-      return i;
-    });
-
-    setAccountList(newAccountList);
-    const newAccount = newAccountList.find((i) => i.publicKey === pk);
-    return newAccount;
+    accountSource[pk] = {
+      ...accountSource[pk],
+      ...account,
+    };
+    triggerChanges();
+    return accountSource[pk];
   };
 
   const loadAccountFromStore = async (owner: string) => {

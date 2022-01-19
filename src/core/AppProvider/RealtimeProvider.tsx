@@ -14,7 +14,7 @@ export const RealtimeProvider: React.FC = (props) => {
   const onChange = (pk, accountInfo) => {
     let { amount } = accountInfo?.owner.equals(TOKEN_PROGRAM_ID)
       ? parseTokenAccountData(accountInfo.data)
-      : {};
+      : { amount: accountInfo.lamports };
 
     if (!amount) {
       return;
