@@ -52,7 +52,7 @@ export const RealtimeProvider: React.FC = (props) => {
         connection.removeAccountChangeListener(i);
       });
     };
-  }, [accountList, connection]);
+  }, [accountList.length, connection]);
 
   return props.children;
 };
