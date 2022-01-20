@@ -102,11 +102,10 @@ const Token = ({ route }) => {
   };
 
   useEffect(() => {
-    const acc = accountList.find((i) => i.symbol === token.symbol);
-    if (!acc) {
-      return;
+    const acc = accountList.find((i) => i.publicKey === token.publicKey);
+    if (token.publicKey && acc) {
+      setAccount(acc);
     }
-    setAccount(acc);
   }, [accountList]);
 
   useEffect(() => {
