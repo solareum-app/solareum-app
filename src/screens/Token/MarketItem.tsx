@@ -6,7 +6,7 @@ import Icon from '../../components/Icon';
 
 import { COLORS } from '../../theme/colors';
 import Routes from '../../navigators/Routes';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -46,11 +46,11 @@ type Props = {
 };
 
 export const MarketItem = ({ from, to }: Props) => {
-  const { accountList } = usePrice();
+  const { tokenInfos } = useToken();
   const navigation = useNavigation();
 
-  const base = accountList.find((i) => i.symbol === from);
-  const quote = accountList.find((i) => i.symbol === to);
+  const base = tokenInfos.find((i) => i.symbol === from);
+  const quote = tokenInfos.find((i) => i.symbol === to);
 
   const navToDex = () => {
     navigation.navigate(Routes.Swap, { from, to });

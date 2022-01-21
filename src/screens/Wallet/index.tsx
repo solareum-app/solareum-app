@@ -115,8 +115,8 @@ const WalletScreen = () => {
   const navigation = useNavigation();
   const refReceived = useRef();
 
-  const { isAddressBackup } = useApp();
   const { loadAccountList } = useToken();
+  const { isAddressBackup } = useApp();
   const { accountList } = usePrice();
   const { t } = useLocalize();
 
