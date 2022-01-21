@@ -736,7 +736,7 @@
 				INFOPLIST_FILE = SolareumTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -757,7 +757,7 @@
 				INFOPLIST_FILE = SolareumTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -784,7 +784,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -813,7 +813,7 @@
 				DEVELOPMENT_TEAM = 9WLRC5ZTG7;
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -842,7 +842,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -871,7 +871,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -899,7 +899,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -927,7 +927,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -997,7 +997,7 @@
 					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(inherited)\"",
 				);
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1052,7 +1052,7 @@
 					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(inherited)\"",
 				);
-				MARKETING_VERSION = 2.20.18;
+				MARKETING_VERSION = 2.20.19;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
