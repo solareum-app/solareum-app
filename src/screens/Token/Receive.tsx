@@ -102,7 +102,7 @@ export const Receive = ({ token = {} }) => {
 
   const pollingAccount = async (no: number) => {
     if (no < 0) {
-      return;
+      return null;
     }
     const list = await loadAccountList();
     const acc = list.find((i) => i.address === account.address) || {};
@@ -118,7 +118,9 @@ export const Receive = ({ token = {} }) => {
     try {
       await wallet.createAssociatedTokenAccount(new PublicKey(account.address));
       const acc = await pollingAccount(MAX_TRY);
-      setAccount(acc);
+      if (acc) {
+        setAccount(acc);
+      }
     } catch (err) {
       setError(t('sys-error'));
     } finally {
