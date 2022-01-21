@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect, useRef } from 'react';
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
-import { View, StyleSheet } from 'react-native';
+import dynamicLinks, { FirebaseDynamicLinksTypes } from '@react-native-firebase/dynamic-links';
+import { View, StyleSheet, Linking, Alert} from 'react-native';
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -25,6 +26,28 @@ import DailyMission from '../screens/Settings/DailyMission';
 import Influencer from '../screens/Settings/Influencer';
 import Airdrop from '../screens/Settings/Airdrop';
 import SwapApp from '../screens/Settings/SwapApp';
+import {config} from '../deeplink/config';
+
+ 
+const linking  = {
+  prefixes: ['https://solareum.page.link','solareum://rewards'],
+  config,
+};
+
+
+  // const getUrl = async () => {
+  //   const link = await Linking.getInitialURL();
+  //      if (link === null) {
+  //        return;
+  //      }
+  //      if (link.includes('token')) {
+  //        console.log("link: ",link);
+  //        Alert.alert(link);
+  //      }
+  //  }
+
+
+
 
 const s = StyleSheet.create({
   backWrp: {
@@ -47,24 +70,11 @@ const MainNavigator: React.FC = () => {
     SplashScreen.hide();
   };
 
-  // TODO: rework on this then, This is not so stable
-  // const handleAppStateChange = (nextAppState: any) => {
-  //   if (nextAppState === 'background' || nextAppState === 'inactive') {
-  //     SplashScreen.show();
-  //   }
-  //   if (nextAppState === 'active') {
-  //     SplashScreen.hide();
-  //   }
-  // };
-  // useEffect(() => {
-  //   AppState.addEventListener('change', handleAppStateChange);
-  //   return () => {
-  //     AppState.removeEventListener('change', handleAppStateChange);
-  //   };
-  // }, []);
+
+
 
   return (
-    <NavigationContainer ref={navigationRef} onReady={checkInitScreen}>
+    <NavigationContainer ref={navigationRef} onReady={checkInitScreen} linking={linking} >
       <Host>
         <Stack.Navigator
           screenOptions={{
@@ -110,7 +120,7 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.EditWallet} component={EditWallet} />
           <Stack.Screen name={Routes.ImportWallet} component={ImportWallet} />
           <Stack.Screen name={Routes.Notifications} component={Notifications} />
-          <Stack.Screen name={Routes.Settings} component={Settings} />
+          <Stack.Screen name={Routes.Settings}component={Settings} />
           <Stack.Screen name={Routes.Token} component={Token} />
           <Stack.Screen name={Routes.SettingWallet} component={SettingWallet} />
           <Stack.Screen name={Routes.Search} component={Search} />

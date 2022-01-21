@@ -22,6 +22,8 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { Send } from './Send';
 import { Receive } from './Receive';
 import { Market } from './Market';
+import { acc } from 'react-native-reanimated';
+import { isDate } from 'date-fns/esm';
 
 const s = StyleSheet.create({
   header: {
@@ -61,15 +63,25 @@ const s = StyleSheet.create({
 });
 
 const Token = ({ route }) => {
+
+  let id = "";
+  if (route.params && route.params.id) id = route.params.id;
+
+  
+
   const { action, token } = route.params;
   const [loading, setLoading] = useState(false);
-  const [account, setAccount] = useState(token);
+  // const [account, setAccount] = useState(token);
   const { getAccountByPk, toggleAccountByPk } = useToken();
   const { t } = useLocalize();
 
   const refTransactionHistory = useRef();
   const refSend = useRef();
+  console.log("ref send: ",refSend);
   const refReceived = useRef();
+
+  const account = {"address": "XSB", "amount": 0, "decimals": 9, "extensions": {"coingeckoId": "solana"}, "isHiding": false, "isMinted": true, "logoURI": "https://cdn.jsdelivr.net/gh/trustwallet/assets@master/blockchains/solana/info/logo.png", "mint": "SOL", "name": "Solana", "owner": "AfHuwsANo2tAsMUVT4c1HJYiSnfNS3z5zoLd6StvQ2m7", "publicKey": "AfHuwsANo2tAsMUVT4c1HJYiSnfNS3z5zoLd6StvQ2m7", "refValue": 0, "sortName": "Solana", "symbol": "SOL", "usd": 143.67, "valid": true, "value": 0, "vnd": 3265691}
+
   const {
     symbol = '$$$',
     logoURI = '',
@@ -79,6 +91,8 @@ const Token = ({ route }) => {
     usd,
   } = account;
   const est = (amount / Math.pow(10, decimals)) * usd;
+
+  
 
   const openSendScreen = () => {
     refSend?.current?.open();
@@ -95,6 +109,9 @@ const Token = ({ route }) => {
     setLoading(false);
   };
 
+ 
+
+
   useEffect(() => {
     // open action panel
     setTimeout(() => {
@@ -106,6 +123,9 @@ const Token = ({ route }) => {
         if (token.publicKey) {
           toggleAccountByPk(token.publicKey, 1);
         }
+      }
+      if (id != ""){
+        openSendScreen();
       }
     }, 100);
   }, []);
@@ -169,7 +189,7 @@ const Token = ({ route }) => {
 
       <Portal>
         <FixedContent ref={refSend}>
-          <Send initStep={1} token={account} />
+          <Send initStep={1} token={account} id = {id} />
         </FixedContent>
 
         <FixedContent ref={refReceived}>
