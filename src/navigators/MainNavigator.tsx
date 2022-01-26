@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
+import { LinkingOptions, NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
 import dynamicLinks, { FirebaseDynamicLinksTypes } from '@react-native-firebase/dynamic-links';
@@ -27,27 +27,10 @@ import Influencer from '../screens/Settings/Influencer';
 import Airdrop from '../screens/Settings/Airdrop';
 import SwapApp from '../screens/Settings/SwapApp';
 import {config} from '../deeplink/config';
-
- 
-const linking  = {
-  prefixes: ['https://solareum.page.link','solareum://rewards'],
-  config,
-};
-
-
-  // const getUrl = async () => {
-  //   const link = await Linking.getInitialURL();
-  //      if (link === null) {
-  //        return;
-  //      }
-  //      if (link.includes('token')) {
-  //        console.log("link: ",link);
-  //        Alert.alert(link);
-  //      }
-  //  }
-
-
-
+import { TransferAction } from '../screens/Wallet';
+import { useToken } from '../core/AppProvider/TokenProvider';
+import { usePrice } from '../core/AppProvider/PriceProvider';
+  
 
 const s = StyleSheet.create({
   backWrp: {
@@ -57,8 +40,12 @@ const s = StyleSheet.create({
 
 const Stack = createStackNavigator();
 
+
 const MainNavigator: React.FC = () => {
   const navigationRef = useRef(null);
+  const { accountList } = usePrice();
+  const testAccount = accountList.find((i) => i.mint === 'SOL');
+
 
   const checkInitScreen = async () => {
     const wallets = await getListWallet();
@@ -70,11 +57,50 @@ const MainNavigator: React.FC = () => {
     SplashScreen.hide();
   };
 
+  
+  const linking : LinkingOptions= {
+    prefixes: ['https://solareum.page.link','solareum://rewards'],
+    async getInitialURL() {
+      const url = await  Linking.getInitialURL();
+      
+        if (url == null){
+          console.log("linking url null");
+          return;
+        }
+         handleURL(url);
+         return url;
+     
+    },
+  
+  
+     subscribe(listener) {
+      const onReceiveURL = ({ url }: { url: string }) =>{
+        console.log("linking url listner: ",url);
+        if (url.includes("token")){
+          handleURL(url);
+        }
+      } 
+  
+      Linking.addEventListener('url', onReceiveURL);
+      return () => {
+        Linking.removeEventListener('url', onReceiveURL);
+      }
+    },
+    config,
+    };
+  
 
-
+ function  handleURL(url){
+      var link = new URL(url);
+          var token = link.searchParams.get("token");
+          console.log(token);
+        let action = TransferAction.send;
+        navigationRef.current?.navigate(Routes.Token, {testAccount, action, id:token});
+        }
+    
 
   return (
-    <NavigationContainer ref={navigationRef} onReady={checkInitScreen} linking={linking} >
+    <NavigationContainer ref={navigationRef} onReady={checkInitScreen} linking = {linking} >
       <Host>
         <Stack.Navigator
           screenOptions={{

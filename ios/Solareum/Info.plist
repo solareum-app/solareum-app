@@ -37,7 +37,7 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FirebaseDynamicLinksCustomDomains</key>
 	<array>
-		<string>https://solareum.page.link/zLL2</string>
+		<string>https://solareum.page.link</string>
 	</array>
 	<key>LSApplicationCategoryType</key>
 	<string></string>

@@ -67,13 +67,16 @@ const Token = ({ route }) => {
     id = route.params.id;
   }
 
-  const { action, token } = route.params;
+  console.log(route);
+
+  const { action, token , testAccount} = route.params;
   const { accountList } = usePrice();
   // TODO: this account is for testing only
   // Make sure it's not available on prod build
-  const testAccount = accountList.find((i) => i.mint === 'SOL');
+
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token || testAccount);
+
   const { getAccountByPk, toggleAccountByPk } = useToken();
   const { t } = useLocalize();
 
@@ -90,6 +93,9 @@ const Token = ({ route }) => {
     usd,
   } = account;
   const est = (amount / Math.pow(10, decimals)) * usd;
+
+
+  console.log(account);
 
   const openSendScreen = () => {
     refSend?.current?.open();
