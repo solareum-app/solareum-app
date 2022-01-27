@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { LinkingOptions, NavigationContainer, useNavigation } from '@react-navigation/native';
+import { LinkingOptions, NavigationContainer, useNavigation} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
 import dynamicLinks, { FirebaseDynamicLinksTypes } from '@react-native-firebase/dynamic-links';
-import { View, StyleSheet, Linking, Alert} from 'react-native';
+import { View, StyleSheet, Linking, Alert, Platform} from 'react-native';
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -28,9 +28,9 @@ import Airdrop from '../screens/Settings/Airdrop';
 import SwapApp from '../screens/Settings/SwapApp';
 import {config} from '../deeplink/config';
 import { TransferAction } from '../screens/Wallet';
-import { useToken } from '../core/AppProvider/TokenProvider';
 import { usePrice } from '../core/AppProvider/PriceProvider';
-  
+
+
 
 const s = StyleSheet.create({
   backWrp: {
@@ -62,26 +62,44 @@ const MainNavigator: React.FC = () => {
     prefixes: ['https://solareum.page.link','solareum://rewards'],
     async getInitialURL() {
       const url = await  Linking.getInitialURL();
-      
-        if (url == null){
+      console.log("getInitialURL");
+        if (url === null){
           console.log("linking url null");
           return;
         }
-         handleURL(url);
+        console.log("linking url:",url);
+       
+          handleURL(url);
+       
          return url;
      
     },
   
   
-     subscribe(listener) {
+    subscribe(listener) {
+      console.log("linking url active");
       const onReceiveURL = ({ url }: { url: string }) =>{
+        console.log("onReceiveURL");
+        if (url == null){
+          console.log("linking url listner null");
+        }
         console.log("linking url listner: ",url);
         if (url.includes("token")){
           handleURL(url);
         }
+        listener(url);
       } 
-  
-      Linking.addEventListener('url', onReceiveURL);
+  if (Platform.OS === "ios"){
+    Linking.addEventListener('url', onReceiveURL);
+
+  }else {
+    console.log("android");
+      Linking.getInitialURL().then(url => {
+        handleURL(url);
+      }).catch(error =>{
+        console.log(error)
+      });
+  }
       return () => {
         Linking.removeEventListener('url', onReceiveURL);
       }
@@ -91,6 +109,7 @@ const MainNavigator: React.FC = () => {
   
 
  function  handleURL(url){
+  console.log("handleURL");
       var link = new URL(url);
           var token = link.searchParams.get("token");
           console.log(token);

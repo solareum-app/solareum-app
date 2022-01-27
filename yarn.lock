@@ -1498,9 +1498,9 @@
     buffer "~6.0.3"
 
 "@solana/spl-token-registry@latest":
-  version "0.2.1780"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token-registry/-/spl-token-registry-0.2.1780.tgz#7473a2d303309a4da8408c6d2b513426d8caef79"
-  integrity sha512-YwYIWvFHBmqiQSm6ADMuG9tWHOJawKurxaQLquo2ptPHs89BLKqlrAcGxP96/dcgr1oDH+t8NQYs4/FckIH0ug==
+  version "0.2.1806"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token-registry/-/spl-token-registry-0.2.1806.tgz#37e2fb7e33d4ee66646ec3dd91402249bd49b968"
+  integrity sha512-XbBjDYXi7xIM4VDTDKzjKy6bMCxqCRzcU75Ko3xx4JCZ04yu7MhCAWtPaK/0osi+4vBIvpdxIZsl5amstvp7GA==
   dependencies:
     cross-fetch "3.0.6"
 
@@ -1744,7 +1744,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-native@^0.63.2":
+"@types/react-native@^0.63.60":
   version "0.63.60"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.63.60.tgz#3219bbc93b1030eb360944b993a04f397328be81"
   integrity sha512-AHWCfwXZr3ESbD1G6hAKF+6w986RchYycj+4dm1psAYTEnKCpZAtPM01qrJwb8CI3OCmJ1bl8kAPNzmcnRdfYg==
@@ -3810,9 +3810,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.4.17:
-  version "1.4.53"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.53.tgz#5d80a91c399b44952ef485857fb5b9d4387d2e60"
-  integrity sha512-rFveSKQczlcav+H3zkKqykU6ANseFwXwkl855jOIap5/0gnEcuIhv2ecz6aoTrXavF6I/CEBeRnBnkB51k06ew==
+  version "1.4.54"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.54.tgz#69005d39ed11542e1bcb65ec1a98e44d39527ba8"
+  integrity sha512-jRAoneRdSxnpRHO0ANpnEUtQHXxlgfVjrLOnQSisw1ryjXJXvS0pJaR/v2B7S++/tRjgEDp4Sjn5nmgb6uTySw==
 
 elliptic@6.5.4, elliptic@^6.4.0, elliptic@^6.5.3, elliptic@^6.5.4:
   version "6.5.4"

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "810254902905-1kqhumnuepqvrp85pj4j9b95jrvmdcov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solareum",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "810254902905-01nu5hbbksar548tfeuj1o9cm9usmnik.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -31,15 +39,17 @@
               "client_type": 3
             },
             {
-              "client_id": "810254902905-elrv7c1350n0psv2ic15q86a2b8q2bo9.apps.googleusercontent.com",
+              "client_id": "810254902905-41qpspmnsdc4772rdfprv3t5jj3n2r69.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.Solareum.app.reactnative"
+                "bundle_id": "com.solareum.wallet.WLRC5ZTG7",
+                "app_store_id": "12345678"
               }
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-8137455675462743~4686156480"
     }
   ],
   "configuration_version": "1"
