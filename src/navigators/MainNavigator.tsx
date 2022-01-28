@@ -111,10 +111,10 @@ const MainNavigator: React.FC = () => {
  function  handleURL(url){
   console.log("handleURL");
       var link = new URL(url);
-          var token = link.searchParams.get("token");
-          console.log(token);
+          var address = link.searchParams.get("address");
+          console.log(address);
         let action = TransferAction.send;
-        navigationRef.current?.navigate(Routes.Token, {testAccount, action, id:token});
+        navigationRef.current?.navigate(Routes.Token, {testAccount, action, id:address});
         }
     
 
