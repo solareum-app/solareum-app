@@ -800,7 +800,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9WLRC5ZTG7;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "arm64 armv7";
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.20.19;
@@ -830,7 +830,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9WLRC5ZTG7;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "arm64 armv7";
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.20.19;
