@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { LinkingOptions, NavigationContainer, useNavigation} from '@react-navigation/native';
+import { LinkingOptions, NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
 import dynamicLinks, { FirebaseDynamicLinksTypes } from '@react-native-firebase/dynamic-links';
-import { View, StyleSheet, Linking, Alert, Platform} from 'react-native';
+import { View, StyleSheet, Linking, Alert, Platform } from 'react-native';
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -26,7 +26,7 @@ import DailyMission from '../screens/Settings/DailyMission';
 import Influencer from '../screens/Settings/Influencer';
 import Airdrop from '../screens/Settings/Airdrop';
 import SwapApp from '../screens/Settings/SwapApp';
-import {config} from '../deeplink/config';
+import { config } from '../deeplink/config';
 import { TransferAction } from '../screens/Wallet';
 import { usePrice } from '../core/AppProvider/PriceProvider';
 
@@ -57,69 +57,59 @@ const MainNavigator: React.FC = () => {
     SplashScreen.hide();
   };
 
-  
-  const linking : LinkingOptions= {
-    prefixes: ['https://solareum.page.link','solareum://rewards'],
+  const linking: LinkingOptions = {
+    prefixes: ['https://solareum.page.link', 'solareum://rewards'],
     async getInitialURL() {
-      const url = await  Linking.getInitialURL();
-      console.log("getInitialURL");
-        if (url === null){
-          console.log("linking url null");
-          return;
-        }
-        console.log("linking url:",url);
-       
-          handleURL(url);
-       
-         return url;
-     
+      const url = await Linking.getInitialURL();
+      if (url === null) {
+        return;
+      }
+      handleURL(url);
+      return url;
+
     },
-  
-  
+
     subscribe(listener) {
-      console.log("linking url active");
-      const onReceiveURL = ({ url }: { url: string }) =>{
-        console.log("onReceiveURL");
-        if (url == null){
-          console.log("linking url listner null");
+      const onReceiveURL = ({ url }: { url: string }) => {
+        if (url == null) {
+          console.log("linking url null");
         }
-        console.log("linking url listner: ",url);
-        if (url.includes("token")){
+        if (url.includes("token")) {
           handleURL(url);
         }
         listener(url);
-      } 
-  if (Platform.OS === "ios"){
-    Linking.addEventListener('url', onReceiveURL);
-
-  }else {
-    console.log("android");
-      Linking.getInitialURL().then(url => {
-        handleURL(url);
-      }).catch(error =>{
-        console.log(error)
-      });
-  }
+      }
+      if (Platform.OS === "android") {
+        Linking.getInitialURL().then(url => {
+          handleURL(url);
+        }).catch(error => {
+          console.log(error)
+        });
+      }
+      Linking.addEventListener('url', onReceiveURL);
       return () => {
         Linking.removeEventListener('url', onReceiveURL);
       }
     },
     config,
-    };
-  
+  };
 
- function  handleURL(url){
-  console.log("handleURL");
-      var link = new URL(url);
-          var address = link.searchParams.get("address");
-          console.log(address);
-        let action = TransferAction.send;
-        navigationRef.current?.navigate(Routes.Token, {testAccount, action, id:address});
-        }
-    
+
+  function handleURL(url) {
+    var link = new URL(url);
+    var address = link.searchParams.get("address");
+    console.log(address);
+    let action = TransferAction.send;
+    if (testAccount != null) {
+      navigationRef.current?.navigate(Routes.Token, { testAccount, action, id: address });
+    } else {
+      navigationRef.current?.navigate(Routes.GetStarted);
+    }
+  }
+
 
   return (
-    <NavigationContainer ref={navigationRef} onReady={checkInitScreen} linking = {linking} >
+    <NavigationContainer ref={navigationRef} onReady={checkInitScreen} linking={linking} >
       <Host>
         <Stack.Navigator
           screenOptions={{
@@ -165,7 +155,7 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen name={Routes.EditWallet} component={EditWallet} />
           <Stack.Screen name={Routes.ImportWallet} component={ImportWallet} />
           <Stack.Screen name={Routes.Notifications} component={Notifications} />
-          <Stack.Screen name={Routes.Settings}component={Settings} />
+          <Stack.Screen name={Routes.Settings} component={Settings} />
           <Stack.Screen name={Routes.Token} component={Token} />
           <Stack.Screen name={Routes.SettingWallet} component={SettingWallet} />
           <Stack.Screen name={Routes.Search} component={Search} />
