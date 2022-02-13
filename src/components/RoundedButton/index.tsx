@@ -16,6 +16,9 @@ const s = StyleSheet.create({
     marginBottom: 4,
     backgroundColor: COLORS.blue2,
   },
+  rewards: {
+    backgroundColor: '#9945FF',
+  },
 });
 
 type Props = {
@@ -23,6 +26,7 @@ type Props = {
   title: string;
   iconName: string;
   type?: string;
+  isRewards?: boolean;
 };
 
 export const RoundedButton: React.FC<Props> = ({
@@ -30,11 +34,12 @@ export const RoundedButton: React.FC<Props> = ({
   title,
   iconName,
   type,
+  isRewards = false,
 }) => {
   return (
     <View style={s.main}>
       <Button
-        buttonStyle={s.button}
+        buttonStyle={[s.button, isRewards ? s.rewards : null]}
         onPress={onClick}
         icon={
           <Icon type={type} name={iconName} size={20} color={COLORS.white0} />
