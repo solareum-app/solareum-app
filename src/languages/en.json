@@ -31,7 +31,6 @@
   "token-error-amount": "Amount is incorrect, please use `.` instead",
   "token-qr-scan": "Scan the QR code",
   "token-qr-cancel": "Cancel",
-  "receive-share-message": "Address {{symbol}}/SPL network: {{address}}",
   "receive-title": "Receive {{symbol}}",
   "receive-account-not-created": "You haven't had {{symbol}} account yet",
   "receive-account-message-01": "You are still able to receive selected token via SOL address. But incase the issuer don't want to use SOL address for transfer, you mint want to create an token account on your own.",

@@ -77,6 +77,10 @@ const s = StyleSheet.create({
 const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
+const getLRLink = (address: string, token: string = 'XSB') => {
+  return `https://solareum.page.link/rewards?address=${address}&token=${token}`;
+};
+
 export const Receive = ({ token = {} }) => {
   const { wallet } = useApp();
   const { loadAccountList } = useToken();
@@ -98,6 +102,21 @@ export const Receive = ({ token = {} }) => {
   const copyToClipboard = () => {
     Clipboard.setString(address);
     DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
+  };
+
+  const copyRewardsLink = async () => {
+    const link = getLRLink(address);
+    Clipboard.setString(link);
+    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
+
+    try {
+      const result = await Share.share({
+        message: link,
+      });
+      return result;
+    } catch {
+      // TODO: track this issue then
+    }
   };
 
   const pollingAccount = async (no: number) => {
@@ -135,12 +154,7 @@ export const Receive = ({ token = {} }) => {
 
   const onShare = async () => {
     try {
-      const result = await Share.share({
-        message: t('receive-share-message', {
-          symbol: account.symbol,
-          address,
-        }),
-      });
+      const result = await Share.share({ message: address });
       return result;
 
       // ref: https://reactnative.dev/docs/share
@@ -260,6 +274,15 @@ export const Receive = ({ token = {} }) => {
                   onClick={() => onShare()}
                   title={t('receive-share')}
                   iconName="upload"
+                />
+              </View>
+              <View style={s.controlItem}>
+                <RoundedButton
+                  isRewards
+                  onClick={copyRewardsLink}
+                  title="XSB"
+                  iconName="zap"
+                  type="feather"
                 />
               </View>
             </View>

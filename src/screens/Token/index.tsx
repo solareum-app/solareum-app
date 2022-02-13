@@ -69,13 +69,13 @@ const Token = ({ route }) => {
 
   console.log(route);
 
-  const { action, token , testAccount} = route.params;
+  const { action, token } = route.params;
   const { accountList } = usePrice();
   // TODO: this account is for testing only
   // Make sure it's not available on prod build
 
   const [loading, setLoading] = useState(false);
-  const [account, setAccount] = useState(token || testAccount);
+  const [account, setAccount] = useState(token);
 
   const { getAccountByPk, toggleAccountByPk } = useToken();
   const { t } = useLocalize();
@@ -93,7 +93,6 @@ const Token = ({ route }) => {
     usd,
   } = account;
   const est = (amount / Math.pow(10, decimals)) * usd;
-
 
   console.log(account);
 
@@ -135,7 +134,7 @@ const Token = ({ route }) => {
           toggleAccountByPk(token.publicKey, 1);
         }
       }
-      if (id != '') {
+      if (id !== '') {
         openSendScreen();
       }
     }, 100);
