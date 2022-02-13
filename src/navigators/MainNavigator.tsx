@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { LinkingOptions, NavigationContainer, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useRef } from 'react';
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
-import dynamicLinks, { FirebaseDynamicLinksTypes } from '@react-native-firebase/dynamic-links';
-import { View, StyleSheet, Linking, Alert, Platform } from 'react-native';
+import { View, StyleSheet, Linking, Platform } from 'react-native';
+
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -30,8 +30,6 @@ import { config } from '../deeplink/config';
 import { TransferAction } from '../screens/Wallet';
 import { usePrice } from '../core/AppProvider/PriceProvider';
 
-
-
 const s = StyleSheet.create({
   backWrp: {
     marginLeft: 20,
@@ -40,12 +38,9 @@ const s = StyleSheet.create({
 
 const Stack = createStackNavigator();
 
-
 const MainNavigator: React.FC = () => {
   const navigationRef = useRef(null);
   const { accountList } = usePrice();
-  const testAccount = accountList.find((i) => i.mint === 'SOL');
-
 
   const checkInitScreen = async () => {
     const wallets = await getListWallet();
@@ -58,7 +53,8 @@ const MainNavigator: React.FC = () => {
   };
 
   const linking: LinkingOptions = {
-    prefixes: ['https://solareum.page.link', 'solareum://rewards'],
+    prefixes: ['solareum://rewards', 'https://solareum.page.link'],
+
     async getInitialURL() {
       const url = await Linking.getInitialURL();
       if (url === null) {
@@ -66,50 +62,65 @@ const MainNavigator: React.FC = () => {
       }
       handleURL(url);
       return url;
-
     },
 
     subscribe(listener) {
       const onReceiveURL = ({ url }: { url: string }) => {
         if (url == null) {
-          console.log("linking url null");
+          console.log('linking url null');
         }
-        if (url.includes("token")) {
+        if (url.includes('token')) {
           handleURL(url);
         }
         listener(url);
+      };
+
+      if (Platform.OS === 'android') {
+        Linking.getInitialURL()
+          .then((url) => {
+            handleURL(url);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-      if (Platform.OS === "android") {
-        Linking.getInitialURL().then(url => {
-          handleURL(url);
-        }).catch(error => {
-          console.log(error)
-        });
-      }
+
       Linking.addEventListener('url', onReceiveURL);
       return () => {
         Linking.removeEventListener('url', onReceiveURL);
-      }
+      };
     },
     config,
   };
 
+  const handleURL = useCallback(
+    (url: string) => {
+      const link = new URL(url);
+      // TODO: default token is XSB
+      // Going to support USDC + SOL anytime soon
+      const token = link.searchParams.get('token') || 'XSB';
+      const address = link.searchParams.get('address');
+      const account = accountList.find((i) => i.symbol === token);
 
-  function handleURL(url) {
-    var link = new URL(url);
-    var address = link.searchParams.get("address");
-    console.log(address);
-    let action = TransferAction.send;
-    if (testAccount != null) {
-      navigationRef.current?.navigate(Routes.Token, { testAccount, action, id: address });
-    } else {
-      navigationRef.current?.navigate(Routes.GetStarted);
-    }
-  }
-
+      if (account !== null) {
+        navigationRef.current?.navigate(Routes.Token, {
+          token: account,
+          action: TransferAction.send,
+          id: address,
+        });
+      } else {
+        navigationRef.current?.navigate(Routes.GetStarted);
+      }
+    },
+    [accountList],
+  );
 
   return (
-    <NavigationContainer ref={navigationRef} onReady={checkInitScreen} linking={linking} >
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={checkInitScreen}
+      linking={linking}
+    >
       <Host>
         <Stack.Navigator
           screenOptions={{
