@@ -69,9 +69,7 @@ const MainNavigator: React.FC = () => {
         if (url == null) {
           console.log('linking url null');
         }
-        if (url.includes('token')) {
           handleURL(url);
-        }
         listener(url);
       };
 
@@ -103,17 +101,23 @@ const MainNavigator: React.FC = () => {
       const account = accountList.find((i) => i.symbol === token);
 
       if (account !== null) {
-        navigationRef.current?.navigate(Routes.Token, {
-          token: account,
-          action: TransferAction.send,
-          id: address,
-        });
+        const currentRoute = navigationRef.current.getCurrentRoute();
+        if (currentRoute.name == Routes.Token){
+          navigationRef.current.setParams({token: account,id: address});
+        }else{
+          navigationRef.current?.navigate(Routes.Token, {
+            token: account,
+            action: TransferAction.send,
+            id: address,
+          });
+        }
       } else {
         navigationRef.current?.navigate(Routes.GetStarted);
       }
     },
     [accountList],
   );
+
 
   return (
     <NavigationContainer

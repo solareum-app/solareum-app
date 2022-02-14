@@ -94,7 +94,6 @@ const Token = ({ route }) => {
   } = account;
   const est = (amount / Math.pow(10, decimals)) * usd;
 
-  console.log(account);
 
   const openSendScreen = () => {
     refSend?.current?.open();
@@ -134,11 +133,18 @@ const Token = ({ route }) => {
           toggleAccountByPk(token.publicKey, 1);
         }
       }
-      if (id !== '') {
+
+      if (id != '') {
         openSendScreen();
       }
     }, 100);
   }, []);
+
+  useEffect(()=> {
+    if(id != ""){
+      openSendScreen();
+    }
+  })
 
   return (
     <View style={grid.container}>
