@@ -12,7 +12,6 @@ import { useApp } from '../../core/AppProvider/AppProvider';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { QRScan } from './QRScan';
-import { add } from 'date-fns';
 
 const s = StyleSheet.create({
   main: {
@@ -296,16 +295,15 @@ const Step3 = ({ signature }) => {
   );
 };
 
-export const Send = ({ initStep = 1, token, id = "" }) => {
+export const Send = ({ initStep = 1, token, initAddress = '' }) => {
   const [step, setStep] = useState(initStep);
-  let [address, setAddress] = useState("");
+  const [address, setAddress] = useState(initAddress);
   const [error, setError] = useState('');
   const [amount, setAmount] = useState('');
   const [signature, setSignature] = useState('');
   const { wallet } = useApp();
   const [busy, setBusy] = useState(false);
   const { t } = useLocalize();
-
 
   const transfer = async () => {
     setBusy(true);
@@ -342,25 +340,7 @@ export const Send = ({ initStep = 1, token, id = "" }) => {
     }
   };
 
-
-
   if (step === 1) {
-   console.log("address: ",address);
-   console.log("set address: ",setAddress);
-
-   if (id != ""){
-     return (
-      <Step1
-      next={() => setStep(2)}
-      address={id}
-      setAddress={id}
-      amount={amount}
-      setAmount={setAmount}
-      token={token}
-    />
-     );
-   }
-else {
     return (
       <Step1
         next={() => setStep(2)}
@@ -371,22 +351,9 @@ else {
         token={token}
       />
     );
-}
   }
 
   if (step === 2) {
-    if (id != ""){
-      return (
-        <Step2
-          token={token}
-          address={id}
-          amount={amount}
-          next={transfer}
-          busy={busy}
-          error={error}
-        />
-      );
-    }else {
     return (
       <Step2
         token={token}
@@ -397,7 +364,6 @@ else {
         error={error}
       />
     );
-    }
   }
 
   return <Step3 signature={signature} />;

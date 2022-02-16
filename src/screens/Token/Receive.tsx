@@ -10,6 +10,7 @@ import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
 import { Button } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme/colors';
@@ -23,7 +24,6 @@ import { EventMessage } from '../EventMessage/EventMessage';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { getItem, setItem } from '../../storage/Collection';
-import { authFetch } from '../../utils/authfetch';
 
 const KEY_LR = 'LIGHTNING_REWARDS';
 
@@ -82,26 +82,26 @@ const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
 const getLRLink = async (address: string, token: string = 'XSB') => {
-  const link = `https://solareum.page.link/rewards?address=${address}&token=${token}`;
+  const defaultLink = `https://solareum.page.link/rewards?address=${address}&token=${token}`;
+  const link = `https://solareum.app/lightning-rewards/?address=${address}&token=${token}`;
 
   try {
-    const shortenLink = await authFetch(
-      'https://api-ssl.bitly.com/v4/shorten',
-      {
-        method: 'post',
-        headers: {
-          Authorization: 'Bearer 765af6e14318137dd0e3bbcefc6d7e1c799e6570',
-        },
-        body: {
-          domain: 'bit.ly',
-          long_url: link,
-        },
+    const dmLink = await dynamicLinks().buildShortLink({
+      link: link,
+      domainUriPrefix: 'https://solareum.page.link',
+      ios: {
+        bundleId: 'com.solareum.wallet.WLRC5ZTG7',
+        fallbackUrl: link,
       },
-    );
-    console.log('shortenLink', shortenLink.link);
-    return shortenLink.link;
+      android: {
+        packageName: 'com.solareum',
+        fallbackUrl: link,
+      },
+    });
+
+    return dmLink;
   } catch {
-    return link;
+    return defaultLink;
   }
 };
 
@@ -130,6 +130,7 @@ export const Receive = ({ token = {} }) => {
 
   const copyRewardsLink = async () => {
     let link = await getItem(KEY_LR, address);
+
     if (!link) {
       link = await getLRLink(address);
       await setItem(KEY_LR, address, link);
