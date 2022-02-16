@@ -62,18 +62,9 @@ const s = StyleSheet.create({
 });
 
 const Token = ({ route }) => {
-  let id = '';
-  if (route.params && route.params.id) {
-    id = route.params.id;
-  }
+  const { action, token, initAddress = '' } = route.params;
 
-  console.log(route);
-
-  const { action, token } = route.params;
   const { accountList } = usePrice();
-  // TODO: this account is for testing only
-  // Make sure it's not available on prod build
-
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
 
@@ -93,7 +84,6 @@ const Token = ({ route }) => {
     usd,
   } = account;
   const est = (amount / Math.pow(10, decimals)) * usd;
-
 
   const openSendScreen = () => {
     refSend?.current?.open();
@@ -133,18 +123,8 @@ const Token = ({ route }) => {
           toggleAccountByPk(token.publicKey, 1);
         }
       }
-
-      if (id != '') {
-        openSendScreen();
-      }
     }, 100);
   }, []);
-
-  useEffect(()=> {
-    if(id != ""){
-      openSendScreen();
-    }
-  })
 
   return (
     <View style={grid.container}>
@@ -205,7 +185,7 @@ const Token = ({ route }) => {
 
       <Portal>
         <FixedContent ref={refSend}>
-          <Send initStep={1} token={account} id={id} />
+          <Send initStep={1} token={account} initAddress={initAddress} />
         </FixedContent>
 
         <FixedContent ref={refReceived}>
