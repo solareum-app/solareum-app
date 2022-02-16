@@ -22,6 +22,10 @@ import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { EventMessage } from '../EventMessage/EventMessage';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { getItem, setItem } from '../../storage/Collection';
+import { authFetch } from '../../utils/authfetch';
+
+const KEY_LR = 'LIGHTNING_REWARDS';
 
 const s = StyleSheet.create({
   main: {
@@ -77,8 +81,28 @@ const s = StyleSheet.create({
 const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
-const getLRLink = (address: string, token: string = 'XSB') => {
-  return `https://solareum.page.link/rewards?address=${address}&token=${token}`;
+const getLRLink = async (address: string, token: string = 'XSB') => {
+  const link = `https://solareum.page.link/rewards?address=${address}&token=${token}`;
+
+  try {
+    const shortenLink = await authFetch(
+      'https://api-ssl.bitly.com/v4/shorten',
+      {
+        method: 'post',
+        headers: {
+          Authorization: 'Bearer 765af6e14318137dd0e3bbcefc6d7e1c799e6570',
+        },
+        body: {
+          domain: 'bit.ly',
+          long_url: link,
+        },
+      },
+    );
+    console.log('shortenLink', shortenLink.link);
+    return shortenLink.link;
+  } catch {
+    return link;
+  }
 };
 
 export const Receive = ({ token = {} }) => {
@@ -105,13 +129,19 @@ export const Receive = ({ token = {} }) => {
   };
 
   const copyRewardsLink = async () => {
-    const link = getLRLink(address);
-    Clipboard.setString(link);
-    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
+    let link = await getItem(KEY_LR, address);
+    if (!link) {
+      link = await getLRLink(address);
+      await setItem(KEY_LR, address, link);
+    }
+
+    const message = t('lr-share', { link });
+    Clipboard.setString(message);
+    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, message);
 
     try {
       const result = await Share.share({
-        message: link,
+        message,
       });
       return result;
     } catch {
