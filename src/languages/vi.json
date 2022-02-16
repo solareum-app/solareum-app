@@ -41,6 +41,7 @@
   "receive-account-creating": "Đang tạo tài khoản...",
   "receive-note-01": "Solareum chỉ chấp nhận token trên mạng Solana - SPL.",
   "receive-note-02": "Chỉ chuyển {{name}} và SPL tokens vào địa chỉ này. Việc chuyển token khác vào địa chỉ này có thể dẫn đến mất toàn toàn các token&nbsp;đó.",
+  "lr-share": "Thưởng tôi XSB: {{link}}",
   "receive-copy": "Sao chép",
   "receive-share": "Chia sẻ",
   "receive-create-account-02": "Tạo tài khoản {{symbol}}",
