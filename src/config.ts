@@ -5,7 +5,7 @@ export const MAINNET_URL = 'http://api.mainnet-beta.solana.com';
 // export const XSB_PATH = 'https://xsb-stg.solareum.app/api/v1';
 // export const API_PATH = 'https://api-stg.solareum.app';
 // export const JUPITER =
-//   'https://jupiter-git-dickson-mer-867-integrate-solareum-wowcats.vercel.app';
+//   'https://jupiter-git-dickson-mer-1032-integrate-huobi-wallet-wowcats.vercel.app';
 // export const ONE_SOL = 'https://dev.1sol.io';
 
 // PROD

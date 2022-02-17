@@ -139,7 +139,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "2.20.19"
+        versionName "2.20.21"
         missingDimensionStrategy 'react-native-camera', 'general'
 
     }
@@ -201,7 +201,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
-    implementation "com.facebook.react:react-native:+" 
+    implementation "com.facebook.react:react-native:+"
     implementation project(':react-native-gesture-handler')
  // From node_modules
     // implementation platform('com.google.firebase:firebase-bom:28.3.1')
