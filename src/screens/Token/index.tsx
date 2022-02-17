@@ -126,6 +126,12 @@ const Token = ({ route }) => {
     }, 100);
   }, []);
 
+  useEffect(()=>{
+    if (action === TransferAction.send){
+      openSendScreen();
+    }
+  })
+
   return (
     <View style={grid.container}>
       <ScrollView
