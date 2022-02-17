@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Linking } from 'react-native';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
@@ -92,6 +92,7 @@ const MainNavigator: React.FC = () => {
 
   useEffect(() => {
     dynamicLinks().getInitialLink().then(handleDynamicLink);
+    Linking.getInitialURL().then(handleDynamicLink);
   }, [accountList]);
 
   return (
