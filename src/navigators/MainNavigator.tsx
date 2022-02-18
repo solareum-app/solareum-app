@@ -70,16 +70,19 @@ const MainNavigator: React.FC = () => {
         return;
       }
 
-      if (navigationRef.current.getCurrentRoute().name === Routes.Token){
-        navigationRef.current.setParams({action: TransferAction.send,token: account,initAddress: address});
-      }else {
+      if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
+        navigationRef.current.setParams({
+          action: TransferAction.send,
+          token: account,
+          initAddress: address,
+        });
+      } else {
         navigationRef.current?.navigate(Routes.Token, {
           action: TransferAction.send,
           token: account,
           initAddress: address,
         });
       }
-  
     },
     [accountList],
   );
