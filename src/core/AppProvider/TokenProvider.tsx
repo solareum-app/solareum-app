@@ -21,6 +21,7 @@ export type TokenContextType = {
   tokenInfos: TokenInfo[];
   loadAccountList: Function;
   toggleAccountByPk: Function;
+  ready: boolean;
 };
 export const TokenContext = React.createContext<TokenContextType>({
   accountList: [],
@@ -29,6 +30,7 @@ export const TokenContext = React.createContext<TokenContextType>({
   tokenInfos: [],
   loadAccountList: () => null,
   toggleAccountByPk: () => null,
+  ready: false,
 });
 
 export const useToken = () => {
@@ -134,6 +136,7 @@ export const TokenProvider: React.FC = (props) => {
   const { customeTokenList } = useConfig();
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
   const [accountList, setAccountListOrg] = useState<IAccount[]>([]);
+  const [ready, setReady] = useState<boolean>(false);
 
   const triggerChanges = () => {
     const activeAccounts = objectToList(accountSource);
@@ -220,6 +223,7 @@ export const TokenProvider: React.FC = (props) => {
       await loadAccountFromStore(owner);
       if (tokenInfos.length) {
         await loadAccountList();
+        setReady(true);
       }
     })();
   }, [wallet, tokenInfos]);
@@ -252,6 +256,7 @@ export const TokenProvider: React.FC = (props) => {
         loadAccountList,
         toggleAccountByPk,
         setAccountByPk,
+        ready,
       }}
     >
       {tokenInfos.length ? props.children : <LoadingImage />}

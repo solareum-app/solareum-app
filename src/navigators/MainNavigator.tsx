@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
@@ -29,6 +29,7 @@ import Airdrop from '../screens/Settings/Airdrop';
 import SwapApp from '../screens/Settings/SwapApp';
 import { TransferAction } from '../screens/Wallet';
 import { usePrice } from '../core/AppProvider/PriceProvider';
+import { useToken } from '../core/AppProvider/TokenProvider';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -40,6 +41,7 @@ const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
   const navigationRef = useRef(null);
+  const { ready } = useToken();
   const { accountList } = usePrice();
 
   const checkInitScreen = async () => {
@@ -52,51 +54,47 @@ const MainNavigator: React.FC = () => {
     SplashScreen.hide();
   };
 
-  const handleDynamicLink = useCallback(
-    (link: any) => {
-      if (!link) {
-        return;
-      }
+  const handleDynamicLink = (link: any) => {
+    if (!link) {
+      return;
+    }
 
-      const url = new URL(link.url);
-      // TODO: default token is XSB
-      // Going to support USDC + SOL anytime soon
-      const token = url.searchParams.get('token') || 'XSB';
-      const address = url.searchParams.get('address');
-      const activeList = accountList.filter((i) => i.mint);
-      const account = activeList.find((i) => i.symbol === token);
+    const url = new URL(link.url);
+    // TODO: default token is XSB
+    // Going to support USDC + SOL anytime soon
+    const token = url.searchParams.get('token') || 'XSB';
+    const address = url.searchParams.get('address');
+    const account = accountList.find((i) => i.symbol === token);
 
-      if (!account) {
-        return;
-      }
+    if (!account) {
+      return;
+    }
 
-      if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
-        navigationRef.current.setParams({
-          action: TransferAction.send,
-          token: account,
-          initAddress: address,
-        });
-      } else {
-        navigationRef.current?.navigate(Routes.Token, {
-          action: TransferAction.send,
-          token: account,
-          initAddress: address,
-        });
-      }
-    },
-    [accountList],
-  );
+    if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
+      navigationRef.current.setParams({
+        action: TransferAction.send,
+        token: account,
+        initAddress: address,
+      });
+    } else {
+      navigationRef.current?.navigate(Routes.Token, {
+        action: TransferAction.send,
+        token: account,
+        initAddress: address,
+      });
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
     // When the component is unmounted, remove the listener
     return () => unsubscribe();
-  }, [accountList]);
+  }, [ready]);
 
   useEffect(() => {
     dynamicLinks().getInitialLink().then(handleDynamicLink);
     Linking.getInitialURL().then(handleDynamicLink);
-  }, [accountList]);
+  }, [ready]);
 
   return (
     <NavigationContainer ref={navigationRef} onReady={checkInitScreen}>

@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StatusBar,Linking,Alert } from 'react-native';
+import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
 import {
   SafeAreaProvider,
@@ -8,8 +8,6 @@ import {
 } from 'react-native-safe-area-context';
 import { Root } from './core/AppProvider';
 import MainNavigator from './navigators/MainNavigator';
-
-
 
 const App: React.FC = () => {
   return (
@@ -22,6 +20,6 @@ const App: React.FC = () => {
       </SafeAreaProvider>
     </Root>
   );
-}
+};
 
 export default App;
