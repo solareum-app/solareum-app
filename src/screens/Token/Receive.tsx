@@ -130,6 +130,8 @@ export const Receive = ({ token = {} }) => {
 
   const copyRewardsLink = async () => {
     const link = await getLRLink(address);
+    await setItem(KEY_LR, address, link);
+
     // TODO: cache the link then
     // let link = await getItem(KEY_LR, address);
     // if (!link) {
