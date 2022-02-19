@@ -98,6 +98,24 @@ const CUSTOM_TOKENS = [
       website: 'https://solareum.app',
     },
   },
+  {
+    chainId: 101,
+    address: '3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR',
+    symbol: 'LIKE',
+    name: 'Only1 (LIKE)',
+    decimals: 9,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/17501/small/like-token.png',
+    tags: ['utility-token'],
+    extensions: {
+      coingeckoId: 'only1',
+      discord: 'https://discord.gg/SrsKwTFA',
+      medium: 'https://only1nft.medium.com/',
+      telegram: 'https://t.me/only1nft',
+      twitter: 'https://twitter.com/only1nft',
+      website: 'https://only1.io/',
+    },
+  },
 ];
 
 const mergeIsHidingToOnChainData = (onchainList, storeList) => {
