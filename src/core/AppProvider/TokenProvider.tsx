@@ -221,9 +221,10 @@ export const TokenProvider: React.FC = (props) => {
     (async () => {
       const owner = wallet.publicKey.toBase58();
       await loadAccountFromStore(owner);
+      setReady(true);
+
       if (tokenInfos.length) {
         await loadAccountList();
-        setReady(true);
       }
     })();
   }, [wallet, tokenInfos]);
