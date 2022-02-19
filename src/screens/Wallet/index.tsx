@@ -124,11 +124,19 @@ const WalletScreen = () => {
   const xsbAccount = accountList.find((i) => i.symbol === 'XSB');
   let isAccountCreated = xsbAccount ? xsbAccount.publicKey : false;
 
-  const activeAccountList = accountList
+  let activeAccountList = accountList
     .filter((i: IAccount) => i.mint && !i.isHiding)
     .sort((a, b) => {
       return b.refValue - a.refValue;
     });
+
+  if (activeAccountList.length === 1 && activeAccountList[0].symbol === 'SOL') {
+    const defaultList = accountList.filter(
+      (i) => i.symbol === 'USDC' || i.symbol === 'XSB',
+    );
+    activeAccountList = activeAccountList.concat(defaultList);
+  }
+
   const totalEst = getTotalEstimate(activeAccountList);
 
   const onRefresh = async () => {

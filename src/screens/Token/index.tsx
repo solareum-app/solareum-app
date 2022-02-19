@@ -62,16 +62,19 @@ const s = StyleSheet.create({
 });
 
 const Token = ({ route }) => {
-  const { action, token } = route.params;
+  const { action, token, initAddress = '' } = route.params;
+
+  const { accountList } = usePrice();
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
+
   const { getAccountByPk, toggleAccountByPk } = useToken();
-  const { accountList } = usePrice();
   const { t } = useLocalize();
 
   const refTransactionHistory = useRef();
   const refSend = useRef();
   const refReceived = useRef();
+
   const {
     symbol = '$$$',
     logoURI = '',
@@ -102,8 +105,8 @@ const Token = ({ route }) => {
   };
 
   useEffect(() => {
-    const acc = accountList.find((i) => i.publicKey === token.publicKey);
-    if (token.publicKey && acc) {
+    const acc = accountList.find((i) => i.publicKey === account.publicKey);
+    if (account.publicKey && acc) {
       setAccount(acc);
     }
   }, [accountList]);
@@ -122,6 +125,12 @@ const Token = ({ route }) => {
       }
     }, 100);
   }, []);
+
+  useEffect(()=>{
+    if (action === TransferAction.send){
+      openSendScreen();
+    }
+  })
 
   return (
     <View style={grid.container}>
@@ -182,7 +191,7 @@ const Token = ({ route }) => {
 
       <Portal>
         <FixedContent ref={refSend}>
-          <Send initStep={1} token={account} />
+          <Send initStep={1} token={account} initAddress={initAddress} />
         </FixedContent>
 
         <FixedContent ref={refReceived}>

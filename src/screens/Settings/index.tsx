@@ -97,7 +97,7 @@ const Settings: React.FC = () => {
   const navigation = useNavigation();
   const refPolicy = useRef();
   const { appPrefix, links } = useConfig();
-  const { t } = useLocalize();
+  const { t, language } = useLocalize();
 
   return (
     <View style={s.container}>
@@ -158,6 +158,24 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
+              Linking.openURL(
+                `https://solareum.app/lightning-rewards/?lang=${language}`,
+              );
+            }}
+          >
+            <Icon type="feather" name="zap" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>
+                Lightning Rewards
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
+
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
               navigation.navigate(Routes.Influencer);
             }}
           >
@@ -176,7 +194,7 @@ const Settings: React.FC = () => {
               navigation.navigate(Routes.Mission);
             }}
           >
-            <Icon type="feather" name="zap" color="grey" size={16} />
+            <Icon type="antdesign" name="hearto" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
                 {t('setting-mission')}

@@ -10,6 +10,7 @@ import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
 import { Button } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme/colors';
@@ -22,6 +23,9 @@ import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 import { EventMessage } from '../EventMessage/EventMessage';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { getItem, setItem } from '../../storage/Collection';
+
+const KEY_LR = 'LIGHTNING_REWARDS';
 
 const s = StyleSheet.create({
   main: {
@@ -77,6 +81,30 @@ const s = StyleSheet.create({
 const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
+const getLRLink = async (address: string, token: string = 'XSB') => {
+  const defaultLink = `https://solareum.page.link/rewards?address=${address}&token=${token}`;
+  const link = `https://solareum.app/lightning-rewards/?address=${address}&token=${token}`;
+
+  try {
+    const dmLink = await dynamicLinks().buildShortLink({
+      link: link,
+      domainUriPrefix: 'https://solareum.page.link',
+      ios: {
+        bundleId: 'com.solareum.wallet.WLRC5ZTG7',
+        fallbackUrl: link,
+      },
+      android: {
+        packageName: 'com.solareum',
+        fallbackUrl: link,
+      },
+    });
+
+    return dmLink;
+  } catch {
+    return defaultLink;
+  }
+};
+
 export const Receive = ({ token = {} }) => {
   const { wallet } = useApp();
   const { loadAccountList } = useToken();
@@ -98,6 +126,27 @@ export const Receive = ({ token = {} }) => {
   const copyToClipboard = () => {
     Clipboard.setString(address);
     DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
+  };
+
+  const copyRewardsLink = async () => {
+    let link = await getItem(KEY_LR, address);
+    if (!link) {
+      link = await getLRLink(address);
+      await setItem(KEY_LR, address, link);
+    }
+
+    const message = t('lr-share', { link });
+    Clipboard.setString(message);
+    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, message);
+
+    try {
+      const result = await Share.share({
+        message,
+      });
+      return result;
+    } catch {
+      // TODO: track this issue then
+    }
   };
 
   const pollingAccount = async (no: number) => {
@@ -135,12 +184,7 @@ export const Receive = ({ token = {} }) => {
 
   const onShare = async () => {
     try {
-      const result = await Share.share({
-        message: t('receive-share-message', {
-          symbol: account.symbol,
-          address,
-        }),
-      });
+      const result = await Share.share({ message: address });
       return result;
 
       // ref: https://reactnative.dev/docs/share
@@ -260,6 +304,15 @@ export const Receive = ({ token = {} }) => {
                   onClick={() => onShare()}
                   title={t('receive-share')}
                   iconName="upload"
+                />
+              </View>
+              <View style={s.controlItem}>
+                <RoundedButton
+                  isRewards
+                  onClick={copyRewardsLink}
+                  title="XSB"
+                  iconName="zap"
+                  type="feather"
                 />
               </View>
             </View>
