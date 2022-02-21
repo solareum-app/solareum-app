@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Linking } from 'react-native';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
 import CreateWallet from '../screens/WalletManagement/CreateWallet';
 import EditWallet from '../screens/WalletManagement/EditWallet';
 import GetStarted from '../screens/GetStarted';
@@ -25,6 +27,9 @@ import DailyMission from '../screens/Settings/DailyMission';
 import Influencer from '../screens/Settings/Influencer';
 import Airdrop from '../screens/Settings/Airdrop';
 import SwapApp from '../screens/Settings/SwapApp';
+import { TransferAction } from '../screens/Wallet';
+import { usePrice } from '../core/AppProvider/PriceProvider';
+import { useToken } from '../core/AppProvider/TokenProvider';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -36,6 +41,8 @@ const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
   const navigationRef = useRef(null);
+  const { ready } = useToken();
+  const { accountList } = usePrice();
 
   const checkInitScreen = async () => {
     const wallets = await getListWallet();
@@ -47,21 +54,47 @@ const MainNavigator: React.FC = () => {
     SplashScreen.hide();
   };
 
-  // TODO: rework on this then, This is not so stable
-  // const handleAppStateChange = (nextAppState: any) => {
-  //   if (nextAppState === 'background' || nextAppState === 'inactive') {
-  //     SplashScreen.show();
-  //   }
-  //   if (nextAppState === 'active') {
-  //     SplashScreen.hide();
-  //   }
-  // };
-  // useEffect(() => {
-  //   AppState.addEventListener('change', handleAppStateChange);
-  //   return () => {
-  //     AppState.removeEventListener('change', handleAppStateChange);
-  //   };
-  // }, []);
+  const handleDynamicLink = (link: any) => {
+    if (!link) {
+      return;
+    }
+
+    const url = new URL(link.url);
+    // TODO: default token is XSB
+    // Going to support USDC + SOL anytime soon
+    const token = url.searchParams.get('token') || 'XSB';
+    const address = url.searchParams.get('address');
+    const account = accountList.find((i) => i.symbol === token);
+
+    if (!account) {
+      return;
+    }
+
+    if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
+      navigationRef.current.setParams({
+        action: TransferAction.send,
+        token: account,
+        initAddress: address,
+      });
+    } else {
+      navigationRef.current?.navigate(Routes.Token, {
+        action: TransferAction.send,
+        token: account,
+        initAddress: address,
+      });
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+    // When the component is unmounted, remove the listener
+    return () => unsubscribe();
+  }, [ready]);
+
+  useEffect(() => {
+    dynamicLinks().getInitialLink().then(handleDynamicLink);
+    Linking.getInitialURL().then(handleDynamicLink);
+  }, [ready]);
 
   return (
     <NavigationContainer ref={navigationRef} onReady={checkInitScreen}>

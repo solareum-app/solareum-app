@@ -21,6 +21,7 @@ export type TokenContextType = {
   tokenInfos: TokenInfo[];
   loadAccountList: Function;
   toggleAccountByPk: Function;
+  ready: boolean;
 };
 export const TokenContext = React.createContext<TokenContextType>({
   accountList: [],
@@ -29,6 +30,7 @@ export const TokenContext = React.createContext<TokenContextType>({
   tokenInfos: [],
   loadAccountList: () => null,
   toggleAccountByPk: () => null,
+  ready: false,
 });
 
 export const useToken = () => {
@@ -96,6 +98,24 @@ const CUSTOM_TOKENS = [
       website: 'https://solareum.app',
     },
   },
+  {
+    chainId: 101,
+    address: '3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR',
+    symbol: 'LIKE',
+    name: 'Only1 (LIKE)',
+    decimals: 9,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/17501/small/like-token.png',
+    tags: ['utility-token'],
+    extensions: {
+      coingeckoId: 'only1',
+      discord: 'https://discord.gg/SrsKwTFA',
+      medium: 'https://only1nft.medium.com/',
+      telegram: 'https://t.me/only1nft',
+      twitter: 'https://twitter.com/only1nft',
+      website: 'https://only1.io/',
+    },
+  },
 ];
 
 const mergeIsHidingToOnChainData = (onchainList, storeList) => {
@@ -134,6 +154,7 @@ export const TokenProvider: React.FC = (props) => {
   const { customeTokenList } = useConfig();
   const [tokenInfos, setTokenInfos] = useState<TokenInfo[]>([]);
   const [accountList, setAccountListOrg] = useState<IAccount[]>([]);
+  const [ready, setReady] = useState<boolean>(false);
 
   const triggerChanges = () => {
     const activeAccounts = objectToList(accountSource);
@@ -218,6 +239,8 @@ export const TokenProvider: React.FC = (props) => {
     (async () => {
       const owner = wallet.publicKey.toBase58();
       await loadAccountFromStore(owner);
+      setReady(true);
+
       if (tokenInfos.length) {
         await loadAccountList();
       }
@@ -252,6 +275,7 @@ export const TokenProvider: React.FC = (props) => {
         loadAccountList,
         toggleAccountByPk,
         setAccountByPk,
+        ready,
       }}
     >
       {tokenInfos.length ? props.children : <LoadingImage />}

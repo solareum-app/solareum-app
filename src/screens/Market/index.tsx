@@ -17,12 +17,12 @@ export const Market: React.FC = () => {
 
   useEffect(() => {
     const q = query.toLowerCase();
-    const t = marketList?.filter((i) => {
+    const filteredList = marketList?.filter((i) => {
       const name = i.name ? i.name.toLowerCase() : '';
       return name.indexOf(q) >= 0;
     });
 
-    setMarkets(t);
+    setMarkets(filteredList);
   }, [query, marketList]);
 
   return (

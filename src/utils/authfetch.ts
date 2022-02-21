@@ -10,7 +10,7 @@ export const authFetch = (url: string, opts: any = {}) => {
   const body = opts.body;
 
   return axios({
-    method: 'get',
+    method: opts.method || 'get',
     ...opts,
     headers: {
       ...headers,

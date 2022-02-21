@@ -22,7 +22,7 @@ const getWidth = (svgString: string): number => {
   const startIndex = svgString.indexOf('width="') + 7;
   const endIndex = svgString.indexOf('"', startIndex);
   const w = svgString.substr(startIndex, endIndex - startIndex);
-  return isNaN(parseInt(w)) ? 18 : parseInt(w);
+  return isNaN(parseInt(w, 10)) ? 18 : parseInt(w, 10);
 };
 
 export const CryptoIcon = ({ uri = '', size = 40, ...props }) => {

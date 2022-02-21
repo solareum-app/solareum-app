@@ -6,7 +6,6 @@ import {
   SafeAreaProvider,
   initialWindowMetrics,
 } from 'react-native-safe-area-context';
-
 import { Root } from './core/AppProvider';
 import MainNavigator from './navigators/MainNavigator';
 
