@@ -19,6 +19,8 @@ export enum Routes {
   Influencer = 'Referral',
   Airdrop = 'Airdrop',
   Swap = 'Swap',
+  Explore = 'Explore',
+  ExploreItem = 'Token Details',
 }
 
 export default Routes;
