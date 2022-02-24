@@ -7,34 +7,21 @@ import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { COLORS } from '../../theme/colors';
 
 import { Header } from './Header';
-
-const EXPLORE_LIST = [
-  'USDC',
-  'SOL',
-  'XSB',
-  'MER',
-  'MNGO',
-  'LARIX',
-  'ORCA',
-  'SABER',
-  'SERUM',
-  'RAY',
-  'ATLAS',
-  'AUDIO',
-  'MAPS',
-  'MILLI',
-  '1SOL',
-];
+import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
 
 export const Explore: React.FC = () => {
   const { accountList } = usePrice();
   const [loading, setLoading] = useState<boolean>(false);
+  const { promoteTokenList } = useConfig();
 
   const sortedList = useMemo(() => {
     return accountList.filter(
-      (i) => EXPLORE_LIST.indexOf(i.symbol) >= 0 && i.name !== 'THE SUN',
+      (i) =>
+        promoteTokenList.indexOf(i.symbol) >= 0 &&
+        i.name !== 'THE SUN' &&
+        i.name !== 'Wrapped SOL',
     );
-  }, [accountList]);
+  }, [promoteTokenList]);
 
   const onRefresh = async () => {
     setLoading(true);
