@@ -30,6 +30,8 @@ const s = StyleSheet.create({
     paddingBottom: 40,
     borderRadius: 12,
     margin: 20,
+    marginTop: 40,
+    marginBottom: 40,
   },
   body: {
     marginTop: 20,
