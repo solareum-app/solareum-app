@@ -15,7 +15,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   receive: {
-    marginBottom: 120,
+    marginBottom: 80,
   },
   footer: {
     position: 'absolute',

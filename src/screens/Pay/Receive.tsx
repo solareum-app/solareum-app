@@ -6,6 +6,7 @@ import {
   DeviceEventEmitter,
   Share,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
@@ -19,6 +20,7 @@ import { EventMessage } from '../EventMessage/EventMessage';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { getItem, setItem } from '../../storage/Collection';
+import { Button } from 'react-native-elements';
 
 const KEY_LR = 'LIGHTNING_REWARDS';
 
@@ -69,6 +71,11 @@ const s = StyleSheet.create({
   notificationWrp: {
     position: 'relative',
     zIndex: 9999,
+  },
+
+  section: {
+    marginBottom: 40,
+    paddingHorizontal: 20,
   },
 });
 
@@ -144,7 +151,7 @@ export const Receive = () => {
         <Text style={typo.title}>Receive Tokens</Text>
         <View style={s.body}>
           <TouchableOpacity style={s.qr} onPress={copyToClipboard}>
-            <QRCode value={address} size={220} />
+            <QRCode value={address} size={240} />
           </TouchableOpacity>
           <TouchableOpacity onPress={copyToClipboard}>
             <Text style={typo.address}>{address}</Text>
@@ -158,7 +165,7 @@ export const Receive = () => {
         </View>
       </View>
 
-      <View>
+      <View style={s.section}>
         <View style={s.control}>
           <View style={s.controlItem}>
             <RoundedButton
@@ -184,6 +191,15 @@ export const Receive = () => {
             />
           </View>
         </View>
+      </View>
+      <View style={s.section}>
+        <Button
+          title="Lightning Rewards"
+          type="outline"
+          onPress={() => {
+            Linking.openURL('https://solareum.app/lightning-rewards');
+          }}
+        />
       </View>
     </View>
   );
