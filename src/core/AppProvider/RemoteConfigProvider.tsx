@@ -86,6 +86,7 @@ export const RemoteConfigProvider = ({ children }) => {
         links: JSON.stringify(defaultLinks),
         reward_airdrop: '0',
         reward_ref: '0',
+        promote_tokens: 'USDC, SOL, XSB',
       })
       .then(() => {
         // fetch anyway, the change will be apply for the next start
