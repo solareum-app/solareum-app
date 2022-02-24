@@ -4,7 +4,7 @@ import IconFeather from 'react-native-vector-icons/Feather';
 
 import Social from '../screens/Social';
 import Wallet from '../screens/Wallet';
-import Market from '../screens/Market';
+import { Pay } from '../screens/Pay';
 import { COLORS } from '../theme/colors';
 import Routes from './Routes';
 
@@ -34,11 +34,11 @@ export const HomeScreen: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name={Routes.Market}
-        component={Market}
+        name={Routes.Pay}
+        component={Pay}
         options={{
           tabBarIcon: ({ color }) => {
-            return <IconFeather name="repeat" color={color} size={20} />;
+            return <IconFeather name="hexagon" color={color} size={20} />;
           },
         }}
       />

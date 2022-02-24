@@ -21,6 +21,7 @@ export enum Routes {
   Explore = 'Explore',
   ExploreList = 'Explore List',
   ExploreItem = 'Token Info',
+  Pay = 'Pay',
 }
 
 export default Routes;
