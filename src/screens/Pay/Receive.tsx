@@ -5,6 +5,7 @@ import {
   StyleSheet,
   DeviceEventEmitter,
   Share,
+  TouchableOpacity,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
@@ -136,12 +137,16 @@ export const Receive = () => {
       <View style={s.notificationWrp}>
         <EventMessage top={36} />
       </View>
+
       <View style={s.main}>
+        <Text style={typo.title}>Receive Tokens</Text>
         <View style={s.body}>
-          <View style={s.qr}>
+          <TouchableOpacity style={s.qr} onPress={copyToClipboard}>
             <QRCode value={address} size={220} />
-          </View>
-          <Text style={typo.address}>{address}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={copyToClipboard}>
+            <Text style={typo.address}>{address}</Text>
+          </TouchableOpacity>
         </View>
         <View style={s.footer}>
           <Text style={typo.helper}>{t('receive-note-01')}</Text>
@@ -149,6 +154,9 @@ export const Receive = () => {
             {t('receive-note-02', { name: 'SOL' })}
           </Text>
         </View>
+      </View>
+
+      <View>
         <View style={s.control}>
           <View style={s.controlItem}>
             <RoundedButton
