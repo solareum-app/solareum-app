@@ -36,7 +36,7 @@ export const MissionLeftButton = ({ padding = 20 }) => {
   const solAccount = accountList.find((i) => i.mint === 'SOL');
 
   const navToMission = () => {
-    navigation.navigate(Routes.Social);
+    navigation.navigate(Routes.Explore);
   };
 
   const loadCheckMission = async () => {
@@ -51,7 +51,7 @@ export const MissionLeftButton = ({ padding = 20 }) => {
         },
       });
       setMissionLeft(resp.missionLeft);
-    } catch { }
+    } catch {}
   };
 
   useEffect(() => {
