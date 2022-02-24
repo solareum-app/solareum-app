@@ -31,6 +31,7 @@ import { TransferAction } from '../screens/Wallet';
 import { usePrice } from '../core/AppProvider/PriceProvider';
 import { useToken } from '../core/AppProvider/TokenProvider';
 import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
+import { Explore } from '../screens/Explore/Explore';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -139,6 +140,7 @@ const MainNavigator: React.FC = () => {
             component={Swap}
             options={{ headerShown: false }}
           />
+          <Stack.Screen name={Routes.ExploreList} component={Explore} />
           <Stack.Screen name={Routes.ExploreItem} component={ExploreItem} />
           <Stack.Screen name={Routes.GetStarted} component={GetStarted} />
           <Stack.Screen name={Routes.CreateWallet} component={CreateWallet} />

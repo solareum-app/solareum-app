@@ -4,7 +4,6 @@ export enum Routes {
   EditWallet = 'Edit Wallet',
   DEX = 'Serum DEX',
   Market = 'DEX',
-  Social = 'Social',
   GetStarted = 'Get Started',
   ImportWallet = 'Import Wallet',
   Notifications = 'Notification',
@@ -20,7 +19,8 @@ export enum Routes {
   Airdrop = 'Airdrop',
   Swap = 'Swap',
   Explore = 'Explore',
-  ExploreItem = 'Token Details',
+  ExploreList = 'Explore List',
+  ExploreItem = 'Token Info',
 }
 
 export default Routes;
