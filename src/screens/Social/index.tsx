@@ -1,13 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, RefreshControl, ScrollView, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  SafeAreaView,
+  RefreshControl,
+  ScrollView,
+  View,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
 
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme';
 import { grid } from '../../components/Styles';
-import { MissionButton } from '../../containers/MissionButton';
 import { SocialItem } from './SocialItem';
 import { Header } from './Header';
 import { authFetch } from '../../utils/authfetch';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
+import { PromoteItem } from './PromoteItem';
+import { Button } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
+import Routes from '../../navigators/Routes';
+
+const s = StyleSheet.create({
+  tokenMain: {
+    marginBottom: 24,
+  },
+});
 
 const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
   const paddingToBottom = 20;
@@ -18,11 +36,26 @@ const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
 };
 
 const Social = () => {
+  const { accountList } = usePrice();
+  const { promoteTokenList } = useConfig();
+  const navigation = useNavigation();
+
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [eof, setEof] = useState(false);
   const [articleList, setArticleList] = useState([]);
   const [fetching, setFetching] = useState(false);
+
+  const promoteTokens = useMemo(() => {
+    return accountList
+      .filter(
+        (i) =>
+          promoteTokenList.indexOf(i.symbol) >= 0 &&
+          i.name !== 'THE SUN' &&
+          i.name !== 'Wrapped SOL',
+      )
+      .slice(0, 6);
+  }, [promoteTokenList]);
 
   const loadArticle = async (page = 0) => {
     setFetching(true);
@@ -72,15 +105,24 @@ const Social = () => {
           <View style={grid.content}>
             {fetching ? <LoadingImage /> : null}
 
-            {!fetching ? (
-              <View style={{ marginBottom: 20 }}>
-                <MissionButton padding={0} />
-              </View>
-            ) : null}
+            <View style={s.tokenMain}>
+              <FlatList
+                data={promoteTokens}
+                numColumns={3}
+                renderItem={({ item }) => <PromoteItem token={item} />}
+              />
+              <Button
+                title="more tokens"
+                type="outline"
+                onPress={() => {
+                  navigation.navigate(Routes.ExploreList, {});
+                }}
+              />
+            </View>
 
-            {articleList.length
-              ? articleList.map((i) => <SocialItem key={i.slug} model={i} />)
-              : null}
+            {articleList.map((i) => (
+              <SocialItem key={i.slug} model={i} />
+            ))}
           </View>
         </ScrollView>
       </SafeAreaView>

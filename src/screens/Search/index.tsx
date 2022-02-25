@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
-import TokensList from '../../components/TokensList';
+import TokensList from '../../components/TokenList';
 import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import { TransferAction } from '../Wallet';

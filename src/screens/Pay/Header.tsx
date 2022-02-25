@@ -14,7 +14,7 @@ const s = StyleSheet.create({
 });
 
 const HeaderTitle = () => {
-  return <Text style={s.title}>Explore</Text>;
+  return <Text style={s.title}>Pay</Text>;
 };
 
 export const Header: React.FC = () => {

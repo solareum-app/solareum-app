@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 
-import { authFetch } from '../../utils/authfetch';
 import { setItem, getItem } from '../../storage/Collection';
 
 export const SWAP_APPLICATION_KEY = 'swap';
@@ -21,6 +20,7 @@ export type RemoteConfigType = {
   presale: any;
   swap: SWAP_APP;
   setSwap: any;
+  promoteTokenList: string[];
 };
 
 export const RemoteConfigContext = React.createContext<RemoteConfigType>({
@@ -33,6 +33,7 @@ export const RemoteConfigContext = React.createContext<RemoteConfigType>({
   presale: {},
   swap: SWAP_APP.JUPITER,
   setSwap: () => null,
+  promoteTokenList: ['USDC', 'SOL', 'XSB'],
 });
 
 export const useConfig = () => {
@@ -54,8 +55,12 @@ export const RemoteConfigProvider = ({ children }) => {
   const [customeMarketList, setCustomeMarketList] = useState([]);
   const [customeTokenList, setCustomeTokenList] = useState([]);
   const [links, setLinks] = useState({});
-  const [presale, setPresale] = useState({});
   const [loading, setLoading] = useState(true);
+  const [promoteTokenList, setPromoteTokenList] = useState<string[]>([
+    'USDC',
+    'SOL',
+    'XSB',
+  ]);
   const [swap, setSwapOrg] = useState(SWAP_APP.JUPITER);
 
   const setSwap = (value: SWAP_APP) => {
@@ -81,6 +86,7 @@ export const RemoteConfigProvider = ({ children }) => {
         links: JSON.stringify(defaultLinks),
         reward_airdrop: '0',
         reward_ref: '0',
+        promote_tokens: 'USDC, SOL, XSB',
       })
       .then(() => {
         // fetch anyway, the change will be apply for the next start
@@ -105,6 +111,8 @@ export const RemoteConfigProvider = ({ children }) => {
         const sourceMarketList = remoteConfig().getValue('market_list');
         const sourceTokenList = remoteConfig().getValue('token_list');
         const sourceLinks = remoteConfig().getValue('links');
+        const sourcePromoteTokenList =
+          remoteConfig().getValue('promote_tokens');
 
         setAppName(sourceAppName._value);
         setAppPrefix(sourceAppPrefix._value);
@@ -112,15 +120,7 @@ export const RemoteConfigProvider = ({ children }) => {
         setCustomeMarketList(JSON.parse(sourceMarketList._value));
         setCustomeTokenList(JSON.parse(sourceTokenList._value));
         setLinks(JSON.parse(sourceLinks._value));
-      })
-      .then(async () => {
-        const configs = await authFetch('/settings?type=presale', {
-          method: 'get',
-        });
-        if (configs.length) {
-          const p = configs[0];
-          setPresale(p.settings);
-        }
+        setPromoteTokenList(sourcePromoteTokenList._value.split(','));
 
         setLoading(false);
       })
@@ -138,9 +138,10 @@ export const RemoteConfigProvider = ({ children }) => {
         links,
         customeMarketList,
         customeTokenList,
-        presale,
+        presale: {},
         swap,
         setSwap,
+        promoteTokenList,
       }}
     >
       {!loading ? children : null}

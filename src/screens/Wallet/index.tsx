@@ -15,7 +15,7 @@ import { FixedContent } from '../../components/Modals/FixedContent';
 import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
 import { COLORS } from '../../theme';
-import TokensList from '../../components/TokensList';
+import TokensList from '../../components/TokenList';
 import Header from './Header';
 import { grid } from '../../components/Styles';
 import { useToken } from '../../core/AppProvider/TokenProvider';
