@@ -94,7 +94,7 @@ export const LightningRewards = () => {
       <Text style={s.title}>Lightning Rewards</Text>
       <Text style={s.helper}>A better way to receive XSB, USDC, & SOL</Text>
       <Button
-        title="Get XSB Link"
+        title="Share XSB Link"
         buttonStyle={s.buttonStyle}
         onPress={copyRewardsLink}
         icon={

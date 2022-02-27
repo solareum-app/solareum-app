@@ -263,7 +263,7 @@ export const Receive = ({ token = {} }) => {
             </Text>
             <View style={s.section}>
               <Button
-                title="Get XSB Link"
+                title="Share XSB Link"
                 buttonStyle={s.buttonStyle}
                 onPress={copyRewardsLink}
                 icon={
