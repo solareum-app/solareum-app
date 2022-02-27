@@ -8,13 +8,11 @@ import {
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { COLORS } from '../../theme/colors';
-import { RoundedButton } from '../../components/RoundedButton';
 import { typo } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { useToken } from '../../core/AppProvider/TokenProvider';
@@ -25,8 +23,10 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { getItem, setItem } from '../../storage/Collection';
 import { Address } from '../../components/Address/Address';
-
-const KEY_LR = 'LIGHTNING_REWARDS';
+import {
+  getLRLink,
+  KEY_LR,
+} from '../../containers/LightningRewards/LightningRewards';
 
 const s = StyleSheet.create({
   main: {
@@ -50,7 +50,12 @@ const s = StyleSheet.create({
     marginBottom: 20,
     borderColor: 'white',
   },
-  footer: {},
+  footer: {
+    marginBottom: 24,
+  },
+  section: {
+    marginTop: 20,
+  },
   control: {
     flexDirection: 'row',
     marginLeft: 'auto',
@@ -77,34 +82,16 @@ const s = StyleSheet.create({
     marginLeft: -20,
     marginRight: -20,
   },
+  buttonStyle: {
+    backgroundColor: '#9945FF',
+  },
+  buttonIcon: {
+    marginRight: 4,
+  },
 });
 
 const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
-
-const getLRLink = async (address: string, token: string = 'XSB') => {
-  const defaultLink = `https://solareum.page.link/rewards?address=${address}&token=${token}`;
-  const link = `https://solareum.app/lightning-rewards/?address=${address}&token=${token}`;
-
-  try {
-    const dmLink = await dynamicLinks().buildShortLink({
-      link: link,
-      domainUriPrefix: 'https://solareum.page.link',
-      ios: {
-        bundleId: 'com.solareum.wallet.WLRC5ZTG7',
-        fallbackUrl: link,
-      },
-      android: {
-        packageName: 'com.solareum',
-        fallbackUrl: link,
-      },
-    });
-
-    return dmLink;
-  } catch {
-    return defaultLink;
-  }
-};
 
 export const Receive = ({ token = {} }) => {
   const { wallet } = useApp();
@@ -181,24 +168,6 @@ export const Receive = ({ token = {} }) => {
 
   const dismiss = () => {
     setCreateNewAccount(false);
-  };
-
-  const onShare = async () => {
-    try {
-      const result = await Share.share({ message: address });
-      return result;
-
-      // ref: https://reactnative.dev/docs/share
-      // if (result.action === Share.sharedAction) {
-      //   if (result.activityType) {
-      //   } else {
-      //   }
-      // }
-      // if (result.action === Share.dismissedAction) {
-      // }
-    } catch {
-      // TODO: track this issue then
-    }
   };
 
   useEffect(() => {
@@ -292,16 +261,21 @@ export const Receive = ({ token = {} }) => {
             <Text style={typo.helper}>
               {t('receive-note-02', { name: account.name })}
             </Text>
-            <View style={s.control}>
-              <View style={s.controlItem}>
-                <RoundedButton
-                  isRewards
-                  onClick={copyRewardsLink}
-                  title="XSB"
-                  iconName="zap"
-                  type="feather"
-                />
-              </View>
+            <View style={s.section}>
+              <Button
+                title="Get XSB Link"
+                buttonStyle={s.buttonStyle}
+                onPress={copyRewardsLink}
+                icon={
+                  <Icon
+                    name="zap"
+                    type="feather"
+                    size={20}
+                    color={COLORS.white0}
+                    style={s.buttonIcon}
+                  />
+                }
+              />
             </View>
             {!isAccountCreated && account.symbol ? (
               <View style={s.control}>

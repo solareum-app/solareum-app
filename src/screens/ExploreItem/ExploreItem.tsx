@@ -139,7 +139,7 @@ export const ExploreItem = ({ route }) => {
           <Button title={`Buy ${symbol}`} onPress={gotoToken} />
         </View>
 
-        <View style={grid.content}>
+        <View style={{ ...grid.content, marginBottom: 36 }}>
           {fetching ? <LoadingImage /> : null}
 
           {articleList.length

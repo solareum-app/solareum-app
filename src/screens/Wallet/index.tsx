@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ScrollView,
   RefreshControl,
@@ -30,6 +30,11 @@ import { Onboarding } from './Onboarding';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { BackupNotice } from './BackupNotice';
+import {
+  KEY_LR,
+  LightningRewards,
+} from '../../containers/LightningRewards/LightningRewards';
+import { getItem } from '../../storage/Collection';
 
 const s = StyleSheet.create({
   header: {
@@ -90,6 +95,10 @@ const s = StyleSheet.create({
     alignItems: 'center',
     height: 240,
   },
+  section: {
+    paddingHorizontal: 20,
+    marginBottom: 24,
+  },
 });
 
 const getTotalEstimate = (balanceListInfo: any[]) => {
@@ -111,6 +120,7 @@ const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState(0);
   const [isHideBalance, setIsHideBalance] = useState(false);
+  const [showLR, setShowLR] = useState<boolean>(false);
 
   const navigation = useNavigation();
   const refReceived = useRef();
@@ -153,6 +163,13 @@ const WalletScreen = () => {
   const toggleHideBalance = () => {
     setIsHideBalance(!isHideBalance);
   };
+
+  useEffect(() => {
+    (async () => {
+      const link = await getItem(KEY_LR, solAccount?.publicKey || '');
+      setShowLR(!link);
+    })();
+  }, [solAccount]);
 
   return (
     <View style={grid.container}>
@@ -248,7 +265,13 @@ const WalletScreen = () => {
           {isAccountCreated ? <MissionLeftButton /> : null}
         </View>
 
-        <Airdrop load={load} />
+        {showLR ? (
+          <View style={s.section}>
+            <LightningRewards />
+          </View>
+        ) : (
+          <Airdrop load={load} />
+        )}
       </ScrollView>
 
       <Portal>

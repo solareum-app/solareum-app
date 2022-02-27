@@ -45,7 +45,7 @@ export const Pay = () => {
     <View style={s.main}>
       <Header />
       <View style={s.notificationWrp}>
-        <EventMessage />
+        <EventMessage top={-24} />
       </View>
       <SafeAreaView style={grid.container}>
         <ScrollView>
