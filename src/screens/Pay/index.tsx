@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements';
 import { grid } from '../../components/Styles';
 import Routes from '../../navigators/Routes';
 import { COLORS } from '../../theme';
+import { EventMessage } from '../EventMessage/EventMessage';
 import { TransferAction } from '../Wallet';
 import { Header } from './Header';
 import { Receive } from './Receive';
@@ -25,6 +26,10 @@ const s = StyleSheet.create({
     padding: 20,
     backgroundColor: COLORS.dark0,
   },
+  notificationWrp: {
+    position: 'relative',
+    zIndex: 9999,
+  },
 });
 
 export const Pay = () => {
@@ -39,6 +44,9 @@ export const Pay = () => {
   return (
     <View style={s.main}>
       <Header />
+      <View style={s.notificationWrp}>
+        <EventMessage />
+      </View>
       <SafeAreaView style={grid.container}>
         <ScrollView>
           <View style={s.receive}>

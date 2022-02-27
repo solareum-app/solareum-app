@@ -5,7 +5,6 @@ import {
   StyleSheet,
   DeviceEventEmitter,
   Share,
-  TouchableOpacity,
   Linking,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
@@ -16,11 +15,11 @@ import { COLORS } from '../../theme/colors';
 import { RoundedButton } from '../../components/RoundedButton';
 import { typo } from '../../components/Styles';
 import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
-import { EventMessage } from '../EventMessage/EventMessage';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { getItem, setItem } from '../../storage/Collection';
 import { Button } from 'react-native-elements';
+import { Address } from '../../components/Address/Address';
 
 const KEY_LR = 'LIGHTNING_REWARDS';
 
@@ -68,11 +67,6 @@ const s = StyleSheet.create({
     height: 240,
   },
   warning: { marginBottom: 16 },
-  notificationWrp: {
-    position: 'relative',
-    zIndex: 9999,
-  },
-
   section: {
     marginBottom: 40,
     paddingHorizontal: 20,
@@ -143,19 +137,13 @@ export const Receive = () => {
 
   return (
     <View>
-      <View style={s.notificationWrp}>
-        <EventMessage top={36} />
-      </View>
-
       <View style={s.main}>
         <Text style={typo.title}>Receive Tokens</Text>
         <View style={s.body}>
-          <TouchableOpacity style={s.qr} onPress={copyToClipboard}>
+          <View style={s.qr}>
             <QRCode value={address} size={240} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={copyToClipboard}>
-            <Text style={typo.address}>{address}</Text>
-          </TouchableOpacity>
+          </View>
+          <Address copyToClipboard={copyToClipboard} address={address} />
         </View>
         <View style={s.footer}>
           <Text style={typo.helper}>{t('receive-note-01')}</Text>
