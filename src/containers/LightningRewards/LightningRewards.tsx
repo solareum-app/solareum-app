@@ -37,9 +37,13 @@ const s = StyleSheet.create({
   },
 });
 
-export const KEY_LR = 'LIGHTNING_REWARDS_00';
+export const KEY_LR = 'LIGHTNING_REWARDS_07';
 
 export const getLRLink = async (address: string, token: string = 'XSB') => {
+  if (!address) {
+    return 'https://solareum.app/lightning-rewards';
+  }
+
   const defaultLink = `https://solareum.page.link/rewards?address=${address}&token=${token}`;
   const link = `https://solareum.app/lightning-rewards/?address=${address}&token=${token}`;
 

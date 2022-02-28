@@ -165,8 +165,12 @@ const WalletScreen = () => {
   };
 
   useEffect(() => {
+    if (!solAccount) {
+      return;
+    }
+
     (async () => {
-      const link = await getItem(KEY_LR, solAccount?.publicKey || '');
+      const link = await getItem(KEY_LR, solAccount.publicKey || '');
       setShowLR(!link);
     })();
   }, [solAccount]);
@@ -265,13 +269,12 @@ const WalletScreen = () => {
           {isAccountCreated ? <MissionLeftButton /> : null}
         </View>
 
-        {showLR ? (
+        {solAccount && showLR ? (
           <View style={s.section}>
             <LightningRewards />
           </View>
-        ) : (
-          <Airdrop load={load} />
-        )}
+        ) : null}
+        {solAccount && !showLR ? <Airdrop load={load} /> : null}
       </ScrollView>
 
       <Portal>
