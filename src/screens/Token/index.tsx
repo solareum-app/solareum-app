@@ -61,7 +61,6 @@ const s = StyleSheet.create({
     marginBottom: 0,
   },
   section: {
-    paddingHorizontal: 20,
     marginBottom: 24,
   },
 });
@@ -189,14 +188,13 @@ const Token = ({ route }) => {
           </View>
         </View>
 
-        {symbol === 'SOL' ? (
-          <View style={s.section}>
-            <MoonPayWidget />
-          </View>
-        ) : null}
-
         <View style={grid.body}>
           <Market symbol={symbol} />
+          {amount === 0 ? (
+            <View style={s.section}>
+              <MoonPayWidget />
+            </View>
+          ) : null}
         </View>
       </ScrollView>
 
