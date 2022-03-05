@@ -19,7 +19,12 @@ import { getItem, setItem } from '../../storage/Collection';
 import { MESSAGE_TYPE } from '../../screens/EventMessage/EventMessage';
 
 const s = StyleSheet.create({
-  main: {},
+  main: {
+    borderWidth: 1,
+    borderColor: '#9945FF',
+    borderRadius: 4,
+    padding: 16,
+  },
   buttonStyle: {
     backgroundColor: '#9945FF',
   },

@@ -44,7 +44,7 @@ const s = StyleSheet.create({
   body: {
     padding: 10,
     paddingBottom: 20,
-    marginBottom: 40,
+    marginBottom: 24,
     minHeight: 240,
   },
   info: {
@@ -98,6 +98,9 @@ const s = StyleSheet.create({
   section: {
     paddingHorizontal: 20,
     marginBottom: 24,
+  },
+  blankSpace: {
+    height: 40,
   },
 });
 
@@ -274,7 +277,10 @@ const WalletScreen = () => {
             <LightningRewards />
           </View>
         ) : null}
+
         {solAccount && !showLR ? <Airdrop load={load} /> : null}
+
+        <View style={s.blankSpace} />
       </ScrollView>
 
       <Portal>

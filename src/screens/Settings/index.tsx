@@ -154,6 +154,23 @@ const Settings: React.FC = () => {
 
         <View style={s.group}>
           <Text style={s.groupName}>{t('setting-with-solareum')}</Text>
+
+          <ListItem
+            bottomDivider
+            containerStyle={s.item}
+            onPress={() => {
+              navigation.navigate(Routes.MoonPay);
+            }}
+          >
+            <Icon type="feather" name="zap" color="grey" size={16} />
+            <ListItem.Content>
+              <ListItem.Title style={s.itemTitle}>
+                Buy SOL with Cards
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron color="grey" />
+          </ListItem>
+
           <ListItem
             bottomDivider
             containerStyle={s.item}
