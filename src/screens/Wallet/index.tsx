@@ -143,11 +143,21 @@ const WalletScreen = () => {
       return b.refValue - a.refValue;
     });
 
-  if (activeAccountList.length === 1 && activeAccountList[0].symbol === 'SOL') {
-    const defaultList = accountList.filter(
-      (i) => i.symbol === 'USDC' || i.symbol === 'XSB',
-    );
-    activeAccountList = activeAccountList.concat(defaultList);
+  // add XSB and USDC into the list if it hasn't created yet
+  const isXSBCreated = accountList.filter(
+    (i) => i.mint && i.symbol === 'XSB',
+  ).length;
+  const isUSDCCreated = accountList.filter(
+    (i) => i.mint && i.symbol === 'USDC',
+  ).length;
+  if (isXSBCreated === 0) {
+    const xsbAcc = accountList.filter((i) => i.symbol === 'XSB');
+    activeAccountList = activeAccountList.concat(xsbAcc);
+  }
+
+  if (isUSDCCreated === 0) {
+    const usdcAcc = accountList.filter((i) => i.symbol === 'USDC');
+    activeAccountList = activeAccountList.concat(usdcAcc);
   }
 
   const totalEst = getTotalEstimate(activeAccountList);
