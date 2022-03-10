@@ -183,7 +183,7 @@ const WalletScreen = () => {
     }
 
     (async () => {
-      const link = await getItem(KEY_LR, solAccount.publicKey || '');
+      const link = await getItem(`${KEY_LR}-XSB`, solAccount.publicKey || '');
       setShowLR(!link);
     })();
   }, [solAccount]);

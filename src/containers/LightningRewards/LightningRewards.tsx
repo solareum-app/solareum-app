@@ -72,7 +72,7 @@ export const getLRLink = async (address: string, token: string = 'XSB') => {
   }
 };
 
-export const LightningRewards = () => {
+export const LightningRewards = ({ asset = 'XSB' }: { asset: string }) => {
   const { t } = useLocalize();
   const { accountList } = usePrice();
 
@@ -80,13 +80,14 @@ export const LightningRewards = () => {
   const address = solAccount?.publicKey || '';
 
   const copyRewardsLink = async () => {
-    let link = await getItem(KEY_LR, address);
+    const lrLinkId = `${KEY_LR}-${asset}`;
+    let link = await getItem(lrLinkId, address);
     if (!link) {
-      link = await getLRLink(address);
-      await setItem(KEY_LR, address, link);
+      link = await getLRLink(address, asset);
+      await setItem(lrLinkId, address, link);
     }
 
-    const message = t('lr-share', { link });
+    const message = t('lr-share', { link, asset });
     Clipboard.setString(message);
     DeviceEventEmitter.emit(MESSAGE_TYPE.copy, message);
 
@@ -103,7 +104,7 @@ export const LightningRewards = () => {
       <Text style={s.title}>Lightning Rewards</Text>
       <Text style={s.helper}>A better way to receive XSB, USDC, & SOL</Text>
       <Button
-        title="Share XSB Link"
+        title={`Share ${asset} Link`}
         buttonStyle={s.buttonStyle}
         onPress={copyRewardsLink}
         icon={

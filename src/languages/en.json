@@ -41,7 +41,7 @@
   "receive-account-creating": "Account creating...",
   "receive-note-01": "Solareum accepts tokens on SPL network only.",
   "receive-note-02": "Only transfer {{name}} and SPL tokens onto this address. Sending other tokens will be resulted in losing those tokens permanently.",
-  "lr-share": "Send me XSB via ⚡️Rewards: {{link}}",
+  "lr-share": "Send me {{asset}} via ⚡️Rewards: {{link}}",
   "receive-copy": "Copy",
   "receive-share": "Share",
   "receive-create-account-02": "Create {{symbol}} account",

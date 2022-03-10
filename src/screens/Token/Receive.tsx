@@ -117,13 +117,14 @@ export const Receive = ({ token = {} }) => {
   };
 
   const copyRewardsLink = async () => {
-    let link = await getItem(KEY_LR, address);
+    const lrLinkId = `${KEY_LR}-${account.symbol}`;
+    let link = await getItem(lrLinkId, address);
     if (!link) {
-      link = await getLRLink(address);
-      await setItem(KEY_LR, address, link);
+      link = await getLRLink(address, account.symbol);
+      await setItem(lrLinkId, address, link);
     }
 
-    const message = t('lr-share', { link });
+    const message = t('lr-share', { link, asset: account.symbol });
     Clipboard.setString(message);
     DeviceEventEmitter.emit(MESSAGE_TYPE.copy, message);
 
@@ -263,7 +264,7 @@ export const Receive = ({ token = {} }) => {
             </Text>
             <View style={s.section}>
               <Button
-                title="Share XSB Link"
+                title={`Share ${account.symbol} Link`}
                 buttonStyle={s.buttonStyle}
                 onPress={copyRewardsLink}
                 icon={
