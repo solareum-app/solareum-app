@@ -23,6 +23,7 @@ import { Send } from './Send';
 import { Receive } from './Receive';
 import { Market } from './Market';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { MoonPayWidget } from '../Moonpay/MoonPayWidget';
 
 const s = StyleSheet.create({
   header: {
@@ -58,6 +59,9 @@ const s = StyleSheet.create({
     ...typo.helper,
     marginTop: 12,
     marginBottom: 0,
+  },
+  section: {
+    marginBottom: 24,
   },
 });
 
@@ -126,11 +130,11 @@ const Token = ({ route }) => {
     }, 100);
   }, []);
 
-  useEffect(()=>{
-    if (action === TransferAction.send){
+  useEffect(() => {
+    if (action === TransferAction.send) {
       openSendScreen();
     }
-  })
+  });
 
   return (
     <View style={grid.container}>
@@ -186,6 +190,11 @@ const Token = ({ route }) => {
 
         <View style={grid.body}>
           <Market symbol={symbol} />
+          {amount === 0 ? (
+            <View style={s.section}>
+              <MoonPayWidget />
+            </View>
+          ) : null}
         </View>
       </ScrollView>
 

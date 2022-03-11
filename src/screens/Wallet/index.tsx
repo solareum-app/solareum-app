@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ScrollView,
   RefreshControl,
@@ -30,6 +30,11 @@ import { Onboarding } from './Onboarding';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { BackupNotice } from './BackupNotice';
+import {
+  KEY_LR,
+  LightningRewards,
+} from '../../containers/LightningRewards/LightningRewards';
+import { getItem } from '../../storage/Collection';
 
 const s = StyleSheet.create({
   header: {
@@ -39,7 +44,7 @@ const s = StyleSheet.create({
   body: {
     padding: 10,
     paddingBottom: 20,
-    marginBottom: 40,
+    marginBottom: 24,
     minHeight: 240,
   },
   info: {
@@ -90,6 +95,13 @@ const s = StyleSheet.create({
     alignItems: 'center',
     height: 240,
   },
+  section: {
+    paddingHorizontal: 20,
+    marginBottom: 24,
+  },
+  blankSpace: {
+    height: 40,
+  },
 });
 
 const getTotalEstimate = (balanceListInfo: any[]) => {
@@ -111,6 +123,7 @@ const WalletScreen = () => {
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState(0);
   const [isHideBalance, setIsHideBalance] = useState(false);
+  const [showLR, setShowLR] = useState<boolean>(false);
 
   const navigation = useNavigation();
   const refReceived = useRef();
@@ -130,11 +143,21 @@ const WalletScreen = () => {
       return b.refValue - a.refValue;
     });
 
-  if (activeAccountList.length === 1 && activeAccountList[0].symbol === 'SOL') {
-    const defaultList = accountList.filter(
-      (i) => i.symbol === 'USDC' || i.symbol === 'XSB',
-    );
-    activeAccountList = activeAccountList.concat(defaultList);
+  // add XSB and USDC into the list if it hasn't created yet
+  const isXSBCreated = accountList.filter(
+    (i) => i.mint && i.symbol === 'XSB',
+  ).length;
+  const isUSDCCreated = accountList.filter(
+    (i) => i.mint && i.symbol === 'USDC',
+  ).length;
+  if (isXSBCreated === 0) {
+    const xsbAcc = accountList.filter((i) => i.symbol === 'XSB');
+    activeAccountList = activeAccountList.concat(xsbAcc);
+  }
+
+  if (isUSDCCreated === 0) {
+    const usdcAcc = accountList.filter((i) => i.symbol === 'USDC');
+    activeAccountList = activeAccountList.concat(usdcAcc);
   }
 
   const totalEst = getTotalEstimate(activeAccountList);
@@ -153,6 +176,17 @@ const WalletScreen = () => {
   const toggleHideBalance = () => {
     setIsHideBalance(!isHideBalance);
   };
+
+  useEffect(() => {
+    if (!solAccount) {
+      return;
+    }
+
+    (async () => {
+      const link = await getItem(`${KEY_LR}-XSB`, solAccount.publicKey || '');
+      setShowLR(!link);
+    })();
+  }, [solAccount]);
 
   return (
     <View style={grid.container}>
@@ -248,7 +282,15 @@ const WalletScreen = () => {
           {isAccountCreated ? <MissionLeftButton /> : null}
         </View>
 
-        <Airdrop load={load} />
+        {solAccount && showLR ? (
+          <View style={s.section}>
+            <LightningRewards />
+          </View>
+        ) : null}
+
+        {solAccount && !showLR ? <Airdrop load={load} /> : null}
+
+        <View style={s.blankSpace} />
       </ScrollView>
 
       <Portal>

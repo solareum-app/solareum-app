@@ -32,6 +32,7 @@ import { usePrice } from '../core/AppProvider/PriceProvider';
 import { useToken } from '../core/AppProvider/TokenProvider';
 import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
 import { Explore } from '../screens/Explore/Explore';
+import { MoonPay } from '../screens/Moonpay/Moonpay';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -159,6 +160,7 @@ const MainNavigator: React.FC = () => {
             component={ManageTokenList}
           />
           <Stack.Screen name={Routes.SwapApplication} component={SwapApp} />
+          <Stack.Screen name={Routes.MoonPay} component={MoonPay} />
         </Stack.Navigator>
       </Host>
     </NavigationContainer>
