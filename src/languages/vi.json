@@ -61,6 +61,7 @@
   "airdrop-error-no-account": "Tài khoản XSB chưa được khởi tạo, bạn chưa thể hoàn thành airdrop.",
   "airdrop-title": "XSB Airdrop",
   "airdrop-intro": "XSB là token sẽ được sử dụng trong Lightning Rewards, một ứng dụng web3.0 giúp thưởng cho những nhà phát triển nội dung kỹ thuật số.",
+  "airdrop-intro-2": "Hoàn thành 40 nhiệm vụ để nhận được 40 XSB.",
   "airdrop-receive-btn": "Nhận +{{airdrop}} XSB",
   "airdrop-sol-balance": "Tải khoản bạn không đủ SOL để thực hiện bước này.",
   "airdrop-title-create-xsb": "Tạo tài khoản XSB",

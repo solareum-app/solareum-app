@@ -10,8 +10,8 @@ import { Routes } from '../../navigators/Routes';
 import { spacings } from '../../theme';
 import { typo } from '../../components/Styles';
 import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
-import package from '../../../package.json';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import package from '../../../package.json';
 
 const s = StyleSheet.create({
   container: {
@@ -75,7 +75,7 @@ const s = StyleSheet.create({
 });
 
 const Language = ({ value }) => {
-  const { t, language, setLanguage } = useLocalize();
+  const { language, setLanguage } = useLocalize();
 
   return (
     <Text
@@ -208,13 +208,13 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              navigation.navigate(Routes.Mission);
+              navigation.navigate(Routes.Airdrop);
             }}
           >
-            <Icon type="antdesign" name="hearto" color="grey" size={16} />
+            <Icon type="antdesign" name="rocket1" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                {t('setting-mission')}
+                {t('setting-airdrop')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
@@ -223,13 +223,13 @@ const Settings: React.FC = () => {
             bottomDivider
             containerStyle={s.item}
             onPress={() => {
-              navigation.navigate(Routes.Airdrop);
+              navigation.navigate(Routes.Mission);
             }}
           >
-            <Icon type="antdesign" name="rocket1" color="grey" size={16} />
+            <Icon type="antdesign" name="hearto" color="grey" size={16} />
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
-                {t('setting-airdrop')}
+                {t('setting-mission')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />

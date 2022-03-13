@@ -50,6 +50,7 @@ export const MissionLeftButton = ({ padding = 20 }) => {
           },
         },
       });
+      console.log('resp', resp);
       setMissionLeft(resp.missionLeft);
     } catch {}
   };

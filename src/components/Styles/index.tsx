@@ -22,7 +22,7 @@ export const typo = StyleSheet.create({
     color: COLORS.white2,
     fontSize: 16,
     lineHeight: 24,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   bold: {
     fontWeight: 'bold',
