@@ -149,7 +149,7 @@
   "mission-close-label": "Mission ends in {{second}} seconds",
   "mission-modal-title": "Mission Completed",
   "mission-reward-title": "You received",
-  "mission-thanks-01": "Congratulations on completing the mission. Please wait 5 minutes before doing the next one.",
+  "mission-thanks-01": "Congratulations on completing the mission.",
   "onboarding-title": "What is your favorite Swap Application?",
   "onboarding-btn": "Ok, I'm all set",
   "onboarding-message": "The selected application uses for future swap actions. You're able to change it on the settings page then.",

@@ -64,6 +64,18 @@ export const MissionReward = ({ mission }) => {
       </View>
 
       <Text style={typo.normal}>{t('mission-thanks-01')}</Text>
+      <Text style={typo.normal}>
+        XSB powers Lightning Rewards, which connects the current digital world
+        to the future of decentralization - web3.0.
+      </Text>
+      <Text style={typo.normal}>
+        Don't forget to share Solareum Wallet with your network to receive
+        unlimited XSB as referrals.
+      </Text>
+      <Text style={typo.normal}>
+        If you're unable to receive the airdrop, please make sure your SOL
+        balance is positive.
+      </Text>
       {missionRewardError ? (
         <Text style={typo.warning}>{missionRewardError}</Text>
       ) : null}
