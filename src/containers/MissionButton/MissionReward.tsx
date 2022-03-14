@@ -1,11 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Linking, Share } from 'react-native';
 import { Button } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
 
 import { grid, typo } from '../../components/Styles';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { COLORS } from '../../theme';
+import { authFetch } from '../../utils/authfetch';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const style = StyleSheet.create({
   main: {
@@ -44,12 +46,43 @@ const style = StyleSheet.create({
   },
 });
 
+const FULL_AIRDROP = 40;
+
 export const MissionReward = ({ mission }) => {
   const { t } = useLocalize();
+  const { accountList } = usePrice();
+
+  const [total, setTotal] = useState<number>(0);
+  const solAccount = accountList.find((i) => i.mint === 'SOL');
 
   const missionReward = mission.missionReward;
   const missionSignature = mission.missionRewardSignature;
-  let missionRewardError = mission.missionRewardError;
+  const missionRewardError = mission.missionRewardError;
+
+  const onShare = async () => {
+    try {
+      const message = t('airdrop-final-share', {
+        address: solAccount?.publicKey,
+      });
+
+      const result = await Share.share({
+        message,
+      });
+      return result;
+    } catch {}
+  };
+
+  useEffect(() => {
+    (async () => {
+      const resp = await authFetch(
+        `https://api.solareum.app/airdrops/count?sol_address=${solAccount.publicKey}&type=mission`,
+        {
+          method: 'GET',
+        },
+      );
+      setTotal(resp);
+    })();
+  }, []);
 
   return (
     <View style={style.main}>
@@ -63,19 +96,18 @@ export const MissionReward = ({ mission }) => {
         />
       </View>
 
-      <Text style={typo.normal}>{t('mission-thanks-01')}</Text>
-      <Text style={typo.normal}>
-        XSB powers Lightning Rewards, which connects the current digital world
-        to the future of decentralization - web3.0.
-      </Text>
-      <Text style={typo.normal}>
-        Don't forget to share Solareum Wallet with your network to receive
-        unlimited XSB as referrals.
-      </Text>
-      <Text style={typo.normal}>
-        If you're unable to receive the airdrop, please make sure your SOL
-        balance is positive.
-      </Text>
+      {total < FULL_AIRDROP ? (
+        <Text style={typo.normal}>
+          {t('mission-thanks-01', { total, left: FULL_AIRDROP - total })}
+        </Text>
+      ) : null}
+      {total === FULL_AIRDROP ? (
+        <Text style={typo.normal}>{t('mission-thanks-02')}</Text>
+      ) : null}
+      <Text style={typo.normal}>{t('mission-thanks-03')}</Text>
+      <Text style={typo.normal}>{t('mission-thanks-04')}</Text>
+      <Text style={typo.normal}>{t('mission-thanks-05')}</Text>
+
       {missionRewardError ? (
         <Text style={typo.warning}>{missionRewardError}</Text>
       ) : null}
@@ -98,6 +130,14 @@ export const MissionReward = ({ mission }) => {
             ) : null}
           </View>
         </View>
+      </View>
+
+      <View style={grid.group}>
+        <Button
+          type="outline"
+          title={t('setting-ref-share')}
+          onPress={onShare}
+        />
       </View>
     </View>
   );
