@@ -8,6 +8,7 @@ import { COLORS } from '../../theme';
 import { FacebookWebView } from '../../components/Modals/FacebookWebView';
 import { typo } from '../../components/Styles';
 import bullImg from './bull.jpg';
+import { useRewards } from '../../core/AppProvider/RewardsProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -41,9 +42,15 @@ const s = StyleSheet.create({
 const DOMAIN = 'https://www.wealthclub.vn/t';
 
 export const SocialItem = ({ model }) => {
-  const refSend = useRef();
+  const refView = useRef();
+  const { getRewards } = useRewards();
+
   const openSendScreen = () => {
-    refSend?.current?.open();
+    refView?.current?.open();
+  };
+
+  const onClose = () => {
+    getRewards();
   };
 
   return (
@@ -63,8 +70,9 @@ export const SocialItem = ({ model }) => {
 
       <Portal>
         <FacebookWebView
-          ref={refSend}
+          ref={refView}
           url={`${DOMAIN}/${model.slug}/${model.id}`}
+          onClose={onClose}
         />
       </Portal>
     </View>
