@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+
+import React, { Component, useState } from 'react';
+import { View, Text, ScrollView, SafeAreaView, Alert, NativeModules } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -11,8 +12,12 @@ import { COLORS } from '../../theme';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { s } from './CreateWallet';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { GoogleSignin, NativeModuleError, statusCodes, User } from '@react-native-google-signin/google-signin';
+const { RNCloudFs } = NativeModules;
+
 
 type Props = {};
+
 
 const EditWallet: React.FC<Props> = ({ route }) => {
   const { address } = route.params;
@@ -23,6 +28,8 @@ const EditWallet: React.FC<Props> = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const { updateAddress, removeWallet, addressId } = useApp();
   const { t } = useLocalize();
+  
+
 
   const submit = async () => {
     setLoading(true);
@@ -42,6 +49,26 @@ const EditWallet: React.FC<Props> = ({ route }) => {
 
   const copyToClipboard = () => {
     Clipboard.setString(address.mnemonic);
+  };
+
+  
+  const sync = async () => {
+
+    const destinationPath = "solareum/docs/info.pdf";
+const scope = 'visible';
+
+
+RNCloudFs.fileExists({
+  targetPath: destinationPath, 
+  scope: scope
+})
+  .then((exists) => {
+    console.log(exists ? "this file exists" : "this file does not exist");
+  })
+  .catch((err) => {
+    console.warn("it failed", err);
+  })
+    
   };
 
   return (
@@ -73,6 +100,16 @@ const EditWallet: React.FC<Props> = ({ route }) => {
                 title={t('create-copy')}
                 type="clear"
                 onPress={copyToClipboard}
+                titleStyle={{ marginLeft: 8 }}
+                icon={<Icon name="addfile" color={COLORS.blue2} />}
+              />
+            </View>
+
+            <View style={s.wrp}>
+              <Button
+                title={"sync"}
+                type="clear"
+                onPress={sync}
                 titleStyle={{ marginLeft: 8 }}
                 icon={<Icon name="addfile" color={COLORS.blue2} />}
               />
