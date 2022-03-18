@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useContext,
-  useCallback,
-} from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Portal } from 'react-native-portalize';
 import {
   RewardedAd,
@@ -22,7 +15,6 @@ import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
 
 import { getAdmobIdByType } from '../../components/Admob/Rewarded';
-import { COLORS } from '../../theme';
 import { MissionReward } from '../../containers/MissionButton/MissionReward';
 import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
 import { setItem, getItem } from '../../storage/Collection';
@@ -44,27 +36,6 @@ export const RewardsContext = React.createContext<RewardsContextType>({
 export const useRewards = () => {
   return useContext(RewardsContext);
 };
-
-const s = StyleSheet.create({
-  manageBtnWrp: {
-    padding: 20,
-  },
-  manageIcon: {
-    marginRight: 10,
-  },
-  manageBtn: {
-    borderColor: COLORS.blue4,
-  },
-  txtManageBtn: {
-    color: COLORS.blue2,
-  },
-  btnDisabled: {
-    borderColor: COLORS.dark4,
-  },
-  txtManageBtnDisabled: {
-    color: COLORS.white4,
-  },
-});
 
 const adRewardUnitId = __DEV__
   ? TestIds.REWARDED
@@ -102,7 +73,7 @@ export const RewardsProvider = ({ children }) => {
     setLastMissionTsOrg(value);
   };
 
-  const getRewards = useCallback(async () => {
+  const getRewards = async () => {
     if (missionLeft <= 0 || !getActive()) {
       return;
     }
@@ -113,24 +84,24 @@ export const RewardsProvider = ({ children }) => {
     } else {
       refCreateAccount.current?.open();
     }
-  }, [missionLeft, getActive]);
+  };
 
-  const getWaitingTime = useCallback(() => {
+  const getWaitingTime = () => {
     const delta = currentTs - lastMissionTs;
     if (delta > BREAK_TIME) {
       return 0;
     }
     const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));
     return waitingTime;
-  }, [currentTs, lastMissionTs]);
+  };
 
-  const getActive = useCallback(() => {
+  const getActive = () => {
     const waitingTime = getWaitingTime();
     const isActive = waitingTime <= 0 && missionLeft > 0;
     return isActive && !isShowingAd;
-  }, [currentTs]);
+  };
 
-  const getLabel = useCallback(() => {
+  const getLabel = () => {
     const waitingTime = getWaitingTime();
     const isActive = getActive();
 
@@ -147,7 +118,7 @@ export const RewardsProvider = ({ children }) => {
     }
 
     return label;
-  }, [missionLeft, getActive, getWaitingTime]);
+  };
 
   const earnMissionReward = async () => {
     setLoading(true);
