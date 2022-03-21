@@ -1,4 +1,5 @@
 import React from 'react';
+import { Host } from 'react-native-portalize';
 
 import { AppProvider } from './AppProvider';
 import { MarketProvider } from './MarketProvider';
@@ -11,20 +12,22 @@ import { PriceProvider } from './PriceProvider';
 
 export const Root: React.FC = (props) => {
   return (
-    <RemoteConfigProvider>
-      <ConnectionProvider>
-        <LocalizeProvider>
-          <AppProvider>
-            <TokenProvider>
-              <RealtimeProvider>
-                <MarketProvider>
-                  <PriceProvider>{props.children}</PriceProvider>
-                </MarketProvider>
-              </RealtimeProvider>
-            </TokenProvider>
-          </AppProvider>
-        </LocalizeProvider>
-      </ConnectionProvider>
-    </RemoteConfigProvider>
+    <Host>
+      <RemoteConfigProvider>
+        <ConnectionProvider>
+          <LocalizeProvider>
+            <AppProvider>
+              <TokenProvider>
+                <RealtimeProvider>
+                  <MarketProvider>
+                    <PriceProvider>{props.children}</PriceProvider>
+                  </MarketProvider>
+                </RealtimeProvider>
+              </TokenProvider>
+            </AppProvider>
+          </LocalizeProvider>
+        </ConnectionProvider>
+      </RemoteConfigProvider>
+    </Host>
   );
 };

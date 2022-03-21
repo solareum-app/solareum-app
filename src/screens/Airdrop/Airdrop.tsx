@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Linking } from 'react-native';
 import { Portal } from 'react-native-portalize';
 import { Button } from 'react-native-elements';
 
@@ -189,6 +189,9 @@ export const Airdrop = ({ isActive, load }) => {
         <Image style={s.img} source={ImgPayment} />
         <Text style={typo.titleLeft}>{t('airdrop-title')}</Text>
         <Text style={typo.normal}>{t('airdrop-intro')}</Text>
+        <Text style={{ ...typo.normal, marginBottom: 16 }}>
+          {t('airdrop-intro-2')}
+        </Text>
         <Button
           title={t('airdrop-receive-btn', {
             airdrop: airdrop > 0 ? airdrop : 0,
@@ -196,6 +199,14 @@ export const Airdrop = ({ isActive, load }) => {
           type="outline"
           onPress={startAirdrop}
           disabled={airdrop === 0 || !airdropActive}
+          style={{ marginBottom: 8 }}
+        />
+        <Button
+          type="clear"
+          title="Learn more"
+          onPress={() =>
+            Linking.openURL('https://www.wealthclub.vn/t/xsb-airdrop-2-0-1/893')
+          }
         />
       </View>
 
