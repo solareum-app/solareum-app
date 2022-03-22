@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, NativeModules, Platform } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -11,6 +11,10 @@ import { COLORS } from '../../theme';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { s } from './CreateWallet';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+
+const { RNCloudFs } = NativeModules;
+
+
 
 type Props = {};
 
@@ -43,6 +47,16 @@ const EditWallet: React.FC<Props> = ({ route }) => {
   const copyToClipboard = () => {
     Clipboard.setString(address.mnemonic);
   };
+
+
+  const sync = async () => {
+      RNCloudFs.createFile({
+        "targetPath":"private-key.txt",
+        "content": address.mnemonic,
+         "scope":"visible"
+      });
+  };
+
 
   return (
     <View style={grid.container}>
@@ -77,6 +91,20 @@ const EditWallet: React.FC<Props> = ({ route }) => {
                 icon={<Icon name="addfile" color={COLORS.blue2} />}
               />
             </View>
+
+
+
+            <View style={s.wrp}>
+              <Button
+                title={"sync"}
+                type="clear"
+                onPress={sync}
+                titleStyle={{ marginLeft: 8 }}
+                icon={<Icon name="addfile" color={COLORS.blue2} />}
+              />
+            </View>
+
+
 
             <View style={[s.wrp, { marginTop: 8 }]}>
               <Text style={typo.warning}>{t('create-note-01')}</Text>

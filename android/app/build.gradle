@@ -199,6 +199,10 @@ android {
 }
 
 dependencies {
+     implementation ('com.google.android.gms:play-services-drive:17.0.0') {
+        force = true;
+     }
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"
