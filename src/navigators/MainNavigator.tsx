@@ -34,6 +34,7 @@ import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
 import { Explore } from '../screens/Explore/Explore';
 import { MoonPay } from '../screens/Moonpay/Moonpay';
 import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
+import BackupPrivateKey from '../screens/Settings/BackupPrivateKey';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -169,6 +170,7 @@ const MainNavigator: React.FC = () => {
             />
             <Stack.Screen name={Routes.SwapApplication} component={SwapApp} />
             <Stack.Screen name={Routes.MoonPay} component={MoonPay} />
+            <Stack.Screen name={Routes.BackupPrivateKey} component = {BackupPrivateKey} />
           </Stack.Navigator>
         </RewardsProvider>
       </Host>
