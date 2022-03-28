@@ -1,6 +1,17 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React, { useState } from 'react';
-import { ScrollView, View, Switch, StyleSheet, Text, SafeAreaView, Platform, NativeModules, Alert } from 'react-native';
+import {
+  ScrollView,
+  View,
+  Switch,
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  Platform,
+  NativeModules,
+  Alert,
+  PermissionsAndroid,
+} from 'react-native';
 import { Button } from 'react-native-elements';
 import { TextInput } from 'react-native-gesture-handler';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -54,37 +65,22 @@ const s = StyleSheet.create({
     marginTop: 24,
   },
 });
-const BackupPrivateKey: React.FC = ({routes}) => {
+const BackupPrivateKey: React.FC = ({ routes }) => {
   const { t } = useLocalize();
   const [recovery, setRecovery] = useState('');
-
-
 
   const backup = async () => {
     // var targetPath = walletname + '/private-key.txt';
     var targetPath = 'private-key.txt';
-   
-        RNCloudFs.fileExists({
-            targetPath: targetPath,
-          })
-            .then((exists) => {
-              if (!exists) {
-                RNCloudFs.createFile({
-                  targetPath: targetPath,
-                  content: recovery,
-                  scope: 'visible',
-                });
-                console.log('create file');
-              } else {
-                console.log('this file exists');
-              }
-            })
-            .catch((err) => {
-              console.warn('it failed', err);
-            });
-    // }  
-   
-   
+
+    RNCloudFs.createFile({
+      targetPath: targetPath,
+      content: recovery,
+      scope: 'visible',
+    }).then((res)=>{
+      console.log(res);
+    });
+
     Alert.alert(
       'Sync',
       'Private-key is sync in cloud',
@@ -123,8 +119,7 @@ const BackupPrivateKey: React.FC = ({routes}) => {
     return url;
   };
 
-  const handleLinkDownloadGoogleDrive = (url) => {
-    var basicLink = 'https://drive.google.com/uc?export=download&id=';
+  const getGDriveFileID = (url) => {
     //cut header
     var headerLink = 'https://drive.google.com/file/d/';
 
@@ -133,21 +128,20 @@ const BackupPrivateKey: React.FC = ({routes}) => {
 
     //cut footer
     url = url.substring(0, url.indexOf('/'));
-    url = basicLink + url;
     console.log('🎉 linkkk : ', url);
     return url;
   };
 
-  const getContentFile = (url) => {
+  const getContentFileFromIcloud = (url) => {
     console.log('🚩 url: ', url);
     var path = '';
     let dirs = RNFetchBlob.fs.dirs;
     RNFetchBlob.config({
-    //   path: dirs.DocumentDir + '/' + walletName + '/private-key.txt',
-    path: dirs.DocumentDir + '/private-key.txt',
-
+      //   path: dirs.DocumentDir + '/' + walletName + '/private-key.txt',
+      path: dirs.DocumentDir + '/private-key.txt',
     })
-      .fetch('GET', url, {"Authorization": "ya29.A0ARrdaM-SmoVwY4DSnI-dzhodg94RQ3DEhxTdcE9L94SqnlN_jrnq-kXBPwwyy9hYMElxUPQOYjrJjdjMIz0iTCTKH8Iyeq1II_pG98tJyh4udqbHF2Qun513G_nQ6zi1WVN0ll6O-f9zRvSY1pkBbmUxbCvA"})
+      .fetch('GET', url, {
+      })
       .then((res) => {
         console.log('The file saved to ', res.path());
         path = res.path();
@@ -156,48 +150,73 @@ const BackupPrivateKey: React.FC = ({routes}) => {
       });
   };
 
+  const getContentFileFromGDrive = async (url) => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'External Storage Write Permission',
+          message: 'App needs write permission',
+        },
+      );
+      // If WRITE_EXTERNAL_STORAGE Permission is granted
+      if (granted != PermissionsAndroid.RESULTS.GRANTED) return;
+    } catch (err) {
+      console.warn(err);
+      Alert.alert('Write permission err', err);
+      return;
+    }
+    try {
+      let dirs = RNFetchBlob.fs.dirs;
+      const path = dirs.DocumentDir + '/private-key.txt';
 
-  const getContentFileFromGDrive = (url) =>{
-    GoogleSignin.getTokens().then((res) => {
-        if (res){
-            GDrive.setAccessToken(res.accessToken);
-            GDrive.init();
-            GDrive.files
-            .download(url, {
-              toFile: `${RNFSManager.DocumentDirectoryPath}/private-key.txt`,
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-              },
-            })
-            .promise.then((res) => {
-              console.log({res});
-              if (res.statusCode == 200 && res.bytesWritten > 0)
-                Alert.alert('File download successful');
-            });
+      GoogleSignin.configure();
+      await GoogleSignin.signIn();
+      GoogleSignin.getTokens().then((res) => {
+        if (res) {
+          GDrive.setAccessToken(res.accessToken);
+          GDrive.init();
+          if (GDrive.isInitialized()) {
+            try {
+              GDrive.files
+                .download(url, {
+                  toFile: path,
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                  },
+                })
+                .promise.then((res) => {
+                  console.log({ res });
+                  if (res.statusCode == 200 && res.bytesWritten > 0)
+                    readFile(path);
+                });
+            } catch (e) {
+              console.log(e);
+            }
+          }
         }
-    })
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getPrivateKey = async () => {
     RNCloudFs.listFiles({
-    //   targetPath: walletName + '/private-key.txt',
-      targetPath:  '/private-key.txt',
+      //   targetPath: walletName + '/private-key.txt'
+      targetPath: '/private-key.txt',
       scope: 'visible',
     }).then(async (files) => {
       console.log(files);
-      var link = decodeURIComponent(files.files[0].uri);
+      var link = decodeURIComponent(files.files[files.files.length-1].uri);
       if (Platform.OS === 'ios') {
         link = handleLinkDownloadIOS(link);
-        getContentFile(link);
-
+        getContentFileFromIcloud(link);
       } else {
-        link = handleLinkDownloadGoogleDrive(link);
-        console.log(link);
-        // getContentFileFromGDrive(link)
-
-        // link =
-        //   'https://www.googleapis.com/drive/v3/files/1RK9VU3s4sBnlkiIMoFvHByypGOm4sduS?alt=media&source=downloadUrl';
+        console.log('android');
+        const id = getGDriveFileID(link);
+        getContentFileFromGDrive(id);
       }
     });
   };
@@ -205,7 +224,7 @@ const BackupPrivateKey: React.FC = ({routes}) => {
   const readFile = async (url) => {
     const exportedFileContent = await RNFSManager.readFile(url);
     console.log('🎉 content encode: ', base64.decode(exportedFileContent));
-    setRecovery( base64.decode(exportedFileContent))
+    setRecovery(base64.decode(exportedFileContent));
   };
 
   return (
@@ -224,15 +243,12 @@ const BackupPrivateKey: React.FC = ({routes}) => {
           </View>
 
           <View style={s.wrp}>
-            <Button title={t('back-up')}
-            onPress = {backup} />
+            <Button title={t('back-up')} onPress={backup} />
           </View>
 
           <View style={s.wrp}>
-            <Button title={t('restore')} 
-            onPress = {getPrivateKey} />
+            <Button title={t('restore')} onPress={getPrivateKey} />
           </View>
-
         </ScrollView>
       </SafeAreaView>
     </View>

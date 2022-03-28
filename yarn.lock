@@ -1483,15 +1483,6 @@
     color "^3.1.3"
     react-native-iphone-x-helper "^1.3.0"
 
-"@robinbobin/react-native-google-drive-api-wrapper@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@robinbobin/react-native-google-drive-api-wrapper/-/react-native-google-drive-api-wrapper-1.2.1.tgz#09804a416cf812d6319f5e88b4432174aa2cb5f3"
-  integrity sha512-hPxsifAggCIouIFgEORfttuInkNdoaW5dPtGFwDKmrFJeYKLjGXNFTubvhBUthQmkmlNmypbnCCVD0X5u1y7Sw==
-  dependencies:
-    base64-js "^1.5.1"
-    simple-common-utils "^2.3.0"
-    utf8 "^3.0.0"
-
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
@@ -8312,7 +8303,7 @@ react-native-fast-image@^8.3.7:
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.5.11.tgz#e3dc969d0e4e8df026646bf18194465aa55cbc2b"
   integrity sha512-cNW4bIJg3nvKaheG8vGMfqCt5LMWX9MS5+wMudgKIHbGO51spRr4sgnlhVgwHLcZ5aeNOVJ8CPRxDIWKRq/0QA==
 
-react-native-fs@^2.19.0:
+react-native-fs@^2.19.0, react-native-fs@latest:
   version "2.19.0"
   resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.19.0.tgz#5747eb52a5a3d2b31c8fb76f5f8044d0a855122c"
   integrity sha512-Yl09IbETkV5UJcBtVtBLttyTmiAhJIHpGA/LvredI5dYiw3MXMMVu42bzELiuH2Bwj7F+qd0fMNvgfBDiDxd2A==
@@ -8330,6 +8321,14 @@ react-native-gesture-handler@^1.10.3:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-google-drive-api-wrapper@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-drive-api-wrapper/-/react-native-google-drive-api-wrapper-1.4.0.tgz#4d113fe4019a697e4f0b7eb36b68893a4c04d316"
+  integrity sha512-xorRIoB9v8s+T6YTojd2tpTP2EXJh835MEEMNgV9JfkTnPCwr5lnwllM7cCgMwmawq0g3H0LpZJopULDqaF+IQ==
+  dependencies:
+    react-native-fs latest
+    simple-common-utils latest
 
 react-native-image-progress@^1.1.1:
   version "1.2.0"
@@ -9264,7 +9263,7 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.6.tgz#24e630c4b0f03fea446a2bd299e62b4a6ca8d0af"
   integrity sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==
 
-simple-common-utils@^2.3.0:
+simple-common-utils@latest:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/simple-common-utils/-/simple-common-utils-2.6.0.tgz#457f126c20c82ba10212427886f4c8ebe86cc6d7"
   integrity sha512-K0gtyfMQ1+iDQvZKgdY2L+pbaG0MHp1ke6ho7IL6UKR8f59st+QJgw27FADF+3Hut19C3WUb7IhgENdY/OJG8w==
