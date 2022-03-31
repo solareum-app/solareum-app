@@ -125,6 +125,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
         console.log(files);
         if (files.files.length > 0) {
           for (var i = 0; i < files.files.length; i++) {
+            console.log(files.files[i].path);
             if (files.files[i].name == 'private-key.json') {
               console.log('private');
               if (Platform.OS === 'android') {
@@ -238,7 +239,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
 
   const handleFileToBackUp = async (url) => {
     await downloadFileFromGDrive(url);
-    await overrideFileBackUp();
+    // await overrideFileBackUp();
   };
 
   const overrideFileBackUp = async (path) => {
@@ -376,14 +377,21 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
 
   const getPrivateKey = async () => {
     RNCloudFs.listFiles({
-      targetPath: '/private-key.json',
+      targetPath: '',
       scope: 'visible',
     }).then(async (files) => {
       console.log(files);
       var link = decodeURIComponent(files.files[files.files.length - 1].uri);
       if (Platform.OS === 'ios') {
         link = handleLinkDownloadIOS(link);
-        // getContentFileFromIcloud(link);
+        await getContentFileFromIcloud(link).then((value) => {
+          value.forEach(element => {
+            if (element["publicKey"] == "huong")
+            console.log(element["privateKey"])
+            setRecovery(element["privateKey"])
+          });
+         
+        })
       } else {
         console.log('android');
         const id = getGDriveFileID(link);
