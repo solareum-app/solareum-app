@@ -26,9 +26,7 @@ import {
 } from '../../../utils/handleLink';
 
 import GDrive from 'react-native-google-drive-api-wrapper';
-import { isExists } from 'date-fns';
-import { PriceContext } from '../../../core/AppProvider/PriceProvider';
-var RNFS = require('react-native-fs');
+
 
 const { RNFSManager, RNCloudFs } = NativeModules;
 
@@ -89,15 +87,15 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
           if (files.files[i].uri === null) {
             isExists = false;
           } else { 
-            isExists = true;
-            break;
+            if (files.files[i].name != "private-key.json"){
+          
+              isExists = false;
+            }else{
+              isExists = true;
+              break;
+            }
           }
-          if (files.files[i].name != "private-key.json"){
-            isExists = false;
-          }else{
-            isExists = true;
-            break;
-          }
+        
         }
       }
     });
@@ -113,12 +111,10 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
       },
     ];
     const fileExists = await checkPrivateFileExists();
-
     if (!fileExists) {
       pushFileToCloud(JSON.stringify(content));
     } else {
       RNCloudFs.listFiles({
-        //   targetPath: walletName + '/private-key.txt'
         targetPath: '',
         scope: 'visible',
       }).then(async (files) => {
@@ -144,27 +140,29 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
 
                 pushFileToCloud(content) 
                 await GDrive.files.delete(id);
-
               } else {
-                var link = decodeURIComponent(files.files[i].uri);
-                link = handleLinkDownloadIOS(link);
-                await  getContentFileFromIcloud(link).then((value) => {
-                    const newBackUp = {
-                      publicKey: 'huong',
-                      privateKey: 'huong lam',
-                      name: 'hello',
-                    };
-                    value.forEach(element => {
-                      if (element["publicKey"] === newBackUp["publicKey"]){
-                        const index = value.indexOf(element);
-                        value.splice(index,1);
-                      }
-                    })
-                    value.push(newBackUp);
-                    content = JSON.stringify(value);
-                  } );
-                 RNCloudFs.removeICloudFile(files.files[i].path);
-                 pushFileToCloud(content);
+                if (files.files[i].name === "private-key.json"){
+                  var link = decodeURIComponent(files.files[i].uri);
+                  link = handleLinkDownloadIOS(link);
+                  await  getContentFileFromIcloud(link).then((value) => {
+                      const newBackUp = {
+                        publicKey: 'huong',
+                        privateKey: 'huong lam',
+                        name: 'hello',
+                      };
+                      value.forEach(element => {
+                        if (element["publicKey"] === newBackUp["publicKey"]){
+                          const index = value.indexOf(element);
+                          value.splice(index,1);
+                        }
+                      })
+                      value.push(newBackUp);
+                      content = JSON.stringify(value);
+                    } );
+                   RNCloudFs.removeICloudFile(files.files[i].path);
+                   pushFileToCloud(content);
+                }
+                
               }
             } 
           
@@ -173,8 +171,6 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
     }
   };
 
-
-  
 
   const pushFileToCloud = (file) => {
     RNCloudFs.createFile({
@@ -300,17 +296,23 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
       targetPath: '',
       scope: 'visible',
     }).then(async (files) => {
-      var link = decodeURIComponent(files.files[0].uri);
       if (Platform.OS === 'ios') {
-        link = handleLinkDownloadIOS(link);
-        await getContentFileFromIcloud(link).then((value) => {
-          value.forEach(element => {
-            if (element["publicKey"] === "huong"){
-            setRecovery(element["privateKey"])
-            }
-          });
+        files.files.forEach(async file => {
+          if (file.name === "private-key.json"){
+            var link = decodeURIComponent(file.uri);
+            link = handleLinkDownloadIOS(link);
+            await getContentFileFromIcloud(link).then((value) => {
+              value.forEach(element => {
+                if (element["publicKey"] === "huong"){
+                setRecovery(element["privateKey"])
+                }
+              });
+            })
+          }
         })
+       
       } else {
+        var link = decodeURIComponent(files.files[0].uri);
         const id = getGDriveFileID(link);
         await getContentFileFromGDrive(id).then((value)=>{
          value.forEach(element => {
