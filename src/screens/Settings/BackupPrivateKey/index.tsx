@@ -143,12 +143,12 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
                       privateKey: 'huong lam',
                       name: 'hello',
                     };
-                    for (var i = 0; i < value.length; i++) {
-                      console.log("duyet file");
-                      if (value[i]['publicKey'] === newBackUp['publicKey']) {
-                        value.splice(i, 1);
+                    value.forEach(element => {
+                      if (element["publicKey"] === newBackUp["publicKey"]){
+                        const index = value.indexOf(element);
+                        value.splice(index,1);
                       }
-                    }
+                    })
                     value.push(newBackUp);
                     content = JSON.stringify(value);
                   } );
