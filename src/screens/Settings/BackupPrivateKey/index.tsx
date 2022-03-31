@@ -26,6 +26,9 @@ import {
 } from '../../../utils/handleLink';
 
 import GDrive from 'react-native-google-drive-api-wrapper';
+import { isExists } from 'date-fns';
+import { PriceContext } from '../../../core/AppProvider/PriceProvider';
+var RNFS = require('react-native-fs');
 
 const { RNFSManager, RNCloudFs } = NativeModules;
 
@@ -69,32 +72,199 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
   const { t } = useLocalize();
   const [recovery, setRecovery] = useState('');
 
-  const backup = async () => {
-    // var targetPath = walletname + '/private-key.txt';
-    var targetPath = 'private-key.txt';
+  let dirs = RNFetchBlob.fs.dirs;
+  const localPath = dirs.DocumentDir + '/private-key.json';
+  var targetPath = 'private-key.json';
+  var file = '';
 
+  const checkPrivateFileExists = async () => {
+    var isExists = true;
+    await RNCloudFs.listFiles({
+      targetPath: '',
+      scope: 'visible',
+    }).then((files) => {
+      if (files.files.length === 0) {
+        console.log('false');
+        isExists = false;
+      } else {
+        for (var i = 0; i < files.files.length; i++) {
+          if (files.files[i].uri === null) {
+            console.log('false');
+            isExists = false;
+          } else {
+            isExists = true;
+            break;
+          }
+        }
+      }
+    });
+    console.log(isExists);
+    return isExists;
+  };
+
+  const backup = async () => {
+    console.log('backup');
+    var content = [
+      {
+        publicKey: '123456',
+        privateKey: 'lam quynh huong',
+        name: 'baby',
+      },
+    ];
+    const fileExists = await checkPrivateFileExists();
+    console.log('🚩 file exists: ', fileExists);
+
+    if (!fileExists) {
+      pushFileToCloud(JSON.stringify(content));
+    } else {
+      RNCloudFs.listFiles({
+        //   targetPath: walletName + '/private-key.txt'
+        targetPath: '',
+        scope: 'visible',
+      }).then(async (files) => {
+        console.log(files);
+        if (files.files.length > 0) {
+          for (var i = 0; i < files.files.length; i++) {
+            if (files.files[i].name == 'private-key.json') {
+              console.log('private');
+              if (Platform.OS === 'android') {
+                const id = getGDriveFileID(files.files[i].uri);
+                console.log('download file');
+                handleFileToBackUp(id);
+                pushFileToCloud(file);
+              } else {
+                console.log('uri: ', files.files[i].uri);
+                var link = decodeURIComponent(files.files[i].uri);
+                link = handleLinkDownloadIOS(link);
+                await  getContentFileFromIcloud(link).then((value) => {
+                    const newBackUp = {
+                      publicKey: 'huong',
+                      privateKey: 'huong lam',
+                      name: 'hello',
+                    };
+                    for (var i = 0; i < value.length; i++) {
+                      console.log("duyet file");
+                      if (value[i]['publicKey'] === newBackUp['publicKey']) {
+                        value.splice(i, 1);
+                      }
+                    }
+                    value.push(newBackUp);
+                    content = JSON.stringify(value);
+                  } );
+                 console.log("override content: ",content);
+                 RNCloudFs.removeICloudFile(files.files[i].path);
+                 pushFileToCloud(content);
+              }
+            } else {
+            }
+          }
+        }
+      });
+    }
+  };
+
+
+  const removefile = (path) =>{
+    console.log("🚩 remove file")
+    RNCloudFs.removeICloudFile(path).then((res) => console.log(res));
+
+  }
+
+  const pushFileToCloud = (file) => {
+    console.log('create file');
+    console.log('content: ', file);
+    console.log(targetPath);
     RNCloudFs.createFile({
       targetPath: targetPath,
-      content: recovery,
+      content: file,
       scope: 'visible',
-    }).then((res)=>{
-      console.log(res);
+    }).then((res) => {
+      console.log('new file: ', res);
     });
+  };
 
-    Alert.alert(
-      'Sync',
-      'Private-key is sync in cloud',
-      [
+  const downloadFileFromGDrive = async (url) => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
-          text: 'OK',
-          onPress: () => console.log('OK Pressed'),
+          title: 'External Storage Write Permission',
+          message: 'App needs write permission',
         },
-      ],
-      { cancelable: true },
-    );
+      );
+      // If WRITE_EXTERNAL_STORAGE Permission is granted
+      if (granted != PermissionsAndroid.RESULTS.GRANTED) return;
+    } catch (err) {
+      console.warn(err);
+      return;
+    }
+    try {
+      let dirs = RNFetchBlob.fs.dirs;
+      const path = dirs.DocumentDir + '/private-key.json';
+
+      GoogleSignin.configure();
+      await GoogleSignin.signIn();
+
+      GoogleSignin.getTokens().then((res) => {
+        if (res) {
+          GDrive.setAccessToken(res.accessToken);
+          GDrive.init();
+          if (GDrive.isInitialized()) {
+            try {
+              GDrive.files
+                .download(url, {
+                  toFile: path,
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                  },
+                })
+                .promise.then((res) => {
+                  console.log('res :', res);
+                  if (res.statusCode == 200 && res.bytesWritten > 0) {
+                    GDrive.files.delete(url);
+                  }
+                });
+            } catch (e) {
+              console.log(e);
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFileToBackUp = async (url) => {
+    await downloadFileFromGDrive(url);
+    await overrideFileBackUp();
+  };
+
+  const overrideFileBackUp = async (path) => {
+    console.log("override");
+    const newBackUp = {
+      publicKey: 'huong',
+      privateKey: 'huong lam',
+      name: 'bubu',
+    };
+    await readFile(path).then((value) => {
+      for (var i = 0; i < value.length; i++) {
+        console.log("duyet file");
+        if (value[i]['publicKey'] === newBackUp['publicKey']) {
+          value.splice(i, 1);
+        }
+      }
+      value.push(newBackUp);
+      content = JSON.stringify(value);
+      console.log("content: ",content);
+    });
+    console.log("🎉 content after override: ",content);
+    return content;
   };
 
   const handleLinkDownloadIOS = (url) => {
+    console.log('link :', url);
     const params = getParamsInURL(url);
     console.log(params);
     // set parma K
@@ -129,25 +299,27 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
     //cut footer
     url = url.substring(0, url.indexOf('/'));
     console.log('🎉 linkkk : ', url);
+
     return url;
   };
 
-  const getContentFileFromIcloud = (url) => {
+  const getContentFileFromIcloud = async (url) => {
     console.log('🚩 url: ', url);
-    var path = '';
+    var path = ''; 
+    var contentFileFromIcloud;
     let dirs = RNFetchBlob.fs.dirs;
-    RNFetchBlob.config({
-      //   path: dirs.DocumentDir + '/' + walletName + '/private-key.txt',
-      path: dirs.DocumentDir + '/private-key.txt',
+    await RNFetchBlob.config({
+      path: dirs.DocumentDir + '/private-key.json',
     })
-      .fetch('GET', url, {
-      })
+      .fetch('GET', url, {})
       .then((res) => {
         console.log('The file saved to ', res.path());
         path = res.path();
         console.log('The data in file: ', res);
-        readFile(path);
+        contentFileFromIcloud = readFile(path);
       });
+
+      return contentFileFromIcloud;
   };
 
   const getContentFileFromGDrive = async (url) => {
@@ -163,15 +335,15 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
       if (granted != PermissionsAndroid.RESULTS.GRANTED) return;
     } catch (err) {
       console.warn(err);
-      Alert.alert('Write permission err', err);
       return;
     }
     try {
       let dirs = RNFetchBlob.fs.dirs;
-      const path = dirs.DocumentDir + '/private-key.txt';
+      const path = dirs.DocumentDir + '/private-key.json';
 
       GoogleSignin.configure();
       await GoogleSignin.signIn();
+
       GoogleSignin.getTokens().then((res) => {
         if (res) {
           GDrive.setAccessToken(res.accessToken);
@@ -204,15 +376,14 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
 
   const getPrivateKey = async () => {
     RNCloudFs.listFiles({
-      //   targetPath: walletName + '/private-key.txt'
-      targetPath: '/private-key.txt',
+      targetPath: '/private-key.json',
       scope: 'visible',
     }).then(async (files) => {
       console.log(files);
-      var link = decodeURIComponent(files.files[files.files.length-1].uri);
+      var link = decodeURIComponent(files.files[files.files.length - 1].uri);
       if (Platform.OS === 'ios') {
         link = handleLinkDownloadIOS(link);
-        getContentFileFromIcloud(link);
+        // getContentFileFromIcloud(link);
       } else {
         console.log('android');
         const id = getGDriveFileID(link);
@@ -224,7 +395,8 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
   const readFile = async (url) => {
     const exportedFileContent = await RNFSManager.readFile(url);
     console.log('🎉 content encode: ', base64.decode(exportedFileContent));
-    setRecovery(base64.decode(exportedFileContent));
+    var contentFile = JSON.parse(base64.decode(exportedFileContent));
+    return contentFile;
   };
 
   return (
