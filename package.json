@@ -10,6 +10,7 @@
     "pod:install": "cd ./ios && pod install && cd ..",
     "clean:android": "cd android && ./gradlew clean",
     "android": "react-native run-android",
+    "bundle:ios": "react-native bundle   --entry-file   index.js  --bundle-output ios/bundle/index.jsbundle   --dev  false  --platform ios  --assets-dest  ios",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest --watch",
