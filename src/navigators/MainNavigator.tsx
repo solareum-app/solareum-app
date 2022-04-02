@@ -34,6 +34,7 @@ import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
 import { Explore } from '../screens/Explore/Explore';
 import { MoonPay } from '../screens/Moonpay/Moonpay';
 import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
+import { SolareumEarn } from '../screens/Earn/Earn';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -141,6 +142,11 @@ const MainNavigator: React.FC = () => {
             <Stack.Screen
               name={Routes.Swap}
               component={Swap}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={Routes.Earn}
+              component={SolareumEarn}
               options={{ headerShown: false }}
             />
             <Stack.Screen name={Routes.ExploreList} component={Explore} />

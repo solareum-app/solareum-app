@@ -220,20 +220,17 @@ const WalletScreen = () => {
             </View>
             <View style={s.controlItem}>
               <RoundedButton
-                onClick={() => {
-                  navigation.navigate(Routes.Search, {
-                    action: TransferAction.receive,
-                  });
-                }}
-                title={t('home-receive')}
-                iconName="download"
+                onClick={() => navigation.navigate(Routes.Swap)}
+                title={t('home-swap')}
+                iconName="refresh-cw"
+                type="feather"
               />
             </View>
             <View style={s.controlItem}>
               <RoundedButton
-                onClick={() => navigation.navigate(Routes.Swap)}
-                title={t('home-swap')}
-                iconName="refresh-cw"
+                onClick={() => navigation.navigate(Routes.Earn)}
+                title="Earn"
+                iconName="triangle"
                 type="feather"
               />
             </View>

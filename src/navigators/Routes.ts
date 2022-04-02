@@ -23,6 +23,7 @@ export enum Routes {
   ExploreItem = 'Token Info',
   Pay = 'Pay',
   MoonPay = 'MoonPay',
+  Earn = 'Earn',
 }
 
 export default Routes;
