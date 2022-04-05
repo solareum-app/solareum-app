@@ -16,11 +16,9 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D3A8E8E27E82AA400F10BE3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3A8E8D27E82AA400F10BE3 /* CloudKit.framework */; };
 		2DCD954D1E0B4F2C00145EB5 /* SolareumTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SolareumTests.m */; };
-		2DDDBCA527F6D7D200C7C344 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 		2DE53D4327E85BC200057A93 /* RNCloudFs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE53D4227E85BC200057A93 /* RNCloudFs.m */; };
 		2E4C8D92D5CD0FAAE95158E4 /* libPods-Solareum-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6748FC42CFA1E5517DAC70C /* libPods-Solareum-tvOS.a */; };
 		517D8B35263D03D00086A7A7 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 517D8B34263D03CF0086A7A7 /* AppCenter-Config.plist */; };
-		51993BBC262AC60500AC7E6B /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 51993BBB262AC60400AC7E6B /* Fonts */; };
 		5E6FB1F2391CB0BEAA140EB5 /* libPods-Solareum-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8579A30737AB8DE73336E763 /* libPods-Solareum-tvOSTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8B41862B8A434F48AAB0277F /* libPods-Solareum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FAE0865D5DB9EFFF91BD4A /* libPods-Solareum.a */; };
@@ -372,8 +370,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DDDBCA527F6D7D200C7C344 /* main.jsbundle in Resources */,
-				51993BBC262AC60500AC7E6B /* Fonts in Resources */,
 				517D8B35263D03D00086A7A7 /* AppCenter-Config.plist in Resources */,
 				BC9B82B1270027BE00E3B3A5 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
