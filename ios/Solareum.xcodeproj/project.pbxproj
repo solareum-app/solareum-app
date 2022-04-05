@@ -15,6 +15,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D3A8E8E27E82AA400F10BE3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3A8E8D27E82AA400F10BE3 /* CloudKit.framework */; };
+		2D697C3B27FC2A4D00AFC0C0 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D697C3A27FC2A4D00AFC0C0 /* main.jsbundle */; };
 		2DCD954D1E0B4F2C00145EB5 /* SolareumTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SolareumTests.m */; };
 		2DE53D4327E85BC200057A93 /* RNCloudFs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE53D4227E85BC200057A93 /* RNCloudFs.m */; };
 		2E4C8D92D5CD0FAAE95158E4 /* libPods-Solareum-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6748FC42CFA1E5517DAC70C /* libPods-Solareum-tvOS.a */; };
@@ -57,6 +58,7 @@
 		2D02E4901E0B4A5D006451C7 /* Solareum-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Solareum-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D3633D82796A5F200EFCEF0 /* Solareum.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Solareum.entitlements; path = Solareum/Solareum.entitlements; sourceTree = "<group>"; };
 		2D3A8E8D27E82AA400F10BE3 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		2D697C3A27FC2A4D00AFC0C0 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		2DD3219827E4995000CD4DCC /* Solareum-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Solareum-Bridging-Header.h"; sourceTree = "<group>"; };
 		2DE53D4227E85BC200057A93 /* RNCloudFs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNCloudFs.m; sourceTree = "<group>"; };
 		2DE53D4427E85BF100057A93 /* RNCloudFs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNCloudFs.h; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		13B07FAE1A68108700A75B9A /* Solareum */ = {
 			isa = PBXGroup;
 			children = (
+				2D697C3A27FC2A4D00AFC0C0 /* main.jsbundle */,
 				2D3633D82796A5F200EFCEF0 /* Solareum.entitlements */,
 				BCA84BC726FF03DD00C8570F /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -370,6 +373,7 @@
 			files = (
 				517D8B35263D03D00086A7A7 /* AppCenter-Config.plist in Resources */,
 				BC9B82B1270027BE00E3B3A5 /* GoogleService-Info.plist in Resources */,
+				2D697C3B27FC2A4D00AFC0C0 /* main.jsbundle in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -1084,7 +1088,8 @@
 				DEVELOPMENT_TEAM = 9WLRC5ZTG7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				EXCLUDED_ARCHS = arm64;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1148,7 +1153,7 @@
 				DEVELOPMENT_TEAM = 9WLRC5ZTG7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				EXCLUDED_ARCHS = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
