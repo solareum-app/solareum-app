@@ -3,13 +3,11 @@ import React, { useState } from 'react';
 import {
   ScrollView,
   View,
-  Switch,
   StyleSheet,
   Text,
   SafeAreaView,
   Platform,
   NativeModules,
-  Alert,
   PermissionsAndroid,
 } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -26,7 +24,6 @@ import {
 } from '../../../utils/handleLink';
 
 import GDrive from 'react-native-google-drive-api-wrapper';
-
 
 const { RNFSManager, RNCloudFs } = NativeModules;
 
@@ -69,33 +66,29 @@ const s = StyleSheet.create({
 const BackupPrivateKey: React.FC = ({ routes }) => {
   const { t } = useLocalize();
   const [recovery, setRecovery] = useState('');
-
-  let dirs = RNFetchBlob.fs.dirs;
-  const localPath = dirs.DocumentDir + '/private-key.json';
-  var targetPath = 'private-key.json';
+  const targetPath = 'private-key.json';
 
   const checkPrivateFileExists = async () => {
-    var isExists = true;
+    const isExists = true;
     await RNCloudFs.listFiles({
       targetPath: '',
       scope: 'visible',
     }).then((files) => {
+      console.log('files', files);
       if (files.files.length === 0) {
         isExists = false;
       } else {
-        for (var i = 0; i < files.files.length; i++) {
+        for (let i = 0; i < files.files.length; i++) {
           if (files.files[i].uri === null) {
             isExists = false;
-          } else { 
-            if (files.files[i].name != "private-key.json"){
-          
+          } else {
+            if (files.files[i].name !== 'private-key.json') {
               isExists = false;
-            }else{
+            } else {
               isExists = true;
               break;
             }
           }
-        
         }
       }
     });
@@ -103,7 +96,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
   };
 
   const backup = async () => {
-    var content = [
+    let content = [
       {
         publicKey: '123456',
         privateKey: 'lam quynh huong',
@@ -119,58 +112,55 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
         scope: 'visible',
       }).then(async (files) => {
         if (files.files.length > 0) {
-          for (var i = 0; i < files.files.length; i++) {
-              if (Platform.OS === 'android') {
-                const id = getGDriveFileID(files.files[i].uri);
-                await getContentFileFromGDrive(id).then((value)=>{
+          for (let i = 0; i < files.files.length; i++) {
+            if (Platform.OS === 'android') {
+              const id = getGDriveFileID(files.files[i].uri);
+              await getContentFileFromGDrive(id).then((value) => {
+                const newBackUp = {
+                  publicKey: 'bao',
+                  privateKey: 'huong lam',
+                  name: '12345',
+                };
+                value.forEach((element) => {
+                  if (element.publicKey === newBackUp.publicKey) {
+                    const index = value.indexOf(element);
+                    value.splice(index, 1);
+                  }
+                });
+                value.push(newBackUp);
+                content = JSON.stringify(value);
+              });
+
+              pushFileToCloud(content);
+              await GDrive.files.delete(id);
+            } else {
+              if (files.files[i].name === 'private-key.json') {
+                const link = decodeURIComponent(files.files[i].uri);
+                link = handleLinkDownloadIOS(link);
+                await getContentFileFromIcloud(link).then((value) => {
                   const newBackUp = {
-                    publicKey: 'bao',
+                    publicKey: 'huong',
                     privateKey: 'huong lam',
-                    name: '12345',
+                    name: 'hello',
                   };
-                  value.forEach(element => {
-                    if (element["publicKey"] === newBackUp["publicKey"]){
+                  value.forEach((element) => {
+                    if (element.publicKey === newBackUp.publicKey) {
                       const index = value.indexOf(element);
-                      value.splice(index,1);
+                      value.splice(index, 1);
                     }
-                  })
+                  });
                   value.push(newBackUp);
                   content = JSON.stringify(value);
-                }) 
-
-                pushFileToCloud(content) 
-                await GDrive.files.delete(id);
-              } else {
-                if (files.files[i].name === "private-key.json"){
-                  var link = decodeURIComponent(files.files[i].uri);
-                  link = handleLinkDownloadIOS(link);
-                  await  getContentFileFromIcloud(link).then((value) => {
-                      const newBackUp = {
-                        publicKey: 'huong',
-                        privateKey: 'huong lam',
-                        name: 'hello',
-                      };
-                      value.forEach(element => {
-                        if (element["publicKey"] === newBackUp["publicKey"]){
-                          const index = value.indexOf(element);
-                          value.splice(index,1);
-                        }
-                      })
-                      value.push(newBackUp);
-                      content = JSON.stringify(value);
-                    } );
-                   RNCloudFs.removeICloudFile(files.files[i].path);
-                   pushFileToCloud(content);
-                }
-                
+                });
+                RNCloudFs.removeICloudFile(files.files[i].path);
+                pushFileToCloud(content);
               }
-            } 
-          
+            }
+          }
         }
       });
     }
   };
-
 
   const pushFileToCloud = (file) => {
     RNCloudFs.createFile({
@@ -182,16 +172,14 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
     });
   };
 
-
-
   const handleLinkDownloadIOS = (url) => {
     const params = getParamsInURL(url);
     // set parma K
-    const paramK = params['k'].substring(2, params['k'].length - 1);
+    const paramK = params.k.substring(2, params.k.length - 1);
     url = updateQueryStringParameter(url, 'k', params[paramK]);
 
     // set file name
-    const paramFile = params['f'];
+    const paramFile = params.f;
     url = url.replace('${f}', paramFile);
 
     // cut header
@@ -199,7 +187,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
       url.indexOf('https://cvws.icloud-content.com'),
       url.length,
     );
-    const paramS = params['s'];
+    const paramS = params.s;
     var indexParamS = url.indexOf(paramS);
 
     // cut footer
@@ -220,8 +208,8 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
   };
 
   const getContentFileFromIcloud = async (url) => {
-    var path = ''; 
-    var contentFileFromIcloud;
+    let path = '';
+    let contentFileFromIcloud;
     let dirs = RNFetchBlob.fs.dirs;
     await RNFetchBlob.config({
       path: dirs.DocumentDir + '/private-key.json',
@@ -234,11 +222,11 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
         contentFileFromIcloud = readFile(path);
       });
 
-      return contentFileFromIcloud;
+    return contentFileFromIcloud;
   };
 
   const getContentFileFromGDrive = async (url) => {
-    var contentFileFromGDrive;
+    let contentFileFromGDrive;
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -248,7 +236,9 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
         },
       );
       // If WRITE_EXTERNAL_STORAGE Permission is granted
-      if (granted != PermissionsAndroid.RESULTS.GRANTED) return;
+      if (granted != PermissionsAndroid.RESULTS.GRANTED) {
+        return;
+      }
     } catch (err) {
       console.warn(err);
       return;
@@ -266,7 +256,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
           GDrive.init();
           if (GDrive.isInitialized()) {
             try {
-            await  GDrive.files
+              await GDrive.files
                 .download(url, {
                   toFile: path,
                   method: 'POST',
@@ -275,9 +265,9 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
                   },
                 })
                 .promise.then((res) => {
-                  if (res.statusCode == 200 && res.bytesWritten > 0)
-                   contentFileFromGDrive = readFile(path);
-                  
+                  if (res.statusCode == 200 && res.bytesWritten > 0) {
+                    let entFileFromGDrive = readFile(path);
+                  }
                 });
             } catch (e) {
               console.log(e);
@@ -297,31 +287,29 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
       scope: 'visible',
     }).then(async (files) => {
       if (Platform.OS === 'ios') {
-        files.files.forEach(async file => {
-          if (file.name === "private-key.json"){
-            var link = decodeURIComponent(file.uri);
+        files.files.forEach(async (file) => {
+          if (file.name === 'private-key.json') {
+            let link = decodeURIComponent(file.uri);
             link = handleLinkDownloadIOS(link);
             await getContentFileFromIcloud(link).then((value) => {
-              value.forEach(element => {
-                if (element["publicKey"] === "huong"){
-                setRecovery(element["privateKey"])
+              value.forEach((element) => {
+                if (element.publicKey === 'huong') {
+                  setRecovery(element.privateKey);
                 }
               });
-            })
+            });
           }
-        })
-       
+        });
       } else {
-        var link = decodeURIComponent(files.files[0].uri);
+        let link = decodeURIComponent(files.files[0].uri);
         const id = getGDriveFileID(link);
-        await getContentFileFromGDrive(id).then((value)=>{
-         value.forEach(element => {
-          if (element["publicKey"] === "123456"){
-            setRecovery(element["privateKey"])
-          }
-         })
-       });
-        
+        await getContentFileFromGDrive(id).then((value) => {
+          value.forEach((element) => {
+            if (element.publicKey === '123456') {
+              setRecovery(element.privateKey);
+            }
+          });
+        });
       }
     });
   };
@@ -329,34 +317,35 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
   const readFile = async (url) => {
     const exportedFileContent = await RNFSManager.readFile(url);
     console.log('🎉 content encode: ', base64.decode(exportedFileContent));
-    var contentFile = JSON.parse(base64.decode(exportedFileContent));
+    const contentFile = JSON.parse(base64.decode(exportedFileContent));
     return contentFile;
   };
- 
 
   return (
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>
-        <ScrollView>
-          <View style={s.wrp}>
-            <Text style={s.title}>{t('import-seed-phrase')}</Text>
-            <TextInput
-              style={s.recoverPhrase}
-              multiline={true}
-              value={recovery}
-              onChangeText={(text) => setRecovery(text)}
-            />
-            <Text style={typo.helper}>{t('import-note')}</Text>
-          </View>
+        <View style={grid.content}>
+          <ScrollView>
+            <View style={s.wrp}>
+              <Text style={s.title}>{t('import-seed-phrase')}</Text>
+              <TextInput
+                style={s.recoverPhrase}
+                multiline={true}
+                value={recovery}
+                onChangeText={(text) => setRecovery(text)}
+              />
+              <Text style={typo.helper}>{t('import-note')}</Text>
+            </View>
 
-          <View style={s.wrp}>
-            <Button title={t('back-up')} onPress={backup} />
-          </View>
+            <View style={s.wrp}>
+              <Button title={t('back-up')} onPress={backup} />
+            </View>
 
-          <View style={s.wrp}>
-            <Button title={t('restore')} onPress={restore} />
-          </View>
-        </ScrollView>
+            <View style={s.wrp}>
+              <Button title={t('restore')} onPress={restore} />
+            </View>
+          </ScrollView>
+        </View>
       </SafeAreaView>
     </View>
   );
