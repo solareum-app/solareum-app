@@ -8335,6 +8335,21 @@ react-native-google-drive-api-wrapper@^1.4.0:
     react-native-fs latest
     simple-common-utils latest
 
+react-native-icloud-account-status@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-icloud-account-status/-/react-native-icloud-account-status-1.0.2.tgz#51562114744cffd94cac48c16c90b340e0980269"
+  integrity sha512-OpDam/y7/OVvWlVKksZx4ez1+9KSQQnegynGDsiTRWXSVRAy9kA+9H0uBaEgvzcWHYPw9TGgZ2rj3e2CczlYFA==
+
+react-native-icloud-user-token@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-icloud-user-token/-/react-native-icloud-user-token-0.1.0.tgz#8974960aadb8cfd123b0967276f50351108b5c03"
+  integrity sha1-iXSWCq24z9EjsJZydvUDURCLXAM=
+
+react-native-icloud@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-icloud/-/react-native-icloud-0.1.1.tgz#336166903efa74c3deee2e4bd5122cb797ce4703"
+  integrity sha1-M2FmkD76dMPe7i5L1RIst5fORwM=
+
 react-native-image-progress@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-image-progress/-/react-native-image-progress-1.2.0.tgz#81ff1b33e33c541764b9e4aebfa17b1c1a108d04"

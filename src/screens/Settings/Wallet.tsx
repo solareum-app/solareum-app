@@ -11,6 +11,7 @@ import {
   Alert,
   PermissionsAndroid,
   NativeModules,
+  Linking,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
@@ -25,15 +26,18 @@ import walletIcon from '../../assets/XSB-S.png';
 import walletIconActive from '../../assets/XSB-P.png';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { BackupData, mergeWallets } from './BackupPrivateKey/mergeWallets';
-import { getParamsInURL, updateQueryStringParameter } from '../../utils/handleLink';
+import {
+  getParamsInURL,
+  updateQueryStringParameter,
+} from '../../utils/handleLink';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import GDrive from 'react-native-google-drive-api-wrapper';
 import base64 from 'react-native-base64';
 import RNFetchBlob from 'rn-fetch-blob';
 import moment from 'moment';
+import iCloudAccountStatus from 'react-native-icloud-account-status';
 
 const { RNFSManager, RNCloudFs } = NativeModules;
-
 
 const s = StyleSheet.create({
   main: {
@@ -126,18 +130,17 @@ export const Wallet: React.FC = () => {
   const { t } = useLocalize();
   const [lastTimeBackUp, setLastTimeBackUp] = useState();
   const targetPath = 'private-key.json';
-  const notBackup = "not backed up";
+  const notBackup = 'not backed up';
 
-  useEffect(()=>{
+  useEffect(() => {
     getLastTimeBackup();
-  })
-
+    checkIcloudAccountStatus();
+  });
 
   const onSelect = (id: string) => {
     setAddressId(id);
     navigation.navigate(Routes.Wallet);
   };
-
 
   // back up data from this function to server
   const getBackupData = (): BackupData[] => {
@@ -149,7 +152,7 @@ export const Wallet: React.FC = () => {
     return backupData;
   };
 
-  // check file exists in cloud 
+  // check file exists in cloud
   const checkPrivateFileExistsInCloud = async () => {
     let isExists = true;
     await RNCloudFs.listFiles({
@@ -159,13 +162,41 @@ export const Wallet: React.FC = () => {
       if (files.files.length === 0) {
         isExists = false;
       } else {
-        let file = files.files.filter(file => file.name.includes(targetPath));
-        if (file.length > 0){
+        let file = files.files.filter((file) => file.name.includes(targetPath));
+        if (file.length > 0) {
           isExists = true;
         }
       }
     });
     return isExists;
+  };
+
+  const checkIcloudAccountStatus = () => {
+    if (Platform.OS === 'ios') {
+      iCloudAccountStatus
+        .getStatus()
+        .then((accountStatus) => {
+          if (accountStatus === iCloudAccountStatus.STATUS_AVAILABLE) {
+            return true;
+          } else {
+            Alert.alert(
+              'Sign in Icloud',
+              'Need to sign in icloud in setting',
+              [
+                {
+                  text: 'Go to Setting',
+                  onPress: () => Linking.openURL('App-Prefs:'),
+                },
+              ],
+              { cancelable: true },
+            );
+            return false;
+          }
+        })
+        .catch((error) => {
+          return false;
+        });
+    }
   };
 
   const pushFileToCloud = (file) => {
@@ -174,7 +205,7 @@ export const Wallet: React.FC = () => {
       content: file,
       scope: 'visible',
     }).then((res) => {
-      Alert.alert("Push file success");
+      Alert.alert('Push file success');
     });
   };
 
@@ -248,7 +279,7 @@ export const Wallet: React.FC = () => {
     }
     try {
       let dirs = RNFetchBlob.fs.dirs;
-      const path = dirs.DocumentDir +`\/${targetPath}`;
+      const path = dirs.DocumentDir + `\/${targetPath}`;
       GoogleSignin.configure();
       await GoogleSignin.signIn();
 
@@ -268,7 +299,7 @@ export const Wallet: React.FC = () => {
                 })
                 .promise.then((res) => {
                   if (res.statusCode == 200 && res.bytesWritten > 0) {
-                     contentFileFromGDrive = readFile(path);
+                    contentFileFromGDrive = readFile(path);
                   }
                 });
             } catch (e) {
@@ -283,7 +314,6 @@ export const Wallet: React.FC = () => {
     return contentFileFromGDrive;
   };
 
-
   const readFile = async (url) => {
     const exportedFileContent = await RNFSManager.readFile(url);
     console.log('🎉 content encode: ', base64.decode(exportedFileContent));
@@ -292,92 +322,91 @@ export const Wallet: React.FC = () => {
   };
   const restore = async () => {
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
-if (fileExistsInCloud){
-    RNCloudFs.listFiles({
-      targetPath: '',
-      scope: 'visible',
-    }).then(async (files) => {
-      let file = files.files.filter(file => file.name.includes(targetPath));
-      if (Platform.OS === 'ios') {
-            let link = decodeURIComponent(file[0].uri);
-            link = handleLinkDownloadIOS(link);
-            await getContentFileFromIcloud(link).then((value) => {
-            console.log("🎉 file json: ",value)
-            });
-      } else {
-        let link = decodeURIComponent(file[0].uri);
-        const id = getGDriveFileID(link);
-        await getContentFileFromGDrive(id).then((value) => {
-          console.log("🎉 file json: ",value)
-        });
-      }
-    })
-    }else {
-      Alert.alert("File private key not found")
+    if (fileExistsInCloud) {
+      RNCloudFs.listFiles({
+        targetPath: '',
+        scope: 'visible',
+      }).then(async (files) => {
+        let file = files.files.filter((file) => file.name.includes(targetPath));
+        if (Platform.OS === 'ios') {
+          let link = decodeURIComponent(file[0].uri);
+          link = handleLinkDownloadIOS(link);
+          await getContentFileFromIcloud(link).then((value) => {
+            console.log('🎉 file json: ', value);
+          });
+        } else {
+          let link = decodeURIComponent(file[0].uri);
+          const id = getGDriveFileID(link);
+          await getContentFileFromGDrive(id).then((value) => {
+            console.log('🎉 file json: ', value);
+          });
+        }
+      });
+    } else {
+      Alert.alert('File private key not found');
     }
   };
 
   const backup = async () => {
     const walletData = getBackupData();
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
-    
-    if (!fileExistsInCloud) { // Case have not backed up 
+
+    if (!fileExistsInCloud) {
+      // Case have not backed up
       pushFileToCloud(JSON.stringify(walletData));
-    } else { 
+    } else {
       RNCloudFs.listFiles({
         targetPath: '',
         scope: 'visible',
       }).then(async (files) => {
         if (files.files.length > 0) {
-         let file = files.files.filter(file => file.name.includes(targetPath));
-            if (Platform.OS === 'android') {
-              const id = getGDriveFileID(file[0].uri);
-              const oldWallet = await getContentFileFromGDrive(id);
-              const newData = JSON.stringify(
-                mergeWallets(walletData, oldWallet),
-              );
-              await GDrive.files.delete(id);
-              pushFileToCloud(newData);
-              getLastTimeBackup()
-            } else {
-                let link = decodeURIComponent(file[0].uri);
-                link = handleLinkDownloadIOS(link);
-                const oldWallet = await getContentFileFromIcloud(link);
-                const newData = JSON.stringify(
-                  mergeWallets(walletData, oldWallet),
-                );
-               await RNCloudFs.removeICloudFile(file[0].path);
-                pushFileToCloud(newData);
-                getLastTimeBackup()
-              }
-            }
+          let file = files.files.filter((file) =>
+            file.name.includes(targetPath),
+          );
+          if (Platform.OS === 'android') {
+            const id = getGDriveFileID(file[0].uri);
+            const oldWallet = await getContentFileFromGDrive(id);
+            const newData = JSON.stringify(mergeWallets(walletData, oldWallet));
+            await GDrive.files.delete(id);
+            pushFileToCloud(newData);
+            getLastTimeBackup();
+          } else {
+            let link = decodeURIComponent(file[0].uri);
+            link = handleLinkDownloadIOS(link);
+            const oldWallet = await getContentFileFromIcloud(link);
+            const newData = JSON.stringify(mergeWallets(walletData, oldWallet));
+            await RNCloudFs.removeICloudFile(file[0].path);
+            pushFileToCloud(newData);
+            getLastTimeBackup();
+          }
+        }
       });
     }
   };
 
-
-
-  const getLastTimeBackup = async () =>{
+  const getLastTimeBackup = async () => {
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
-    if (!fileExistsInCloud){
-      setLastTimeBackUp(null)
-    }else{
+    if (!fileExistsInCloud) {
+      setLastTimeBackUp(null);
+    } else {
       RNCloudFs.listFiles({
         targetPath: '',
         scope: 'visible',
       }).then(async (files) => {
-        let privateKeyFile = files.files.filter(file => file.name.includes(targetPath));
-          var momentDateFormatted = moment(privateKeyFile[0].lastModified).format("MMMM DD YYYY");
-          console.log(momentDateFormatted)
-          setLastTimeBackUp(momentDateFormatted)
+        let privateKeyFile = files.files.filter((file) =>
+          file.name.includes(targetPath),
+        );
+        var momentDateFormatted = moment(privateKeyFile[0].lastModified).format(
+          'MMMM DD YYYY',
+        );
+        console.log(momentDateFormatted);
+        setLastTimeBackUp(momentDateFormatted);
         // privateKeyFile.forEach(file => console.log(file.lastModified.toString()))
-        })
-      }
-  }
- 
- 
+      });
+    }
+  };
+
   return (
-   
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>
         <ScrollView>
@@ -394,17 +423,20 @@ if (fileExistsInCloud){
             })}
           </View>
           <View style={s.wrp}>
-              <Button title={t('back-up')} onPress = {backup} />
-            </View>
+            <Button title={t('back-up')} onPress={backup} />
+          </View>
 
-            <View style={s.wrp}>
-              <Button title={t('restore')} onPress = {restore}/>
-            </View>
+          <View style={s.wrp}>
+            <Button title={t('restore')} onPress={restore} />
+          </View>
 
-            <View style={s.wrp}>
-              <Text style = {s.title}> Last time back up: {lastTimeBackUp === null ? notBackup :lastTimeBackUp} </Text>
-            </View>
-
+          <View style={s.wrp}>
+            <Text style={s.title}>
+              {' '}
+              Last time back up:{' '}
+              {lastTimeBackUp === null ? notBackup : lastTimeBackUp}{' '}
+            </Text>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </View>
