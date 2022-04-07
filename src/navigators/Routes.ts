@@ -15,7 +15,6 @@ export enum Routes {
   Mission = 'Mission',
   ManagementTokenList = 'Manage Accounts',
   SwapApplication = 'Swap Application',
-  BackupPrivateKey = 'Backup Private Key',
   Influencer = 'Referral',
   Airdrop = 'Airdrop',
   Swap = 'Swap',
