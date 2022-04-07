@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -30,6 +30,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import GDrive from 'react-native-google-drive-api-wrapper';
 import base64 from 'react-native-base64';
 import RNFetchBlob from 'rn-fetch-blob';
+import moment from 'moment';
 
 const { RNFSManager, RNCloudFs } = NativeModules;
 
@@ -123,7 +124,13 @@ export const Wallet: React.FC = () => {
   const { addressId, setAddressId, addressList } = useApp();
   const navigation = useNavigation();
   const { t } = useLocalize();
+  const [lastTimeBackUp, setLastTimeBackUp] = useState();
   const targetPath = 'private-key.json';
+  const notBackup = "not backed up";
+
+  useEffect(()=>{
+    getLastTimeBackup();
+  })
 
 
   const onSelect = (id: string) => {
@@ -139,7 +146,6 @@ export const Wallet: React.FC = () => {
       privateKey: i.mnemonic,
       name: i.name,
     }));
-    console.log("getBackupData: ",backupData)  
     return backupData;
   };
 
@@ -150,7 +156,6 @@ export const Wallet: React.FC = () => {
       targetPath: '',
       scope: 'visible',
     }).then((files) => {
-      console.log('files', files);
       if (files.files.length === 0) {
         isExists = false;
       } else {
@@ -163,43 +168,6 @@ export const Wallet: React.FC = () => {
     return isExists;
   };
 
-  const backup = async () => {
-    const walletData = getBackupData();
-    const fileExistsInCloud = await checkPrivateFileExistsInCloud();
-    
-    if (!fileExistsInCloud) { // Case have not backed up 
-      pushFileToCloud(JSON.stringify(walletData));
-    } else { 
-      RNCloudFs.listFiles({
-        targetPath: '',
-        scope: 'visible',
-      }).then(async (files) => {
-        if (files.files.length > 0) {
-         let file = files.files.filter(file => file.name.includes(targetPath));
-            if (Platform.OS === 'android') {
-              const id = getGDriveFileID(file[0].uri);
-              const oldWallet = await getContentFileFromGDrive(id);
-              const newData = JSON.stringify(
-                mergeWallets(walletData, oldWallet),
-              );
-              await GDrive.files.delete(id);
-              pushFileToCloud(newData);
-            } else {
-                let link = decodeURIComponent(file[0].uri);
-                link = handleLinkDownloadIOS(link);
-                const oldWallet = await getContentFileFromIcloud(link);
-                const newData = JSON.stringify(
-                  mergeWallets(walletData, oldWallet),
-                );
-               await RNCloudFs.removeICloudFile(file[0].path);
-                pushFileToCloud(newData);
-              }
-            }
-        
-      });
-    }
-  };
-
   const pushFileToCloud = (file) => {
     RNCloudFs.createFile({
       targetPath: targetPath,
@@ -207,7 +175,6 @@ export const Wallet: React.FC = () => {
       scope: 'visible',
     }).then((res) => {
       Alert.alert("Push file success");
-      console.log('new file: ', res);
     });
   };
 
@@ -237,7 +204,6 @@ export const Wallet: React.FC = () => {
   const getGDriveFileID = (url) => {
     //cut header
     var headerLink = 'https://drive.google.com/file/d/';
-    console.log(url)
     url = url.substring(headerLink.length, url.length);
 
     //cut footer
@@ -255,9 +221,7 @@ export const Wallet: React.FC = () => {
     })
       .fetch('GET', url, {})
       .then((res) => {
-        console.log('The file saved to ', res.path());
         path = res.path();
-        console.log('The data in file: ', res);
         contentFileFromIcloud = readFile(path);
       });
 
@@ -303,7 +267,6 @@ export const Wallet: React.FC = () => {
                   },
                 })
                 .promise.then((res) => {
-                  console.log("🚩 res: ",res)
                   if (res.statusCode == 200 && res.bytesWritten > 0) {
                      contentFileFromGDrive = readFile(path);
                   }
@@ -320,16 +283,21 @@ export const Wallet: React.FC = () => {
     return contentFileFromGDrive;
   };
 
+
+  const readFile = async (url) => {
+    const exportedFileContent = await RNFSManager.readFile(url);
+    console.log('🎉 content encode: ', base64.decode(exportedFileContent));
+    const contentFile = JSON.parse(base64.decode(exportedFileContent));
+    return contentFile;
+  };
   const restore = async () => {
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
-    console.log("🚩 file exists: ",fileExistsInCloud);
 if (fileExistsInCloud){
     RNCloudFs.listFiles({
       targetPath: '',
       scope: 'visible',
     }).then(async (files) => {
       let file = files.files.filter(file => file.name.includes(targetPath));
-        console.log("restore file: ",file)
       if (Platform.OS === 'ios') {
             let link = decodeURIComponent(file[0].uri);
             link = handleLinkDownloadIOS(link);
@@ -349,14 +317,67 @@ if (fileExistsInCloud){
     }
   };
 
-  const readFile = async (url) => {
-    const exportedFileContent = await RNFSManager.readFile(url);
-    console.log('🎉 content encode: ', base64.decode(exportedFileContent));
-    const contentFile = JSON.parse(base64.decode(exportedFileContent));
-    return contentFile;
+  const backup = async () => {
+    const walletData = getBackupData();
+    const fileExistsInCloud = await checkPrivateFileExistsInCloud();
+    
+    if (!fileExistsInCloud) { // Case have not backed up 
+      pushFileToCloud(JSON.stringify(walletData));
+    } else { 
+      RNCloudFs.listFiles({
+        targetPath: '',
+        scope: 'visible',
+      }).then(async (files) => {
+        if (files.files.length > 0) {
+         let file = files.files.filter(file => file.name.includes(targetPath));
+            if (Platform.OS === 'android') {
+              const id = getGDriveFileID(file[0].uri);
+              const oldWallet = await getContentFileFromGDrive(id);
+              const newData = JSON.stringify(
+                mergeWallets(walletData, oldWallet),
+              );
+              await GDrive.files.delete(id);
+              pushFileToCloud(newData);
+              getLastTimeBackup()
+            } else {
+                let link = decodeURIComponent(file[0].uri);
+                link = handleLinkDownloadIOS(link);
+                const oldWallet = await getContentFileFromIcloud(link);
+                const newData = JSON.stringify(
+                  mergeWallets(walletData, oldWallet),
+                );
+               await RNCloudFs.removeICloudFile(file[0].path);
+                pushFileToCloud(newData);
+                getLastTimeBackup()
+              }
+            }
+      });
+    }
   };
 
+
+
+  const getLastTimeBackup = async () =>{
+    const fileExistsInCloud = await checkPrivateFileExistsInCloud();
+    if (!fileExistsInCloud){
+      setLastTimeBackUp(null)
+    }else{
+      RNCloudFs.listFiles({
+        targetPath: '',
+        scope: 'visible',
+      }).then(async (files) => {
+        let privateKeyFile = files.files.filter(file => file.name.includes(targetPath));
+          var momentDateFormatted = moment(privateKeyFile[0].lastModified).format("MMMM DD YYYY");
+          console.log(momentDateFormatted)
+          setLastTimeBackUp(momentDateFormatted)
+        // privateKeyFile.forEach(file => console.log(file.lastModified.toString()))
+        })
+      }
+  }
+ 
+ 
   return (
+   
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>
         <ScrollView>
@@ -378,6 +399,10 @@ if (fileExistsInCloud){
 
             <View style={s.wrp}>
               <Button title={t('restore')} onPress = {restore}/>
+            </View>
+
+            <View style={s.wrp}>
+              <Text style = {s.title}> Last time back up: {lastTimeBackUp === null ? notBackup :lastTimeBackUp} </Text>
             </View>
 
         </ScrollView>
