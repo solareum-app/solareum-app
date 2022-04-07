@@ -9,6 +9,7 @@ import {
   Platform,
   NativeModules,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { TextInput } from 'react-native-gesture-handler';
@@ -80,11 +81,13 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
       privateKey: i.mnemonic,
       name: i.name,
     }));
+    console.log("getBackupData: ",backupData)  
     return backupData;
   };
 
-  const checkPrivateFileExists = async () => {
-    const isExists = true;
+  // check file exists in cloud 
+  const checkPrivateFileExistsInCloud = async () => {
+    let isExists = true;
     await RNCloudFs.listFiles({
       targetPath: '',
       scope: 'visible',
@@ -93,17 +96,9 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
       if (files.files.length === 0) {
         isExists = false;
       } else {
-        for (let i = 0; i < files.files.length; i++) {
-          if (files.files[i].uri === null) {
-            isExists = false;
-          } else {
-            if (files.files[i].name !== 'private-key.json') {
-              isExists = false;
-            } else {
-              isExists = true;
-              break;
-            }
-          }
+        let file = files.files.filter(file => file.name.includes(targetPath));
+        if (file.length > 0){
+          isExists = true;
         }
       }
     });
@@ -112,39 +107,37 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
 
   const backup = async () => {
     const walletData = getBackupData();
-    const fileExists = await checkPrivateFileExists();
-
-    if (!fileExists) {
+    const fileExistsInCloud = await checkPrivateFileExistsInCloud();
+    
+    if (!fileExistsInCloud) { // Case have not backed up 
       pushFileToCloud(JSON.stringify(walletData));
-    } else {
+    } else { 
       RNCloudFs.listFiles({
         targetPath: '',
         scope: 'visible',
       }).then(async (files) => {
         if (files.files.length > 0) {
-          for (let i = 0; i < files.files.length; i++) {
+         let file = files.files.filter(file => file.name.includes(targetPath));
             if (Platform.OS === 'android') {
-              const id = getGDriveFileID(files.files[i].uri);
+              const id = getGDriveFileID(file[0].uri);
               const oldWallet = await getContentFileFromGDrive(id);
               const newData = JSON.stringify(
                 mergeWallets(walletData, oldWallet),
               );
-              pushFileToCloud(newData);
               await GDrive.files.delete(id);
+              pushFileToCloud(newData);
             } else {
-              if (files.files[i].name === 'private-key.json') {
-                const link = decodeURIComponent(files.files[i].uri);
+                let link = decodeURIComponent(file[0].uri);
                 link = handleLinkDownloadIOS(link);
                 const oldWallet = await getContentFileFromIcloud(link);
                 const newData = JSON.stringify(
                   mergeWallets(walletData, oldWallet),
                 );
-                RNCloudFs.removeICloudFile(files.files[i].path);
+               await RNCloudFs.removeICloudFile(file[0].path);
                 pushFileToCloud(newData);
               }
             }
-          }
-        }
+        
       });
     }
   };
@@ -155,6 +148,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
       content: file,
       scope: 'visible',
     }).then((res) => {
+      Alert.alert("Push file success");
       console.log('new file: ', res);
     });
   };
@@ -185,7 +179,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
   const getGDriveFileID = (url) => {
     //cut header
     var headerLink = 'https://drive.google.com/file/d/';
-
+    console.log(url)
     url = url.substring(headerLink.length, url.length);
 
     //cut footer
@@ -213,7 +207,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
   };
 
   const getContentFileFromGDrive = async (url) => {
-    let contentFileFromGDrive;
+    var contentFileFromGDrive;
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -232,8 +226,7 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
     }
     try {
       let dirs = RNFetchBlob.fs.dirs;
-      const path = dirs.DocumentDir + '/private-key.json';
-
+      const path = dirs.DocumentDir +`\/${targetPath}`;
       GoogleSignin.configure();
       await GoogleSignin.signIn();
 
@@ -252,8 +245,11 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
                   },
                 })
                 .promise.then((res) => {
+                  console.log("🚩 res: ",res)
                   if (res.statusCode == 200 && res.bytesWritten > 0) {
-                    let entFileFromGDrive = readFile(path);
+
+                     contentFileFromGDrive = readFile(path);
+
                   }
                 });
             } catch (e) {
@@ -269,36 +265,32 @@ const BackupPrivateKey: React.FC = ({ routes }) => {
   };
 
   const restore = async () => {
+    const fileExistsInCloud = await checkPrivateFileExistsInCloud();
+    console.log("🚩 file exists: ",fileExistsInCloud);
+if (fileExistsInCloud){
     RNCloudFs.listFiles({
       targetPath: '',
       scope: 'visible',
     }).then(async (files) => {
+      let file = files.files.filter(file => file.name.includes(targetPath));
+        console.log("restore file: ",file)
       if (Platform.OS === 'ios') {
-        files.files.forEach(async (file) => {
-          if (file.name === 'private-key.json') {
-            let link = decodeURIComponent(file.uri);
+            let link = decodeURIComponent(file[0].uri);
             link = handleLinkDownloadIOS(link);
             await getContentFileFromIcloud(link).then((value) => {
-              value.forEach((element) => {
-                if (element.publicKey === 'huong') {
-                  setRecovery(element.privateKey);
-                }
-              });
+            console.log("🎉 file json: ",value)
             });
-          }
-        });
       } else {
-        let link = decodeURIComponent(files.files[0].uri);
+        let link = decodeURIComponent(file[0].uri);
         const id = getGDriveFileID(link);
         await getContentFileFromGDrive(id).then((value) => {
-          value.forEach((element) => {
-            if (element.publicKey === '123456') {
-              setRecovery(element.privateKey);
-            }
-          });
+          console.log("🎉 file json: ",value)
         });
       }
-    });
+    })
+    }else {
+      Alert.alert("File private key not found")
+    }
   };
 
   const readFile = async (url) => {

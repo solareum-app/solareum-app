@@ -336,7 +336,7 @@ RCT_EXPORT_METHOD(copyToCloud:(NSDictionary *)options
 #pragma mark - remove / replace file to or from iCloud
 
 
-RCT_EXPORT_METHOD(removeICloudFile:(NSString *)path :(RCTResponseSenderBlock)callback){
+RCT_EXPORT_METHOD(removeICloudFile:(NSString *)path){
     [[self fileManager] setUbiquitous:NO itemAtURL:[NSURL fileURLWithPath:path] destinationURL:[NSURL fileURLWithPath:path] error:nil];
     [[self fileManager] removeItemAtPath:path error:nil];
 }
