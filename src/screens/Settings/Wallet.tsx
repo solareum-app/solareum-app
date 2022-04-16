@@ -193,11 +193,11 @@ export const Wallet: React.FC = () => {
           return true;
         } else {
           Alert.alert(
-            'Sign in Icloud',
-            'Need to sign in icloud in setting',
+            'Sign in to iCloud',
+            'You need to sign in iCloud to perform this action',
             [
               {
-                text: 'Go to Setting',
+                text: 'Go to Settings',
                 onPress: () => Linking.openURL('App-Prefs:'),
               },
             ],
@@ -356,7 +356,7 @@ export const Wallet: React.FC = () => {
         }
       });
     } else {
-      Alert.alert('File private key not found');
+      Alert.alert('File Not Found');
     }
   };
 
