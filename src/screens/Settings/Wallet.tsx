@@ -6,21 +6,20 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  Button,
   Platform,
   Alert,
   PermissionsAndroid,
   NativeModules,
   Linking,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/core';
 
 import { ImageCached } from '../../components/ImageCached/ImageCached';
 import Routes from '../../navigators/Routes';
 import { AddressInfo } from '../../storage/WalletCollection';
 import { useApp } from '../../core/AppProvider/AppProvider';
-import { grid } from '../../components/Styles';
+import { grid, typo } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import walletIcon from '../../assets/XSB-S.png';
 import walletIconActive from '../../assets/XSB-P.png';
@@ -89,8 +88,23 @@ const s = StyleSheet.create({
     lineHeight: 24,
     flex: 1,
   },
-  wrp: {
+  backupSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 24,
     marginBottom: 12,
+  },
+  backupBtn: {
+    width: 140,
+    marginRight: 12,
+  },
+  restoreBtn: {
+    width: 140,
+    marginRight: 24,
+  },
+  footer: {
+    marginBottom: 24,
+    opacity: 0.5,
   },
 });
 
@@ -128,14 +142,8 @@ export const Wallet: React.FC = () => {
   const { addressId, setAddressId, addressList } = useApp();
   const navigation = useNavigation();
   const { t } = useLocalize();
-  const [lastTimeBackUp, setLastTimeBackUp] = useState();
+  const [lastTimeBackUp, setLastTimeBackUp] = useState<string>('');
   const targetPath = 'private-key.json';
-  const notBackup = 'not backed up';
-
-  useEffect(() => {
-    getLastTimeBackup();
-    checkIcloudAccountStatus();
-  });
 
   const onSelect = (id: string) => {
     setAddressId(id);
@@ -172,31 +180,35 @@ export const Wallet: React.FC = () => {
   };
 
   const checkIcloudAccountStatus = () => {
-    if (Platform.OS === 'ios') {
-      iCloudAccountStatus
-        .getStatus()
-        .then((accountStatus) => {
-          if (accountStatus === iCloudAccountStatus.STATUS_AVAILABLE) {
-            return true;
-          } else {
-            Alert.alert(
-              'Sign in Icloud',
-              'Need to sign in icloud in setting',
-              [
-                {
-                  text: 'Go to Setting',
-                  onPress: () => Linking.openURL('App-Prefs:'),
-                },
-              ],
-              { cancelable: true },
-            );
-            return false;
-          }
-        })
-        .catch((error) => {
-          return false;
-        });
+    // ignore android
+    if (Platform.OS !== 'ios') {
+      return true;
     }
+
+    // check for ios only
+    return iCloudAccountStatus
+      .getStatus()
+      .then((accountStatus) => {
+        if (accountStatus === iCloudAccountStatus.STATUS_AVAILABLE) {
+          return true;
+        } else {
+          Alert.alert(
+            'Sign in Icloud',
+            'Need to sign in icloud in setting',
+            [
+              {
+                text: 'Go to Setting',
+                onPress: () => Linking.openURL('App-Prefs:'),
+              },
+            ],
+            { cancelable: true },
+          );
+          return false;
+        }
+      })
+      .catch(() => {
+        return false;
+      });
   };
 
   const pushFileToCloud = (file) => {
@@ -205,7 +217,8 @@ export const Wallet: React.FC = () => {
       content: file,
       scope: 'visible',
     }).then((res) => {
-      Alert.alert('Push file success');
+      console.log('res', res);
+      Alert.alert('Your wallets have been back up onto the cloud.');
     });
   };
 
@@ -348,9 +361,17 @@ export const Wallet: React.FC = () => {
   };
 
   const backup = async () => {
+    const icloudStatus = await checkIcloudAccountStatus();
+    console.log('icloudStatus', icloudStatus);
+    if (!icloudStatus) {
+      return;
+    }
+
+    console.log('backup');
     const walletData = getBackupData();
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
 
+    console.log('fileExistsInCloud');
     if (!fileExistsInCloud) {
       // Case have not backed up
       pushFileToCloud(JSON.stringify(walletData));
@@ -363,6 +384,8 @@ export const Wallet: React.FC = () => {
           let file = files.files.filter((file) =>
             file.name.includes(targetPath),
           );
+
+          // android
           if (Platform.OS === 'android') {
             const id = getGDriveFileID(file[0].uri);
             const oldWallet = await getContentFileFromGDrive(id);
@@ -371,6 +394,7 @@ export const Wallet: React.FC = () => {
             pushFileToCloud(newData);
             getLastTimeBackup();
           } else {
+            // ios
             let link = decodeURIComponent(file[0].uri);
             link = handleLinkDownloadIOS(link);
             const oldWallet = await getContentFileFromIcloud(link);
@@ -387,7 +411,7 @@ export const Wallet: React.FC = () => {
   const getLastTimeBackup = async () => {
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
     if (!fileExistsInCloud) {
-      setLastTimeBackUp(null);
+      setLastTimeBackUp('');
     } else {
       RNCloudFs.listFiles({
         targetPath: '',
@@ -397,14 +421,16 @@ export const Wallet: React.FC = () => {
           file.name.includes(targetPath),
         );
         var momentDateFormatted = moment(privateKeyFile[0].lastModified).format(
-          'MMMM DD YYYY',
+          'MMM DD, YYYY hh:mm:ss',
         );
-        console.log(momentDateFormatted);
         setLastTimeBackUp(momentDateFormatted);
-        // privateKeyFile.forEach(file => console.log(file.lastModified.toString()))
       });
     }
   };
+
+  useEffect(() => {
+    getLastTimeBackup();
+  });
 
   return (
     <View style={grid.container}>
@@ -421,21 +447,26 @@ export const Wallet: React.FC = () => {
                 />
               );
             })}
-          </View>
-          <View style={s.wrp}>
-            <Button title={t('back-up')} onPress={backup} />
-          </View>
 
-          <View style={s.wrp}>
-            <Button title={t('restore')} onPress={restore} />
-          </View>
+            <View style={s.backupSection}>
+              <Button
+                title={t('back-up')}
+                onPress={backup}
+                buttonStyle={s.backupBtn}
+              />
+              <Button
+                title={t('restore')}
+                onPress={restore}
+                type="outline"
+                buttonStyle={s.restoreBtn}
+              />
+            </View>
 
-          <View style={s.wrp}>
-            <Text style={s.title}>
-              {' '}
-              Last time back up:{' '}
-              {lastTimeBackUp === null ? notBackup : lastTimeBackUp}{' '}
-            </Text>
+            <View style={s.footer}>
+              <Text style={typo.normal}>
+                Last backup on: {lastTimeBackUp === null ? '-' : lastTimeBackUp}
+              </Text>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
