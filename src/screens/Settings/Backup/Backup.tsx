@@ -33,13 +33,10 @@ const { RNFSManager, RNCloudFs } = NativeModules;
 
 const s = StyleSheet.create({
   backupSection: {
-    display: 'flex',
-    flexDirection: 'row',
     marginTop: 24,
     marginBottom: 12,
   },
   backupBtn: {
-    width: 140,
     marginRight: 12,
   },
   restoreBtn: {
@@ -249,33 +246,6 @@ export const Backup: React.FC = () => {
     return contentFile;
   };
 
-  const restore = async () => {
-    const fileExistsInCloud = await checkPrivateFileExistsInCloud();
-    if (fileExistsInCloud) {
-      RNCloudFs.listFiles({
-        targetPath: '',
-        scope: 'visible',
-      }).then(async (files) => {
-        let file = files.files.filter((file) => file.name.includes(targetPath));
-        if (Platform.OS === 'ios') {
-          let link = decodeURIComponent(file[0].uri);
-          link = handleLinkDownloadIOS(link);
-          await getContentFileFromIcloud(link).then((value) => {
-            console.log('🎉 file json: ', value);
-          });
-        } else {
-          let link = decodeURIComponent(file[0].uri);
-          const id = getGDriveFileID(link);
-          await getContentFileFromGDrive(id).then((value) => {
-            console.log('🎉 file json: ', value);
-          });
-        }
-      });
-    } else {
-      Alert.alert('File Not Found');
-    }
-  };
-
   const backup = async () => {
     const icloudStatus = await checkIcloudAccountStatus();
     if (!icloudStatus) {
@@ -355,16 +325,10 @@ export const Backup: React.FC = () => {
       <View style={s.backupSection}>
         <Button
           title={t('back-up')}
+          type="outline"
           onPress={() => {
             refBackup.current.open();
           }}
-          buttonStyle={s.backupBtn}
-        />
-        <Button
-          title={t('restore')}
-          onPress={restore}
-          type="outline"
-          buttonStyle={s.restoreBtn}
         />
       </View>
 
