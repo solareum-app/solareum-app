@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -16,6 +16,7 @@ import base64 from 'react-native-base64';
 import RNFetchBlob from 'rn-fetch-blob';
 import moment from 'moment';
 import iCloudAccountStatus from 'react-native-icloud-account-status';
+import { Portal } from 'react-native-portalize';
 
 import { useApp } from '../../../core/AppProvider/AppProvider';
 import { typo } from '../../../components/Styles';
@@ -25,6 +26,8 @@ import {
   getParamsInURL,
   updateQueryStringParameter,
 } from '../../../utils/handleLink';
+import { FixedContent } from '../../../components/Modals/FixedContent';
+import { BackupInfo } from './BackupInfo';
 
 const { RNFSManager, RNCloudFs } = NativeModules;
 
@@ -49,11 +52,22 @@ const s = StyleSheet.create({
   },
 });
 
+const targetPath = 'private-key.json';
+
 export const Backup: React.FC = () => {
   const { t } = useLocalize();
   const { addressList } = useApp();
+
+  const refBackup = useRef();
   const [lastTimeBackUp, setLastTimeBackUp] = useState<string>('');
-  const targetPath = 'private-key.json';
+  const [loading, setLoading] = useState<boolean>(false);
+  const [done, setDone] = useState<boolean>(false);
+
+  const onRequestClose = () => {
+    setLoading(false);
+    setDone(false);
+    refBackup.current.close();
+  };
 
   // back up data from this function to server
   const getBackupData = (): BackupData[] => {
@@ -116,14 +130,11 @@ export const Backup: React.FC = () => {
       });
   };
 
-  const pushFileToCloud = (file) => {
-    RNCloudFs.createFile({
+  const pushFileToCloud = async (file) => {
+    return await RNCloudFs.createFile({
       targetPath: targetPath,
       content: file,
       scope: 'visible',
-    }).then((res) => {
-      console.log('res', res);
-      Alert.alert('Your wallets have been back up onto the cloud.');
     });
   };
 
@@ -234,10 +245,10 @@ export const Backup: React.FC = () => {
 
   const readFile = async (url) => {
     const exportedFileContent = await RNFSManager.readFile(url);
-    console.log('🎉 content encode: ', base64.decode(exportedFileContent));
     const contentFile = JSON.parse(base64.decode(exportedFileContent));
     return contentFile;
   };
+
   const restore = async () => {
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
     if (fileExistsInCloud) {
@@ -267,19 +278,18 @@ export const Backup: React.FC = () => {
 
   const backup = async () => {
     const icloudStatus = await checkIcloudAccountStatus();
-    console.log('icloudStatus', icloudStatus);
     if (!icloudStatus) {
       return;
     }
 
-    console.log('backup');
+    setLoading(true);
+    setDone(false);
     const walletData = getBackupData();
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
 
-    console.log('fileExistsInCloud');
     if (!fileExistsInCloud) {
       // Case have not backed up
-      pushFileToCloud(JSON.stringify(walletData));
+      await pushFileToCloud(JSON.stringify(walletData));
     } else {
       RNCloudFs.listFiles({
         targetPath: '',
@@ -296,7 +306,7 @@ export const Backup: React.FC = () => {
             const oldWallet = await getContentFileFromGDrive(id);
             const newData = JSON.stringify(mergeWallets(walletData, oldWallet));
             await GDrive.files.delete(id);
-            pushFileToCloud(newData);
+            await pushFileToCloud(newData);
             getLastTimeBackup();
           } else {
             // ios
@@ -305,12 +315,15 @@ export const Backup: React.FC = () => {
             const oldWallet = await getContentFileFromIcloud(link);
             const newData = JSON.stringify(mergeWallets(walletData, oldWallet));
             await RNCloudFs.removeICloudFile(file[0].path);
-            pushFileToCloud(newData);
+            await pushFileToCloud(newData);
             getLastTimeBackup();
           }
         }
       });
     }
+
+    setLoading(false);
+    setDone(true);
   };
 
   const getLastTimeBackup = async () => {
@@ -342,7 +355,9 @@ export const Backup: React.FC = () => {
       <View style={s.backupSection}>
         <Button
           title={t('back-up')}
-          onPress={backup}
+          onPress={() => {
+            refBackup.current.open();
+          }}
           buttonStyle={s.backupBtn}
         />
         <Button
@@ -358,6 +373,17 @@ export const Backup: React.FC = () => {
           Last backup on: {lastTimeBackUp === null ? '-' : lastTimeBackUp}
         </Text>
       </View>
+
+      <Portal>
+        <FixedContent ref={refBackup}>
+          <BackupInfo
+            backup={backup}
+            loading={loading}
+            done={done}
+            onRequestClose={onRequestClose}
+          />
+        </FixedContent>
+      </Portal>
     </View>
   );
 };
