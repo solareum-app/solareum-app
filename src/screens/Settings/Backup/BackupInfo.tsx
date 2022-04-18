@@ -38,8 +38,6 @@ export const BackupInfo = ({
   loading: boolean;
   done: boolean;
 }) => {
-  console.log('BackupInfo', loading, done);
-
   if (done) {
     return (
       <View style={s.main}>
