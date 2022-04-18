@@ -63,7 +63,7 @@ export const BackupInfo = ({
       <LottieView
         autoPlay
         loop
-        source={require('./data-sync.json')}
+        source={require('./man-using-cloud-service.json')}
         style={s.img}
       />
       <Text style={typo.titleLeft}>Backup your wallets</Text>
