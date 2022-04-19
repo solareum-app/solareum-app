@@ -51,27 +51,18 @@ type Props = {};
 const targetPath = 'private-key.json';
 
 export const Restore: React.FC<Props> = () => {
-  const { createAddress } = useApp();
+  const { restoreWallets: restoreAllWallets } = useApp();
   const navigation = useNavigation();
 
   const [loading, setLoading] = useState<boolean>(false);
 
   const restoreWallets = async (wallets: BackupData[]) => {
-    if (!wallets.length) {
-      return;
+    try {
+      await restoreAllWallets(wallets);
+      navigation.navigate(Routes.SettingWallet);
+    } catch (err) {
+      navigation.navigate(Routes.SettingWallet);
     }
-
-    for (let i = 0; i < wallets.length; i++) {
-      const item = wallets[i];
-      await createAddress(
-        'seed',
-        item.privateKey.trim(),
-        item.name.trim(),
-        true,
-      );
-    }
-
-    navigation.navigate(Routes.SettingWallet);
   };
 
   // check file exists in cloud

@@ -273,17 +273,19 @@ export const Backup: React.FC = () => {
           // android
           if (Platform.OS === 'android') {
             const id = getGDriveFileID(file[0].uri);
-            const oldWallet = await getContentFileFromGDrive(id);
-            const newData = JSON.stringify(mergeWallets(walletData, oldWallet));
+            // Dont sync with old file
+            // const oldWallet = await getContentFileFromGDrive(id);
+            const newData = JSON.stringify(mergeWallets(walletData, []));
             await GDrive.files.delete(id);
             await pushFileToCloud(newData);
             getLastTimeBackup();
           } else {
             // ios
-            let link = decodeURIComponent(file[0].uri);
-            link = handleLinkDownloadIOS(link);
-            const oldWallet = await getContentFileFromIcloud(link);
-            const newData = JSON.stringify(mergeWallets(walletData, oldWallet));
+            // Dont sync with old file
+            // let link = decodeURIComponent(file[0].uri);
+            // link = handleLinkDownloadIOS(link);
+            // const oldWallet = await getContentFileFromIcloud(link);
+            const newData = JSON.stringify(mergeWallets(walletData, []));
             await RNCloudFs.removeICloudFile(file[0].path);
             await pushFileToCloud(newData);
             getLastTimeBackup();

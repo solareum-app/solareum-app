@@ -9,19 +9,22 @@ import {
 } from '../../storage/WalletCollection';
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { getWallet } from '../../spl-utils/getWallet';
+import { BackupData } from '../../screens/Settings/Backup/mergeWallets';
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
 export type AppContextType = {
   wallet: any;
   addressId: string;
-  setAddressId: Function;
+  setAddressId: () => void;
   addressName: string;
   isAddressBackup: boolean;
   addressList: AddressInfo[];
-  createAddress: Function;
-  updateAddress: Function;
-  removeWallet: Function;
+  createAddress: () => void;
+  updateAddress: () => void;
+  removeWallet: () => void;
+  restoreWallets: (v: BackupData[]) => void;
 };
+
 export const AppContext = React.createContext<AppContextType>({
   wallet: null,
   addressId: '',
@@ -32,6 +35,7 @@ export const AppContext = React.createContext<AppContextType>({
   createAddress: () => null,
   updateAddress: () => null,
   removeWallet: () => null,
+  restoreWallets: () => null,
 });
 
 export const useApp = () => {
@@ -62,6 +66,34 @@ export const AppProvider: React.FC = (props) => {
     );
     setAddressList([...addressList, address]);
     await setAddressIdWrapper(address.id);
+  };
+
+  const restoreWallets = async (wallets: BackupData[]) => {
+    if (!wallets.length) {
+      return;
+    }
+    const newAddressList = [];
+
+    for (let i = 0; i < wallets.length; i++) {
+      const item = wallets[i];
+      const mnemonic = item.privateKey.trim();
+      const name = item.name.trim();
+      const w = await getWallet(mnemonic, name);
+      const address = await createWallet(
+        'seed',
+        mnemonic,
+        name,
+        true,
+        w.publicKey.toBase58(),
+      );
+      newAddressList.push(address);
+    }
+
+    const t = [...addressList, ...newAddressList];
+    setAddressList(t);
+    if (t.length) {
+      await setAddressIdWrapper(t[0].id);
+    }
   };
 
   const updateAddress = async (
@@ -133,6 +165,7 @@ export const AppProvider: React.FC = (props) => {
         createAddress,
         updateAddress,
         removeWallet,
+        restoreWallets,
       }}
     >
       {!loading ? props.children : <LoadingImage />}
