@@ -9,11 +9,13 @@ import {
   Alert,
   PermissionsAndroid,
   NativeModules,
+  Linking,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import GDrive from 'react-native-google-drive-api-wrapper';
 import base64 from 'react-native-base64';
+import iCloudAccountStatus from 'react-native-icloud-account-status';
 import RNFetchBlob from 'rn-fetch-blob';
 import LottieView from 'lottie-react-native';
 
@@ -195,7 +197,44 @@ export const Restore: React.FC<Props> = () => {
     return contentFile;
   };
 
+  const checkIcloudAccountStatus = () => {
+    // ignore android
+    if (Platform.OS !== 'ios') {
+      return true;
+    }
+
+    // check for ios only
+    return iCloudAccountStatus
+      .getStatus()
+      .then((accountStatus) => {
+        if (accountStatus === iCloudAccountStatus.STATUS_AVAILABLE) {
+          return true;
+        } else {
+          Alert.alert(
+            'Sign in to iCloud',
+            'You need to sign in iCloud to perform this action',
+            [
+              {
+                text: 'Go to Settings',
+                onPress: () => Linking.openURL('App-Prefs:'),
+              },
+            ],
+            { cancelable: true },
+          );
+          return false;
+        }
+      })
+      .catch(() => {
+        return false;
+      });
+  };
+
+
   const restore = async () => {
+    const icloudStatus = await checkIcloudAccountStatus();
+    if (!icloudStatus) {
+      return;
+    }
     setLoading(true);
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
     if (fileExistsInCloud) {
