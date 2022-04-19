@@ -26,7 +26,6 @@ import { useApp } from '../../core/AppProvider/AppProvider';
 import { BackupData } from '../Settings/Backup/mergeWallets';
 import { useNavigation } from '@react-navigation/native';
 import Routes from '../../navigators/Routes';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const { RNFSManager, RNCloudFs } = NativeModules;
 
