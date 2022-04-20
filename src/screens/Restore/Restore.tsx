@@ -233,6 +233,8 @@ export const Restore: React.FC<Props> = () => {
       return;
     }
     setLoading(true);
+    GoogleSignin.configure();
+    await GoogleSignin.signIn();
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
     if (fileExistsInCloud) {
       RNCloudFs.listFiles({
