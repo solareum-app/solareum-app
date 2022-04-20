@@ -15,13 +15,18 @@ const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 export type AppContextType = {
   wallet: any;
   addressId: string;
-  setAddressId: () => void;
+  setAddressId: (id: string) => void;
   addressName: string;
   isAddressBackup: boolean;
   addressList: AddressInfo[];
-  createAddress: () => void;
-  updateAddress: () => void;
-  removeWallet: () => void;
+  createAddress: (
+    seed: string,
+    mnemonic: string,
+    name: string,
+    isStored: boolean,
+  ) => void;
+  updateAddress: (id: string, name: string, isStored: boolean) => void;
+  removeWallet: (id: string) => void;
   restoreWallets: (v: BackupData[]) => void;
 };
 
@@ -79,18 +84,24 @@ export const AppProvider: React.FC = (props) => {
       const mnemonic = item.privateKey.trim();
       const name = item.name.trim();
       const w = await getWallet(mnemonic, name);
+      const publicKey = w.publicKey.toBase58();
       const address = await createWallet(
         'seed',
         mnemonic,
         name,
         true,
-        w.publicKey.toBase58(),
+        publicKey,
       );
-      newAddressList.push(address);
+
+      // dont add exiting address
+      if (addressList.findIndex((i) => i.address === publicKey) === -1) {
+        newAddressList.push(address);
+      }
     }
 
     const t = [...addressList, ...newAddressList];
     setAddressList(t);
+
     if (t.length) {
       await setAddressIdWrapper(t[0].id);
     }

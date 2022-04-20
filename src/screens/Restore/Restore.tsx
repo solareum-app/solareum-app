@@ -61,10 +61,8 @@ export const Restore: React.FC<Props> = () => {
   const restoreWallets = async (wallets: BackupData[]) => {
     try {
       await restoreAllWallets(wallets);
-      navigation.navigate(Routes.SettingWallet);
-    } catch (err) {
-      navigation.navigate(Routes.SettingWallet);
-    }
+    } catch {}
+    navigation.navigate(Routes.SettingWallet);
   };
 
   // check file exists in cloud
@@ -228,7 +226,6 @@ export const Restore: React.FC<Props> = () => {
         return false;
       });
   };
-
 
   const restore = async () => {
     const icloudStatus = await checkIcloudAccountStatus();
