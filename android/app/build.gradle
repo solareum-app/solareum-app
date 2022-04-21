@@ -175,11 +175,11 @@ android {
         /**
          * It will be added by CI service prodivder
          */
-        // release {
-        //     signingConfig signingConfigs.release
-        //     minifyEnabled enableProguardInReleaseBuilds
-        //     proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        // }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
     }
 
     // applicationVariants are e.g. debug, release
