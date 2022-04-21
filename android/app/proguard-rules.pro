@@ -8,7 +8,3 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
-
--keep class * extends com.google.api.client.json.GenericJson { *; }
--keep class com.google.api.services.drive.** { *; }
--keepclassmembers class * { @com.google.api.client.util.Key <fields>; }
