@@ -2,5 +2,4 @@
     <string name="app_name">Solareum</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
-    <string name="server_client_id">810254902905-npsjknif1am78b9cf5tpuubugoje87d7.apps.googleusercontent.com</string>
 </resources>
