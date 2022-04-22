@@ -235,6 +235,14 @@ export const Restore: React.FC<Props> = () => {
     setLoading(true);
     const fileExistsInCloud = await checkPrivateFileExistsInCloud();
     if (fileExistsInCloud) {
+      if (Platform.OS === 'android') {
+        try {
+          await GoogleSignin.hasPlayServices();
+          const userInfo = await GoogleSignin.signIn();
+        } catch (error) {
+          console.log('sign in google error: ', error);
+        }
+      }
       RNCloudFs.listFiles({
         targetPath: '',
         scope: 'visible',
