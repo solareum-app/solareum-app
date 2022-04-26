@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  NativeModules,
+  Platform,
+  Alert,
+} from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -11,6 +19,7 @@ import { COLORS } from '../../theme';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { s } from './CreateWallet';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+
 
 type Props = {};
 
@@ -44,6 +53,7 @@ const EditWallet: React.FC<Props> = ({ route }) => {
     Clipboard.setString(address.mnemonic);
   };
 
+ 
   return (
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>
@@ -59,15 +69,12 @@ const EditWallet: React.FC<Props> = ({ route }) => {
               onChangeText={(text: string) => setWalletName(text)}
             />
             <Text style={[typo.title, s.title]}>{t('create-store')}</Text>
-
             <View style={s.wrp}>
               <Text style={typo.normal}>{t('create-store-note')}</Text>
             </View>
-
             <View style={s.mnemonicWrp}>
               <Text style={s.mnemonic}>{address.mnemonic || '-'}</Text>
             </View>
-
             <View style={s.wrp}>
               <Button
                 title={t('create-copy')}
@@ -77,6 +84,7 @@ const EditWallet: React.FC<Props> = ({ route }) => {
                 icon={<Icon name="addfile" color={COLORS.blue2} />}
               />
             </View>
+
 
             <View style={[s.wrp, { marginTop: 8 }]}>
               <Text style={typo.warning}>{t('create-note-01')}</Text>
