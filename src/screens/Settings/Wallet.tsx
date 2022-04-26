@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -18,6 +18,8 @@ import { grid } from '../../components/Styles';
 import { COLORS } from '../../theme';
 import walletIcon from '../../assets/XSB-S.png';
 import walletIconActive from '../../assets/XSB-P.png';
+
+import { Backup } from './Backup/Backup';
 
 const s = StyleSheet.create({
   main: {
@@ -104,23 +106,18 @@ const WalletItem: React.FC<Props> = ({ active, item, onSelect }) => {
 export const Wallet: React.FC = () => {
   const { addressId, setAddressId, addressList } = useApp();
   const navigation = useNavigation();
-  const [list, setList] = useState([]);
 
   const onSelect = (id: string) => {
     setAddressId(id);
     navigation.navigate(Routes.Wallet);
   };
 
-  useEffect(() => {
-    setList(addressList);
-  }, [addressList]);
-
   return (
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>
         <ScrollView>
           <View style={grid.content}>
-            {list.map((i) => {
+            {addressList.map((i) => {
               return (
                 <WalletItem
                   key={i.id}
@@ -130,6 +127,8 @@ export const Wallet: React.FC = () => {
                 />
               );
             })}
+
+            <Backup />
           </View>
         </ScrollView>
       </SafeAreaView>

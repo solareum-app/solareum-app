@@ -1,4 +1,6 @@
 {
+  "restore": "Khôi phục",
+  "back-up": "Sao lưu",
   "sys-send": "Chuyển",
   "sys-receive": "Nhận",
   "sys-qr-code": "QR Code",

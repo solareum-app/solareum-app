@@ -152,6 +152,8 @@ const Settings: React.FC = () => {
           </ListItem>
         </View>
 
+
+
         <View style={s.group}>
           <Text style={s.groupName}>{t('setting-with-solareum')}</Text>
 

@@ -33,6 +33,17 @@ const s = StyleSheet.create({
     marginBottom: 8,
   },
   title: { textAlign: 'left' },
+  group: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: -6,
+    marginRight: -6,
+  },
+  groupButton: {
+    flex: 1,
+    marginLeft: 6,
+    marginRight: 6,
+  },
 });
 
 type Props = {};
@@ -76,17 +87,29 @@ const GetStarted: React.FC<Props> = () => {
             <View style={s.wrp}>
               <Button
                 title={t('started-create-wallet')}
-                onPress={createWalletHandler}
                 style={grid.button}
+                onPress={createWalletHandler}
               />
             </View>
-            <View style={s.wrp}>
-              <Button
-                title={t('started-import-wallet')}
-                type="outline"
-                onPress={importWalletHandler}
-                style={grid.button}
-              />
+            <View style={s.group}>
+              <View style={s.groupButton}>
+                <Button
+                  title="Restore"
+                  type="outline"
+                  style={grid.button}
+                  onPress={() => {
+                    navigation.navigate(Routes.Restore);
+                  }}
+                />
+              </View>
+              <View style={s.groupButton}>
+                <Button
+                  title={t('started-import-wallet')}
+                  type="outline"
+                  style={grid.button}
+                  onPress={importWalletHandler}
+                />
+              </View>
             </View>
           </View>
         </ScrollView>

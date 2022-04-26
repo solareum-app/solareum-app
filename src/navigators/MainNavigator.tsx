@@ -33,6 +33,7 @@ import { useToken } from '../core/AppProvider/TokenProvider';
 import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
 import { Explore } from '../screens/Explore/Explore';
 import { MoonPay } from '../screens/Moonpay/Moonpay';
+import { Restore } from '../screens/Restore/Restore';
 import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
 
 const s = StyleSheet.create({
@@ -162,6 +163,7 @@ const MainNavigator: React.FC = () => {
             <Stack.Screen name={Routes.Search} component={Search} />
             <Stack.Screen name={Routes.Mission} component={DailyMission} />
             <Stack.Screen name={Routes.Influencer} component={Influencer} />
+            <Stack.Screen name={Routes.Restore} component={Restore} />
             <Stack.Screen name={Routes.Airdrop} component={Airdrop} />
             <Stack.Screen
               name={Routes.ManagementTokenList}
