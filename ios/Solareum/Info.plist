@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+  
+  <key>NSUbiquitousContainers</key>
+  <dict>
+      <key>iCloud.com.solareum.wallet</key>
+      <dict>
+          <key>NSUbiquitousContainerIsDocumentScopePublic</key>
+          <true/>
+          <key>NSUbiquitousContainerSupportedFolderLevels</key>
+          <string>One</string>
+          <key>NSUbiquitousContainerName</key>
+          <string>Solareum</string>
+      </dict>
+  </dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

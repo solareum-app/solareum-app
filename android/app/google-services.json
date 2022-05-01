@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "810254902905-npsjknif1am78b9cf5tpuubugoje87d7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solareum",
+            "certificate_hash": "20e270d11059b563095fef4091386519a874bff6"
+          }
+        },
+        {
           "client_id": "810254902905-01nu5hbbksar548tfeuj1o9cm9usmnik.apps.googleusercontent.com",
           "client_type": 3
         }

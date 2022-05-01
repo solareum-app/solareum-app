@@ -1,4 +1,6 @@
 {
+  "restore": "Restore",
+  "back-up": "Backup",
   "sys-send": "Send",
   "sys-receive": "Receive",
   "sys-qr-code": "QR Code",
