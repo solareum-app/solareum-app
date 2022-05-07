@@ -43,14 +43,9 @@ const DOMAIN = 'https://www.wealthclub.vn/t';
 
 export const SocialItem = ({ model }) => {
   const refView = useRef();
-  const { getRewards } = useRewards();
 
   const openSendScreen = () => {
     refView?.current?.open();
-  };
-
-  const onClose = () => {
-    getRewards();
   };
 
   return (
@@ -72,7 +67,6 @@ export const SocialItem = ({ model }) => {
         <FacebookWebView
           ref={refView}
           url={`${DOMAIN}/${model.slug}/${model.id}`}
-          onClose={onClose}
         />
       </Portal>
     </View>
