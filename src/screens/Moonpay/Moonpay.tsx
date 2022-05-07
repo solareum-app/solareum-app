@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -24,7 +25,22 @@ const s = StyleSheet.create({
 });
 
 export const MoonPay = () => {
-  let uri = 'https://buy.moonpay.com?currencyCode=SOL';
+  // const { accountList } = usePrice();
+  // const solAccount = accountList.find((i) => i.mint === 'SOL');
+  // const solAddress = solAccount?.publicKey || '';
+
+  const domain = 'https://buy-sandbox.moonpay.com';
+  const apiKey = 'pk_test_4ero3l8ywK2v2itW8Iy8PurUd3JZju';
+  const currencyCode = 'BTC';
+  const address = 'tb1q45h8zexwztmz3nyd8gmkxhpavdsva4znwwhzvs';
+  let originalUrl = `${domain}?apiKey=${apiKey}&currencyCode=${currencyCode}&walletAddress=${address}`;
+
+  const signature = crypto
+    .createHmac('sha256', 'sk_test_eSLzoHMfwRXFdPTQG7Upy1YbVcwhTdMP')
+    .update(new URL(originalUrl).search)
+    .digest('base64');
+
+  const uri = `${originalUrl}&signature=${encodeURIComponent(signature)}`;
 
   return (
     <View style={s.main}>
