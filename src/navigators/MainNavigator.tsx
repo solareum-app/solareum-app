@@ -130,11 +130,6 @@ const MainNavigator: React.FC = () => {
             }}
           >
             <Stack.Screen
-              name={Routes.GetStarted}
-              component={GetStarted}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
               name={Routes.Home}
               component={HomeScreen}
               options={{ headerShown: false }}
@@ -147,6 +142,11 @@ const MainNavigator: React.FC = () => {
             <Stack.Screen
               name={Routes.Swap}
               component={Swap}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={Routes.GetStarted}
+              component={GetStarted}
               options={{ headerShown: false }}
             />
             <Stack.Screen name={Routes.ExploreList} component={Explore} />

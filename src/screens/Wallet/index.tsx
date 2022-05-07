@@ -240,10 +240,7 @@ const WalletScreen = () => {
           </View>
         </View>
 
-        <View>
-          <Onboarding />
-          {!isAddressBackup ? <BackupNotice /> : null}
-        </View>
+        <View>{!isAddressBackup ? <BackupNotice /> : null}</View>
 
         <View style={[grid.body, s.body]}>
           {!activeAccountList.length ? (

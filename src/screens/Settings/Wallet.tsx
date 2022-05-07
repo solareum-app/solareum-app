@@ -109,7 +109,7 @@ export const Wallet: React.FC = () => {
 
   const onSelect = (id: string) => {
     setAddressId(id);
-    navigation.navigate(Routes.Wallet);
+    navigation.navigate(Routes.Home);
   };
 
   return (
