@@ -130,6 +130,11 @@ const MainNavigator: React.FC = () => {
             }}
           >
             <Stack.Screen
+              name={Routes.GetStarted}
+              component={GetStarted}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name={Routes.Home}
               component={HomeScreen}
               options={{ headerShown: false }}
@@ -146,7 +151,6 @@ const MainNavigator: React.FC = () => {
             />
             <Stack.Screen name={Routes.ExploreList} component={Explore} />
             <Stack.Screen name={Routes.ExploreItem} component={ExploreItem} />
-            <Stack.Screen name={Routes.GetStarted} component={GetStarted} />
             <Stack.Screen name={Routes.CreateWallet} component={CreateWallet} />
             <Stack.Screen name={Routes.EditWallet} component={EditWallet} />
             <Stack.Screen name={Routes.ImportWallet} component={ImportWallet} />
