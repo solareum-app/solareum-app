@@ -36,6 +36,7 @@ import { MoonPay } from '../screens/Moonpay/Moonpay';
 import { Restore } from '../screens/Restore/Restore';
 import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
 
+
 const s = StyleSheet.create({
   backWrp: {
     marginLeft: 20,
@@ -60,23 +61,23 @@ const MainNavigator: React.FC = () => {
   };
 
   const handleDynamicLink = (link: any) => {
+    console.log("🎉 link:  ",link)
+
     if (!link) {
       return;
     }
-
     const url = new URL(link.url);
     // TODO: default token is XSB
     // Going to support USDC + SOL anytime soon
     const token = url.searchParams.get('token') || 'XSB';
     const address = url.searchParams.get('address');
     const account = accountList.find((i) => i.symbol === token);
-
     if (!account) {
       return;
     }
 
-    if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
-      navigationRef.current.setParams({
+    if (navigationRef.current?.getCurrentRoute().name === Routes.Token) {
+      navigationRef.current?.setParams({
         action: TransferAction.send,
         token: account,
         initAddress: address,
@@ -90,15 +91,52 @@ const MainNavigator: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-    // When the component is unmounted, remove the listener
-    return () => unsubscribe();
-  }, [ready]);
+
+  const handleScheme = (link:any) => {
+
+    if (!link){
+      return
+    }
+    const url = new URL(link.url);
+    console.log("🎉 url: ",url)
+    const urlRedirect = url.searchParams.get("scheme")
+    const token = url.searchParams.get('token') || 'XSB';
+    const address = url.searchParams.get('address');
+    const account = accountList.find((i) => i.symbol === token);
+    if (!account) {
+      return;
+    }
+    if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
+      navigationRef.current.setParams({
+        action: TransferAction.send,
+        token: account,
+        initAddress: address,
+        redirect:urlRedirect,
+      });
+    } else {
+      navigationRef.current?.navigate(Routes.Token, {
+        action: TransferAction.send,
+        token: account,
+        initAddress: address,
+        redirect:urlRedirect,
+      });
+    }
+  }
 
   useEffect(() => {
-    dynamicLinks().getInitialLink().then(handleDynamicLink);
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
     Linking.getInitialURL().then(handleDynamicLink);
+    Linking.addEventListener('url',  handleScheme ); 
+
+    // When the component is unmounted, remove the listener
+    return () => unsubscribe();
+  }, [ready, accountList]);
+
+
+  
+  useEffect(() => {
+    dynamicLinks().getInitialLink().then(handleDynamicLink);
+    Linking.getInitialURL().then(handleScheme);
   }, [ready]);
 
   return (

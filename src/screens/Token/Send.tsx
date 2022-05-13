@@ -80,7 +80,7 @@ const checkDecimalPlaces = (valueStr) => {
   return (valueStr.match(new RegExp('\\.', 'g')) || []).length <= 1;
 };
 
-const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
+const Step1 = ({ address, setAddress, amount, setAmount, next, token,urlRedirect }) => {
   const [camera, setCamera] = useState(false);
   const { symbol, usd } = token;
   const estValue = amount * usd;
@@ -100,6 +100,11 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
     setAddress(text);
   };
 
+
+  const redirect = () =>{
+    let linkRediret = urlRedirect + "://app?msg=solareum"
+    Linking.openURL(linkRediret)
+  }
   return (
     <View>
       {!camera ? (
@@ -160,7 +165,8 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token }) => {
             <Button
               title={t('token-continue-btn')}
               buttonStyle={s.button}
-              onPress={next}
+              onPress = {redirect}
+              // onPress={next}
             />
           </View>
         </View>
@@ -295,7 +301,7 @@ const Step3 = ({ signature }) => {
   );
 };
 
-export const Send = ({ initStep = 1, token, initAddress = '' }) => {
+export const Send = ({ initStep = 1, token, initAddress,urlRedirect = '' }) => {
   const [step, setStep] = useState(initStep);
   const [address, setAddress] = useState(initAddress);
   const [error, setError] = useState('');
@@ -349,6 +355,7 @@ export const Send = ({ initStep = 1, token, initAddress = '' }) => {
         amount={amount}
         setAmount={setAmount}
         token={token}
+        urlRedirect= {urlRedirect}
       />
     );
   }

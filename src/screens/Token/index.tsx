@@ -66,7 +66,7 @@ const s = StyleSheet.create({
 });
 
 const Token = ({ route }) => {
-  const { action, token, initAddress = '' } = route.params;
+  const { action, token, initAddress,redirect = '' } = route.params;
 
   const { accountList } = usePrice();
   const [loading, setLoading] = useState(false);
@@ -200,7 +200,7 @@ const Token = ({ route }) => {
 
       <Portal>
         <FixedContent ref={refSend}>
-          <Send initStep={1} token={account} initAddress={initAddress} />
+          <Send initStep={1} token={account} initAddress={initAddress} urlRedirect = {redirect} />
         </FixedContent>
 
         <FixedContent ref={refReceived}>
