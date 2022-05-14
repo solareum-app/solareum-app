@@ -24,7 +24,9 @@ const s = StyleSheet.create({
 });
 
 const btn = StyleSheet.create({
-  title: { color: COLORS.white4 },
+  title: {
+    color: COLORS.blue,
+  },
   body: {
     marginTop: 12,
   },
@@ -61,13 +63,13 @@ export const Mission = () => {
             0.055% from your XSB balance.
           </Text>
           <Text style={s.message}>
-            Your referrer will receive 0.015% as well. You can share Solareum
-            with others to receive referral fees from them.
+            Your referrer will receive 0.015% as well. Let's share Solareum with
+            your friends to receive unlimited referral fees.
           </Text>
         </View>
 
         <Button
-          title="Get Daily Rewards"
+          title={missionLeft > 0 ? 'Get Daily Rewards' : 'Mission Completed'}
           onPress={getRewards}
           disabled={missionLeft <= 0}
           loading={loading}

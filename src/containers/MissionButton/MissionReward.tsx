@@ -85,9 +85,9 @@ export const MissionReward = ({ mission }) => {
         />
       </View>
       <View style={style.header}>
-        <Text style={typo.titleLeft}>Thank you for joining us</Text>
+        <Text style={typo.titleLeft}>Thank you for supporting us</Text>
         <Text style={typo.normal}>
-          Below is the detail of the distribution. Enjoy the journey to web3.
+          Below is the detail of the distribution. Enjoy the adventure to web3.
           Don't forget to bring your friends here. The more the merrier.
         </Text>
       </View>

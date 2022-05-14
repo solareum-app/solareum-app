@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, View, StyleSheet, Text } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  StyleSheet,
+  Text,
+  RefreshControl,
+} from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import { COLORS } from '../../theme';
@@ -20,6 +27,7 @@ const s = StyleSheet.create({
     width: 220,
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: 12,
     marginBottom: 24,
   },
   img: {
@@ -35,6 +43,8 @@ const box = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     backgroundColor: COLORS.dark0,
+    borderColor: COLORS.dark2,
+    borderWidth: 1,
     borderRadius: 8,
     height: 72,
     marginBottom: 8,
@@ -47,9 +57,9 @@ const box = StyleSheet.create({
   },
   badge: {
     backgroundColor: '#2155CD',
-    borderRadius: 4,
+    borderRadius: 16,
     padding: 4,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
   },
   title: {
     ...typo.titleLeft,
@@ -66,6 +76,7 @@ const box = StyleSheet.create({
     ...typo.normal,
     marginBottom: 0,
     fontWeight: 'bold',
+    fontSize: 14,
   },
 });
 
@@ -112,7 +123,16 @@ export const Distribution = () => {
   return (
     <View style={s.main}>
       <SafeAreaView style={grid.container}>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() => null}
+              colors={[COLORS.white2]}
+              tintColor={COLORS.white2}
+            />
+          }
+        >
           <View style={grid.content}>
             <View style={s.imgWrp}>
               <LottieView
@@ -129,7 +149,7 @@ export const Distribution = () => {
               </View>
               <View style={box.right}>
                 <View style={box.badge}>
-                  <Text style={box.value}>APR - 20%</Text>
+                  <Text style={box.value}>APR 20%</Text>
                 </View>
               </View>
             </View>
@@ -138,12 +158,12 @@ export const Distribution = () => {
               <View style={box.left}>
                 <View>
                   <Text style={box.title}>Referrals</Text>
-                  <Text style={box.helper}>Unlimited</Text>
+                  <Text style={box.helper}>0.015% / mission</Text>
                 </View>
               </View>
               <View style={box.right}>
                 <View style={box.badge}>
-                  <Text style={box.value}>0.015% / mission</Text>
+                  <Text style={box.value}>Unlimited</Text>
                 </View>
               </View>
             </View>
