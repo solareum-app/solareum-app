@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Portal } from 'react-native-portalize';
-import { Button } from 'react-native-elements';
 
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { COLORS } from '../../theme';
@@ -17,6 +16,7 @@ import { useMetaData } from '../../hooks/useMetaData';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { SOL_BALANCE_TARGET } from './const';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { Button } from '../Distribution/Button';
 
 const s = StyleSheet.create({
   main: {
@@ -33,21 +33,6 @@ const s = StyleSheet.create({
     color: COLORS.white4,
     marginBottom: 0,
     flex: 1,
-  },
-});
-
-const button = StyleSheet.create({
-  title: {
-    color: COLORS.white0,
-  },
-  body: {
-    backgroundColor: '#2155CD',
-    borderColor: '#2155CD',
-    height: 52,
-  },
-  disabled: {
-    backgroundColor: COLORS.dark2,
-    opacity: 0.7,
   },
 });
 
@@ -200,12 +185,8 @@ export const Airdrop = () => {
         </Text>
         <Button
           title="Get started"
-          type="outline"
           onPress={startAirdrop}
           disabled={airdrop === 0 || !airdropActive}
-          titleStyle={button.title}
-          buttonStyle={button.body}
-          disabledStyle={button.disabled}
         />
       </View>
 
