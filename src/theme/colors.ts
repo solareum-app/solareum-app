@@ -14,6 +14,7 @@ export const COLORS = {
   dark2: '#121010',
   dark4: '#312E2E',
 
+  blue: '#2155CD',
   warning: '#F38B00',
   caution: '#F2C94C',
   success: '#22C38E',

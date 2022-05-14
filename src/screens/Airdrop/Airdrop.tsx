@@ -16,7 +16,7 @@ import { useMetaData } from '../../hooks/useMetaData';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { SOL_BALANCE_TARGET } from './const';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { Button } from '../Distribution/Button';
+import { Button } from '../../components/Button/Button';
 
 const s = StyleSheet.create({
   main: {

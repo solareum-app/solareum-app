@@ -1,3 +1,35 @@
+### Distribution
+```json
+{
+  "balance": 92090.550938304,
+  "missionLeft": 85,
+  "missionPerDay": 100,
+  "missionReward": 5.06,
+  "missionSignature": "52xE5eMsske18DXLAjsi3nfvwfrRCLxegwemHCcypATRD1aXFbNxNwt8bTWTXxrzNffG2qvaRWWCdLuqJRb6nMcq",
+  "referAddress": "2u72ors8GH8gj2P4pnhpZTewnTb5iNE6Czp9YeeEz1e5",
+  "referRate": 0.000015,
+  "referReward": 1.38,
+  "referSignature": "jHuM3pmGSpni6Dmgxa934YVZYvUyvDyFhLhYqm66ffvne4pouLcQJoZLzAFKjVjdycnhweCMCPpPVR3Ydq87EFd",
+  "input": {
+    "meta": {
+      "appVersion": "2.21.4",
+      "bundleId": "com.solareum.wallet.WLRC5ZTG7",
+      "deviceId": "65A3A129-AE67-4C24-8498-52F42A884285",
+      "firstInstallTime": -1,
+      "macAddress": "02:00:00:00:00:00",
+      "os": "ios",
+      "phone": "unknown",
+      "platformVersion": "15.4",
+      "solAccountList": "8Cq9512zEtKLRGNtNGeFmcwnwWYSkMvNPKZmufiZv1Qh,7JbGFAEiu9TaspgRzRcPaaVUhxvBtvBcFkbi5T63Z8X2,2u72ors8GH8gj2P4pnhpZTewnTb5iNE6Czp9YeeEz1e5,5FE7TnNxcfPERLoPbasDfqzVb57opS3xsZ88Uh2k7Kug,EhnPjjZkcTrRjKFcJzy1fnQyfJPXycWXatXQYsyM3qN6",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+    },
+    "solAddress": "5FE7TnNxcfPERLoPbasDfqzVb57opS3xsZ88Uh2k7Kug",
+    "xsbAddress": "5kWC1oHvfGP9nYJYmoMVvZrLG37wsXrjmReDbTGC4EBa"
+  },
+  "rewardRate": 0.000055
+}
+```
+
 ### Errors
 
 Setting a timer for a long period of time, i.e. multiple minutes, is a performance and correctness issue on Android as it keeps the timer module awake, and timers can only be called when the app is in the foreground. See https://github.com/facebook/react-native/issues/12981 for more info.

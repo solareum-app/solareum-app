@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, View, StyleSheet, Text } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import { COLORS } from '../../theme';
 import { grid, typo } from '../../components/Styles';
 import { Airdrop } from '../Airdrop/Airdrop';
+import { Mission } from './Mission';
+import { authFetch } from '../../utils/authfetch';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { service } from '../../config';
+import { useMetaData } from '../../hooks/useMetaData';
+import { LoadingImage } from '../../components/LoadingIndicator';
 
 const s = StyleSheet.create({
   main: {
@@ -59,12 +65,50 @@ const box = StyleSheet.create({
   value: {
     ...typo.normal,
     marginBottom: 0,
-    // color: COLORS.dark4,
     fontWeight: 'bold',
   },
 });
 
 export const Distribution = () => {
+  const { accountList } = usePrice();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [mode, setMode] = useState<'airdrop' | 'mission'>('airdrop');
+  const metaData = useMetaData();
+
+  const solAccount = accountList.find((i) => i.mint === 'SOL') || {
+    publicKey: '-',
+    decimals: 8,
+    amount: 0,
+  };
+  const solAddress = solAccount?.publicKey;
+
+  const checkAirdrop = async () => {
+    if (!solAddress) {
+      return;
+    }
+
+    const resp = await authFetch(service.postCheckAirdrop, {
+      method: 'POST',
+      body: {
+        solAddress,
+        meta: {
+          ...metaData,
+        },
+      },
+    });
+
+    if (resp.rewardAirdrop > 0) {
+      setMode('airdrop');
+    } else {
+      setMode('mission');
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    checkAirdrop();
+  }, [solAddress]);
+
   return (
     <View style={s.main}>
       <SafeAreaView style={grid.container}>
@@ -104,7 +148,11 @@ export const Distribution = () => {
               </View>
             </View>
 
-            <Airdrop />
+            {loading ? (
+              <LoadingImage />
+            ) : (
+              <>{mode === 'mission' ? <Mission /> : <Airdrop />}</>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>

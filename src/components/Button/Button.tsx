@@ -23,10 +23,12 @@ export const Button = ({
   title,
   disabled,
   onPress,
+  loading,
 }: {
   title: string;
   disabled: boolean;
   onPress: () => void;
+  loading?: boolean;
 }) => {
   return (
     <RnButton
@@ -37,6 +39,7 @@ export const Button = ({
       titleStyle={button.title}
       buttonStyle={button.body}
       disabledStyle={button.disabled}
+      loading={loading}
     />
   );
 };
