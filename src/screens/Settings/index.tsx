@@ -152,10 +152,8 @@ const Settings: React.FC = () => {
           </ListItem>
         </View>
 
-
-
         <View style={s.group}>
-          <Text style={s.groupName}>{t('setting-with-solareum')}</Text>
+          <Text style={s.groupName}>{t('setting-community')}</Text>
 
           <ListItem
             bottomDivider
@@ -190,56 +188,6 @@ const Settings: React.FC = () => {
             </ListItem.Content>
             <ListItem.Chevron color="grey" />
           </ListItem>
-
-          <ListItem
-            bottomDivider
-            containerStyle={s.item}
-            onPress={() => {
-              navigation.navigate(Routes.Influencer);
-            }}
-          >
-            <Icon type="feather" name="users" color="grey" size={16} />
-            <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>
-                {t('setting-referral')}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron color="grey" />
-          </ListItem>
-          <ListItem
-            bottomDivider
-            containerStyle={s.item}
-            onPress={() => {
-              navigation.navigate(Routes.Airdrop);
-            }}
-          >
-            <Icon type="antdesign" name="rocket1" color="grey" size={16} />
-            <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>
-                {t('setting-airdrop')}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron color="grey" />
-          </ListItem>
-          <ListItem
-            bottomDivider
-            containerStyle={s.item}
-            onPress={() => {
-              navigation.navigate(Routes.Mission);
-            }}
-          >
-            <Icon type="antdesign" name="hearto" color="grey" size={16} />
-            <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>
-                {t('setting-mission')}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron color="grey" />
-          </ListItem>
-        </View>
-
-        <View style={s.group}>
-          <Text style={s.groupName}>{t('setting-community')}</Text>
 
           <ListItem
             bottomDivider
@@ -284,22 +232,6 @@ const Settings: React.FC = () => {
             <ListItem.Content>
               <ListItem.Title style={s.itemTitle}>
                 {t('setting-terms-of-use')}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron color="grey" />
-          </ListItem>
-
-          <ListItem
-            bottomDivider
-            containerStyle={s.item}
-            onPress={() => {
-              Linking.openURL(links.wealthclub);
-            }}
-          >
-            <Icon type="antdesign" name="staro" color="grey" size={16} />
-            <ListItem.Content>
-              <ListItem.Title style={s.itemTitle}>
-                {t('setting-wealthclub')}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color="grey" />

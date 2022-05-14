@@ -71,7 +71,7 @@ export const RemoteConfigProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       const swapApp = (await getItem('', SWAP_APPLICATION_KEY)) as SWAP_APP;
-      setSwapOrg(swapApp);
+      setSwapOrg(swapApp || SWAP_APP.JUPITER);
     })();
   }, []);
 
