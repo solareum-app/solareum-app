@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Linking } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Portal } from 'react-native-portalize';
 import { Button } from 'react-native-elements';
 
@@ -11,7 +11,6 @@ import { AirdropStepCreateAccount } from './AirdropStepCreateAccount';
 import { AirdropStepInputRefAddress } from './AirdropStepInputRefAddress';
 import { AirdropStepReview } from './AirdropStepReview';
 import { AirdropStepSuccessAndShare } from './AirdropStepSuccessAndShare';
-import ImgPayment from '../../assets/clip-payment.png';
 import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
@@ -21,9 +20,9 @@ import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   main: {
-    marginTop: -36,
+    marginTop: 24,
     marginBottom: 40,
-    padding: 24,
+    padding: 0,
   },
   img: {
     width: 140,
@@ -37,6 +36,21 @@ const s = StyleSheet.create({
   },
 });
 
+const button = StyleSheet.create({
+  title: {
+    color: COLORS.white0,
+  },
+  body: {
+    backgroundColor: '#2155CD',
+    borderColor: '#2155CD',
+    height: 52,
+  },
+  disabled: {
+    backgroundColor: COLORS.dark2,
+    opacity: 0.7,
+  },
+});
+
 enum AIRDROP_STEP {
   info = 'info',
   createAccount = 'createAccount',
@@ -45,7 +59,7 @@ enum AIRDROP_STEP {
   successAndShare = 'successAndShare',
 }
 
-export const Airdrop = ({ isActive, load }) => {
+export const Airdrop = () => {
   const { accountList } = usePrice();
   const [airdropActive, setAirdropActive] = useState(true);
   const [airdrop, setAirdrop] = useState(0);
@@ -99,9 +113,7 @@ export const Airdrop = ({ isActive, load }) => {
     setRewardRef(resp.rewardRef || 0);
   };
 
-  const dismiss = () => {
-    setAirdropActive(false);
-  };
+  const dismiss = () => {};
 
   const startAirdrop = () => {
     setError('');
@@ -177,36 +189,23 @@ export const Airdrop = ({ isActive, load }) => {
 
   useEffect(() => {
     checkAirdrop();
-  }, [load, accountList]);
-
-  if (!airdrop && !isActive) {
-    return null;
-  }
+  }, [accountList]);
 
   return (
     <View>
-      <View style={{ ...s.main, padding: isActive ? 0 : 24 }}>
-        <Image style={s.img} source={ImgPayment} />
-        <Text style={typo.titleLeft}>{t('airdrop-title')}</Text>
-        <Text style={typo.normal}>{t('airdrop-intro')}</Text>
-        <Text style={{ ...typo.normal, marginBottom: 16 }}>
-          {t('airdrop-intro-2')}
+      <View style={s.main}>
+        <Text style={typo.titleLeft}>Get started and receive free XSB</Text>
+        <Text style={{ ...typo.normal, marginBottom: 24 }}>
+          {t('airdrop-intro')}
         </Text>
         <Button
-          title={t('airdrop-receive-btn', {
-            airdrop: airdrop > 0 ? airdrop : 0,
-          })}
+          title="Get started"
           type="outline"
           onPress={startAirdrop}
           disabled={airdrop === 0 || !airdropActive}
-          style={{ marginBottom: 8 }}
-        />
-        <Button
-          type="clear"
-          title="Learn more"
-          onPress={() =>
-            Linking.openURL('https://www.wealthclub.vn/t/xsb-airdrop-2-0-1/893')
-          }
+          titleStyle={button.title}
+          buttonStyle={button.body}
+          disabledStyle={button.disabled}
         />
       </View>
 

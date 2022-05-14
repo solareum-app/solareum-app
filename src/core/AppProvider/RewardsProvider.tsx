@@ -126,6 +126,7 @@ export const RewardsProvider = ({ children }) => {
       method: 'POST',
       body: {
         solAddress: solAccount?.publicKey,
+        xsbAddress: xsbAccount?.publicKey,
         meta: {
           ...metaData,
         },

@@ -23,6 +23,7 @@ export let service = {
 
   postCheckMission: `${XSB_PATH}/mission/check`,
   postMission: `${XSB_PATH}/mission/get`,
+  postDistribute: `${XSB_PATH}/mission/distribute`,
 
   purchaseSubmit: `${XSB_PATH}/purchase/submit`,
   purchaseDistribute: `${XSB_PATH}/purchase/distribute`,
