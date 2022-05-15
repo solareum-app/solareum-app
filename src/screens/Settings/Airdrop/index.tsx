@@ -13,7 +13,7 @@ const Airdrop: React.FC<Props> = () => {
       <SafeAreaView style={grid.wrp}>
         <ScrollView>
           <View style={grid.content}>
-            <AirdropComp isActive={true} />
+            <AirdropComp />
           </View>
         </ScrollView>
       </SafeAreaView>

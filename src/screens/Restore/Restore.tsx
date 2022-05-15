@@ -12,7 +12,10 @@ import {
   Linking,
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import GDrive from 'react-native-google-drive-api-wrapper';
 import base64 from 'react-native-base64';
 import iCloudAccountStatus from 'react-native-icloud-account-status';
@@ -53,7 +56,6 @@ type Props = {};
 const targetPath = 'private-key.json';
 const APP_DIRECTORY = 'Solareum';
 
-
 export const Restore: React.FC<Props> = () => {
   const { restoreWallets: restoreAllWallets } = useApp();
   const navigation = useNavigation();
@@ -86,38 +88,37 @@ export const Restore: React.FC<Props> = () => {
     return isExists;
   };
 
-  const checkPrivateFileExitsInDrive = async () =>{
+  const checkPrivateFileExitsInDrive = async () => {
     let isExists = false;
     const isSignedIn = await _isSignedIn();
-    console.log("is signed in: ",isSignedIn)
+    console.log('is signed in: ', isSignedIn);
     try {
-      if (!isSignedIn){
-       await _signIn()}
+      if (!isSignedIn) {
+        await _signIn();
+      }
       if (!(await _initGoogleDrive())) {
-        setLoading(false)
+        setLoading(false);
         return console.log('Failed to Initialize Google Drive');
       }
-    
+
       let data = await GDrive.files.list({
-        q: GDrive._stringifyQueryParams(
-            {trashed: false}, '', ' and ', true
-           ),
+        q: GDrive._stringifyQueryParams({ trashed: false }, '', ' and ', true),
       });
       let result = await data.json();
-      result.files.forEach((file) =>{
-        if (file.name === APP_DIRECTORY){
+      result.files.forEach((file) => {
+        if (file.name === APP_DIRECTORY) {
           isExists = true;
           return;
         }
-      })
+      });
     } catch (error) {
       console.log('Error->', error);
     }
 
-    console.log("file exists: ",isExists)
-   
-return isExists;
-  }
+    console.log('file exists: ', isExists);
+
+    return isExists;
+  };
 
   const handleLinkDownloadIOS = (url) => {
     const params = getParamsInURL(url);
@@ -268,50 +269,54 @@ return isExists;
       return;
     }
     setLoading(true);
-    const fileExistsInCloud = Platform.OS === "ios" ?  await checkPrivateFileExistsInCloud(): await checkPrivateFileExitsInDrive();
+    const fileExistsInCloud =
+      Platform.OS === 'ios'
+        ? await checkPrivateFileExistsInCloud()
+        : await checkPrivateFileExitsInDrive();
     if (fileExistsInCloud) {
-    if (Platform.OS === 'android') {
-      if (!(await _initGoogleDrive())) {
-         setLoading(false)
-         return Alert.alert('Failed to Initialize Google Drive');
-
-      }
-      let data = await GDrive.files.list({
-        q: GDrive._stringifyQueryParams(
-            {trashed: false,mimeType: "application/json"}, '', ' and ', true
-           ),
-      }); 
-      let result = await data.json();
-      console.log("🎉 private-key: ",result)
-      let id = result.files[0].id;
-      await getContentFileFromGDrive(id).then((wallets) => {
-        console.log('🎉 file json: ', wallets);
-        restoreWallets(wallets || []);
-        
-      });
-    }
-  else {
-      RNCloudFs.listFiles({
-        targetPath: '',
-        scope: 'visible',
-      }).then(async (files) => {
-        let file = files.files.filter((file) => file.name.includes(targetPath));
-        if (Platform.OS === 'ios') {
-          let link = decodeURIComponent(file[0].uri);
-          link = handleLinkDownloadIOS(link);
-          await getContentFileFromIcloud(link).then((wallets) => {
-            console.log('🎉 file json: ', wallets);
-            restoreWallets(wallets || []);
-          });
-        } 
-      });
+      if (Platform.OS === 'android') {
+        if (!(await _initGoogleDrive())) {
+          setLoading(false);
+          return Alert.alert('Failed to Initialize Google Drive');
+        }
+        let data = await GDrive.files.list({
+          q: GDrive._stringifyQueryParams(
+            { trashed: false, mimeType: 'application/json' },
+            '',
+            ' and ',
+            true,
+          ),
+        });
+        let result = await data.json();
+        console.log('🎉 private-key: ', result);
+        let id = result.files[0].id;
+        await getContentFileFromGDrive(id).then((wallets) => {
+          console.log('🎉 file json: ', wallets);
+          restoreWallets(wallets || []);
+        });
+      } else {
+        RNCloudFs.listFiles({
+          targetPath: '',
+          scope: 'visible',
+        }).then(async (files) => {
+          let file = files.files.filter((file) =>
+            file.name.includes(targetPath),
+          );
+          if (Platform.OS === 'ios') {
+            let link = decodeURIComponent(file[0].uri);
+            link = handleLinkDownloadIOS(link);
+            await getContentFileFromIcloud(link).then((wallets) => {
+              console.log('🎉 file json: ', wallets);
+              restoreWallets(wallets || []);
+            });
+          }
+        });
       }
     } else {
       Alert.alert('File Not Found');
     }
     setLoading(false);
   };
-
 
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
@@ -329,7 +334,7 @@ return isExists;
         }
       }
     }
-    return isSignedIn ;
+    return isSignedIn;
   };
 
   const _signIn = async () => {
@@ -345,20 +350,20 @@ return isExists;
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
       } else if (error.code === statusCodes.IN_PROGRESS) {
-      } else if (
-        error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
-      ) {
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         console.log('Play Services Not Available or Outdated');
       } else {
         console.log('error.message', JSON.stringify(error));
       }
     }
   };
-   
+
   const _initGoogleDrive = async () => {
     // Getting Access Token from Google
     let token = await GoogleSignin.getTokens();
-    if (!token) return console.log('Failed to get token');
+    if (!token) {
+      return console.log('Failed to get token');
+    }
     console.log('res.accessToken =>', token.accessToken);
     // Setting Access Token
     GDrive.setAccessToken(token.accessToken);
@@ -368,7 +373,6 @@ return isExists;
     return GDrive.isInitialized();
   };
 
-  
   return (
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>

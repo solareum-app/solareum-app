@@ -27,6 +27,7 @@ const s = StyleSheet.create({
     marginBottom: 16,
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: 40,
   },
   message: {
     ...typo.normal,

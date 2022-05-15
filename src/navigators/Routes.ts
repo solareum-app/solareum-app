@@ -1,5 +1,6 @@
 export enum Routes {
   Home = 'Home',
+  Wallet = 'Wallet',
   CreateWallet = 'Create Wallet',
   EditWallet = 'Edit Wallet',
   DEX = 'Serum DEX',
@@ -9,7 +10,6 @@ export enum Routes {
   Notifications = 'Notification',
   Settings = 'Settings',
   Token = 'Token',
-  Wallet = 'Wallet',
   SettingWallet = 'Manage Wallet',
   Search = 'Tokens',
   Mission = 'Mission',
@@ -24,6 +24,7 @@ export enum Routes {
   Pay = 'Pay',
   MoonPay = 'MoonPay',
   Restore = 'Restore',
+  Distribution = 'Staking',
 }
 
 export default Routes;
