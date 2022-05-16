@@ -12,7 +12,7 @@
   "referSignature": "jHuM3pmGSpni6Dmgxa934YVZYvUyvDyFhLhYqm66ffvne4pouLcQJoZLzAFKjVjdycnhweCMCPpPVR3Ydq87EFd",
   "input": {
     "meta": {
-      "appVersion": "2.21.4",
+      "appVersion": "2.21.5",
       "bundleId": "com.solareum.wallet.WLRC5ZTG7",
       "deviceId": "65A3A129-AE67-4C24-8498-52F42A884285",
       "firstInstallTime": -1,

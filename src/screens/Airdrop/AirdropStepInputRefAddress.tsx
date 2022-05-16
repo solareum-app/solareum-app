@@ -87,6 +87,12 @@ export const AirdropStepInputRefAddress = ({
       setError(t('airdrop-ref-error-ref-address'));
       return;
     }
+
+    if (refAddress.length > 44) {
+      setError('Your referral address is invalid');
+      return;
+    }
+
     next();
   };
 
