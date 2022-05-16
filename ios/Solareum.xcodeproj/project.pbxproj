@@ -17,6 +17,7 @@
 		2D3A8E8E27E82AA400F10BE3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3A8E8D27E82AA400F10BE3 /* CloudKit.framework */; };
 		2D697C3C27FC307600AFC0C0 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 51993BBB262AC60400AC7E6B /* Fonts */; };
 		2DCD954D1E0B4F2C00145EB5 /* SolareumTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SolareumTests.m */; };
+		2DE41E322832023A00074FA2 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D697C3A27FC2A4D00AFC0C0 /* main.jsbundle */; };
 		2DE53D4327E85BC200057A93 /* RNCloudFs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE53D4227E85BC200057A93 /* RNCloudFs.m */; };
 		2E4C8D92D5CD0FAAE95158E4 /* libPods-Solareum-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6748FC42CFA1E5517DAC70C /* libPods-Solareum-tvOS.a */; };
 		517D8B35263D03D00086A7A7 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 517D8B34263D03CF0086A7A7 /* AppCenter-Config.plist */; };
@@ -371,6 +372,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DE41E322832023A00074FA2 /* main.jsbundle in Resources */,
 				2D697C3C27FC307600AFC0C0 /* Fonts in Resources */,
 				517D8B35263D03D00086A7A7 /* AppCenter-Config.plist in Resources */,
 				BC9B82B1270027BE00E3B3A5 /* GoogleService-Info.plist in Resources */,
