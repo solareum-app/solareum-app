@@ -25,12 +25,14 @@ export type RewardsContextType = {
   getActive: () => boolean;
   getLabel: () => string;
   loading: boolean;
+  missionLeft: number;
 };
 export const RewardsContext = React.createContext<RewardsContextType>({
   getRewards: () => null,
   getActive: () => false,
   getLabel: () => '',
   loading: false,
+  missionLeft: 0,
 });
 
 export const useRewards = () => {
@@ -74,7 +76,7 @@ export const RewardsProvider = ({ children }) => {
   };
 
   const getRewards = async () => {
-    if (missionLeft <= 0 || !getActive()) {
+    if (missionLeft <= 0) {
       return;
     }
 
@@ -122,10 +124,11 @@ export const RewardsProvider = ({ children }) => {
 
   const earnMissionReward = async () => {
     setLoading(true);
-    const resp = await authFetch(service.postMission, {
+    const resp = await authFetch(service.postDistribute, {
       method: 'POST',
       body: {
         solAddress: solAccount?.publicKey,
+        xsbAddress: xsbAccount?.publicKey,
         meta: {
           ...metaData,
         },
@@ -138,6 +141,7 @@ export const RewardsProvider = ({ children }) => {
       };
     });
     setMission(resp);
+    setMissionLeft(resp.missionLeft);
     setLoading(false);
     refMissionReward.current?.open();
 
@@ -250,7 +254,7 @@ export const RewardsProvider = ({ children }) => {
 
   return (
     <RewardsContext.Provider
-      value={{ getRewards, getActive, loading, getLabel }}
+      value={{ getRewards, getActive, loading, getLabel, missionLeft }}
     >
       {children}
       <Portal>
