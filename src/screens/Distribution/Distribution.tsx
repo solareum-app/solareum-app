@@ -10,7 +10,7 @@ import {
 import LottieView from 'lottie-react-native';
 
 import { COLORS } from '../../theme';
-import { grid, typo } from '../../components/Styles';
+import { grid } from '../../components/Styles';
 import { Airdrop } from '../Airdrop/Airdrop';
 import { Mission } from './Mission';
 import { authFetch } from '../../utils/authfetch';
@@ -18,6 +18,7 @@ import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { service } from '../../config';
 import { useMetaData } from '../../hooks/useMetaData';
 import { LoadingImage } from '../../components/LoadingIndicator';
+import { box } from './style';
 
 const s = StyleSheet.create({
   main: {
@@ -33,50 +34,6 @@ const s = StyleSheet.create({
   img: {
     width: 220,
     height: 220,
-  },
-});
-
-const box = StyleSheet.create({
-  main: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: COLORS.dark0,
-    borderColor: COLORS.dark2,
-    borderWidth: 1,
-    borderRadius: 8,
-    height: 72,
-    marginBottom: 8,
-  },
-  left: {
-    flex: 1,
-  },
-  right: {
-    flex: 0,
-  },
-  badge: {
-    backgroundColor: '#2155CD',
-    borderRadius: 16,
-    padding: 4,
-    paddingHorizontal: 16,
-  },
-  title: {
-    ...typo.titleLeft,
-    marginBottom: 0,
-    fontSize: 18,
-  },
-  helper: {
-    ...typo.helper,
-    marginBottom: 0,
-    fontSize: 12,
-    lineHeight: 12,
-  },
-  value: {
-    ...typo.normal,
-    marginBottom: 0,
-    fontWeight: 'bold',
-    fontSize: 14,
   },
 });
 
