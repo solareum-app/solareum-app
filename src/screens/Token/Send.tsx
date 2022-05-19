@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import { Input, Button, Icon } from 'react-native-elements';
@@ -101,10 +101,8 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token,urlRedirect
   };
 
 
-  const redirect = () =>{
-    let linkRediret = urlRedirect + "://app?msg=solareum"
-    Linking.openURL(linkRediret)
-  }
+ 
+
   return (
     <View>
       {!camera ? (
@@ -165,8 +163,7 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token,urlRedirect
             <Button
               title={t('token-continue-btn')}
               buttonStyle={s.button}
-              onPress = {redirect}
-              // onPress={next}
+              onPress={next}
             />
           </View>
         </View>
@@ -271,12 +268,21 @@ const s3 = StyleSheet.create({
   },
 });
 
-const Step3 = ({ signature }) => {
+const Step3 = ({urlRedirect, signature, client_id }) => {
   const { t } = useLocalize();
 
   const openBrowser = () => {
     Linking.openURL(`https://solscan.io/tx/${signature}`);
   };
+
+  const redirect = () =>{
+    var status = 1;
+    if (signature === null){
+      status = 0;
+    }
+    let linkRedirect = urlRedirect + "://app?client_id="+client_id+"&signature="+signature+"&status="+status;
+    Linking.openURL(linkRedirect)
+  }
 
   return (
     <View style={s.main}>
@@ -297,11 +303,21 @@ const Step3 = ({ signature }) => {
           onPress={openBrowser}
         />
       </View>
+
+      {client_id != undefined ? 
+      <View >
+        <Button
+          title= "Back to App"
+          buttonStyle={s.button}
+          type="clear"
+          onPress={redirect}
+        />
+        </View> :null}
     </View>
   );
 };
 
-export const Send = ({ initStep = 1, token, initAddress,urlRedirect = '' }) => {
+export const Send = ({ initStep = 1, initAddress,token,client_id,quantity,e_usd ,urlRedirect = '' }) => {
   const [step, setStep] = useState(initStep);
   const [address, setAddress] = useState(initAddress);
   const [error, setError] = useState('');
@@ -310,6 +326,14 @@ export const Send = ({ initStep = 1, token, initAddress,urlRedirect = '' }) => {
   const { wallet } = useApp();
   const [busy, setBusy] = useState(false);
   const { t } = useLocalize();
+
+  console.log("🚩 quantity ",quantity)
+  useEffect(() => {
+    if (quantity != ""){
+      console.log("🎉 set amount");
+      setAmount(quantity)
+    }
+  }, [quantity]);
 
   const transfer = async () => {
     setBusy(true);
@@ -346,18 +370,33 @@ export const Send = ({ initStep = 1, token, initAddress,urlRedirect = '' }) => {
     }
   };
 
-  if (step === 1) {
-    return (
-      <Step1
-        next={() => setStep(2)}
-        address={address}
-        setAddress={setAddress}
-        amount={amount}
-        setAmount={setAmount}
-        token={token}
-        urlRedirect= {urlRedirect}
-      />
-    );
+  if (step === 1 ) {
+    if (quantity === ""){
+      return (
+        <Step1
+          next={() => setStep(2)}
+          address={address}
+          setAddress={setAddress}
+          amount={amount}
+          setAmount={setAmount}
+          token={token}
+          urlRedirect= {urlRedirect}
+        />
+      );
+    }else {
+      return (
+        <Step1
+          next={() => setStep(2)}
+          address={address}
+          setAddress={setAddress}
+          amount={quantity}
+          setAmount={setAmount}
+          token={token}
+          urlRedirect= {urlRedirect}
+        />
+      );
+    }
+  
   }
 
   if (step === 2) {
@@ -373,5 +412,8 @@ export const Send = ({ initStep = 1, token, initAddress,urlRedirect = '' }) => {
     );
   }
 
-  return <Step3 signature={signature} />;
+  return <Step3 
+          urlRedirect = {urlRedirect}
+          signature={signature} 
+          client_id = {client_id}/>;
 };

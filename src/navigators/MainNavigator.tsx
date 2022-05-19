@@ -99,9 +99,15 @@ const MainNavigator: React.FC = () => {
     }
     const url = new URL(link.url);
     console.log("🎉 url: ",url)
-    const urlRedirect = url.searchParams.get("scheme")
+    const urlRedirect = url.searchParams.get("scheme")||""
     const token = url.searchParams.get('token') || 'XSB';
     const address = url.searchParams.get('address');
+    const quantity = url.searchParams.get('quantity') || "";
+    const client_id = url.searchParams.get('client_id')
+    const e_usd = url.searchParams.get('e_usd') || ""
+
+
+
     const account = accountList.find((i) => i.symbol === token);
     if (!account) {
       return;
@@ -109,15 +115,22 @@ const MainNavigator: React.FC = () => {
     if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
       navigationRef.current.setParams({
         action: TransferAction.send,
-        token: account,
         initAddress: address,
+        token: account,
+        client_id:client_id,
+        e_usd: e_usd,
+        quantity: quantity,
         redirect:urlRedirect,
+
       });
     } else {
       navigationRef.current?.navigate(Routes.Token, {
         action: TransferAction.send,
-        token: account,
         initAddress: address,
+        token: account,
+        client_id:client_id,
+        e_usd: e_usd,
+        quantity: quantity,
         redirect:urlRedirect,
       });
     }
