@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import { LoadingImage } from '../../components/LoadingIndicator';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   main: {
@@ -25,18 +26,17 @@ const s = StyleSheet.create({
 });
 
 export const MoonPay = () => {
-  // const { accountList } = usePrice();
-  // const solAccount = accountList.find((i) => i.mint === 'SOL');
-  // const solAddress = solAccount?.publicKey || '';
+  const { accountList } = usePrice();
+  const solAccount = accountList.find((i) => i.mint === 'SOL');
 
-  const domain = 'https://buy-sandbox.moonpay.com';
-  const apiKey = 'pk_test_4ero3l8ywK2v2itW8Iy8PurUd3JZju';
-  const currencyCode = 'BTC';
-  const address = 'tb1q45h8zexwztmz3nyd8gmkxhpavdsva4znwwhzvs';
+  const domain = 'https://buy.moonpay.com';
+  const apiKey = 'pk_live_tKheUMl9D8t4rsNQOwjrqUnjZkFBpkc9';
+  const currencyCode = 'SOL';
+  const address = solAccount?.publicKey || '';
   let originalUrl = `${domain}?apiKey=${apiKey}&currencyCode=${currencyCode}&walletAddress=${address}`;
 
   const signature = crypto
-    .createHmac('sha256', 'sk_test_eSLzoHMfwRXFdPTQG7Upy1YbVcwhTdMP')
+    .createHmac('sha256', 'sk_live_VvoeOgLYL0HRSxARJfNhYWqLbOOPFc')
     .update(new URL(originalUrl).search)
     .digest('base64');
 
