@@ -80,7 +80,15 @@ const checkDecimalPlaces = (valueStr) => {
   return (valueStr.match(new RegExp('\\.', 'g')) || []).length <= 1;
 };
 
-const Step1 = ({ address, setAddress, amount, setAmount, next, token,urlRedirect }) => {
+const Step1 = ({
+  address,
+  setAddress,
+  amount,
+  setAmount,
+  next,
+  token,
+  urlRedirect,
+}) => {
   const [camera, setCamera] = useState(false);
   const { symbol, usd } = token;
   const estValue = amount * usd;
@@ -99,9 +107,6 @@ const Step1 = ({ address, setAddress, amount, setAmount, next, token,urlRedirect
     const text = await Clipboard.getString();
     setAddress(text);
   };
-
-
- 
 
   return (
     <View>
@@ -268,21 +273,27 @@ const s3 = StyleSheet.create({
   },
 });
 
-const Step3 = ({urlRedirect, signature, client_id }) => {
+const Step3 = ({ urlRedirect, signature, client_id }) => {
   const { t } = useLocalize();
-
   const openBrowser = () => {
     Linking.openURL(`https://solscan.io/tx/${signature}`);
   };
 
-  const redirect = () =>{
+  const redirect = () => {
     var status = 1;
-    if (signature === null){
+    if (signature === null) {
       status = 0;
     }
-    let linkRedirect = urlRedirect + "://app?client_id="+client_id+"&signature="+signature+"&status="+status;
-    Linking.openURL(linkRedirect)
-  }
+    let linkRedirect =
+      urlRedirect +
+      '://app?client_id=' +
+      client_id +
+      '&signature=' +
+      signature +
+      '&status=' +
+      status;
+    Linking.openURL(linkRedirect);
+  };
 
   return (
     <View style={s.main}>
@@ -304,20 +315,29 @@ const Step3 = ({urlRedirect, signature, client_id }) => {
         />
       </View>
 
-      {client_id != undefined ? 
-      <View >
-        <Button
-          title= "Back to App"
-          buttonStyle={s.button}
-          type="clear"
-          onPress={redirect}
-        />
-        </View> :null}
+      {client_id != undefined ? (
+        <View>
+          <Button
+            title="Back to App"
+            buttonStyle={s.button}
+            type="clear"
+            onPress={redirect}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
 
-export const Send = ({ initStep = 1, initAddress,token,client_id,quantity,e_usd ,urlRedirect = '' }) => {
+export const Send = ({
+  initStep = 1,
+  initAddress,
+  token,
+  client_id,
+  quantity,
+  e_usd,
+  urlRedirect = '',
+}) => {
   const [step, setStep] = useState(initStep);
   const [address, setAddress] = useState(initAddress);
   const [error, setError] = useState('');
@@ -327,11 +347,11 @@ export const Send = ({ initStep = 1, initAddress,token,client_id,quantity,e_usd 
   const [busy, setBusy] = useState(false);
   const { t } = useLocalize();
 
-  console.log("🚩 quantity ",quantity)
+  console.log('🚩 quantity ', quantity);
   useEffect(() => {
-    if (quantity != ""){
-      console.log("🎉 set amount");
-      setAmount(quantity)
+    if (quantity != '') {
+      console.log('🎉 set amount');
+      setAmount(quantity);
     }
   }, [quantity]);
 
@@ -370,8 +390,8 @@ export const Send = ({ initStep = 1, initAddress,token,client_id,quantity,e_usd 
     }
   };
 
-  if (step === 1 ) {
-    if (quantity === ""){
+  if (step === 1) {
+    if (quantity === '') {
       return (
         <Step1
           next={() => setStep(2)}
@@ -380,10 +400,10 @@ export const Send = ({ initStep = 1, initAddress,token,client_id,quantity,e_usd 
           amount={amount}
           setAmount={setAmount}
           token={token}
-          urlRedirect= {urlRedirect}
+          urlRedirect={urlRedirect}
         />
       );
-    }else {
+    } else {
       return (
         <Step1
           next={() => setStep(2)}
@@ -392,11 +412,10 @@ export const Send = ({ initStep = 1, initAddress,token,client_id,quantity,e_usd 
           amount={quantity}
           setAmount={setAmount}
           token={token}
-          urlRedirect= {urlRedirect}
+          urlRedirect={urlRedirect}
         />
       );
     }
-  
   }
 
   if (step === 2) {
@@ -412,8 +431,11 @@ export const Send = ({ initStep = 1, initAddress,token,client_id,quantity,e_usd 
     );
   }
 
-  return <Step3 
-          urlRedirect = {urlRedirect}
-          signature={signature} 
-          client_id = {client_id}/>;
+  return (
+    <Step3
+      urlRedirect={urlRedirect}
+      signature={signature}
+      client_id={client_id}
+    />
+  );
 };
