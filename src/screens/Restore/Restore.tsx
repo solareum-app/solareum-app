@@ -263,16 +263,13 @@ export const Restore: React.FC<Props> = () => {
       });
   };
 
-  const restore = async () => {
-    const icloudStatus = await checkIcloudAccountStatus();
-    if (!icloudStatus) {
-      return;
-    }
-    setLoading(true);
+  const handleRestore = async () => {
     const fileExistsInCloud =
       Platform.OS === 'ios'
         ? await checkPrivateFileExistsInCloud()
         : await checkPrivateFileExitsInDrive();
+    setLoading(true);
+
     if (fileExistsInCloud) {
       if (Platform.OS === 'android') {
         if (!(await _initGoogleDrive())) {
@@ -316,6 +313,21 @@ export const Restore: React.FC<Props> = () => {
       Alert.alert('File Not Found');
     }
     setLoading(false);
+  };
+
+  const restore = async () => {
+    setLoading(true);
+    const icloudStatus = await checkIcloudAccountStatus();
+
+    console.log('🎉 icloud status: ', icloudStatus);
+    if (!icloudStatus) {
+      return;
+    } else {
+      setTimeout(() => {
+        handleRestore();
+      }, 8000);
+      // setLoading(false);
+    }
   };
 
   const _isSignedIn = async () => {
