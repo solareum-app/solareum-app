@@ -36,7 +36,6 @@ import { MoonPay } from '../screens/Moonpay/Moonpay';
 import { Restore } from '../screens/Restore/Restore';
 import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
 
-
 const s = StyleSheet.create({
   backWrp: {
     marginLeft: 20,
@@ -61,8 +60,6 @@ const MainNavigator: React.FC = () => {
   };
 
   const handleDynamicLink = (link: any) => {
-    console.log("🎉 link:  ",link)
-
     if (!link) {
       return;
     }
@@ -91,62 +88,59 @@ const MainNavigator: React.FC = () => {
     }
   };
 
-
-  const handleScheme = (link:any) => {
-
-    if (!link){
-      return
+  const handleScheme = (link: any) => {
+    if (!link) {
+      return;
     }
+
     const url = new URL(link.url);
-    console.log("🎉 url: ",url)
-    const urlRedirect = url.searchParams.get("scheme")||""
+    const urlRedirect = url.searchParams.get('scheme') || '';
     const token = url.searchParams.get('token') || 'XSB';
     const address = url.searchParams.get('address');
-    const quantity = url.searchParams.get('quantity') || "";
-    const client_id = url.searchParams.get('client_id')
-    const e_usd = url.searchParams.get('e_usd') || ""
+    const quantity = url.searchParams.get('quantity') || '';
+    const client_id = url.searchParams.get('client_id');
+    const e_usd = url.searchParams.get('e_usd') || '';
 
-
+    if (!address) {
+      return;
+    }
 
     const account = accountList.find((i) => i.symbol === token);
     if (!account) {
       return;
     }
-    if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
+    if (navigationRef?.current.getCurrentRoute().name === Routes.Token) {
       navigationRef.current.setParams({
         action: TransferAction.send,
         initAddress: address,
         token: account,
-        client_id:client_id,
+        client_id: client_id,
         e_usd: e_usd,
         quantity: quantity,
-        redirect:urlRedirect,
-
+        redirect: urlRedirect,
       });
     } else {
       navigationRef.current?.navigate(Routes.Token, {
         action: TransferAction.send,
         initAddress: address,
         token: account,
-        client_id:client_id,
+        client_id: client_id,
         e_usd: e_usd,
         quantity: quantity,
-        redirect:urlRedirect,
+        redirect: urlRedirect,
       });
     }
-  }
+  };
 
   useEffect(() => {
     const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
     Linking.getInitialURL().then(handleDynamicLink);
-    Linking.addEventListener('url',  handleScheme ); 
+    Linking.addEventListener('url', handleScheme);
 
     // When the component is unmounted, remove the listener
     return () => unsubscribe();
   }, [ready, accountList]);
 
-
-  
   useEffect(() => {
     dynamicLinks().getInitialLink().then(handleDynamicLink);
     Linking.getInitialURL().then(handleScheme);

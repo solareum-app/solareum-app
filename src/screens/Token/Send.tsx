@@ -347,10 +347,8 @@ export const Send = ({
   const [busy, setBusy] = useState(false);
   const { t } = useLocalize();
 
-  console.log('🚩 quantity ', quantity);
   useEffect(() => {
     if (quantity != '') {
-      console.log('🎉 set amount');
       setAmount(quantity);
     }
   }, [quantity]);
