@@ -122,7 +122,9 @@ const Token = ({ route }) => {
       setAccount(acc);
     }
   }, [accountList]);
-
+  useEffect(() => {
+    setAccount(token);
+  }, [token]);
   useEffect(() => {
     // open action panel
     setTimeout(() => {

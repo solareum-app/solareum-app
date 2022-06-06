@@ -133,6 +133,7 @@ const MainNavigator: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!ready) return;
     const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
     Linking.getInitialURL().then(handleDynamicLink);
     Linking.addEventListener('url', handleScheme);
@@ -142,6 +143,7 @@ const MainNavigator: React.FC = () => {
   }, [ready, accountList]);
 
   useEffect(() => {
+    if (!ready) return;
     dynamicLinks().getInitialLink().then(handleDynamicLink);
     Linking.getInitialURL().then(handleScheme);
   }, [ready]);
