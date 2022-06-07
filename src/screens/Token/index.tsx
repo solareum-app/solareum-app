@@ -209,7 +209,12 @@ const Token = ({ route }) => {
       </ScrollView>
 
       <Portal>
-        <FixedContent ref={refSend}>
+        <FixedContent
+          ref={refSend}
+          onClose={() => {
+            console.log('close');
+          }}
+        >
           <Send
             initStep={1}
             initAddress={initAddress}
