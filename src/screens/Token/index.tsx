@@ -66,12 +66,21 @@ const s = StyleSheet.create({
 });
 
 const Token = ({ route }) => {
-  const { action, token, initAddress = '' } = route.params;
+  const {
+    action,
+    initAddress,
+    token,
+    client_id,
+    quantity,
+    e_usd,
+    redirect = '',
+  } = route.params;
 
   const { accountList } = usePrice();
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState(token);
-
+  const [address, setAddress] = useState(initAddress);
+  const [quantitySend, setQuantitySend] = useState(quantity);
   const { getAccountByPk, toggleAccountByPk } = useToken();
   const { t } = useLocalize();
 
@@ -114,7 +123,9 @@ const Token = ({ route }) => {
       setAccount(acc);
     }
   }, [accountList]);
-
+  useEffect(() => {
+    setAccount(token);
+  }, [token]);
   useEffect(() => {
     // open action panel
     setTimeout(() => {
@@ -131,10 +142,14 @@ const Token = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    if (action === TransferAction.send) {
-      openSendScreen();
-    }
-  });
+    setQuantitySend(quantity);
+    setAddress(initAddress);
+    setTimeout(() => {
+      if (action === TransferAction.send) {
+        openSendScreen();
+      }
+    }, 100);
+  }, [route]);
 
   return (
     <View style={grid.container}>
@@ -199,8 +214,22 @@ const Token = ({ route }) => {
       </ScrollView>
 
       <Portal>
-        <FixedContent ref={refSend}>
-          <Send initStep={1} token={account} initAddress={initAddress} />
+        <FixedContent
+          ref={refSend}
+          onClose={() => {
+            setAddress(undefined);
+            setQuantitySend(undefined);
+          }}
+        >
+          <Send
+            initStep={1}
+            initAddress={address}
+            token={account}
+            client_id={client_id}
+            quantity={quantitySend}
+            e_usd={e_usd}
+            urlRedirect={redirect}
+          />
         </FixedContent>
 
         <FixedContent ref={refReceived}>

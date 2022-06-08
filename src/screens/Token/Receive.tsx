@@ -124,6 +124,9 @@ export const Receive = ({ token = {} }) => {
       await setItem(lrLinkId, address, link);
     }
 
+
+    console.log("link receive: ",link)
+
     const message = t('lr-share', { link, asset: account.symbol });
     Clipboard.setString(message);
     DeviceEventEmitter.emit(MESSAGE_TYPE.copy, message);
