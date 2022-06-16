@@ -10,15 +10,8 @@ public class SplashActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     Intent intent = new Intent(this, MainActivity.class);
-    String action = intent.getAction();
-    Uri data = intent.getData();
     startActivity(intent);
     finish();
   }
-  @Override
-  protected void onNewIntent(final Intent intent) {
-      super.onNewIntent(intent);
-      setIntent(intent);
 
-  }
 }
