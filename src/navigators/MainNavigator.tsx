@@ -63,20 +63,18 @@ const MainNavigator: React.FC = () => {
     if (!link) {
       return;
     }
-
     const url = new URL(link.url);
     // TODO: default token is XSB
     // Going to support USDC + SOL anytime soon
     const token = url.searchParams.get('token') || 'XSB';
     const address = url.searchParams.get('address');
     const account = accountList.find((i) => i.symbol === token);
-
     if (!account) {
       return;
     }
 
-    if (navigationRef.current.getCurrentRoute().name === Routes.Token) {
-      navigationRef.current.setParams({
+    if (navigationRef.current?.getCurrentRoute().name === Routes.Token) {
+      navigationRef.current?.setParams({
         action: TransferAction.send,
         token: account,
         initAddress: address,
@@ -90,15 +88,64 @@ const MainNavigator: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-    // When the component is unmounted, remove the listener
-    return () => unsubscribe();
-  }, [ready]);
+  const handleScheme = (link: any) => {
+    if (!link) {
+      return;
+    }
+
+    const url = new URL(link.url);
+    const urlRedirect = url.searchParams.get('scheme') || '';
+    const token = url.searchParams.get('token') || 'XSB';
+    const address = url.searchParams.get('address');
+    const quantity = url.searchParams.get('quantity') || '';
+    const client_id = url.searchParams.get('client_id');
+    const e_usd = url.searchParams.get('e_usd') || '';
+
+    if (!address) {
+      return;
+    }
+
+    const account = accountList.find((i) => i.symbol === token);
+    if (!account) {
+      return;
+    }
+    if (navigationRef?.current.getCurrentRoute().name === Routes.Token) {
+      navigationRef.current.setParams({
+        action: TransferAction.send,
+        initAddress: address,
+        token: account,
+        client_id: client_id,
+        e_usd: e_usd,
+        quantity: quantity,
+        redirect: urlRedirect,
+      });
+    } else {
+      navigationRef.current?.navigate(Routes.Token, {
+        action: TransferAction.send,
+        initAddress: address,
+        token: account,
+        client_id: client_id,
+        e_usd: e_usd,
+        quantity: quantity,
+        redirect: urlRedirect,
+      });
+    }
+  };
 
   useEffect(() => {
-    dynamicLinks().getInitialLink().then(handleDynamicLink);
+    if (!ready) return;
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
     Linking.getInitialURL().then(handleDynamicLink);
+    Linking.addEventListener('url', handleScheme);
+
+    // When the component is unmounted, remove the listener
+    return () => unsubscribe();
+  }, [ready, accountList]);
+
+  useEffect(() => {
+    if (!ready) return;
+    dynamicLinks().getInitialLink().then(handleDynamicLink);
+    Linking.getInitialURL().then(handleScheme);
   }, [ready]);
 
   return (

@@ -88,13 +88,7 @@ static void InitializeFlipper(UIApplication *application) {
    openURL:(NSURL *)url
    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-BOOL linking =  [RCTLinkingManager application:application openURL:url options:options];
-//  printf("dynamic link manager");
-  
- 
-  BOOL dynamicLink = [[FIRDynamicLinks dynamicLinks] dynamicLinkFromCustomSchemeURL:url];
-  return  linking;
-
+  return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 

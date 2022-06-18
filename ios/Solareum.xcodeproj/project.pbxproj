@@ -770,7 +770,7 @@
 				INFOPLIST_FILE = SolareumTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -791,7 +791,7 @@
 				INFOPLIST_FILE = SolareumTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -811,7 +811,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Solareum/Solareum.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9WLRC5ZTG7;
@@ -893,7 +893,7 @@
 				);
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -902,7 +902,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.solareum.wallet.WLRC5ZTG7;
 				PRODUCT_NAME = Solareum;
-				PROVISIONING_PROFILE_SPECIFIER = "Solareum-April";
+				PROVISIONING_PROFILE_SPECIFIER = SolareumMay23;
 				SWIFT_OBJC_BRIDGING_HEADER = "Solareum-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -918,14 +918,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Solareum/Solareum.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9WLRC5ZTG7;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Solareum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -934,7 +934,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.solareum.wallet.WLRC5ZTG7;
 				PRODUCT_NAME = Solareum;
-				PROVISIONING_PROFILE_SPECIFIER = "Solareum-April";
+				PROVISIONING_PROFILE_SPECIFIER = SolareumMay23;
 				SWIFT_OBJC_BRIDGING_HEADER = "Solareum-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -956,7 +956,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -985,7 +985,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1013,7 +1013,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1041,7 +1041,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Solareum-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1113,7 +1113,7 @@
 					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(inherited)\"",
 				);
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1170,7 +1170,7 @@
 					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(inherited)\"",
 				);
-				MARKETING_VERSION = 2.22.0;
+				MARKETING_VERSION = 2.23.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
