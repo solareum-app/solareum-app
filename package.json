@@ -1,6 +1,6 @@
 {
   "name": "solareum",
-  "version": "2.23.1",
+  "version": "2.23.2",
   "private": true,
   "scripts": {
     "postinstall": "rn-nodeify --install --hack --yarn && yarn run cp:superstruct && yarn run cp:solana && yarn run cp:crypto && npx jetify && npx pod-install",
@@ -52,7 +52,7 @@
     "buffer-layout": "^1.2.0",
     "console-browserify": "^1.1.0",
     "constants-browserify": "^1.0.0",
-    "date-fns": "^2.23.1",
+    "date-fns": "^2.23.2",
     "dns.js": "^1.0.1",
     "domain-browser": "^1.1.1",
     "ed25519-hd-key": "^1.2.0",
