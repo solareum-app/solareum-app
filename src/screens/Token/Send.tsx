@@ -12,6 +12,8 @@ import { useApp } from '../../core/AppProvider/AppProvider';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 import { QRScan } from './QRScan';
+import { authFetch } from '../../utils/authfetch';
+import { throttle } from 'lodash';
 
 const s = StyleSheet.create({
   main: {
@@ -81,6 +83,7 @@ const checkDecimalPlaces = (valueStr) => {
 };
 
 const Step1 = ({
+  actualAddress,
   address,
   setAddress,
   amount,
@@ -117,12 +120,13 @@ const Step1 = ({
             <View style={s.containerInput}>
               <Input
                 label={t('token-address-title')}
-                placeholder=""
+                placeholder="SOL address or FIO handle"
                 style={typo.input}
                 labelStyle={s.inputLabel}
                 containerStyle={s.inputContainer}
-                errorMessage={address}
+                errorMessage={actualAddress}
                 errorStyle={{ color: COLORS.white4 }}
+                placeholderTextColor={COLORS.white4}
                 value={address}
                 onChangeText={(value) => setAddress(value)}
               />
@@ -340,6 +344,7 @@ export const Send = ({
   urlRedirect = '',
 }) => {
   const [step, setStep] = useState(initStep);
+  const [addressInput, setAddressInputSrc] = useState(initAddress);
   const [address, setAddress] = useState(initAddress);
   const [error, setError] = useState('');
   const [amount, setAmount] = useState('');
@@ -347,6 +352,40 @@ export const Send = ({
   const { wallet } = useApp();
   const [busy, setBusy] = useState(false);
   const { t } = useLocalize();
+
+  const getFioAddressThrottle = async (fioHandle: string) => {
+    try {
+      const resp = await authFetch(
+        'https://fio.blockpane.com/v1/chain/get_pub_address',
+        {
+          method: 'post',
+          body: {
+            fio_address: fioHandle,
+            chain_code: 'SOL',
+            token_code: 'SOL',
+          },
+        },
+      );
+      return resp.public_address;
+    } catch {
+      return fioHandle;
+    }
+  };
+  const getFioAddress = throttle(getFioAddressThrottle, 250);
+
+  const setAddressInput = (value: string) => {
+    setAddressInputSrc(value);
+
+    if (value.indexOf('@') < 0) {
+      setAddress(value);
+    } else {
+      setAddress('Fetching...');
+      (async () => {
+        const publicAddress = await getFioAddress(value);
+        setAddress(publicAddress);
+      })();
+    }
+  };
 
   useEffect(() => {
     if (quantity != '') {
@@ -393,8 +432,9 @@ export const Send = ({
     return (
       <Step1
         next={() => setStep(2)}
-        address={address}
-        setAddress={setAddress}
+        actualAddress={address}
+        address={addressInput}
+        setAddress={setAddressInput}
         amount={amount}
         setAmount={setAmount}
         token={token}
