@@ -1,7 +1,12 @@
-import React, { useRef, forwardRef, useState } from 'react';
-import { Image, StyleSheet, Text, Animated, TouchableOpacity } from 'react-native';
+import React, { forwardRef, useRef, useState } from 'react';
+import {
+  Animated,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity
+} from 'react-native';
 import { Modalize } from 'react-native-modalize';
-
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 const HEADER_HEIGHT = 100;
@@ -11,7 +16,7 @@ export const AppleMusicPlayer = forwardRef(({ animated }, ref) => {
   const combinedRef = useCombinedRefs(ref, modalizeRef);
   const [handle, setHandle] = useState(false);
 
-  const handlePosition = position => {
+  const handlePosition = (position) => {
     setHandle(position === 'top');
   };
 
@@ -54,7 +59,12 @@ export const AppleMusicPlayer = forwardRef(({ animated }, ref) => {
         <Animated.Image
           style={[
             s.content__asset,
-            { borderRadius: animated.interpolate({ inputRange: [0, 1], outputRange: [32, 8] }) },
+            {
+              borderRadius: animated.interpolate({
+                inputRange: [0, 1],
+                outputRange: [32, 8],
+              }),
+            },
           ]}
           source={{
             uri: 'https://images.genius.com/7ea34ad2fa694fb706de3e81dc1588c4.1000x1000x1.jpg',
@@ -76,7 +86,10 @@ export const AppleMusicPlayer = forwardRef(({ animated }, ref) => {
         <Text style={s.content__title}>Your Design</Text>
 
         <TouchableOpacity activeOpacity={0.75}>
-          <Image style={{ marginRight: 30 }} source={require('../../assets/pause.png')} />
+          <Image
+            style={{ marginRight: 30 }}
+            source={require('../../assets/pause.png')}
+          />
         </TouchableOpacity>
 
         <TouchableOpacity activeOpacity={0.75}>
@@ -115,7 +128,12 @@ export const AppleMusicPlayer = forwardRef(({ animated }, ref) => {
       snapPoint={HEADER_HEIGHT}
       withHandle={handle}
       handlePosition="inside"
-      handleStyle={{ top: 13, width: 40, height: handle ? 6 : 0, backgroundColor: '#bcc0c1' }}
+      handleStyle={{
+        top: 13,
+        width: 40,
+        height: handle ? 6 : 0,
+        backgroundColor: '#bcc0c1',
+      }}
       onPositionChange={handlePosition}
     >
       {renderContent()}

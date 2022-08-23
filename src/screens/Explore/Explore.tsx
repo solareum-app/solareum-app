@@ -1,12 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { ScrollView, SafeAreaView, RefreshControl } from 'react-native';
-
-import { ExploreList } from './List';
+import { RefreshControl, SafeAreaView, ScrollView } from 'react-native';
 import { grid } from '../../components/Styles';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { COLORS } from '../../theme/colors';
-
 import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
+import { COLORS } from '../../theme/colors';
+import { ExploreList } from './List';
 
 export const Explore: React.FC = () => {
   const { accountList } = usePrice();
@@ -20,7 +18,7 @@ export const Explore: React.FC = () => {
         i.name !== 'THE SUN' &&
         i.name !== 'Wrapped SOL',
     );
-  }, [promoteTokenList]);
+  }, [accountList, promoteTokenList]);
 
   const onRefresh = async () => {
     setLoading(true);

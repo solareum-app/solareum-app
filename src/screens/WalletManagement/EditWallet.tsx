@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  NativeModules,
-  Platform,
-  Alert,
-} from 'react-native';
-import { Button, CheckBox, Input } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
-
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from '../../components/Icon';
-import Routes from '../../navigators/Routes';
-import { grid, typo, input } from '../../components/Styles';
-import { COLORS } from '../../theme';
+import { grid, input, typo } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider/AppProvider';
-import { s } from './CreateWallet';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import Routes from '../../navigators/Routes';
+import { COLORS } from '../../theme';
+import { s } from './CreateWallet';
 
-
-type Props = {};
+type Props = {
+  route?: any;
+};
 
 const EditWallet: React.FC<Props> = ({ route }) => {
   const { address } = route.params;
@@ -53,7 +45,6 @@ const EditWallet: React.FC<Props> = ({ route }) => {
     Clipboard.setString(address.mnemonic);
   };
 
- 
   return (
     <View style={grid.container}>
       <SafeAreaView style={grid.wrp}>
@@ -84,7 +75,6 @@ const EditWallet: React.FC<Props> = ({ route }) => {
                 icon={<Icon name="addfile" color={COLORS.blue2} />}
               />
             </View>
-
 
             <View style={[s.wrp, { marginTop: 8 }]}>
               <Text style={typo.warning}>{t('create-note-01')}</Text>

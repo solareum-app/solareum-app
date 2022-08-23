@@ -1,40 +1,39 @@
-import React, { useRef, useEffect } from 'react';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { Linking, StyleSheet, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { Host } from 'react-native-portalize';
-import { View, StyleSheet, Linking } from 'react-native';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
-
-import CreateWallet from '../screens/WalletManagement/CreateWallet';
-import EditWallet from '../screens/WalletManagement/EditWallet';
-import GetStarted from '../screens/GetStarted';
-import ImportWallet from '../screens/ImportWallet';
-import Notifications from '../screens/Notifications';
-import Settings from '../screens/Settings';
-import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
-import Search from '../screens/Search';
-import Token from '../screens/Token';
+import SplashScreen from 'react-native-splash-screen';
+import { usePrice } from '../core/AppProvider/PriceProvider';
+import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
+import { useToken } from '../core/AppProvider/TokenProvider';
 import DEX from '../screens/DEX';
 import Swap from '../screens/DEX/Swap';
-import { getListWallet } from '../storage/WalletCollection';
-import SplashScreen from 'react-native-splash-screen';
-import { HomeScreen } from './HomeScreen';
-import { COLORS } from '../theme/colors';
-import Routes from './Routes';
-import { Icon } from 'react-native-elements';
+import { Explore } from '../screens/Explore/Explore';
+import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
+import GetStarted from '../screens/GetStarted';
+import ImportWallet from '../screens/ImportWallet';
 import ManageTokenList from '../screens/ManageTokenList';
+import { MoonPay } from '../screens/Moonpay/Moonpay';
+import Notifications from '../screens/Notifications';
+import { Restore } from '../screens/Restore/Restore';
+import Search from '../screens/Search';
+import Settings from '../screens/Settings';
+import Airdrop from '../screens/Settings/Airdrop';
 import DailyMission from '../screens/Settings/DailyMission';
 import Influencer from '../screens/Settings/Influencer';
-import Airdrop from '../screens/Settings/Airdrop';
 import SwapApp from '../screens/Settings/SwapApp';
+import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
+import Token from '../screens/Token';
 import { TransferAction } from '../screens/Wallet';
-import { usePrice } from '../core/AppProvider/PriceProvider';
-import { useToken } from '../core/AppProvider/TokenProvider';
-import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
-import { Explore } from '../screens/Explore/Explore';
-import { MoonPay } from '../screens/Moonpay/Moonpay';
-import { Restore } from '../screens/Restore/Restore';
-import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
+import CreateWallet from '../screens/WalletManagement/CreateWallet';
+import EditWallet from '../screens/WalletManagement/EditWallet';
+import { getListWallet } from '../storage/WalletCollection';
+import { COLORS } from '../theme/colors';
+import { HomeScreen } from './HomeScreen';
+import Routes from './Routes';
 
 const s = StyleSheet.create({
   backWrp: {
@@ -45,7 +44,7 @@ const s = StyleSheet.create({
 const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
-  const navigationRef = useRef(null);
+  const navigationRef = useRef<any>(null);
   const { ready } = useToken();
   const { accountList } = usePrice();
 
@@ -59,78 +58,84 @@ const MainNavigator: React.FC = () => {
     SplashScreen.hide();
   };
 
-  const handleDynamicLink = (link: any) => {
-    if (!link) {
-      return;
-    }
-    const url = new URL(link.url);
-    // TODO: default token is XSB
-    // Going to support USDC + SOL anytime soon
-    const token = url.searchParams.get('token') || 'XSB';
-    const address = url.searchParams.get('address');
-    const account = accountList.find((i) => i.symbol === token);
-    if (!account) {
-      return;
-    }
+  const handleDynamicLink = useCallback(
+    (link: any) => {
+      if (!link) {
+        return;
+      }
+      const url = new URL(link.url);
+      // TODO: default token is XSB
+      // Going to support USDC + SOL anytime soon
+      const token = url.searchParams.get('token') || 'XSB';
+      const address = url.searchParams.get('address');
+      const account = accountList.find((i) => i.symbol === token);
+      if (!account) {
+        return;
+      }
 
-    if (navigationRef.current?.getCurrentRoute().name === Routes.Token) {
-      navigationRef.current?.setParams({
-        action: TransferAction.send,
-        token: account,
-        initAddress: address,
-      });
-    } else {
-      navigationRef.current?.navigate(Routes.Token, {
-        action: TransferAction.send,
-        token: account,
-        initAddress: address,
-      });
-    }
-  };
+      if (navigationRef.current?.getCurrentRoute().name === Routes.Token) {
+        navigationRef.current?.setParams({
+          action: TransferAction.send,
+          token: account,
+          initAddress: address,
+        });
+      } else {
+        navigationRef.current?.navigate(Routes.Token, {
+          action: TransferAction.send,
+          token: account,
+          initAddress: address,
+        });
+      }
+    },
+    [accountList],
+  );
 
-  const handleScheme = (link: any) => {
-    if (!link) {
-      return;
-    }
+  const handleScheme = useCallback(
+    (link: any) => {
+      if (!link) {
+        return;
+      }
 
-    const url = new URL(link.url);
-    const urlRedirect = url.searchParams.get('scheme') || '';
-    const token = url.searchParams.get('token') || 'XSB';
-    const address = url.searchParams.get('address');
-    const quantity = url.searchParams.get('quantity') || '';
-    const client_id = url.searchParams.get('client_id');
-    const e_usd = url.searchParams.get('e_usd') || '';
+      const url = new URL(link.url);
+      const urlRedirect = url.searchParams.get('scheme') || '';
+      const token = url.searchParams.get('token') || 'XSB';
+      const address = url.searchParams.get('address');
+      const quantity = url.searchParams.get('quantity') || '';
+      const client_id = url.searchParams.get('client_id');
+      const e_usd = url.searchParams.get('e_usd') || '';
 
-    if (!address) {
-      return;
-    }
+      if (!address) {
+        return;
+      }
 
-    const account = accountList.find((i) => i.symbol === token);
-    if (!account) {
-      return;
-    }
-    if (navigationRef?.current.getCurrentRoute().name === Routes.Token) {
-      navigationRef.current.setParams({
-        action: TransferAction.send,
-        initAddress: address,
-        token: account,
-        client_id: client_id,
-        e_usd: e_usd,
-        quantity: quantity,
-        redirect: urlRedirect,
-      });
-    } else {
-      navigationRef.current?.navigate(Routes.Token, {
-        action: TransferAction.send,
-        initAddress: address,
-        token: account,
-        client_id: client_id,
-        e_usd: e_usd,
-        quantity: quantity,
-        redirect: urlRedirect,
-      });
-    }
-  };
+      const account = accountList.find((i) => i.symbol === token);
+      if (!account) {
+        return;
+      }
+      if (navigationRef?.current.getCurrentRoute().name === Routes.Token) {
+        navigationRef.current.setParams({
+          action: TransferAction.send,
+          initAddress: address,
+          token: account,
+          client_id: client_id,
+          e_usd: e_usd,
+          quantity: quantity,
+          redirect: urlRedirect,
+        });
+      } else {
+        navigationRef.current?.navigate(Routes.Token, {
+          action: TransferAction.send,
+          initAddress: address,
+          token: account,
+          client_id: client_id,
+          e_usd: e_usd,
+          quantity: quantity,
+          redirect: urlRedirect,
+        });
+      }
+    },
+    [accountList],
+  );
 
   useEffect(() => {
     if (!ready) return;
@@ -140,13 +145,13 @@ const MainNavigator: React.FC = () => {
 
     // When the component is unmounted, remove the listener
     return () => unsubscribe();
-  }, [ready, accountList]);
+  }, [ready, accountList, handleDynamicLink, handleScheme]);
 
   useEffect(() => {
     if (!ready) return;
     dynamicLinks().getInitialLink().then(handleDynamicLink);
     Linking.getInitialURL().then(handleScheme);
-  }, [ready]);
+  }, [handleDynamicLink, handleScheme, ready]);
 
   return (
     <NavigationContainer ref={navigationRef} onReady={checkInitScreen}>

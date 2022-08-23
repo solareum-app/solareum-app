@@ -1,24 +1,23 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
-  ScrollView,
-  View,
-  Text,
-  StyleSheet,
   RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
-import { COLORS } from '../../theme/colors';
-import { grid, typo } from '../../components/Styles';
-import { price } from '../../utils/autoRound';
-import { CryptoIcon } from '../../components/CryptoIcon';
-
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { authFetch } from '../../utils/authfetch';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { MissionButton } from '../../containers/MissionButton';
-import { SocialItem } from '../Social/SocialItem';
 import { Button } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import { CryptoIcon } from '../../components/CryptoIcon';
+import { LoadingImage } from '../../components/LoadingIndicator';
+import { grid, typo } from '../../components/Styles';
+import { MissionButton } from '../../containers/MissionButton';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 import Routes from '../../navigators/Routes';
+import { COLORS } from '../../theme/colors';
+import { authFetch } from '../../utils/authfetch';
+import { price } from '../../utils/autoRound';
+import { SocialItem } from '../Social/SocialItem';
 
 const s = StyleSheet.create({
   header: {
@@ -58,7 +57,7 @@ const s = StyleSheet.create({
   },
 });
 
-export const ExploreItem = ({ route }) => {
+export const ExploreItem = ({ route }: any) => {
   const { token } = route.params;
 
   const { accountList } = usePrice();
@@ -106,7 +105,7 @@ export const ExploreItem = ({ route }) => {
     if (account.publicKey && acc) {
       setAccount(acc);
     }
-  }, [accountList]);
+  }, [account.publicKey, accountList]);
 
   useEffect(() => {
     loadArticle();

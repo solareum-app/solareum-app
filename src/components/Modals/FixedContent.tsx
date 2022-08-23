@@ -1,20 +1,19 @@
-import React, { useRef, forwardRef, useState } from 'react';
+import faker from 'faker';
+import React, { forwardRef, useRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
-  View,
-  TouchableOpacity,
   TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import faker from 'faker';
-
-import { COLORS } from '../../theme';
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
+import { COLORS } from '../../theme';
 
 export const FixedContent = forwardRef(
-  ({ children, onClose }: { children: any, onClose: () => void }, ref) => {
-    const modalizeRef = useRef(null);
+  ({ children, onClose }: { children: any; onClose?: () => void }, ref) => {
+    const modalizeRef = useRef<any>(null);
     const combinedRef = useCombinedRefs(ref, modalizeRef);
     const [toggle, setToggle] = useState(true);
 

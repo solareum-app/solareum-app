@@ -1,11 +1,11 @@
-import React, { useMemo, useContext } from 'react';
 import { Connection } from '@solana/web3.js';
+import React, { useContext, useMemo } from 'react';
 import { MAINNET_URL } from '../../config';
 
 const ConnectionContext = React.createContext<{
   connection: Connection;
   endpoint: string;
-  setEndpoint: (string) => void;
+  setEndpoint: (string: string) => void;
 } | null>(null);
 
 export const useConnection = (): Connection => {

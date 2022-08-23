@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-
-import { COLORS } from '../../theme';
+import { StyleSheet, Text, View } from 'react-native';
 import { Banner } from '../../components/Admob/Rewarded';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { COLORS } from '../../theme';
 
 const s = StyleSheet.create({
   alertZone: {
@@ -40,7 +39,7 @@ const s = StyleSheet.create({
 const BREAK_TIME = 20000; // 15s
 let lastMissionTs = Date.now();
 
-export const BannerScreen = ({ next }) => {
+export const BannerScreen = ({ next }: any) => {
   const [currentTs, setCurrentTs] = useState(-1);
   const { t } = useLocalize();
 
@@ -62,7 +61,7 @@ export const BannerScreen = ({ next }) => {
     if (currentTs - lastMissionTs > BREAK_TIME) {
       next();
     }
-  }, [currentTs]);
+  }, [currentTs, next]);
 
   const delta = currentTs - lastMissionTs;
   const waitingTime = Math.round(Math.abs((BREAK_TIME - delta) / 1000));

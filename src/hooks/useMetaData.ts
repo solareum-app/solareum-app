@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-
-import { useApp } from '../core/AppProvider/AppProvider';
 import package from '../../package.json';
+import { useApp } from '../core/AppProvider/AppProvider';
+
 
 export const useMetaData = () => {
   const { addressList } = useApp();

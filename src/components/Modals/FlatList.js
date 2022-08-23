@@ -1,11 +1,17 @@
-import React, { useRef, forwardRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Animated } from 'react-native';
-import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
-
+import React, { forwardRef, useRef } from 'react';
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { Modalize } from 'react-native-modalize';
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
 
 export const FlatList = forwardRef((_, ref) => {
   const modalizeRef = useRef(null);
@@ -16,7 +22,7 @@ export const FlatList = forwardRef((_, ref) => {
   const getData = () =>
     Array(50)
       .fill(0)
-      .map(_ => ({
+      .map((_) => ({
         name: faker.name.findName(),
         email: faker.internet.email(),
       }));
@@ -59,7 +65,7 @@ export const FlatList = forwardRef((_, ref) => {
   );
 
   const renderItem = ({ item }) => (
-    <View style={s.item}>
+    <View style={s.item} key={item.email}>
       <Text style={s.item__name}>{item.name}</Text>
       <Text style={s.item__email}>{item.email}</Text>
     </View>
@@ -73,11 +79,14 @@ export const FlatList = forwardRef((_, ref) => {
       flatListProps={{
         data: getData(),
         renderItem: renderItem,
-        keyExtractor: item => item.email,
+        keyExtractor: (item) => item.email,
         showsVerticalScrollIndicator: false,
-        onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-          useNativeDriver: true,
-        }),
+        onScroll: Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          {
+            useNativeDriver: true,
+          },
+        ),
         scrollEventThrottle: 16,
       }}
     />

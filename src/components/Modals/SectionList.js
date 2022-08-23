@@ -1,8 +1,7 @@
-import React, { useRef, forwardRef } from 'react';
+import faker from 'faker';
+import React, { forwardRef, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import faker from 'faker';
-
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 export const SectionList = forwardRef((_, ref) => {

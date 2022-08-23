@@ -1,14 +1,13 @@
+import faker from 'faker';
 import React, { useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import faker from 'faker';
-
 import { Button } from '../Button/Button';
 
 export const AlwaysOpen = () => {
   const modalizeRef = useRef(null);
 
-  const handleClose = dest => {
+  const handleClose = (dest) => {
     if (modalizeRef.current) {
       modalizeRef.current.close(dest);
     }
@@ -19,7 +18,10 @@ export const AlwaysOpen = () => {
       <Text style={s.content__subheading}>{'Introduction'.toUpperCase()}</Text>
       <Text style={s.content__heading}>Always open modal!</Text>
       <Text style={s.content__description}>{faker.lorem.paragraph()}</Text>
-      <Button name="Close to initial position" onPress={() => handleClose('alwaysOpen')} />
+      <Button
+        name="Close to initial position"
+        onPress={() => handleClose('alwaysOpen')}
+      />
       <Button name="Close completely" onPress={handleClose} />
     </View>
   );

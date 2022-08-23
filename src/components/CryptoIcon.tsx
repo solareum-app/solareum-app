@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-
 import { getIcon, setIcon } from '../storage/SvgIconCollection';
 import { COLORS } from '../theme';
-import LoadingIndicator from './LoadingIndicator';
-import { ImageCached } from './ImageCached/ImageCached';
 import { authFetch } from '../utils/authfetch';
+import { ImageCached } from './ImageCached/ImageCached';
+import LoadingIndicator from './LoadingIndicator';
 
 const iconStyle = StyleSheet.create({
   main: {
@@ -31,8 +30,8 @@ export const CryptoIcon = ({ uri = '', size = 40, ...props }) => {
   const [loading, setLoading] = useState(true);
   const isSVG = uri.indexOf('.svg') >= 0;
 
-  const fetchIcon = async (uri) => {
-    return await authFetch(uri, { method: 'GET' });
+  const fetchIcon = async (_uri: string) => {
+    return await authFetch(_uri, { method: 'GET' });
   };
 
   useEffect(() => {

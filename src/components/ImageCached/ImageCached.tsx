@@ -1,14 +1,13 @@
 import React from 'react';
 import {
-  View,
-  Text,
   Image as NativeImage,
-  StyleSheet,
   ImageSourcePropType,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
-import { createImageProgress } from 'react-native-image-progress';
 import FastImage from 'react-native-fast-image';
-
+import { createImageProgress } from 'react-native-image-progress';
 import LoadingIndicator from '../LoadingIndicator';
 
 const Image = createImageProgress(FastImage);
@@ -47,7 +46,7 @@ export const ImageCached = ({
   style = {},
   source,
   resizeMode = 'cover',
-  onLoadEnd = () => { },
+  onLoadEnd = () => {},
   borderRadius = 0,
   ...props
 }: Props) => {

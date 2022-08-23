@@ -1,32 +1,30 @@
-import React, { useState, useRef } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useRef, useState } from 'react';
 import {
-  ScrollView,
   RefreshControl,
-  View,
-  Text,
+  ScrollView,
   StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-portalize';
-
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { FixedContent } from '../../components/Modals/FixedContent';
-import { Receive } from '../Token/Receive';
 import { RoundedButton } from '../../components/RoundedButton';
-import { COLORS } from '../../theme';
+import { grid, typo } from '../../components/Styles';
 import TokensList from '../../components/TokenList';
-import Header from './Header';
-import { grid } from '../../components/Styles';
-import { useToken } from '../../core/AppProvider/TokenProvider';
-import { price } from '../../utils/autoRound';
-import { Routes } from '../../navigators/Routes';
+import { useApp } from '../../core/AppProvider/AppProvider';
 import { IAccount } from '../../core/AppProvider/IAccount';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { typo } from '../../components/Styles';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useApp } from '../../core/AppProvider/AppProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
+import { Routes } from '../../navigators/Routes';
+import { COLORS } from '../../theme';
+import { price } from '../../utils/autoRound';
+import { Receive } from '../Token/Receive';
 import { BackupNotice } from './BackupNotice';
+import Header from './Header';
 
 const s = StyleSheet.create({
   header: {
@@ -117,7 +115,7 @@ const WalletScreen = () => {
   const [isHideBalance, setIsHideBalance] = useState(false);
 
   const navigation = useNavigation();
-  const refReceived = useRef();
+  const refReceived = useRef<any>();
 
   const { loadAccountList } = useToken();
   const { isAddressBackup } = useApp();

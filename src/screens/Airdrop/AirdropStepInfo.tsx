@@ -1,13 +1,18 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-
 import { typo } from '../../components/Styles';
-import { SOL_BALANCE_TARGET } from './const';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { SOL_BALANCE_TARGET } from './const';
 import { style as s } from './style';
 
-export const AirdropStepInfo = ({ dismiss, next, error }) => {
+interface IAirdropStep {
+  dismiss?(): (value: string) => void;
+  next?(): (value: string) => void;
+  error?: string | null;
+}
+
+export const AirdropStepInfo = ({ dismiss, next, error }: IAirdropStep) => {
   const { t } = useLocalize();
 
   return (

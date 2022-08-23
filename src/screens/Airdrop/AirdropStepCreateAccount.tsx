@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
 import { PublicKey } from '@solana/web3.js';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-
+import { CryptoIcon } from '../../components/CryptoIcon';
 import { LoadingImage } from '../../components/LoadingIndicator';
+import { typo } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider/AppProvider';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import { wait } from '../../utils';
-import { typo } from '../../components/Styles';
-import { CryptoIcon } from '../../components/CryptoIcon';
 import { SOL_BALANCE_TARGET } from './const';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-
 import { style as s } from './style';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const style = StyleSheet.create({
   iconWrp: {
@@ -37,11 +34,17 @@ const style = StyleSheet.create({
 const MAX_TRY = 12;
 const WAIT_TIME = 15000; // 3 mins
 
+interface IAirdropStepCreateAccount {
+  busy?: boolean;
+  next?: any;
+  error?: any;
+}
+
 export const AirdropStepCreateAccount = ({
   busy,
   next,
   error: submitError,
-}) => {
+}: IAirdropStepCreateAccount) => {
   const { wallet } = useApp();
   const { loadAccountList } = useToken();
   const { accountList } = usePrice();
@@ -108,7 +111,7 @@ export const AirdropStepCreateAccount = ({
       const fee = await wallet.tokenAccountCost();
       setMintAccountFee(fee / Math.pow(10, solAccount.decimals));
     })();
-  }, []);
+  }, [solAccount.decimals, wallet]);
 
   return (
     <View style={s.main}>

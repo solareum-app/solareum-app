@@ -1,15 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { LoadingImage } from '../../components/LoadingIndicator';
+import { BackupData } from '../../screens/Settings/Backup/mergeWallets';
+import { getWallet } from '../../spl-utils/getWallet';
 import { getItem, setItem } from '../../storage/Collection';
 import {
-  getListWallet,
   AddressInfo,
   createWallet,
-  updateWallet,
+  getListWallet,
   removeWalletById,
+  updateWallet
 } from '../../storage/WalletCollection';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { getWallet } from '../../spl-utils/getWallet';
-import { BackupData } from '../../screens/Settings/Backup/mergeWallets';
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
 export type AppContextType = {
@@ -48,7 +48,7 @@ export const useApp = () => {
 };
 
 export const AppProvider: React.FC = (props) => {
-  const [wallet, setWallet] = useState(null);
+  const [wallet, setWallet] = useState<any | null>(null);
   const [addressId, setAddressId] = useState('');
   const [addressName, setAddressName] = useState('');
   const [isAddressBackup, setIsAddressBackup] = useState(false);

@@ -1,9 +1,8 @@
 import React from 'react';
-
 import BaseButton, { BaseButtonProps } from './BaseButton';
 
 const CopyAddressButton: React.FC<BaseButtonProps> = () => {
-  const onPressHandler = React.useCallback(() => { }, []);
+  const onPressHandler = React.useCallback(() => {}, []);
 
   return (
     <>

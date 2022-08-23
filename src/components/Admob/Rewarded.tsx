@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { Button } from 'react-native-elements';
-
 import {
-  RewardedAd,
-  RewardedAdEventType,
   BannerAd,
   BannerAdSize,
-  TestIds,
+  RewardedAd,
+  RewardedAdEventType,
+  TestIds
 } from '@react-native-firebase/admob';
+import React, { useState } from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-elements';
 
 export type AdmobType = {
   banner: 'banner';

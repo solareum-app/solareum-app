@@ -1,11 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
+import { TokenInfo } from '@solana/spl-token-registry';
 import React from 'react';
 import { Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
-import { TokenInfo } from '@solana/spl-token-registry';
-
-import { COLORS, FONT_SIZES } from '../../theme';
 import Routes from '../../navigators/Routes';
+import { COLORS, FONT_SIZES } from '../../theme';
 import { price } from '../../utils/autoRound';
 import { CryptoIcon } from '../CryptoIcon';
 

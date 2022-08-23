@@ -1,26 +1,23 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { Portal } from 'react-native-portalize';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-
+import { Portal } from 'react-native-portalize';
 import ImgPayment from '../../assets/clip-1.png';
 import { LoadingImage } from '../../components/LoadingIndicator';
 import { FixedContent } from '../../components/Modals/FixedContent';
-import { COLORS } from '../../theme';
 import { typo } from '../../components/Styles';
-
+import { service } from '../../config';
+import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
+import { useMetaData } from '../../hooks/useMetaData';
+import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
+import { COLORS } from '../../theme';
 import { wait } from '../../utils';
 import { authFetch } from '../../utils/authfetch';
-import { service } from '../../config';
-import { useMetaData } from '../../hooks/useMetaData';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
-
-import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
-import { TokenSaleStepInfo } from './TokenSaleStepInfo';
-import { TokenSaleForm } from './TokenSaleForm';
 import { ReceiveMessage } from './ReceiveMessage';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { TokenSaleForm } from './TokenSaleForm';
+import { TokenSaleStepInfo } from './TokenSaleStepInfo';
 
 const s = StyleSheet.create({
   main: {
@@ -67,7 +64,7 @@ export const TokenSaleButton = () => {
   const metaData = useMetaData();
   const { t } = useLocalize();
   const { presale } = useConfig();
-  const refTokenSale = useRef();
+  const refTokenSale = useRef<any>();
 
   const emtpyAccount = { publicKey: '-', decimals: 8, amount: 0 };
   const usdcMint = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';

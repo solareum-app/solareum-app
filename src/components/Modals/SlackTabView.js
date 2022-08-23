@@ -1,19 +1,18 @@
-import React, { useState, useRef, forwardRef, memo } from 'react';
+import faker from 'faker';
+import React, { forwardRef, memo, useRef, useState } from 'react';
 import {
-  TouchableOpacity,
   Animated,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
   Dimensions,
   Image,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { TabView, SceneMap } from 'react-native-tab-view';
-import faker from 'faker';
-
+import { SceneMap, TabView } from 'react-native-tab-view';
 import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 const { width } = Dimensions.get('window');
@@ -35,7 +34,9 @@ const ROUTES = [
 const Item = memo(({ active, emoji, number, onPress }) => (
   <TouchableOpacity style={s.item} onPress={onPress} activeOpacity={0.75}>
     <Text style={s.item__emoji}>{emoji}</Text>
-    <Text style={[s.item__copy, { color: active ? '#1d9bd0' : '#d1d2d2' }]}>{number}</Text>
+    <Text style={[s.item__copy, { color: active ? '#1d9bd0' : '#d1d2d2' }]}>
+      {number}
+    </Text>
     {active && <View style={s.item__line} />}
   </TouchableOpacity>
 ));
@@ -52,7 +53,7 @@ const Row = memo(() => (
 ));
 
 const Route = ({ route }) => {
-  const { number } = ROUTES.find(r => r.key === route.key);
+  const { number } = ROUTES.find((r) => r.key === route.key);
 
   return (
     <View style={s.route}>
@@ -96,7 +97,7 @@ export const SlackTabView = forwardRef((_, ref) => {
   const [index, setIndex] = useState(0);
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  const handleIndexChange = i => {
+  const handleIndexChange = (i) => {
     const w = 55; // item width
     const m = 25; // item margin
     const x = (w + m) * i;
@@ -104,7 +105,9 @@ export const SlackTabView = forwardRef((_, ref) => {
     setIndex(i);
 
     if (contentRef.current) {
-      contentRef.current.getScrollResponder().scrollTo({ y: 0, animated: true });
+      contentRef.current
+        .getScrollResponder()
+        .scrollTo({ y: 0, animated: true });
     }
 
     if (scrollViewRef.current) {
@@ -162,11 +165,18 @@ export const SlackTabView = forwardRef((_, ref) => {
       HeaderComponent={renderTabBar}
       modalStyle={{ backgroundColor: '#1a1d21' }}
       handleStyle={{ width: 35, backgroundColor: '#75777a' }}
-      childrenStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12, overflow: 'hidden' }}
+      childrenStyle={{
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+        overflow: 'hidden',
+      }}
       scrollViewProps={{
-        onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-          useNativeDriver: true,
-        }),
+        onScroll: Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          {
+            useNativeDriver: true,
+          },
+        ),
         scrollEventThrottle: 16,
       }}
     >

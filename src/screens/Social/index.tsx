@@ -1,25 +1,24 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  SafeAreaView,
-  RefreshControl,
-  ScrollView,
-  View,
   FlatList,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
+  View
 } from 'react-native';
-
+import { Button } from 'react-native-elements';
 import { LoadingImage } from '../../components/LoadingIndicator';
-import { COLORS } from '../../theme';
 import { grid } from '../../components/Styles';
-import { SocialItem } from './SocialItem';
-import { Header } from './Header';
-import { authFetch } from '../../utils/authfetch';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
-import { PromoteItem } from './PromoteItem';
-import { Button } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
 import Routes from '../../navigators/Routes';
+import { COLORS } from '../../theme';
+import { authFetch } from '../../utils/authfetch';
+import { Header } from './Header';
+import { PromoteItem } from './PromoteItem';
+import { SocialItem } from './SocialItem';
 
 const s = StyleSheet.create({
   tokenMain: {
