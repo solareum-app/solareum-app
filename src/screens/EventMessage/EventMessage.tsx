@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { COLORS } from '@Theme/index';
+import { getShortPublicKey } from '@Utils/index';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
   DeviceEventEmitter,
+  Dimensions,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-
-import { COLORS } from '../../theme';
-import { getShortPublicKey } from '../../utils';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 export enum MESSAGE_TYPE {
   copy = 'copy',

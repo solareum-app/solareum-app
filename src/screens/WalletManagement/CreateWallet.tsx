@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { Button, CheckBox, Input } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import Icon from '@Components/Icon';
+import { grid, input, typo } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import Routes from '@Navigators/Routes';
 import Clipboard from '@react-native-community/clipboard';
-
-import Icon from '../../components/Icon';
-import { generateMnemonicAndSeed } from '../../spl-utils/wallet-account';
-import Routes from '../../navigators/Routes';
-import { grid, typo, input } from '../../components/Styles';
-import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { useNavigation } from '@react-navigation/native';
+import { generateMnemonicAndSeed } from '@SplUtils/wallet-account';
+import { COLORS, FONT_SIZES, LINE_HEIGHT } from '@Theme/index';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, CheckBox, Input } from 'react-native-elements';
 
 export const s = StyleSheet.create({
   main: {

@@ -1,3 +1,4 @@
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
 import faker from 'faker';
 import React, { forwardRef, useRef } from 'react';
 import {
@@ -8,7 +9,6 @@ import {
   View
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);

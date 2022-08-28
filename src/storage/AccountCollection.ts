@@ -1,5 +1,5 @@
-import { setItem, getCollection, removeItem } from './Collection';
-import { IAccount } from '../core/AppProvider/IAccount';
+import { IAccount } from '@Core/AppProvider/IAccount';
+import { getCollection, removeItem, setItem } from './Collection';
 
 export const COLLECTION_NAME = 'ACCOUNT';
 

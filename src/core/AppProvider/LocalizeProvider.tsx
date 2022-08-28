@@ -1,13 +1,12 @@
+import { getItem, setItem } from '@Storage/Collection';
 import React, {
   createContext,
   FunctionComponent,
   useContext,
-  useState,
   useEffect,
+  useState
 } from 'react';
 import LocalizedStrings from 'react-native-localization';
-
-import { getItem, setItem } from '../../storage/Collection';
 import en from '../../languages/en.json';
 import vi from '../../languages/vi.json';
 
@@ -40,7 +39,7 @@ const LocalizeContext = createContext({
   i18n,
   t: i18n,
   language: LANGUAGE_LIST[0],
-  setLanguage: (_: string) => { },
+  setLanguage: (_: string) => {},
 });
 
 export const LocalizeProvider: FunctionComponent = ({ children }) => {

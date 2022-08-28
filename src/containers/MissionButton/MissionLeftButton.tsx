@@ -1,14 +1,14 @@
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useMetaData } from '@Hooks/useMetaData';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/core';
+import { COLORS } from '@Theme/index';
+import { authFetch } from '@Utils/authfetch';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { service } from '../../config';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useMetaData } from '../../hooks/useMetaData';
-import Routes from '../../navigators/Routes';
-import { COLORS } from '../../theme';
-import { authFetch } from '../../utils/authfetch';
 
 const s = StyleSheet.create({
   manageBtnWrp: {

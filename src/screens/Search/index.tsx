@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView } from 'react-native';
+import { grid } from '@Components/Styles';
+import TokensList from '@Components/TokenList';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { TransferAction } from '@Screens/Wallet';
+import { COLORS } from '@Theme/index';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-
-import TokensList from '../../components/TokenList';
-import { grid } from '../../components/Styles';
-import { COLORS } from '../../theme';
-import { TransferAction } from '../Wallet';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const PRIORITY = [
   'USDC',

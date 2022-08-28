@@ -1,10 +1,10 @@
+import { typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { SOL_BALANCE_TARGET } from '@Screens/Airdrop/const';
+import { style as s } from '@Screens/Airdrop/style';
 import React from 'react';
 import { Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { typo } from '../../components/Styles';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { SOL_BALANCE_TARGET } from './const';
-import { style as s } from './style';
 
 interface IAirdropStep {
   dismiss?(): (value: string) => void;

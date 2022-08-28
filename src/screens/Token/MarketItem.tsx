@@ -1,12 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { CryptoIcon } from '@Components/CryptoIcon';
+import Icon from '@Components/Icon';
+import { useToken } from '@Core/AppProvider/TokenProvider';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/core';
-import { CryptoIcon } from '../../components/CryptoIcon';
-import Icon from '../../components/Icon';
-
-import { COLORS } from '../../theme/colors';
-import Routes from '../../navigators/Routes';
-import { useToken } from '../../core/AppProvider/TokenProvider';
+import { COLORS } from '@Theme/colors';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const s = StyleSheet.create({
   main: {

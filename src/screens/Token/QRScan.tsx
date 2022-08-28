@@ -1,11 +1,9 @@
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { COLORS } from '@Theme/index';
 import React from 'react';
-
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-
-import { COLORS } from '../../theme';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 
 const w = Dimensions.get('window').width;
 

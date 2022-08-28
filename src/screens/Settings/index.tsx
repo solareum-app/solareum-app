@@ -1,16 +1,14 @@
-import React, { useRef } from 'react';
-import { ScrollView, View, Text, StyleSheet, Linking } from 'react-native';
-import { ListItem, Icon } from 'react-native-elements';
+import { FacebookWebView } from '@Components/Modals/FacebookWebView';
+import { typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { useConfig } from '@Core/AppProvider/RemoteConfigProvider';
+import { Routes } from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/core';
+import { COLORS, spacings } from '@Theme/index';
+import React, { useRef } from 'react';
+import { Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Icon, ListItem } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
-
-import { FacebookWebView } from '../../components/Modals/FacebookWebView';
-import { COLORS } from '../../theme';
-import { Routes } from '../../navigators/Routes';
-import { spacings } from '../../theme';
-import { typo } from '../../components/Styles';
-import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import package from '../../../package.json';
 
 const s = StyleSheet.create({

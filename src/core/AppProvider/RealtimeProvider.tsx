@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import { useConnection } from '@Core/AppProvider/ConnectionProvider';
+import { useToken } from '@Core/AppProvider/TokenProvider';
 import { PublicKey } from '@solana/web3.js';
-
-import { parseTokenAccountData } from '../../spl-utils/tokens/data';
-import { TOKEN_PROGRAM_ID } from '../../spl-utils/tokens/instructions';
-
-import { useToken } from './TokenProvider';
-import { useConnection } from './ConnectionProvider';
+import { parseTokenAccountData } from '@SplUtils/tokens/data';
+import { TOKEN_PROGRAM_ID } from '@SplUtils/tokens/instructions';
+import React, { useEffect } from 'react';
 
 export const RealtimeProvider: React.FC = (props) => {
   const { setAccountByPk, accountList } = useToken();

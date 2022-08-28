@@ -1,24 +1,23 @@
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { grid } from '@Components/Styles';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useMetaData } from '@Hooks/useMetaData';
+import { Airdrop } from '@Screens/Airdrop/Airdrop';
+import { Mission } from '@Screens/Distribution/Mission';
+import { box } from '@Screens/Distribution/style';
+import { COLORS } from '@Theme/index';
+import { authFetch } from '@Utils/authfetch';
+import LottieView from 'lottie-react-native';
 import React, { useEffect, useState } from 'react';
 import {
+  RefreshControl,
   SafeAreaView,
   ScrollView,
-  View,
   StyleSheet,
   Text,
-  RefreshControl,
+  View
 } from 'react-native';
-import LottieView from 'lottie-react-native';
-
-import { COLORS } from '../../theme';
-import { grid } from '../../components/Styles';
-import { Airdrop } from '../Airdrop/Airdrop';
-import { Mission } from './Mission';
-import { authFetch } from '../../utils/authfetch';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { service } from '../../config';
-import { useMetaData } from '../../hooks/useMetaData';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { box } from './style';
 
 const s = StyleSheet.create({
   main: {

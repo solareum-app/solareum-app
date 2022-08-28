@@ -1,9 +1,8 @@
+import { typo } from '@Components/Styles';
+import { COLORS } from '@Theme/index';
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { COLORS } from '../../theme';
-
-import { typo } from '../Styles';
 
 const s = StyleSheet.create({
   main: {

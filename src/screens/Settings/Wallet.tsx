@@ -1,24 +1,22 @@
+import { ImageCached } from '@Components/ImageCached/ImageCached';
+import { grid } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import Routes from '@Navigators/Routes';
+import { useNavigation } from '@react-navigation/core';
+import { AddressInfo } from '@Storage/WalletCollection';
+import { COLORS } from '@Theme/index';
 import React from 'react';
 import {
-  StyleSheet,
-  View,
-  Text,
   SafeAreaView,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/core';
-
-import { ImageCached } from '../../components/ImageCached/ImageCached';
-import Routes from '../../navigators/Routes';
-import { AddressInfo } from '../../storage/WalletCollection';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { grid } from '../../components/Styles';
-import { COLORS } from '../../theme';
-import walletIcon from '../../assets/XSB-S.png';
 import walletIconActive from '../../assets/XSB-P.png';
-
+import walletIcon from '../../assets/XSB-S.png';
 import { Backup } from './Backup/Backup';
 
 const s = StyleSheet.create({

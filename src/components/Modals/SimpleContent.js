@@ -1,10 +1,9 @@
-import React, { useRef, forwardRef } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
-import { Modalize } from 'react-native-modalize';
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
+import { COLORS } from '@Theme/index';
 import faker from 'faker';
-
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
-import { COLORS } from '../../theme';
+import React, { forwardRef, useRef } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
 export const SimpleContent = forwardRef(({ children }, ref) => {
   const modalizeRef = useRef(null);

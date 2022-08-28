@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import { typo } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
 import { PublicKey } from '@solana/web3.js';
-
-import { typo } from '../../components/Styles';
-import { COLORS } from '../../theme';
-import { price } from '../../utils/autoRound';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { COLORS } from '@Theme/index';
+import { price } from '@Utils/autoRound';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
 
 const s = StyleSheet.create({
   main: {

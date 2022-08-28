@@ -1,6 +1,5 @@
+import { COLORS } from '@Theme/colors';
 import { StyleSheet } from 'react-native';
-
-import { COLORS } from '../../theme/colors';
 
 export const typo = StyleSheet.create({
   title: {

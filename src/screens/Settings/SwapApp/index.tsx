@@ -1,14 +1,10 @@
+import { grid } from '@Components/Styles';
+import { SWAP_APP, useConfig } from '@Core/AppProvider/RemoteConfigProvider';
+import { COLORS } from '@Theme/colors';
+import { FONT_SIZES } from '@Theme/index';
 import React from 'react';
-import { ScrollView, View, Switch } from 'react-native';
+import { ScrollView, Switch, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
-
-import { grid } from '../../../components/Styles';
-import { FONT_SIZES } from '../../../theme';
-import { COLORS } from '../../../theme/colors';
-import {
-  SWAP_APP,
-  useConfig,
-} from '../../../core/AppProvider/RemoteConfigProvider';
 
 const SwapItem = ({ name, active, onChange }) => {
   return (

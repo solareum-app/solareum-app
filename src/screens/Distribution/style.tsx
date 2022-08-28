@@ -1,7 +1,6 @@
+import { typo } from '@Components/Styles';
+import { COLORS } from '@Theme/index';
 import { StyleSheet } from 'react-native';
-
-import { COLORS } from '../../theme';
-import { typo } from '../../components/Styles';
 
 export const box = StyleSheet.create({
   main: {

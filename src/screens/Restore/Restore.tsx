@@ -1,36 +1,32 @@
-import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  Platform,
-  Alert,
-  PermissionsAndroid,
-  NativeModules,
-  Linking,
-} from 'react-native';
-import { Button } from 'react-native-elements';
+import { grid, typo } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import Routes from '@Navigators/Routes';
 import {
   GoogleSignin,
-  statusCodes,
+  statusCodes
 } from '@react-native-google-signin/google-signin';
-import GDrive from 'react-native-google-drive-api-wrapper';
+import { useNavigation } from '@react-navigation/native';
+import { BackupData } from '@Screens/Settings/Backup/mergeWallets';
+import { getParamsInURL, updateQueryStringParameter } from '@Utils/handleLink';
+import LottieView from 'lottie-react-native';
+import React, { useState } from 'react';
+import {
+  Alert,
+  Linking,
+  NativeModules,
+  PermissionsAndroid,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 import base64 from 'react-native-base64';
+import { Button } from 'react-native-elements';
+import GDrive from 'react-native-google-drive-api-wrapper';
 import iCloudAccountStatus from 'react-native-icloud-account-status';
 import RNFetchBlob from 'rn-fetch-blob';
-import LottieView from 'lottie-react-native';
-
-import { grid, typo } from '../../components/Styles';
-import {
-  getParamsInURL,
-  updateQueryStringParameter,
-} from '../../utils/handleLink';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { BackupData } from '../Settings/Backup/mergeWallets';
-import { useNavigation } from '@react-navigation/native';
-import Routes from '../../navigators/Routes';
 
 const { RNFSManager, RNCloudFs } = NativeModules;
 

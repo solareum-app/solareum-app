@@ -1,8 +1,8 @@
+import { useRewards } from '@Core/AppProvider/RewardsProvider';
+import { COLORS } from '@Theme/index';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import { COLORS } from '../../theme';
-import { useRewards } from '../../core/AppProvider/RewardsProvider';
 
 const s = StyleSheet.create({
   manageBtnWrp: {

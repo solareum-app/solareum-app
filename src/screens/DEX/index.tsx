@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { WebView } from 'react-native-webview';
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { AppContext } from '@Core/AppProvider/AppProvider';
+import Header from '@Screens/Wallet/Header';
+import { COLORS } from '@Theme/colors';
 import bs58 from 'bs58';
-
-import { COLORS } from '../../theme/colors';
-import Header from '../Wallet/Header';
-import { AppContext } from '../../core/AppProvider/AppProvider';
-import { LoadingImage } from '../../components/LoadingIndicator';
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 const INJECTED_SCRIPT = `
 window.solana = {

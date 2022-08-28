@@ -1,10 +1,9 @@
 import { Connection } from '@solana/web3.js';
-
-import { getAccountFromSeed, mnemonicToSeed } from './wallet-account';
-import { Wallet } from './wallet';
-import { TOKEN_PROGRAM_ID } from './tokens/instructions';
-import { parseMintData, parseTokenAccountData } from './tokens/data';
 import { MAINNET_URL } from '../config';
+import { parseMintData, parseTokenAccountData } from './tokens/data';
+import { TOKEN_PROGRAM_ID } from './tokens/instructions';
+import { Wallet } from './wallet';
+import { getAccountFromSeed, mnemonicToSeed } from './wallet-account';
 
 export const getConnection = () => {
   try {

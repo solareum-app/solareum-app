@@ -1,7 +1,6 @@
+import { COLORS } from '@Theme/colors';
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-
-import { COLORS } from '../../theme/colors';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import imgDelivering from '../../assets/clip-message-sent.png';
 
 const s = StyleSheet.create({

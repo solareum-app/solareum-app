@@ -1,8 +1,7 @@
-import React, { useRef, useState, forwardRef } from 'react';
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
+import React, { forwardRef, useRef, useState } from 'react';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 const { width, height: initialHeight } = Dimensions.get('window');
 const isAndroid = Platform.OS === 'android';

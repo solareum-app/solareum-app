@@ -1,10 +1,10 @@
+import { CryptoIcon } from '@Components/CryptoIcon';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
 import { TokenInfo } from '@solana/spl-token-registry';
+import { COLORS, FONT_SIZES } from '@Theme/index';
 import React from 'react';
 import { ListItem } from 'react-native-elements';
-import { CryptoIcon } from '../../components/CryptoIcon';
-import Routes from '../../navigators/Routes';
-import { COLORS, FONT_SIZES } from '../../theme';
 
 type ItemProps = TokenInfo & {
   token: any;

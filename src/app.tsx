@@ -1,13 +1,13 @@
-import 'react-native-gesture-handler';
+import { Root } from '@Core/AppProvider';
+import MainNavigator from '@Navigators/MainNavigator';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
+import 'react-native-gesture-handler';
 import {
-  SafeAreaProvider,
   initialWindowMetrics,
+  SafeAreaProvider
 } from 'react-native-safe-area-context';
-import { Root } from './core/AppProvider';
-import MainNavigator from './navigators/MainNavigator';
 
 const App: React.FC = () => {
   return (

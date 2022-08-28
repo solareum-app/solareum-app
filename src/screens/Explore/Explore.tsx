@@ -1,10 +1,10 @@
+import { grid } from '@Components/Styles';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useConfig } from '@Core/AppProvider/RemoteConfigProvider';
+import { ExploreList } from '@Screens/Explore/List';
+import { COLORS } from '@Theme/colors';
 import React, { useMemo, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView } from 'react-native';
-import { grid } from '../../components/Styles';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
-import { COLORS } from '../../theme/colors';
-import { ExploreList } from './List';
 
 export const Explore: React.FC = () => {
   const { accountList } = usePrice();

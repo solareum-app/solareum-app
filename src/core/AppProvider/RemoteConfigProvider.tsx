@@ -1,7 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
-
-import { setItem, getItem } from '../../storage/Collection';
+import { getItem, setItem } from '@Storage/Collection';
+import React, { useContext, useEffect, useState } from 'react';
 
 export const SWAP_APPLICATION_KEY = 'swap';
 

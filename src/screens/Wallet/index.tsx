@@ -1,4 +1,17 @@
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { FixedContent } from '@Components/Modals/FixedContent';
+import { RoundedButton } from '@Components/RoundedButton';
+import { grid, typo } from '@Components/Styles';
+import TokensList from '@Components/TokenList';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { IAccount } from '@Core/AppProvider/IAccount';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useToken } from '@Core/AppProvider/TokenProvider';
+import { Routes } from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '@Theme/index';
+import { price } from '@Utils/autoRound';
 import React, { useRef, useState } from 'react';
 import {
   RefreshControl,
@@ -9,19 +22,6 @@ import {
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { FixedContent } from '../../components/Modals/FixedContent';
-import { RoundedButton } from '../../components/RoundedButton';
-import { grid, typo } from '../../components/Styles';
-import TokensList from '../../components/TokenList';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { IAccount } from '../../core/AppProvider/IAccount';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useToken } from '../../core/AppProvider/TokenProvider';
-import { Routes } from '../../navigators/Routes';
-import { COLORS } from '../../theme';
-import { price } from '../../utils/autoRound';
 import { Receive } from '../Token/Receive';
 import { BackupNotice } from './BackupNotice';
 import Header from './Header';

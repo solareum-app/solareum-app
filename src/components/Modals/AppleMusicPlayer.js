@@ -1,3 +1,4 @@
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
 import React, { forwardRef, useRef, useState } from 'react';
 import {
   Animated,
@@ -7,7 +8,6 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 const HEADER_HEIGHT = 100;
 

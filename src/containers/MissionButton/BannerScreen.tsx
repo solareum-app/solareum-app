@@ -1,8 +1,8 @@
+import { Banner } from '@Components/Admob/Rewarded';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { COLORS } from '@Theme/index';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Banner } from '../../components/Admob/Rewarded';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { COLORS } from '../../theme';
 
 const s = StyleSheet.create({
   alertZone: {

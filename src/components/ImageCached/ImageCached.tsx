@@ -1,3 +1,4 @@
+import LoadingIndicator from '@Components/LoadingIndicator';
 import React from 'react';
 import {
   Image as NativeImage,
@@ -8,7 +9,6 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { createImageProgress } from 'react-native-image-progress';
-import LoadingIndicator from '../LoadingIndicator';
 
 const Image = createImageProgress(FastImage);
 

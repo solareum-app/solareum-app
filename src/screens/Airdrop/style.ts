@@ -1,6 +1,5 @@
+import { grid } from '@Components/Styles';
 import { StyleSheet } from 'react-native';
-
-import { grid } from '../../components/Styles';
 
 export const style = StyleSheet.create({
   main: {

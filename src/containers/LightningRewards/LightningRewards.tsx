@@ -1,22 +1,21 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  DeviceEventEmitter,
-  Share,
-  Linking,
-} from 'react-native';
+import { typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
 import Clipboard from '@react-native-community/clipboard';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import { MESSAGE_TYPE } from '@Screens/EventMessage/EventMessage';
+import { getItem, setItem } from '@Storage/Collection';
+import { COLORS } from '@Theme/colors';
+import React from 'react';
+import {
+  DeviceEventEmitter,
+  Linking,
+  Share,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-
-import { COLORS } from '../../theme/colors';
-import { typo } from '../../components/Styles';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { getItem, setItem } from '../../storage/Collection';
-import { MESSAGE_TYPE } from '../../screens/EventMessage/EventMessage';
 
 const s = StyleSheet.create({
   main: {

@@ -1,22 +1,21 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Button } from '@Components/Button/Button';
+import { FixedContent } from '@Components/Modals/FixedContent';
+import { typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useMetaData } from '@Hooks/useMetaData';
+import { AirdropStepCreateAccount } from '@Screens/Airdrop/AirdropStepCreateAccount';
+import { AirdropStepInfo } from '@Screens/Airdrop/AirdropStepInfo';
+import { AirdropStepInputRefAddress } from '@Screens/Airdrop/AirdropStepInputRefAddress';
+import { AirdropStepReview } from '@Screens/Airdrop/AirdropStepReview';
+import { AirdropStepSuccessAndShare } from '@Screens/Airdrop/AirdropStepSuccessAndShare';
+import { SOL_BALANCE_TARGET } from '@Screens/Airdrop/const';
+import { COLORS } from '@Theme/index';
+import { authFetch } from '@Utils/authfetch';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { Portal } from 'react-native-portalize';
-
-import { FixedContent } from '../../components/Modals/FixedContent';
-import { COLORS } from '../../theme';
-import { typo } from '../../components/Styles';
-import { AirdropStepInfo } from './AirdropStepInfo';
-import { AirdropStepCreateAccount } from './AirdropStepCreateAccount';
-import { AirdropStepInputRefAddress } from './AirdropStepInputRefAddress';
-import { AirdropStepReview } from './AirdropStepReview';
-import { AirdropStepSuccessAndShare } from './AirdropStepSuccessAndShare';
-import { authFetch } from '../../utils/authfetch';
 import { service } from '../../config';
-import { useMetaData } from '../../hooks/useMetaData';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { SOL_BALANCE_TARGET } from './const';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { Button } from '../../components/Button/Button';
 
 const s = StyleSheet.create({
   main: {

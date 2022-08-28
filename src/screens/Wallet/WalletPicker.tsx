@@ -1,16 +1,15 @@
-import React, { useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { ListItem, Button, Icon as RNIcon } from 'react-native-elements';
-import { Portal } from 'react-native-portalize';
+import Icon from '@Components/Icon';
+import { FixedContent } from '@Components/Modals/FixedContent';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
-
-import { FixedContent } from '../../components/Modals/FixedContent';
-import { getShortPublicKey } from '../../utils';
-import { COLORS, FONT_SIZES } from '../../theme';
-import Routes from '../../navigators/Routes';
-import Icon from '../../components/Icon';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
+import { COLORS, FONT_SIZES } from '@Theme/index';
+import { getShortPublicKey } from '@Utils/index';
+import React, { useRef } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Icon as RNIcon, ListItem } from 'react-native-elements';
+import { Portal } from 'react-native-portalize';
 
 const s = StyleSheet.create({
   content: {

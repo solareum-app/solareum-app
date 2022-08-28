@@ -1,12 +1,12 @@
+import { CryptoIcon } from '@Components/CryptoIcon';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
 import { TokenInfo } from '@solana/spl-token-registry';
+import { COLORS, FONT_SIZES } from '@Theme/index';
+import { price } from '@Utils/autoRound';
 import React from 'react';
 import { Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import Routes from '../../navigators/Routes';
-import { COLORS, FONT_SIZES } from '../../theme';
-import { price } from '../../utils/autoRound';
-import { CryptoIcon } from '../CryptoIcon';
 
 type TokenInfoItemProps = TokenInfo & {
   action?: string;

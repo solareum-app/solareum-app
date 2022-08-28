@@ -1,12 +1,11 @@
-import React from 'react';
+import Routes from '@Navigators/Routes';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Distribution } from '@Screens/Distribution/Distribution';
+import { Pay } from '@Screens/Pay';
+import Wallet from '@Screens/Wallet';
+import { COLORS } from '@Theme/colors';
+import React from 'react';
 import IconFeather from 'react-native-vector-icons/Feather';
-
-import Wallet from '../screens/Wallet';
-import { Pay } from '../screens/Pay';
-import { COLORS } from '../theme/colors';
-import Routes from './Routes';
-import { Distribution } from '../screens/Distribution/Distribution';
 
 const Tab = createBottomTabNavigator();
 

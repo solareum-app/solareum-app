@@ -1,3 +1,5 @@
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
+import { COLORS } from '@Theme/index';
 import faker from 'faker';
 import React, { forwardRef, useRef, useState } from 'react';
 import {
@@ -8,8 +10,6 @@ import {
   View
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
-import { COLORS } from '../../theme';
 
 export const FixedContent = forwardRef(
   ({ children, onClose }: { children: any; onClose?: () => void }, ref) => {

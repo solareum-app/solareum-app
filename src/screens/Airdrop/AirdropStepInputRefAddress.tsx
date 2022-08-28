@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
 import Clipboard from '@react-native-community/clipboard';
-import { Input, Button, Icon } from 'react-native-elements';
-
-import { typo } from '../../components/Styles';
-import { COLORS } from '../../theme';
-import { QRScan } from '../Token/QRScan';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-
+import { QRScan } from '@Screens/Token/QRScan';
+import { COLORS } from '@Theme/index';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button, Icon, Input } from 'react-native-elements';
 import { style } from './style';
 
 const s = StyleSheet.create({

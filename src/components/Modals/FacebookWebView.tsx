@@ -1,24 +1,23 @@
-import React, { useRef, useState, forwardRef, useCallback } from 'react';
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
+import React, { forwardRef, useCallback, useRef, useState } from 'react';
 import {
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
   Animated,
+  Dimensions,
   Easing,
+  Image,
   Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { WebView as RNWebView } from 'react-native-webview';
 
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
-
 const { width, height: initialHeight } = Dimensions.get('window');
 const isAndroid = Platform.OS === 'android';
 
-const extractHostname = (url) => {
+const extractHostname = (url: string) => {
   let hostname;
 
   if (url.indexOf('//') > -1) {

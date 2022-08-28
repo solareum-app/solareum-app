@@ -1,13 +1,11 @@
+import { grid, typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useMetaData } from '@Hooks/useMetaData';
+import { authFetch } from '@Utils/authfetch';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
-
-import { grid, typo } from '../../../components/Styles';
-import { useLocalize } from '../../../core/AppProvider/LocalizeProvider';
-
-import { authFetch } from '../../../utils/authfetch';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { service } from '../../../config';
-import { useMetaData } from '../../../hooks/useMetaData';
-import { usePrice } from '../../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   wrp: {

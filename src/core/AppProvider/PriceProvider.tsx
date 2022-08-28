@@ -1,10 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
-
-import { IAccount, createAccountList } from './IAccount';
-import { authFetch } from '../../utils/authfetch';
-import { useToken } from './TokenProvider';
-import { storeAccountList } from '../../storage/AccountCollection';
-import { useInterval } from '../../hooks/useInterval';
+import { createAccountList, IAccount } from '@Core/AppProvider/IAccount';
+import { useToken } from '@Core/AppProvider/TokenProvider';
+import { useInterval } from '@Hooks/useInterval';
+import { storeAccountList } from '@Storage/AccountCollection';
+import { authFetch } from '@Utils/authfetch';
+import React, { useContext, useEffect, useState } from 'react';
 
 export type PriceContextType = {
   accountList: IAccount[];

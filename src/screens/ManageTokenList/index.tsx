@@ -1,14 +1,14 @@
+import { CryptoIcon } from '@Components/CryptoIcon';
+import { grid } from '@Components/Styles';
+import { IAccount } from '@Core/AppProvider/IAccount';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useToken } from '@Core/AppProvider/TokenProvider';
+import { COLORS } from '@Theme/colors';
+import { FONT_SIZES } from '@Theme/index';
+import { price } from '@Utils/autoRound';
 import React, { useState } from 'react';
-import { RefreshControl, ScrollView, Text, View, Switch } from 'react-native';
+import { RefreshControl, ScrollView, Switch, Text, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { CryptoIcon } from '../../components/CryptoIcon';
-import { grid } from '../../components/Styles';
-import { IAccount } from '../../core/AppProvider/IAccount';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useToken } from '../../core/AppProvider/TokenProvider';
-import { FONT_SIZES } from '../../theme';
-import { COLORS } from '../../theme/colors';
-import { price } from '../../utils/autoRound';
 
 const TokenInfoItem = ({ toggleAccountByPk, token }) => {
   const {

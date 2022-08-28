@@ -1,10 +1,10 @@
+import Button from '@material-ui/core/Button';
+import { isExtension } from '@Utils/index';
 import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
+import { useCallAsync } from '../notifications';
 import ERC20_ABI from './erc20-abi.json';
 import SWAP_ABI from './swap-abi.json';
-import Button from '@material-ui/core/Button';
-import { useCallAsync } from '../notifications';
-import { isExtension } from '../utils';
 
 const web3 = new Web3(window.ethereum);
 // Change to use estimated gas limit

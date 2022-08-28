@@ -1,8 +1,7 @@
+import { COLORS } from '@Theme/index';
 import React from 'react';
-import { Button as RnButton } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
-
-import { COLORS } from '../../theme';
+import { Button as RnButton } from 'react-native-elements';
 
 const button = StyleSheet.create({
   title: {

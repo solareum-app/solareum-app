@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { WebView } from 'react-native-webview';
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { AppContext } from '@Core/AppProvider/AppProvider';
+import { SWAP_APP, useConfig } from '@Core/AppProvider/RemoteConfigProvider';
+import Header from '@Screens/Wallet/Header';
 import bs58 from 'bs58';
-
-import Header from '../Wallet/Header';
-import { AppContext } from '../../core/AppProvider/AppProvider';
-import { LoadingImage } from '../../components/LoadingIndicator';
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { JUPITER, ONE_SOL } from '../../config';
-import {
-  useConfig,
-  SWAP_APP,
-} from '../../core/AppProvider/RemoteConfigProvider';
 
 const INJECTED_SCRIPT = `
 window.solana = {

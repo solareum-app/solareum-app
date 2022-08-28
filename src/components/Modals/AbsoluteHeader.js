@@ -1,8 +1,8 @@
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
 import faker from 'faker';
 import React, { forwardRef, useRef } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 export const AbsoluteHeader = forwardRef((_, ref) => {
   const modalizeRef = useRef(null);

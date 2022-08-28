@@ -1,10 +1,9 @@
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
 import crypto from 'crypto';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
-
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   main: {

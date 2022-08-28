@@ -1,13 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+import { typo } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { Routes } from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
-
-import { typo } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { Routes } from '../../navigators/Routes';
-import { COLORS } from '../../theme';
+import { COLORS } from '@Theme/index';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
 
 const s = StyleSheet.create({
   main: {

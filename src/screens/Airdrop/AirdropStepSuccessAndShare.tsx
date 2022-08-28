@@ -1,14 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, Share, Linking } from 'react-native';
-import { Button } from 'react-native-elements';
+import { grid, typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { style as s } from '@Screens/Airdrop/style';
+import { COLORS } from '@Theme/index';
 import LottieView from 'lottie-react-native';
-
-import { grid, typo } from '../../components/Styles';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-
-import { style as s } from './style';
-import { COLORS } from '../../theme';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
+import React from 'react';
+import { Linking, Share, StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
 
 const style = StyleSheet.create({
   imgWrp: {

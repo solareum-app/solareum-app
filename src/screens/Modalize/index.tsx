@@ -1,20 +1,18 @@
+import { Button } from '@Components/Button/Button';
+import { Header } from '@Components/Header/Header';
+import { Layout } from '@Components/Layout/Layout';
+import { AbsoluteHeader } from '@Components/Modals/AbsoluteHeader';
+import { AppleMusicPlayer } from '@Components/Modals/AppleMusicPlayer';
+import { FacebookWebView } from '@Components/Modals/FacebookWebView';
+import { FixedContent } from '@Components/Modals/FixedContent';
+import { FlatList } from '@Components/Modals/FlatList';
+import { SectionList } from '@Components/Modals/SectionList';
+import { SimpleContent } from '@Components/Modals/SimpleContent';
+import { SlackTabView } from '@Components/Modals/SlackTabView';
+import { SnappingList } from '@Components/Modals/SnappingList';
 import React, { useRef } from 'react';
-import { View, Animated } from 'react-native';
+import { Animated, View } from 'react-native';
 import { Portal } from 'react-native-portalize';
-
-import { Layout } from '../../components/Layout/Layout';
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/Button/Button';
-
-import { FixedContent } from '../../components/Modals/FixedContent';
-import { AbsoluteHeader } from '../../components/Modals/AbsoluteHeader';
-import { SimpleContent } from '../../components/Modals/SimpleContent';
-import { SnappingList } from '../../components/Modals/SnappingList';
-import { FlatList } from '../../components/Modals/FlatList';
-import { SectionList } from '../../components/Modals/SectionList';
-import { AppleMusicPlayer } from '../../components/Modals/AppleMusicPlayer';
-import { FacebookWebView } from '../../components/Modals/FacebookWebView';
-import { SlackTabView } from '../../components/Modals/SlackTabView';
 // import { AlwaysOpen } from '../../components/Modals/AlwaysOpen';
 
 const CashScreen = () => {

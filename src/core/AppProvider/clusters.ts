@@ -1,6 +1,6 @@
+import { Cluster } from '@Core/AppProvider/types';
 import { clusterApiUrl } from '@solana/web3.js';
 import { MAINNET_URL } from '../../config';
-import { Cluster } from './types';
 
 export const CLUSTERS: Cluster[] = [
   {

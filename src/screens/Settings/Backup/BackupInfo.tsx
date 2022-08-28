@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { typo } from '@Components/Styles';
+import { COLORS } from '@Theme/index';
 import LottieView from 'lottie-react-native';
-
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { typo } from '../../../components/Styles';
-import { COLORS } from '../../../theme';
 
 const s = StyleSheet.create({
   main: {

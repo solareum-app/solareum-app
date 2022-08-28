@@ -1,4 +1,11 @@
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { grid } from '@Components/Styles';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useConfig } from '@Core/AppProvider/RemoteConfigProvider';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '@Theme/index';
+import { authFetch } from '@Utils/authfetch';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
@@ -9,13 +16,6 @@ import {
   View
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { grid } from '../../components/Styles';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
-import Routes from '../../navigators/Routes';
-import { COLORS } from '../../theme';
-import { authFetch } from '../../utils/authfetch';
 import { Header } from './Header';
 import { PromoteItem } from './PromoteItem';
 import { SocialItem } from './SocialItem';

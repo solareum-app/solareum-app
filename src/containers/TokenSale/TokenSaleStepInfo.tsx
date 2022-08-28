@@ -1,12 +1,11 @@
+import { row, typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
 import React from 'react';
-import { View, Text, Linking } from 'react-native';
+import { Linking, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-
-import { typo, row } from '../../components/Styles';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { style as s } from './style';
 
-export const TokenSaleStepInfo = ({ dismiss, next, error, presale }) => {
+export const TokenSaleStepInfo = ({ dismiss, next, error, presale }: any) => {
   const { t } = useLocalize();
 
   return (

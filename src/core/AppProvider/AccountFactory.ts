@@ -1,9 +1,8 @@
-import { createAccountList, IAccount } from './IAccount';
-
+import { getAccountList } from '@SplUtils/getWallet';
+import { Wallet } from '@SplUtils/wallet';
+import { getAccountListByOwner } from '@Storage/AccountCollection';
 import { EventEmitter } from './EventEmitter';
-import { getAccountListByOwner } from '../../storage/AccountCollection';
-import { getAccountList } from '../../spl-utils/getWallet';
-import { Wallet } from '../../spl-utils/wallet';
+import { createAccountList, IAccount } from './IAccount';
 
 type AccountData = {
   [key: string]: IAccount;

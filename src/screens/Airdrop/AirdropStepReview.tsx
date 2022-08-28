@@ -1,10 +1,9 @@
+import { grid, typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { style as s } from '@Screens/Airdrop/style';
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-
-import { grid, typo } from '../../components/Styles';
-import { style as s } from './style';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 export const AirdropStepReview = ({
   next,

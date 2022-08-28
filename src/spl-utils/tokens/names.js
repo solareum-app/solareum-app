@@ -1,15 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
-import EventEmitter from 'events';
-import {
-  useConnectionConfig,
-  MAINNET_URL,
-  MAINNET_BACKUP_URL,
-} from '../connection';
-import { useListener } from '../utils';
-import { clusterForEndpoint } from '../clusters';
-import { useCallback } from 'react';
-import { PublicKey } from '@solana/web3.js';
 import { TokenListProvider } from '@solana/spl-token-registry';
+import { PublicKey } from '@solana/web3.js';
+import { useListener } from '@Utils/index';
+import EventEmitter from 'events';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { clusterForEndpoint } from '../clusters';
+import {
+  MAINNET_BACKUP_URL,
+  MAINNET_URL,
+  useConnectionConfig
+} from '../connection';
 
 // This list is used for deciding what to display in the popular tokens list
 // in the `AddTokenDialog`.

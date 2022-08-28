@@ -1,21 +1,20 @@
+import { FacebookWebView } from '@Components/Modals/FacebookWebView';
+import { grid, typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import Routes from '@Navigators/Routes';
+import { useNavigation } from '@react-navigation/native';
 import React, { useRef } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
-  ScrollView,
   SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-portalize';
-
-import { FacebookWebView } from '../../components/Modals/FacebookWebView';
-import { grid, typo } from '../../components/Styles';
-import Routes from '../../navigators/Routes';
 import imgEducation from '../../assets/clip-education.png';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   wrp: {

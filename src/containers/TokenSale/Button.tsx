@@ -1,23 +1,23 @@
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { FixedContent } from '@Components/Modals/FixedContent';
+import { typo } from '@Components/Styles';
+import { ReceiveMessage } from '@Containers/TokenSale/ReceiveMessage';
+import { TokenSaleForm } from '@Containers/TokenSale/TokenSaleForm';
+import { TokenSaleStepInfo } from '@Containers/TokenSale/TokenSaleStepInfo';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useConfig } from '@Core/AppProvider/RemoteConfigProvider';
+import { useMetaData } from '@Hooks/useMetaData';
+import { AirdropStepCreateAccount } from '@Screens/Airdrop/AirdropStepCreateAccount';
+import { COLORS } from '@Theme/index';
+import { authFetch } from '@Utils/authfetch';
+import { wait } from '@Utils/index';
 import React, { useRef, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
 import ImgPayment from '../../assets/clip-1.png';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { FixedContent } from '../../components/Modals/FixedContent';
-import { typo } from '../../components/Styles';
 import { service } from '../../config';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useConfig } from '../../core/AppProvider/RemoteConfigProvider';
-import { useMetaData } from '../../hooks/useMetaData';
-import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
-import { COLORS } from '../../theme';
-import { wait } from '../../utils';
-import { authFetch } from '../../utils/authfetch';
-import { ReceiveMessage } from './ReceiveMessage';
-import { TokenSaleForm } from './TokenSaleForm';
-import { TokenSaleStepInfo } from './TokenSaleStepInfo';
 
 const s = StyleSheet.create({
   main: {

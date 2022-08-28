@@ -1,19 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
+import { typo } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
 import Clipboard from '@react-native-community/clipboard';
-import { Input, Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
-import LottieView from 'lottie-react-native';
-
-import { typo } from '../../components/Styles';
-import { COLORS } from '../../theme';
-import { price } from '../../utils/autoRound';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-
-import { QRScan } from './QRScan';
-import { authFetch } from '../../utils/authfetch';
+import { COLORS } from '@Theme/index';
+import { authFetch } from '@Utils/authfetch';
+import { price } from '@Utils/autoRound';
 import { throttle } from 'lodash';
+import LottieView from 'lottie-react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Button, Icon, Input } from 'react-native-elements';
+import { QRScan } from './QRScan';
 
 const s = StyleSheet.create({
   main: {

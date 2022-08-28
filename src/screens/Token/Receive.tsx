@@ -1,32 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  DeviceEventEmitter,
-  Share,
-} from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
-import Clipboard from '@react-native-community/clipboard';
-import { Button, Icon } from 'react-native-elements';
-import { PublicKey } from '@solana/web3.js';
-
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { COLORS } from '../../theme/colors';
-import { typo } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useToken } from '../../core/AppProvider/TokenProvider';
-import { wait } from '../../utils';
-import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
-import { EventMessage } from '../EventMessage/EventMessage';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { getItem, setItem } from '../../storage/Collection';
-import { Address } from '../../components/Address/Address';
+import { Address } from '@Components/Address/Address';
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { typo } from '@Components/Styles';
 import {
   getLRLink,
-  KEY_LR,
-} from '../../containers/LightningRewards/LightningRewards';
+  KEY_LR
+} from '@Containers/LightningRewards/LightningRewards';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useToken } from '@Core/AppProvider/TokenProvider';
+import Clipboard from '@react-native-community/clipboard';
+import { PublicKey } from '@solana/web3.js';
+import { getItem, setItem } from '@Storage/Collection';
+import { COLORS } from '@Theme/colors';
+import { wait } from '@Utils/index';
+import React, { useEffect, useState } from 'react';
+import {
+  DeviceEventEmitter,
+  Share,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
+import { Button, Icon } from 'react-native-elements';
+import QRCode from 'react-native-qrcode-svg';
+import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
 
 const s = StyleSheet.create({
   main: {
@@ -124,8 +122,7 @@ export const Receive = ({ token = {} }) => {
       await setItem(lrLinkId, address, link);
     }
 
-
-    console.log("link receive: ",link)
+    console.log('link receive: ', link);;
 
     const message = t('lr-share', { link, asset: account.symbol });
     Clipboard.setString(message);

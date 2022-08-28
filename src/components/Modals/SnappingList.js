@@ -1,10 +1,9 @@
-import React, { useRef, forwardRef } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { Modalize } from 'react-native-modalize';
+import { Button } from '@Components/Button/Button';
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
 import faker from 'faker';
-
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
-import { Button } from '../Button/Button';
+import React, { forwardRef, useRef } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
 export const SnappingList = forwardRef((_, ref) => {
   const modalizeRef = useRef(null);

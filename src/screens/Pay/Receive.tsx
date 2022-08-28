@@ -1,15 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import { Address } from '@Components/Address/Address';
+import { typo } from '@Components/Styles';
+import { LightningRewards } from '@Containers/LightningRewards/LightningRewards';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
 import Clipboard from '@react-native-community/clipboard';
-
-import { COLORS } from '../../theme/colors';
-import { typo } from '../../components/Styles';
-import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { Address } from '../../components/Address/Address';
-import { LightningRewards } from '../../containers/LightningRewards/LightningRewards';
+import { MESSAGE_TYPE } from '@Screens/EventMessage/EventMessage';
+import { COLORS } from '@Theme/colors';
+import React from 'react';
+import { DeviceEventEmitter, StyleSheet, Text, View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 
 const s = StyleSheet.create({
   main: {

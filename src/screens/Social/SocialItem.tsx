@@ -1,14 +1,12 @@
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Portal } from 'react-native-portalize';
+import { ImageCached } from '@Components/ImageCached/ImageCached';
+import { FacebookWebView } from '@Components/Modals/FacebookWebView';
+import { typo } from '@Components/Styles';
+import { COLORS } from '@Theme/index';
 import { format } from 'date-fns';
-
-import { ImageCached } from '../../components/ImageCached/ImageCached';
-import { COLORS } from '../../theme';
-import { FacebookWebView } from '../../components/Modals/FacebookWebView';
-import { typo } from '../../components/Styles';
+import React, { useRef } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Portal } from 'react-native-portalize';
 import bullImg from './bull.jpg';
-import { useRewards } from '../../core/AppProvider/RewardsProvider';
 
 const s = StyleSheet.create({
   main: {

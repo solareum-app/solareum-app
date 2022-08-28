@@ -1,11 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
-import { Button } from 'react-native-elements';
+import { grid, typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { COLORS } from '@Theme/index';
 import LottieView from 'lottie-react-native';
-
-import { grid, typo } from '../../components/Styles';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { COLORS } from '../../theme';
+import React from 'react';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
 
 const style = StyleSheet.create({
   main: {

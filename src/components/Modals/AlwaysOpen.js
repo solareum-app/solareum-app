@@ -1,8 +1,8 @@
+import { Button } from '@Components/Button/Button';
 import faker from 'faker';
 import React, { useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { Button } from '../Button/Button';
 
 export const AlwaysOpen = () => {
   const modalizeRef = useRef(null);

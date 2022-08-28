@@ -1,21 +1,20 @@
+import { grid, input, typo } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import Routes from '@Navigators/Routes';
+import Clipboard from '@react-native-community/clipboard';
+import { useNavigation } from '@react-navigation/native';
+import { COLORS, FONT_SIZES, LINE_HEIGHT } from '@Theme/index';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
   SafeAreaView,
   ScrollView,
-  TextInput,
   StyleSheet,
+  Text,
+  TextInput,
+  View
 } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
-import Clipboard from '@react-native-community/clipboard';
-
-import Routes from '../../navigators/Routes';
-import { grid, typo, input } from '../../components/Styles';
-import { COLORS, FONT_SIZES, LINE_HEIGHT } from '../../theme';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 
 const s = StyleSheet.create({
   wrp: {

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { getItem, setItem } from '@Storage/Collection';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-
 import ImgOnboard from '../../assets/clip-1.png';
-import { typo } from '../../components/Styles';
 import { SwapContainer } from '../Settings/SwapApp';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { setItem, getItem } from '../../storage/Collection';
 
 const ONBOARDING_KEY = 'ONBOARDING_KEY';
 

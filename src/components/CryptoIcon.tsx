@@ -1,11 +1,11 @@
+import { ImageCached } from '@Components/ImageCached/ImageCached';
+import LoadingIndicator from '@Components/LoadingIndicator';
+import { getIcon, setIcon } from '@Storage/SvgIconCollection';
+import { COLORS } from '@Theme/index';
+import { authFetch } from '@Utils/authfetch';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { getIcon, setIcon } from '../storage/SvgIconCollection';
-import { COLORS } from '../theme';
-import { authFetch } from '../utils/authfetch';
-import { ImageCached } from './ImageCached/ImageCached';
-import LoadingIndicator from './LoadingIndicator';
 
 const iconStyle = StyleSheet.create({
   main: {

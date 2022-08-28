@@ -1,20 +1,19 @@
+import { grid, row, typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { getShortHash } from '@Utils/address';
+import { authFetch } from '@Utils/authfetch';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
+  SafeAreaView,
+  ScrollView,
+  Share,
   StyleSheet,
   Text,
-  ScrollView,
-  SafeAreaView,
-  Share,
+  View
 } from 'react-native';
 import { Button } from 'react-native-elements';
-
-import { grid, typo, row } from '../../../components/Styles';
-import { authFetch } from '../../../utils/authfetch';
 import { service } from '../../../config';
-import { useLocalize } from '../../../core/AppProvider/LocalizeProvider';
-import { getShortHash } from '../../../utils/address';
-import { usePrice } from '../../../core/AppProvider/PriceProvider';
 
 const s = StyleSheet.create({
   wrp: {
@@ -46,7 +45,7 @@ const Influencer: React.FC<Props> = () => {
         message,
       });
       return result;
-    } catch { }
+    } catch {}
   };
 
   useEffect(() => {

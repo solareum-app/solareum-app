@@ -1,15 +1,14 @@
+import { grid } from '@Components/Styles';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
+import { EventMessage } from '@Screens/EventMessage/EventMessage';
+import { Header } from '@Screens/Pay/Header';
+import { Receive } from '@Screens/Pay/Receive';
+import { TransferAction } from '@Screens/Wallet';
+import { COLORS } from '@Theme/index';
 import React from 'react';
-import { SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
-
-import { grid } from '../../components/Styles';
-import Routes from '../../navigators/Routes';
-import { COLORS } from '../../theme';
-import { EventMessage } from '../EventMessage/EventMessage';
-import { TransferAction } from '../Wallet';
-import { Header } from './Header';
-import { Receive } from './Receive';
 
 const s = StyleSheet.create({
   main: {

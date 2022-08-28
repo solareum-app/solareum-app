@@ -1,9 +1,8 @@
+import Icon from '@Components/Icon';
+import { COLORS } from '@Theme/colors';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-
-import Icon from '../../components/Icon';
-import { COLORS } from '../../theme/colors';
 
 const s = StyleSheet.create({
   main: {

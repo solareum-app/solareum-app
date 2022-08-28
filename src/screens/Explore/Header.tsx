@@ -1,8 +1,7 @@
+import { COLORS, FONT_SIZES } from '@Theme/index';
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Header as HeaderElement } from 'react-native-elements';
-
-import { COLORS, FONT_SIZES } from '../../theme';
 
 const s = StyleSheet.create({
   title: {

@@ -1,9 +1,8 @@
+import { typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
-
+import { Image, StyleSheet, Text, View } from 'react-native';
 import imgDelivering from '../../assets/clip-message-sent.png';
-import { typo } from '../../components/Styles';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { MarketItem } from './MarketItem';
 
 const s = StyleSheet.create({

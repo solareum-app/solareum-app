@@ -1,14 +1,14 @@
+import Icon from '@Components/Icon';
+import { grid, input, typo } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import Routes from '@Navigators/Routes';
 import Clipboard from '@react-native-community/clipboard';
 import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '@Theme/index';
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, Text, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
-import Icon from '../../components/Icon';
-import { grid, input, typo } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import Routes from '../../navigators/Routes';
-import { COLORS } from '../../theme';
 import { s } from './CreateWallet';
 
 type Props = {

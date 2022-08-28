@@ -1,24 +1,22 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Portal } from 'react-native-portalize';
+import { getAdmobIdByType } from '@Components/Admob/Rewarded';
+import { FixedContent } from '@Components/Modals/FixedContent';
+import { MissionReward } from '@Containers/MissionButton/MissionReward';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useMetaData } from '@Hooks/useMetaData';
 import {
+  AdEventType,
+  InterstitialAd,
   RewardedAd,
   RewardedAdEventType,
-  InterstitialAd,
-  AdEventType,
-  TestIds,
+  TestIds
 } from '@react-native-firebase/admob';
-
-import { FixedContent } from '../../components/Modals/FixedContent';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { authFetch } from '../../utils/authfetch';
+import { AirdropStepCreateAccount } from '@Screens/Airdrop/AirdropStepCreateAccount';
+import { getItem, setItem } from '@Storage/Collection';
+import { authFetch } from '@Utils/authfetch';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Portal } from 'react-native-portalize';
 import { service } from '../../config';
-import { useMetaData } from '../../hooks/useMetaData';
-
-import { getAdmobIdByType } from '../../components/Admob/Rewarded';
-import { MissionReward } from '../../containers/MissionButton/MissionReward';
-import { AirdropStepCreateAccount } from '../../screens/Airdrop/AirdropStepCreateAccount';
-import { setItem, getItem } from '../../storage/Collection';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
 
 export type RewardsContextType = {
   getRewards: () => void;

@@ -1,9 +1,7 @@
+import { grid } from '@Components/Styles';
+import { Airdrop as AirdropComp } from '@Screens/Airdrop/Airdrop';
 import React from 'react';
-
-import { View, ScrollView, SafeAreaView } from 'react-native';
-
-import { grid } from '../../../components/Styles';
-import { Airdrop as AirdropComp } from '../../Airdrop/Airdrop';
+import { SafeAreaView, ScrollView, View } from 'react-native';
 
 type Props = {};
 

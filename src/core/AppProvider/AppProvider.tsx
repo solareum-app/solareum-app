@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { BackupData } from '../../screens/Settings/Backup/mergeWallets';
-import { getWallet } from '../../spl-utils/getWallet';
-import { getItem, setItem } from '../../storage/Collection';
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { BackupData } from '@Screens/Settings/Backup/mergeWallets';
+import { getWallet } from '@SplUtils/getWallet';
+import { getItem, setItem } from '@Storage/Collection';
 import {
   AddressInfo,
   createWallet,
   getListWallet,
   removeWalletById,
   updateWallet
-} from '../../storage/WalletCollection';
+} from '@Storage/WalletCollection';
+import React, { useContext, useEffect, useState } from 'react';
 const DEFAULT_WALLET = 'DEFAULT-WALLET-ID';
 
 export type AppContextType = {

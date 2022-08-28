@@ -1,10 +1,9 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
-import { Header as HeaderElement, Icon } from 'react-native-elements';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
-
-import { COLORS } from '../../theme/colors';
-import Routes from '../../navigators/Routes';
+import { COLORS } from '@Theme/colors';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Header as HeaderElement, Icon } from 'react-native-elements';
 import WalletPicker from './WalletPicker';
 
 const s = StyleSheet.create({

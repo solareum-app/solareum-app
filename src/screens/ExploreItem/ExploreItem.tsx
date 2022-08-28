@@ -1,4 +1,14 @@
+import { CryptoIcon } from '@Components/CryptoIcon';
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { grid, typo } from '@Components/Styles';
+import { MissionButton } from '@Containers/MissionButton';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
+import { SocialItem } from '@Screens/Social/SocialItem';
+import { COLORS } from '@Theme/colors';
+import { authFetch } from '@Utils/authfetch';
+import { price } from '@Utils/autoRound';
 import React, { useEffect, useState } from 'react';
 import {
   RefreshControl,
@@ -8,16 +18,6 @@ import {
   View
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { CryptoIcon } from '../../components/CryptoIcon';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { grid, typo } from '../../components/Styles';
-import { MissionButton } from '../../containers/MissionButton';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import Routes from '../../navigators/Routes';
-import { COLORS } from '../../theme/colors';
-import { authFetch } from '../../utils/authfetch';
-import { price } from '../../utils/autoRound';
-import { SocialItem } from '../Social/SocialItem';
 
 const s = StyleSheet.create({
   header: {

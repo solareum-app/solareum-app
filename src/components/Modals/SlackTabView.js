@@ -1,3 +1,4 @@
+import { useCombinedRefs } from '@Hooks/use-combined-refs';
 import faker from 'faker';
 import React, { forwardRef, memo, useRef, useState } from 'react';
 import {
@@ -13,7 +14,6 @@ import {
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { SceneMap, TabView } from 'react-native-tab-view';
-import { useCombinedRefs } from '../../hooks/use-combined-refs';
 
 const { width } = Dimensions.get('window');
 const isAndroid = Platform.OS === 'android';

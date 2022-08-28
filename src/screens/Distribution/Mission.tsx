@@ -1,15 +1,14 @@
+import { Button } from '@Components/Button/Button';
+import { typo } from '@Components/Styles';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useRewards } from '@Core/AppProvider/RewardsProvider';
+import { box } from '@Screens/Distribution/style';
+import { COLORS } from '@Theme/index';
+import { authFetch } from '@Utils/authfetch';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Share } from 'react-native';
+import { Share, StyleSheet, Text, View } from 'react-native';
 import { Button as SimpleBtn } from 'react-native-elements';
-
-import { typo } from '../../components/Styles';
-import { useRewards } from '../../core/AppProvider/RewardsProvider';
-import { Button } from '../../components/Button/Button';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { COLORS } from '../../theme';
-import { box } from './style';
-import { authFetch } from '../../utils/authfetch';
 
 const s = StyleSheet.create({
   main: {

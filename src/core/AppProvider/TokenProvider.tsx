@@ -1,18 +1,16 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { TokenInfo, TokenListProvider } from '@solana/spl-token-registry';
 import { PublicKey } from '@solana/web3.js';
-
-import { getAccountList, getAccountInfo } from '../../spl-utils/getWallet';
-import { getAccountListByOwner } from '../../storage/AccountCollection';
-import { LoadingImage } from '../../components/LoadingIndicator';
+import { getAccountInfo, getAccountList } from '@SplUtils/getWallet';
+import { getAccountListByOwner } from '@Storage/AccountCollection';
+import React, { useContext, useEffect, useState } from 'react';
 import { MAINNET_URL } from '../../config';
-
-import { clusterForEndpoint } from './clusters';
-import { Cluster } from './types';
-import { IAccount, createAccountList } from './IAccount';
 import { useApp } from './AppProvider';
-import { useConfig } from './RemoteConfigProvider';
+import { clusterForEndpoint } from './clusters';
 import { getUniqByAddress } from './getUniqByAddress';
+import { createAccountList, IAccount } from './IAccount';
+import { useConfig } from './RemoteConfigProvider';
+import { Cluster } from './types';
 
 export type TokenContextType = {
   accountList: IAccount[];

@@ -1,17 +1,17 @@
+import { CryptoIcon } from '@Components/CryptoIcon';
+import { LoadingImage } from '@Components/LoadingIndicator';
+import { typo } from '@Components/Styles';
+import { useApp } from '@Core/AppProvider/AppProvider';
+import { useLocalize } from '@Core/AppProvider/LocalizeProvider';
+import { usePrice } from '@Core/AppProvider/PriceProvider';
+import { useToken } from '@Core/AppProvider/TokenProvider';
+import { SOL_BALANCE_TARGET } from '@Screens/Airdrop/const';
+import { style as s } from '@Screens/Airdrop/style';
 import { PublicKey } from '@solana/web3.js';
+import { wait } from '@Utils/index';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { CryptoIcon } from '../../components/CryptoIcon';
-import { LoadingImage } from '../../components/LoadingIndicator';
-import { typo } from '../../components/Styles';
-import { useApp } from '../../core/AppProvider/AppProvider';
-import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { useToken } from '../../core/AppProvider/TokenProvider';
-import { wait } from '../../utils';
-import { SOL_BALANCE_TARGET } from './const';
-import { style as s } from './style';
 
 const style = StyleSheet.create({
   iconWrp: {

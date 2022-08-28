@@ -1,8 +1,7 @@
+import Icon from '@Components/Icon';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, ButtonProps } from 'react-native-elements';
-
-import Icon from '../Icon';
 
 export type BaseButtonProps = ButtonProps & {
   text: string;

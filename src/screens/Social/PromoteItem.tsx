@@ -1,10 +1,10 @@
+import { CryptoIcon } from '@Components/CryptoIcon';
+import { typo } from '@Components/Styles';
+import Routes from '@Navigators/Routes';
 import { useNavigation } from '@react-navigation/native';
 import { TokenInfo } from '@solana/spl-token-registry';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { CryptoIcon } from '../../components/CryptoIcon';
-import { typo } from '../../components/Styles';
-import Routes from '../../navigators/Routes';
 
 const s = StyleSheet.create({
   main: {
