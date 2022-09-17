@@ -1,32 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  DeviceEventEmitter,
-  Share,
-} from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
-import { Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
-
+import React, { useEffect, useState } from 'react';
+import { DeviceEventEmitter, StyleSheet, Text, View } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
+import QRCode from 'react-native-qrcode-svg';
+import { Address } from '../../components/Address/Address';
 import { LoadingImage } from '../../components/LoadingIndicator';
-import { COLORS } from '../../theme/colors';
 import { typo } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider/AppProvider';
-import { useToken } from '../../core/AppProvider/TokenProvider';
-import { wait } from '../../utils';
-import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
-import { EventMessage } from '../EventMessage/EventMessage';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { getItem, setItem } from '../../storage/Collection';
-import { Address } from '../../components/Address/Address';
-import {
-  getLRLink,
-  KEY_LR,
-} from '../../containers/LightningRewards/LightningRewards';
+import { useToken } from '../../core/AppProvider/TokenProvider';
+import Routes from '../../navigators/Routes';
+import { COLORS } from '../../theme/colors';
+import { wait } from '../../utils';
+import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
 
 const s = StyleSheet.create({
   main: {
@@ -93,7 +81,7 @@ const s = StyleSheet.create({
 const MAX_TRY = 24;
 const WAIT_TIME = 10000; // 10s -> 4mins for total
 
-export const Receive = ({ token = {} }) => {
+export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
   const { wallet } = useApp();
   const { loadAccountList } = useToken();
   const { accountList } = usePrice();
@@ -111,35 +99,33 @@ export const Receive = ({ token = {} }) => {
   };
   const address = sol.publicKey;
 
+  const onPressHandler = () => {
+    navigation.navigate(Routes.AddressManagement);
+    refReceived.current?.close();
+  };
+
   const copyToClipboard = () => {
     Clipboard.setString(address);
     DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
   };
 
-  const copyRewardsLink = async () => {
-    const lrLinkId = `${KEY_LR}-${account.symbol}`;
-    let link = await getItem(lrLinkId, address);
-    if (!link) {
-      link = await getLRLink(address, account.symbol);
-      await setItem(lrLinkId, address, link);
-    }
+  // const copyRewardsLink = async () => {
+  //   const lrLinkId = `${KEY_LR}-${account.symbol}`;
+  //   let link = await getItem(lrLinkId, address);
+  //   if (!link) {
+  //     link = await getLRLink(address, account.symbol);
+  //     await setItem(lrLinkId, address, link);
+  //   }
 
-
-    console.log("link receive: ",link)
-
-    const message = t('lr-share', { link, asset: account.symbol });
-    Clipboard.setString(message);
-    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, message);
-
-    try {
-      const result = await Share.share({
-        message,
-      });
-      return result;
-    } catch {
-      // TODO: track this issue then
-    }
-  };
+  //   try {
+  //     const result = await Share.share({
+  //       message,
+  //     });
+  //     return result;
+  //   } catch {
+  //     // TODO: track this issue then
+  //   }
+  // };
 
   const pollingAccount = async (no: number) => {
     if (no < 0) {
@@ -259,17 +245,12 @@ export const Receive = ({ token = {} }) => {
               <QRCode value={address} size={220} />
             </View>
             <Address copyToClipboard={copyToClipboard} address={address} />
-          </View>
-          <View style={s.footer}>
-            <Text style={typo.helper}>{t('receive-note-01')}</Text>
-            <Text style={typo.helper}>
-              {t('receive-note-02', { name: account.name })}
-            </Text>
+
             <View style={s.section}>
               <Button
-                title={`Share ${account.symbol} Link`}
+                title={t('create-FIO-address')}
                 buttonStyle={s.buttonStyle}
-                onPress={copyRewardsLink}
+                onPress={onPressHandler}
                 icon={
                   <Icon
                     name="zap"
@@ -281,6 +262,13 @@ export const Receive = ({ token = {} }) => {
                 }
               />
             </View>
+          </View>
+          <View style={s.footer}>
+            <Text style={typo.helper}>{t('receive-note-01')}</Text>
+            <Text style={typo.helper}>
+              {t('receive-note-02', { name: account.name })}
+            </Text>
+
             {!isAccountCreated && account.symbol ? (
               <View style={s.control}>
                 <Button

@@ -162,5 +162,8 @@
   "backup-message": "Vì sự an toàn của bạn, hãy sao lưu mã bảo mật ngay bây giờ. Mã bảo mật sẽ giúp bạn khôi phục lại ví trong trường hợp có bất kỳ vấn đề gì xảy ra.",
   "backup-btn-label": "Sao lưu ngay",
   "prefix": "v",
-  "version": "vi.2.0.0"
+  "version": "vi.2.0.0",
+  "create-FIO-address": "Tạo địa chỉ FIO",
+  "check-address-name": "Kiểm tra tên địa chỉ",
+  "register-address-name": "Đăng ký tên địa chỉ"
 }

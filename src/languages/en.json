@@ -162,5 +162,8 @@
   "backup-message": "For your safety, please store your seed phrases as soon as possible. Seed phrases help you recover your wallets if there are any issues.",
   "backup-btn-label": "Backup Now",
   "prefix": "e",
-  "version": "en.2.0.0"
+  "version": "en.2.0.0",
+  "create-FIO-address": "Create FIO Address",
+  "check-address-name": "Check Address Name",
+  "register-address-name": "Register address name"
 }

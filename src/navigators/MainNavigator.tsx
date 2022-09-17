@@ -1,40 +1,41 @@
-import React, { useRef, useEffect } from 'react';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import React, { useEffect, useRef } from 'react';
+import { Linking, StyleSheet, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { Host } from 'react-native-portalize';
-import { View, StyleSheet, Linking } from 'react-native';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
-
-import CreateWallet from '../screens/WalletManagement/CreateWallet';
-import EditWallet from '../screens/WalletManagement/EditWallet';
-import GetStarted from '../screens/GetStarted';
-import ImportWallet from '../screens/ImportWallet';
-import Notifications from '../screens/Notifications';
-import Settings from '../screens/Settings';
-import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
-import Search from '../screens/Search';
-import Token from '../screens/Token';
+import SplashScreen from 'react-native-splash-screen';
+import { usePrice } from '../core/AppProvider/PriceProvider';
+import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
+import { useToken } from '../core/AppProvider/TokenProvider';
+import AddressManagement from '../screens/AddressManagement';
 import DEX from '../screens/DEX';
 import Swap from '../screens/DEX/Swap';
-import { getListWallet } from '../storage/WalletCollection';
-import SplashScreen from 'react-native-splash-screen';
-import { HomeScreen } from './HomeScreen';
-import { COLORS } from '../theme/colors';
-import Routes from './Routes';
-import { Icon } from 'react-native-elements';
+import { Explore } from '../screens/Explore/Explore';
+import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
+import GetStarted from '../screens/GetStarted';
+import ImportWallet from '../screens/ImportWallet';
 import ManageTokenList from '../screens/ManageTokenList';
+import { MoonPay } from '../screens/Moonpay/Moonpay';
+import Notifications from '../screens/Notifications';
+import { Restore } from '../screens/Restore/Restore';
+import Search from '../screens/Search';
+import Settings from '../screens/Settings';
+import Airdrop from '../screens/Settings/Airdrop';
 import DailyMission from '../screens/Settings/DailyMission';
 import Influencer from '../screens/Settings/Influencer';
-import Airdrop from '../screens/Settings/Airdrop';
 import SwapApp from '../screens/Settings/SwapApp';
+import { Wallet as SettingWallet } from '../screens/Settings/Wallet';
+import Token from '../screens/Token';
 import { TransferAction } from '../screens/Wallet';
-import { usePrice } from '../core/AppProvider/PriceProvider';
-import { useToken } from '../core/AppProvider/TokenProvider';
-import { ExploreItem } from '../screens/ExploreItem/ExploreItem';
-import { Explore } from '../screens/Explore/Explore';
-import { MoonPay } from '../screens/Moonpay/Moonpay';
-import { Restore } from '../screens/Restore/Restore';
-import { RewardsProvider } from '../core/AppProvider/RewardsProvider';
+import CreateWallet from '../screens/WalletManagement/CreateWallet';
+import EditWallet from '../screens/WalletManagement/EditWallet';
+import { getListWallet } from '../storage/WalletCollection';
+import { COLORS } from '../theme/colors';
+import { HomeScreen } from './HomeScreen';
+import Routes from './Routes';
+
 
 const s = StyleSheet.create({
   backWrp: {
@@ -207,6 +208,11 @@ const MainNavigator: React.FC = () => {
             />
             <Stack.Screen name={Routes.Settings} component={Settings} />
             <Stack.Screen name={Routes.Token} component={Token} />
+            <Stack.Screen
+              name={Routes.AddressManagement}
+              component={AddressManagement}
+            />
+
             <Stack.Screen
               name={Routes.SettingWallet}
               component={SettingWallet}
