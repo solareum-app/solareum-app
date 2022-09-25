@@ -12,6 +12,7 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import Routes from '../../navigators/Routes';
+import AsyncStorage from '../../storage';
 import { COLORS } from '../../theme/colors';
 import { wait } from '../../utils';
 import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
@@ -76,6 +77,9 @@ const s = StyleSheet.create({
   buttonIcon: {
     marginRight: 4,
   },
+  fioAddress: {
+    marginTop: 10,
+  },
 });
 
 const MAX_TRY = 24;
@@ -90,6 +94,7 @@ export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
   const [mintAccountFee, setMintAccountFee] = useState<number>(0);
   const [account, setAccount] = useState(token);
   const [createNewAccount, setCreateNewAccount] = useState(false);
+  const [fioAddr, setFioAddr] = useState('');
   const { t } = useLocalize();
   const isAccountCreated = account && account.publicKey;
 
@@ -104,28 +109,10 @@ export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
     refReceived.current?.close();
   };
 
-  const copyToClipboard = () => {
-    Clipboard.setString(address);
-    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, address);
+  const copyToClipboard = (value: string) => {
+    Clipboard.setString(value);
+    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, value);
   };
-
-  // const copyRewardsLink = async () => {
-  //   const lrLinkId = `${KEY_LR}-${account.symbol}`;
-  //   let link = await getItem(lrLinkId, address);
-  //   if (!link) {
-  //     link = await getLRLink(address, account.symbol);
-  //     await setItem(lrLinkId, address, link);
-  //   }
-
-  //   try {
-  //     const result = await Share.share({
-  //       message,
-  //     });
-  //     return result;
-  //   } catch {
-  //     // TODO: track this issue then
-  //   }
-  // };
 
   const pollingAccount = async (no: number) => {
     if (no < 0) {
@@ -138,6 +125,13 @@ export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
       return pollingAccount(no - 1);
     }
     return acc;
+  };
+
+  const getFioAddress = async () => {
+    const fioAddress = (await AsyncStorage.getItem('fioAddress')) || null;
+    if (fioAddress) {
+      setFioAddr(fioAddress);
+    }
   };
 
   const createTokenAccount = async () => {
@@ -177,6 +171,10 @@ export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
       const fee = await wallet.tokenAccountCost();
       setMintAccountFee(fee / Math.pow(10, sol.decimals));
     })();
+  }, []);
+
+  useEffect(() => {
+    getFioAddress();
   }, []);
 
   return (
@@ -244,24 +242,36 @@ export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
             <View style={s.qr}>
               <QRCode value={address} size={220} />
             </View>
-            <Address copyToClipboard={copyToClipboard} address={address} />
+            <Address
+              copyToClipboard={() => copyToClipboard(address)}
+              address={address}
+            />
 
-            <View style={s.section}>
-              <Button
-                title={t('create-FIO-address')}
-                buttonStyle={s.buttonStyle}
-                onPress={onPressHandler}
-                icon={
-                  <Icon
-                    name="zap"
-                    type="feather"
-                    size={20}
-                    color={COLORS.white0}
-                    style={s.buttonIcon}
-                  />
-                }
-              />
-            </View>
+            {fioAddr ? (
+              <View style={s.fioAddress}>
+                <Address
+                  copyToClipboard={() => copyToClipboard(fioAddr)}
+                  address={fioAddr}
+                />
+              </View>
+            ) : (
+              <View style={s.section}>
+                <Button
+                  title={t('create-FIO-address')}
+                  buttonStyle={s.buttonStyle}
+                  onPress={onPressHandler}
+                  icon={
+                    <Icon
+                      name="zap"
+                      type="feather"
+                      size={20}
+                      color={COLORS.white0}
+                      style={s.buttonIcon}
+                    />
+                  }
+                />
+              </View>
+            )}
           </View>
           <View style={s.footer}>
             <Text style={typo.helper}>{t('receive-note-01')}</Text>

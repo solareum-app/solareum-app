@@ -165,5 +165,9 @@
   "version": "en.2.0.0",
   "create-FIO-address": "Create FIO Address",
   "check-address-name": "Check Address Name",
-  "register-address-name": "Register address name"
+  "register-address-name": "Register address name",
+  "address-name": "Address Name",
+  "address-not-empty": "Address name is not empty",
+  "address-registered": "Address name is registered",
+  "address-available": "Address name is available"
 }

@@ -165,5 +165,9 @@
   "version": "vi.2.0.0",
   "create-FIO-address": "Tạo địa chỉ FIO",
   "check-address-name": "Kiểm tra tên địa chỉ",
-  "register-address-name": "Đăng ký tên địa chỉ"
+  "register-address-name": "Đăng ký tên địa chỉ",
+  "address-name": "Tên địa chỉ",
+  "address-not-empty": "Tên địa chỉ không được trống",
+  "address-registered": "Tên địa chỉ đã được đăng ký",
+  "address-available": "Tên địa chỉ có sẵn"
 }
