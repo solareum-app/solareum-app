@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
@@ -5,7 +6,8 @@ import { grid, typo } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
-import AsyncStorage from '../../storage';
+import Routes from '../../navigators/Routes';
+import { setItem } from '../../storage/Collection';
 import { COLORS } from '../../theme';
 import {
   actorAddress,
@@ -15,6 +17,8 @@ import {
 } from '../../utils/fioSDK';
 
 const AddressManagement: React.FC = () => {
+  const navigation = useNavigation();
+
   const { wallet } = useApp();
 
   const { t } = useLocalize();
@@ -68,31 +72,31 @@ const AddressManagement: React.FC = () => {
 
   const handleRegisterAddressName = async () => {
     let fioAddress = `${addressName}@fiotestnet`;
+    console.log('fioAddress', fioAddress);
     try {
       const fee = await fioProtocol.getFee('register_fio_address');
+      console.log('fee', fee)
       if (fee) {
         const result = await fioProtocol.registerFioAddress({
           fioAddress: fioAddress,
-          maxFee: fee,
+          maxFee: 30000000000,
           ownerFioPubKey: publicKey,
           tpid: '',
           actor: actorAddress,
         });
 
         if (result.transaction_id) {
-          const feeMap = await fioProtocol.getFee('add_pub_address');
-          if (feeMap) {
-            const res = await fioProtocol.addPublicAddress({
-              fioAddress: fioAddress,
-              maxFee: feeMap,
-              chainCode: TOKEN_CHAIN.CHAIN_CODE,
-              tokenCode: TOKEN_CHAIN.TOKEN_CODE,
-              publicAddress: address,
-              technologyProviderId: '',
-            });
-            if (res) {
-              AsyncStorage.setItem('fioAddress', fioAddress);
-            }
+          const res = await fioProtocol.addPublicAddress({
+            fioAddress: fioAddress,
+            maxFee: 6000000000,
+            chainCode: TOKEN_CHAIN.CHAIN_CODE,
+            tokenCode: TOKEN_CHAIN.TOKEN_CODE,
+            publicAddress: address,
+            technologyProviderId: '',
+          });
+          if (res) {
+            await setItem('fioAddress', address, fioAddress);
+            navigation.navigate(Routes.Token);
           }
         }
       }
@@ -109,6 +113,8 @@ const AddressManagement: React.FC = () => {
             label={t('address-name')}
             placeholder=""
             style={typo.input}
+            autoFocus={true}
+            autoCapitalize="none"
             labelStyle={s.inputLabel}
             containerStyle={s.inputContainer}
             value={addressName}

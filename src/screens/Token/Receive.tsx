@@ -12,7 +12,7 @@ import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import { useToken } from '../../core/AppProvider/TokenProvider';
 import Routes from '../../navigators/Routes';
-import AsyncStorage from '../../storage';
+import { getItem } from '../../storage/Collection';
 import { COLORS } from '../../theme/colors';
 import { wait } from '../../utils';
 import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
@@ -128,7 +128,8 @@ export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
   };
 
   const getFioAddress = async () => {
-    const fioAddress = (await AsyncStorage.getItem('fioAddress')) || null;
+    let fioAddress = await getItem('fioAddress', address);
+
     if (fioAddress) {
       setFioAddr(fioAddress);
     }
