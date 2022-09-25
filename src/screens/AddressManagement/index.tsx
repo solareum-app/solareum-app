@@ -108,7 +108,6 @@ const AddressManagement: React.FC = () => {
           <Input
             label={t('address-name')}
             placeholder=""
-            keyboardType="decimal-pad"
             style={typo.input}
             labelStyle={s.inputLabel}
             containerStyle={s.inputContainer}
