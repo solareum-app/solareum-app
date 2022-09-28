@@ -1,7 +1,6 @@
-import Clipboard from '@react-native-community/clipboard';
 import { PublicKey } from '@solana/web3.js';
 import React, { useEffect, useState } from 'react';
-import { DeviceEventEmitter, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
 import { Address } from '../../components/Address/Address';
@@ -15,7 +14,8 @@ import Routes from '../../navigators/Routes';
 import { getItem } from '../../storage/Collection';
 import { COLORS } from '../../theme/colors';
 import { wait } from '../../utils';
-import { EventMessage, MESSAGE_TYPE } from '../EventMessage/EventMessage';
+import { copyToClipboard } from '../../utils/address';
+import { EventMessage } from '../EventMessage/EventMessage';
 
 const s = StyleSheet.create({
   main: {
@@ -107,11 +107,6 @@ export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
   const onPressHandler = () => {
     navigation.navigate(Routes.AddressManagement);
     refReceived.current?.close();
-  };
-
-  const copyToClipboard = (value: string) => {
-    Clipboard.setString(value);
-    DeviceEventEmitter.emit(MESSAGE_TYPE.copy, value);
   };
 
   const pollingAccount = async (no: number) => {

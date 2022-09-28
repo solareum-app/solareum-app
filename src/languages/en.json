@@ -169,5 +169,7 @@
   "address-name": "Address Name",
   "address-not-empty": "Address name is not empty",
   "address-registered": "Address name is registered",
-  "address-available": "Address name is available"
+  "address-available": "Address name is available",
+  "register-address-done": "Fio address created successfully, you can use Fio address to receive token",
+  "btn-ok": "Ok"
 }

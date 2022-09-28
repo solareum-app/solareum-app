@@ -21,6 +21,8 @@ export const TOKEN_CHAIN = {
   TOKEN_CODE: 'SOL',
 };
 
+export const DOMAIN_NAME = '@fiotestnet';
+
 async function fetchJson(uri, opts = {}) {
   try {
     const response = await fetch(uri, opts);

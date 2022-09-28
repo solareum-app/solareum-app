@@ -1,22 +1,29 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Input } from 'react-native-elements';
-import { grid, typo } from '../../components/Styles';
+import { Button, Input, Text } from 'react-native-elements';
+import { Address } from '../../components/Address/Address';
+import { FixedContent } from '../../components/Modals/FixedContent';
+import { grid } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
 import Routes from '../../navigators/Routes';
 import { setItem } from '../../storage/Collection';
 import { COLORS } from '../../theme';
+import { copyToClipboard } from '../../utils/address';
 import {
   actorAddress,
+  DOMAIN_NAME,
   fioProtocol,
   publicKey,
   TOKEN_CHAIN
 } from '../../utils/fioSDK';
+import { s3 } from '../Token/Send';
 
 const AddressManagement: React.FC = () => {
+  const refRegAddress = useRef();
+
   const navigation = useNavigation();
 
   const { wallet } = useApp();
@@ -25,7 +32,7 @@ const AddressManagement: React.FC = () => {
   const [addressName, setAddressName] = useState('');
   const [valid, setValid] = useState({
     isLoading: false,
-    error: '',
+    error: 'address-not-empty',
     isRegister: false,
   });
   const { accountList } = usePrice();
@@ -46,7 +53,7 @@ const AddressManagement: React.FC = () => {
     if (value) {
       try {
         const isRegistered = await fioProtocol.checkAvailAddress({
-          fio_name: `${value}@fiotestnet`,
+          fio_name: `${value}${DOMAIN_NAME}`,
         });
 
         setValid((pState) => ({
@@ -67,19 +74,28 @@ const AddressManagement: React.FC = () => {
           isLoading: false,
         }));
       }
+    } else {
+      setValid({
+        isLoading: false,
+        error: 'address-not-empty',
+        isRegister: false,
+      });
     }
   };
 
   const handleRegisterAddressName = async () => {
-    let fioAddress = `${addressName}@fiotestnet`;
-    console.log('fioAddress', fioAddress);
+    setValid((pState) => ({
+      ...pState,
+      isLoading: true,
+    }));
+
+    let fioAddress = `${addressName}${DOMAIN_NAME}`;
     try {
       const fee = await fioProtocol.getFee('register_fio_address');
-      console.log('fee', fee)
       if (fee) {
         const result = await fioProtocol.registerFioAddress({
           fioAddress: fioAddress,
-          maxFee: 30000000000,
+          maxFee: fee,
           ownerFioPubKey: publicKey,
           tpid: '',
           actor: actorAddress,
@@ -88,7 +104,7 @@ const AddressManagement: React.FC = () => {
         if (result.transaction_id) {
           const res = await fioProtocol.addPublicAddress({
             fioAddress: fioAddress,
-            maxFee: 6000000000,
+            maxFee: 0,
             chainCode: TOKEN_CHAIN.CHAIN_CODE,
             tokenCode: TOKEN_CHAIN.TOKEN_CODE,
             publicAddress: address,
@@ -96,51 +112,89 @@ const AddressManagement: React.FC = () => {
           });
           if (res) {
             await setItem('fioAddress', address, fioAddress);
-            navigation.navigate(Routes.Token);
+            setValid((pState) => ({
+              ...pState,
+              isLoading: false,
+            }));
+            refRegAddress?.current?.open();
           }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      setValid((pState) => ({
+        ...pState,
+        isLoading: false,
+      }));
+    }
   };
 
   const hasDisabled = () => !valid.isRegister && addressName;
 
+  const renderIconRight = () => <Text style={s.rightIcon}>{DOMAIN_NAME}</Text>;
+
   return (
-    <View style={grid.container}>
-      <View style={s.main}>
-        <View style={s.body}>
-          <Input
-            label={t('address-name')}
-            placeholder=""
-            style={typo.input}
-            autoFocus={true}
-            autoCapitalize="none"
-            labelStyle={s.inputLabel}
-            containerStyle={s.inputContainer}
-            value={addressName}
-            onChangeText={(value) => handleCheckAddressName(value)}
-            errorMessage={`${t(`${valid?.error}`)}`}
-            errorStyle={{
-              color: `${
-                addressName
-                  ? !valid.isRegister
-                    ? COLORS.caution
-                    : COLORS.success
-                  : COLORS.white0
-              }`,
-            }}
-          />
-        </View>
-        <View style={s.footer}>
-          <Button
-            title={t('register-address-name')}
-            buttonStyle={s.button}
-            onPress={handleRegisterAddressName}
-            disabled={!hasDisabled()}
-          />
+    <>
+      <View style={grid.container}>
+        <View style={s.main}>
+          <View style={s.body}>
+            <Input
+              label={t('address-name')}
+              placeholder=""
+              style={s.input}
+              autoFocus={true}
+              autoCapitalize="none"
+              labelStyle={s.inputLabel}
+              containerStyle={s.inputContainer}
+              value={addressName}
+              onChangeText={(value) => handleCheckAddressName(value)}
+              errorMessage={`${t(`${valid?.error}`)}`}
+              errorStyle={{
+                color: `${
+                  addressName
+                    ? !valid.isRegister
+                      ? COLORS.caution
+                      : COLORS.success
+                    : COLORS.white0
+                }`,
+              }}
+              rightIcon={renderIconRight()}
+            />
+          </View>
+          <View style={s.footer}>
+            <Button
+              title={t('register-address-name')}
+              buttonStyle={s.button}
+              onPress={handleRegisterAddressName}
+              disabled={!hasDisabled()}
+              loading={valid.isLoading}
+            />
+          </View>
         </View>
       </View>
-    </View>
+      <FixedContent ref={refRegAddress}>
+        <View style={s.main__success}>
+          <View style={s3.body}>
+            <Text style={s3.message}>{t('register-address-done')}</Text>
+          </View>
+          <View style={s.fioAddress}>
+            <Address
+              copyToClipboard={() =>
+                copyToClipboard(`${addressName}${DOMAIN_NAME}`)
+              }
+              address={`${addressName}${DOMAIN_NAME}`}
+            />
+          </View>
+          <View style={s.footer}>
+            <Button
+              title={t('btn-ok')}
+              buttonStyle={s.button}
+              type="clear"
+              onPress={() => navigation.navigate(Routes.Token)}
+            />
+          </View>
+        </View>
+      </FixedContent>
+    </>
   );
 };
 
@@ -152,9 +206,18 @@ const s = StyleSheet.create({
     padding: 20,
     paddingBottom: 40,
   },
+  main__success: {
+    backgroundColor: COLORS.dark0,
+    minHeight: 320,
+    padding: 20,
+    paddingBottom: 40,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
   body: {
     marginTop: 20,
   },
+
   inputContainer: {
     paddingLeft: 0,
     paddingRight: 0,
@@ -162,7 +225,12 @@ const s = StyleSheet.create({
   inputLabel: {
     fontWeight: 'normal',
   },
-  input: {},
+  input: {
+    color: COLORS.white2,
+  },
+  rightIcon: {
+    color: COLORS.white2,
+  },
   footer: {
     marginTop: 20,
   },
@@ -201,5 +269,8 @@ const s = StyleSheet.create({
   pasteTxt: {
     color: COLORS.white4,
     fontSize: 16,
+  },
+  fioAddress: {
+    marginTop: 10,
   },
 });

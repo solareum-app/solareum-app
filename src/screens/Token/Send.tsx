@@ -1,19 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import { Input, Button, Icon } from 'react-native-elements';
 import { PublicKey } from '@solana/web3.js';
+import { throttle } from 'lodash';
 import LottieView from 'lottie-react-native';
-
+import React, { useEffect, useRef, useState } from 'react';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Button, Icon, Input } from 'react-native-elements';
 import { typo } from '../../components/Styles';
-import { COLORS } from '../../theme';
-import { price } from '../../utils/autoRound';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-
-import { QRScan } from './QRScan';
+import { COLORS } from '../../theme';
 import { authFetch } from '../../utils/authfetch';
-import { throttle } from 'lodash';
+import { price } from '../../utils/autoRound';
+import { QRScan } from './QRScan';
+
+
 
 const s = StyleSheet.create({
   main: {
@@ -255,7 +255,7 @@ const Step2 = ({ token, address, amount, next, busy, error }) => {
   );
 };
 
-const s3 = StyleSheet.create({
+export const s3 = StyleSheet.create({
   body: {
     marginTop: 20,
     marginBottom: 20,
