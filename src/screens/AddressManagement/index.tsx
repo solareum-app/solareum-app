@@ -19,7 +19,6 @@ import {
   publicKey,
   TOKEN_CHAIN
 } from '../../utils/fioSDK';
-import { s3 } from '../Token/Send';
 
 const AddressManagement: React.FC = () => {
   const refRegAddress = useRef();
@@ -93,7 +92,7 @@ const AddressManagement: React.FC = () => {
     try {
       const fee = await fioProtocol.getFee('register_fio_address');
       if (fee) {
-        const result = await fioProtocol.registerFioAddress({
+        const result = await fioProtocol.registerAddress({
           fioAddress: fioAddress,
           maxFee: fee,
           ownerFioPubKey: publicKey,
@@ -152,8 +151,8 @@ const AddressManagement: React.FC = () => {
                 color: `${
                   addressName
                     ? !valid.isRegister
-                      ? COLORS.caution
-                      : COLORS.success
+                      ? COLORS.success
+                      : COLORS.caution
                     : COLORS.white0
                 }`,
               }}
@@ -173,8 +172,8 @@ const AddressManagement: React.FC = () => {
       </View>
       <FixedContent ref={refRegAddress}>
         <View style={s.main__success}>
-          <View style={s3.body}>
-            <Text style={s3.message}>{t('register-address-done')}</Text>
+          <View style={s.main__success__body}>
+            <Text style={s.message}>{t('register-address-done')}</Text>
           </View>
           <View style={s.fioAddress}>
             <Address
@@ -272,5 +271,19 @@ const s = StyleSheet.create({
   },
   fioAddress: {
     marginTop: 10,
+  },
+
+  main__success__body: {
+    marginTop: 20,
+    marginBottom: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  message: {
+    color: COLORS.success,
+    textAlign: 'center',
+    fontSize: 18,
   },
 });
