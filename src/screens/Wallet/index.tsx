@@ -1,7 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
 import {
-  RefreshControl, ScrollView, StyleSheet, Text, View
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { Portal } from 'react-native-portalize';
@@ -21,7 +25,6 @@ import { price } from '../../utils/autoRound';
 import { Receive } from '../Token/Receive';
 import { BackupNotice } from './BackupNotice';
 import Header from './Header';
-
 
 const s = StyleSheet.create({
   header: {
@@ -254,7 +257,11 @@ const WalletScreen = () => {
 
       <Portal>
         <FixedContent ref={refReceived}>
-          <Receive token={solAccount} navigation={navigation} />
+          <Receive
+            token={solAccount}
+            navigation={navigation}
+            refReceived={refReceived}
+          />
         </FixedContent>
       </Portal>
     </View>
