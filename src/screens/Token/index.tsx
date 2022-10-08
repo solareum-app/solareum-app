@@ -1,7 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  RefreshControl, ScrollView, StyleSheet, Text, View
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import { Portal } from 'react-native-portalize';
 import { CryptoIcon } from '../../components/CryptoIcon';
@@ -19,8 +23,6 @@ import { TransferAction } from '../Wallet';
 import { Market } from './Market';
 import { Receive } from './Receive';
 import { Send } from './Send';
-
-
 
 const s = StyleSheet.create({
   header: {
@@ -227,6 +229,7 @@ const Token = ({ route }) => {
             quantity={quantitySend}
             e_usd={e_usd}
             urlRedirect={redirect}
+            navigation={navigation}
           />
         </FixedContent>
 

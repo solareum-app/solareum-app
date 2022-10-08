@@ -105,7 +105,7 @@ export const Receive = ({ token = {}, navigation = {}, refReceived }) => {
   const address = sol.publicKey;
 
   const onPressHandler = () => {
-    navigation.navigate(Routes.AddressManagement);
+    navigation.navigate(Routes.AddressManagement, {});
     refReceived.current?.close();
   };
 
