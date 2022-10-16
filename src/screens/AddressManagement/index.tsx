@@ -13,9 +13,14 @@ import { setItem } from '../../storage/Collection';
 import { COLORS } from '../../theme';
 import { copyToClipboard } from '../../utils/address';
 import {
+  addPublicAddress,
+  checkAddress,
+  getFee,
+  registerAddress
+} from '../../utils/fioProtocool';
+import {
   actorAddress,
   DOMAIN_NAME,
-  fioProtocol,
   publicKey,
   TOKEN_CHAIN
 } from '../../utils/fioSDK';
@@ -51,21 +56,28 @@ const AddressManagement: React.FC = () => {
 
     if (value) {
       try {
-        const isRegistered = await fioProtocol.checkAvailAddress({
-          fio_name: `${value}${DOMAIN_NAME}`,
-        });
+        const resp = await checkAddress(
+          'https://fiotestnet.blockpane.com/v1/chain/avail_check',
+          {
+            method: 'post',
+            body: {
+              fio_name: `${value}${DOMAIN_NAME}`,
+            },
+          },
+        );
+        console.log('is_registered', resp.is_registered);
 
         setValid((pState) => ({
           ...pState,
           isLoading: false,
           error: `${
             value
-              ? isRegistered === 1
+              ? resp.is_registered === 1
                 ? 'address-registered'
                 : 'address-available'
               : 'address-not-empty'
           }`,
-          isRegister: isRegistered,
+          isRegister: resp.is_registered,
         }));
       } catch (error) {
         setValid((pState) => ({
@@ -90,9 +102,16 @@ const AddressManagement: React.FC = () => {
 
     let fioAddress = `${addressName}${DOMAIN_NAME}`;
     try {
-      const fee = await fioProtocol.getFee('register_fio_address');
+      const { fee } = await getFee('register_fio_address', {
+        method: 'post',
+        body: {
+          end_point: 'register_fio_address',
+          fio_address: fioAddress,
+        },
+      });
+      console.log('fee', fee);
       if (fee) {
-        const result = await fioProtocol.registerAddress({
+        const result = await registerAddress({
           fioAddress: fioAddress,
           maxFee: fee,
           ownerFioPubKey: publicKey,
@@ -100,8 +119,8 @@ const AddressManagement: React.FC = () => {
           actor: actorAddress,
         });
 
-        if (result.transaction_id) {
-          const res = await fioProtocol.addPublicAddress({
+        if (result?.transaction_id) {
+          const res = await addPublicAddress({
             fioAddress: fioAddress,
             maxFee: 0,
             chainCode: TOKEN_CHAIN.CHAIN_CODE,

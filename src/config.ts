@@ -1,4 +1,6 @@
 export const MAINNET_URL = 'http://api.mainnet-beta.solana.com';
+export const FIO_PROTOCOOL_TESTNET =
+  'https://fiotestnet.blockpane.com/v1/chain/';
 // export const MAINNET_URL = 'https://solana-api.projectserum.com';
 
 // DEV
