@@ -24,6 +24,8 @@ export const TOKEN_CHAIN = {
   TOKEN_CODE: 'SOL',
 };
 
+export const DOMAIN_NAME = '@fiotestnet';
+
 export const checkAddress = (url: string, opts: any = {}) => {
   const headers = {
     'Content-Type': 'application/json',

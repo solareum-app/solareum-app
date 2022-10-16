@@ -8,15 +8,18 @@ import { grid } from '../../components/Styles';
 import { useApp } from '../../core/AppProvider/AppProvider';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
-import Routes from '../../navigators/Routes';
 import { setItem } from '../../storage/Collection';
 import { COLORS } from '../../theme';
 import { copyToClipboard } from '../../utils/address';
 import {
+  actorAddress,
   addPublicAddress,
   checkAddress,
+  DOMAIN_NAME,
   getFee,
-  registerAddress
+  publicKey,
+  registerAddress,
+  TOKEN_CHAIN
 } from '../../utils/fioProtocool';
 
 const AddressManagement: React.FC = () => {
@@ -103,7 +106,6 @@ const AddressManagement: React.FC = () => {
           fio_address: fioAddress,
         },
       });
-      console.log('fee', fee);
       if (fee) {
         const result = await registerAddress({
           fioAddress: fioAddress,
@@ -201,7 +203,7 @@ const AddressManagement: React.FC = () => {
               title={t('btn-ok')}
               buttonStyle={s.button}
               type="clear"
-              onPress={() => navigation.navigate(Routes.Token)}
+              onPress={() => navigation.goBack()}
             />
           </View>
         </View>
