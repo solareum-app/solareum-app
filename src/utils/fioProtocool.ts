@@ -1,6 +1,6 @@
 //@ts-nocheck
 import axios from 'axios';
-import { FIO_PROTOCOOL_TESTNET } from '../config';
+import { FIO_PROTOCOOL_MAINNET } from '../config';
 
 const { TextEncoder, TextDecoder } = require('text-encoding');
 const textDecoder = new TextDecoder();
@@ -13,24 +13,25 @@ var ser = require('@fioprotocol/fiojs/dist/chain-serialize');
 
 const { JsSignatureProvider } = require('@fioprotocol/fiojs/dist/chain-jssig');
 
-export const privateKey = '5KKreTB3AZhtxP5oV7Wd55TL6SYdudsGapHUbiKSBtPNKb61H99';
+export const privateKey = '5K6Srud2hYF327LsQCTLfmbPcxTRxDKxeLUgJz8fg1SY3oXYo5H';
 export const publicKey =
-  'FIO7X7kRreqfCircv4xyrUhuxNH8xD9RXPG2VBSa82sLmsZz4Jxhu';
-export const baseUrl = 'https://fiotestnet.blockpane.com/v1/';
-export const httpEndpoint = 'https://fiotestnet.blockpane.com';
-export const actorAddress = 'ujrh1vsahrr1';
+  'FIO8bJjTsdh5f1BmwzQqueLKD3gndKKUKT8s2SJVKJndprdVM1G5U';
+export const baseUrl = 'https://fio.blockpane.com/v1/';
+export const httpEndpoint = 'https://fio.blockpane.com';
+export const actorAddress = 'b4wengri5gih';
 export const TOKEN_CHAIN = {
   CHAIN_CODE: 'SOL',
   TOKEN_CODE: 'SOL',
 };
 
-export const DOMAIN_NAME = '@fiotestnet';
+export const DOMAIN_NAME = '@xsb';
+export const TPID = 'tamph@xsb';
 
 export const checkAddress = (url: string, opts: any = {}) => {
   const headers = {
     'Content-Type': 'application/json',
   };
-  const actualUrl = FIO_PROTOCOOL_TESTNET + 'avail_check';
+  const actualUrl = FIO_PROTOCOOL_MAINNET + 'avail_check';
   const body = opts.body;
 
   return axios({
@@ -49,7 +50,7 @@ export const getFee = (url: string, opts: any = {}) => {
   const headers = {
     'Content-Type': 'application/json',
   };
-  const actualUrl = FIO_PROTOCOOL_TESTNET + 'get_fee';
+  const actualUrl = FIO_PROTOCOOL_MAINNET + 'get_fee';
   const body = opts.body;
 
   return axios({

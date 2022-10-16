@@ -19,7 +19,8 @@ import {
   getFee,
   publicKey,
   registerAddress,
-  TOKEN_CHAIN
+  TOKEN_CHAIN,
+  TPID
 } from '../../utils/fioProtocool';
 
 const AddressManagement: React.FC = () => {
@@ -111,7 +112,7 @@ const AddressManagement: React.FC = () => {
           fioAddress: fioAddress,
           maxFee: fee,
           ownerFioPubKey: publicKey,
-          tpid: '',
+          tpid: TPID,
           actor: actorAddress,
         });
 
