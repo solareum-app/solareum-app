@@ -60,7 +60,9 @@ export const Receive = () => {
           <View style={s.qr}>
             <QRCode value={address} size={240} />
           </View>
-          <Address copyToClipboard={copyToClipboard} address={address} />
+          {address && (
+            <Address copyToClipboard={copyToClipboard} address={address} />
+          )}
         </View>
         <View style={s.footer}>
           <Text style={typo.helper}>{t('receive-note-01')}</Text>
