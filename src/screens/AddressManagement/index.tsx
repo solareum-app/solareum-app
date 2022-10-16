@@ -18,12 +18,6 @@ import {
   getFee,
   registerAddress
 } from '../../utils/fioProtocool';
-import {
-  actorAddress,
-  DOMAIN_NAME,
-  publicKey,
-  TOKEN_CHAIN
-} from '../../utils/fioSDK';
 
 const AddressManagement: React.FC = () => {
   const refRegAddress = useRef();
