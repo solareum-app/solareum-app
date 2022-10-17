@@ -10,7 +10,7 @@
     "pod:install": "cd ./ios && pod install && cd ..",
     "clean:android": "cd android && ./gradlew clean",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator=`iPhone 14 Pro`",
     "start": "react-native start",
     "test": "jest --watch",
     "check-types": "tsc -p tsconfig.json",
