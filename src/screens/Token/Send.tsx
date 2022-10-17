@@ -13,8 +13,6 @@ import { authFetch } from '../../utils/authfetch';
 import { price } from '../../utils/autoRound';
 import { QRScan } from './QRScan';
 
-
-
 const s = StyleSheet.create({
   main: {
     backgroundColor: COLORS.dark0,

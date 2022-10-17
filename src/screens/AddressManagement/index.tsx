@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import AnimatedLottieView from 'lottie-react-native';
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
@@ -20,7 +21,7 @@ import {
   publicKey,
   registerAddress,
   TOKEN_CHAIN,
-  TPID
+  TPID,
 } from '../../utils/fioProtocool';
 
 const AddressManagement: React.FC = () => {
@@ -186,9 +187,16 @@ const AddressManagement: React.FC = () => {
           </View>
         </View>
       </View>
+
       <FixedContent ref={refRegAddress}>
         <View style={s.main__success}>
           <View style={s.main__success__body}>
+            <AnimatedLottieView
+              autoPlay
+              loop
+              source={require('../../theme/lottie/check.json')}
+              style={s.img}
+            />
             <Text style={s.message}>{t('register-address-done')}</Text>
           </View>
           <View style={s.fioAddress}>
@@ -231,6 +239,10 @@ const s = StyleSheet.create({
   },
   body: {
     marginTop: 20,
+  },
+  img: {
+    width: 220,
+    height: 220,
   },
 
   inputContainer: {
@@ -298,7 +310,7 @@ const s = StyleSheet.create({
   },
 
   message: {
-    color: COLORS.success,
+    color: COLORS.white2,
     textAlign: 'center',
     fontSize: 18,
   },

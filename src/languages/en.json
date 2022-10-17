@@ -168,8 +168,8 @@
   "register-address-name": "Register address name",
   "address-name": "Address Name",
   "address-not-empty": "Address name is not empty",
-  "address-registered": "Address name is registered",
-  "address-available": "Address name is available",
-  "register-address-done": "Fio address created successfully, you can use Fio address to receive token",
+  "address-registered": "The FIO address has been taken",
+  "address-available": "The FIO address is available",
+  "register-address-done": "Your FIO address has been created successfully, you can use this address to receive tokens",
   "btn-ok": "Ok"
 }
