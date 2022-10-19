@@ -3,11 +3,13 @@ import AnimatedLottieView from 'lottie-react-native';
 import React, { useRef, useState } from 'react';
 import {
   Keyboard,
+  SafeAreaView,
   StyleSheet,
   TouchableWithoutFeedback,
   View
 } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Address } from '../../components/Address/Address';
 import { FixedContent } from '../../components/Modals/FixedContent';
 import { grid } from '../../components/Styles';
@@ -155,80 +157,82 @@ const AddressManagement: React.FC = () => {
   const renderIconRight = () => <Text style={s.rightIcon}>{DOMAIN_NAME}</Text>;
 
   return (
-    <>
-      <View style={grid.container}>
-        <View style={s.main}>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
-            <View style={s.body}>
-              <Input
-                label={t('address-name')}
-                placeholder=""
-                style={s.input}
-                autoFocus={true}
-                autoCapitalize="none"
-                labelStyle={s.inputLabel}
-                containerStyle={s.inputContainer}
-                value={addressName}
-                onChangeText={(value) => handleCheckAddressName(value)}
-                errorMessage={`${t(`${valid?.error}`)}`}
-                errorStyle={{
-                  color: `${
-                    addressName
-                      ? !valid.isRegister
-                        ? COLORS.success
-                        : COLORS.caution
-                      : COLORS.white0
-                  }`,
-                }}
-                rightIcon={renderIconRight()}
+    <View style={grid.container}>
+      <SafeAreaView style={grid.wrp}>
+        <ScrollView style={grid.container}>
+          <View style={s.main}>
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <View style={s.body}>
+                <Input
+                  label={t('address-name')}
+                  placeholder=""
+                  style={s.input}
+                  autoFocus={true}
+                  autoCapitalize="none"
+                  labelStyle={s.inputLabel}
+                  containerStyle={s.inputContainer}
+                  value={addressName}
+                  onChangeText={(value) => handleCheckAddressName(value)}
+                  errorMessage={`${t(`${valid?.error}`)}`}
+                  errorStyle={{
+                    color: `${
+                      addressName
+                        ? !valid.isRegister
+                          ? COLORS.success
+                          : COLORS.caution
+                        : COLORS.white0
+                    }`,
+                  }}
+                  rightIcon={renderIconRight()}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+
+            <View style={s.footer}>
+              <Button
+                title={t('register-address-name')}
+                buttonStyle={s.button}
+                onPress={handleRegisterAddressName}
+                disabled={!hasDisabled()}
+                loading={valid.isLoading}
               />
             </View>
-          </TouchableWithoutFeedback>
-
-          <View style={s.footer}>
-            <Button
-              title={t('register-address-name')}
-              buttonStyle={s.button}
-              onPress={handleRegisterAddressName}
-              disabled={!hasDisabled()}
-              loading={valid.isLoading}
-            />
           </View>
-        </View>
-      </View>
-      <FixedContent ref={refRegAddress}>
-        <View style={s.main__success}>
-          <View style={s.main__success__body}>
-            <AnimatedLottieView
-              autoPlay
-              loop
-              source={require('../../theme/lottie/check.json')}
-              style={s.img}
-            />
-            <Text style={s.message}>{t('register-address-done')}</Text>
+        </ScrollView>
+        <FixedContent ref={refRegAddress}>
+          <View style={s.main__success}>
+            <View style={s.main__success__body}>
+              <AnimatedLottieView
+                autoPlay
+                loop
+                source={require('../../theme/lottie/check.json')}
+                style={s.img}
+              />
+              <Text style={s.message}>{t('register-address-done')}</Text>
+            </View>
+            <View style={s.fioAddress}>
+              <Address
+                copyToClipboard={() =>
+                  copyToClipboard(`${addressName}${DOMAIN_NAME}`)
+                }
+                address={`${addressName}${DOMAIN_NAME}`}
+              />
+            </View>
+            <View style={s.footer}>
+              <Button
+                title={t('btn-ok')}
+                buttonStyle={s.button}
+                type="clear"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
           </View>
-          <View style={s.fioAddress}>
-            <Address
-              copyToClipboard={() =>
-                copyToClipboard(`${addressName}${DOMAIN_NAME}`)
-              }
-              address={`${addressName}${DOMAIN_NAME}`}
-            />
-          </View>
-          <View style={s.footer}>
-            <Button
-              title={t('btn-ok')}
-              buttonStyle={s.button}
-              type="clear"
-              onPress={() => navigation.goBack()}
-            />
-          </View>
-        </View>
-      </FixedContent>
-    </>
+        </FixedContent>
+      </SafeAreaView>
+    </View>
   );
 };
 
