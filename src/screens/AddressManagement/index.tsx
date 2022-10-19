@@ -1,7 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import AnimatedLottieView from 'lottie-react-native';
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
 import { Address } from '../../components/Address/Address';
 import { FixedContent } from '../../components/Modals/FixedContent';
@@ -21,7 +26,7 @@ import {
   publicKey,
   registerAddress,
   TOKEN_CHAIN,
-  TPID,
+  TPID
 } from '../../utils/fioProtocool';
 
 const AddressManagement: React.FC = () => {
@@ -78,6 +83,7 @@ const AddressManagement: React.FC = () => {
           }`,
           isRegister: resp.is_registered,
         }));
+        // Keyboard.dismiss();
       } catch (error) {
         setValid((pState) => ({
           ...pState,
@@ -150,44 +156,45 @@ const AddressManagement: React.FC = () => {
 
   return (
     <>
-      <View style={grid.container}>
-        <View style={s.main}>
-          <View style={s.body}>
-            <Input
-              label={t('address-name')}
-              placeholder=""
-              style={s.input}
-              autoFocus={true}
-              autoCapitalize="none"
-              labelStyle={s.inputLabel}
-              containerStyle={s.inputContainer}
-              value={addressName}
-              onChangeText={(value) => handleCheckAddressName(value)}
-              errorMessage={`${t(`${valid?.error}`)}`}
-              errorStyle={{
-                color: `${
-                  addressName
-                    ? !valid.isRegister
-                      ? COLORS.success
-                      : COLORS.caution
-                    : COLORS.white0
-                }`,
-              }}
-              rightIcon={renderIconRight()}
-            />
-          </View>
-          <View style={s.footer}>
-            <Button
-              title={t('register-address-name')}
-              buttonStyle={s.button}
-              onPress={handleRegisterAddressName}
-              disabled={!hasDisabled()}
-              loading={valid.isLoading}
-            />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={grid.container}>
+          <View style={s.main}>
+            <View style={s.body}>
+              <Input
+                label={t('address-name')}
+                placeholder=""
+                style={s.input}
+                autoFocus={true}
+                autoCapitalize="none"
+                labelStyle={s.inputLabel}
+                containerStyle={s.inputContainer}
+                value={addressName}
+                onChangeText={(value) => handleCheckAddressName(value)}
+                errorMessage={`${t(`${valid?.error}`)}`}
+                errorStyle={{
+                  color: `${
+                    addressName
+                      ? !valid.isRegister
+                        ? COLORS.success
+                        : COLORS.caution
+                      : COLORS.white0
+                  }`,
+                }}
+                rightIcon={renderIconRight()}
+              />
+            </View>
+            <View style={s.footer}>
+              <Button
+                title={t('register-address-name')}
+                buttonStyle={s.button}
+                onPress={handleRegisterAddressName}
+                disabled={!hasDisabled()}
+                loading={valid.isLoading}
+              />
+            </View>
           </View>
         </View>
-      </View>
-
+      </TouchableWithoutFeedback>
       <FixedContent ref={refRegAddress}>
         <View style={s.main__success}>
           <View style={s.main__success__body}>
