@@ -156,9 +156,12 @@ const AddressManagement: React.FC = () => {
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={grid.container}>
-          <View style={s.main}>
+      <View style={grid.container}>
+        <View style={s.main}>
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}
+          >
             <View style={s.body}>
               <Input
                 label={t('address-name')}
@@ -183,18 +186,19 @@ const AddressManagement: React.FC = () => {
                 rightIcon={renderIconRight()}
               />
             </View>
-            <View style={s.footer}>
-              <Button
-                title={t('register-address-name')}
-                buttonStyle={s.button}
-                onPress={handleRegisterAddressName}
-                disabled={!hasDisabled()}
-                loading={valid.isLoading}
-              />
-            </View>
+          </TouchableWithoutFeedback>
+
+          <View style={s.footer}>
+            <Button
+              title={t('register-address-name')}
+              buttonStyle={s.button}
+              onPress={handleRegisterAddressName}
+              disabled={!hasDisabled()}
+              loading={valid.isLoading}
+            />
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </View>
       <FixedContent ref={refRegAddress}>
         <View style={s.main__success}>
           <View style={s.main__success__body}>
