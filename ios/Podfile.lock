@@ -421,6 +421,8 @@ PODS:
     - React
   - RNDeviceInfo (8.4.8):
     - React-Core
+  - RNEosEcc (1.0.0):
+    - React
   - RNFastImage (8.5.11):
     - React-Core
     - SDWebImage (~> 5.11.1)
@@ -550,6 +552,7 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - "RNEosEcc (from `../node_modules/@fioprotocol/fiosdk/ios`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBAdMob (from `../node_modules/@react-native-firebase/admob`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -689,6 +692,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNEosEcc:
+    :path: "../node_modules/@fioprotocol/fiosdk/ios"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
   RNFBAdMob:
@@ -795,6 +800,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
+  RNEosEcc: 819a36426d12b1ee9bebfb5acbf28f217bfc7a72
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNFBAdMob: a2b5f148468b16d02543707d4627bc9a19016bf3
   RNFBApp: 9c90f9d576861947ba75fe0830567c570bcbcf6d

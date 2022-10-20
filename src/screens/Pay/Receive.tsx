@@ -1,15 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-community/clipboard';
-
-import { COLORS } from '../../theme/colors';
+import React from 'react';
+import { DeviceEventEmitter, StyleSheet, Text, View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import { Address } from '../../components/Address/Address';
 import { typo } from '../../components/Styles';
-import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
+import { LightningRewards } from '../../containers/LightningRewards/LightningRewards';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
-import { Address } from '../../components/Address/Address';
-import { LightningRewards } from '../../containers/LightningRewards/LightningRewards';
+import { COLORS } from '../../theme/colors';
+import { MESSAGE_TYPE } from '../EventMessage/EventMessage';
 
 const s = StyleSheet.create({
   main: {
@@ -45,8 +44,8 @@ export const Receive = () => {
   const { t } = useLocalize();
   const { accountList } = usePrice();
 
-  const solAccount = accountList.find((i) => i.mint === 'SOL');
-  const address = solAccount.publicKey;
+  const solAccount = accountList?.find((i) => i?.mint === 'SOL');
+  const address: any = solAccount?.publicKey;
 
   const copyToClipboard = () => {
     Clipboard.setString(address);
@@ -61,7 +60,9 @@ export const Receive = () => {
           <View style={s.qr}>
             <QRCode value={address} size={240} />
           </View>
-          <Address copyToClipboard={copyToClipboard} address={address} />
+          {address && (
+            <Address copyToClipboard={copyToClipboard} address={address} />
+          )}
         </View>
         <View style={s.footer}>
           <Text style={typo.helper}>{t('receive-note-01')}</Text>

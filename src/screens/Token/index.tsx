@@ -1,29 +1,28 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  ScrollView,
-  View,
-  Text,
-  StyleSheet,
   RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import { Portal } from 'react-native-portalize';
-
-import { FixedContent } from '../../components/Modals/FixedContent';
-import { FacebookWebView } from '../../components/Modals/FacebookWebView';
-import { RoundedButton } from '../../components/RoundedButton';
-import { COLORS } from '../../theme/colors';
-import { grid, typo } from '../../components/Styles';
-import { price } from '../../utils/autoRound';
-import { TransferAction } from '../Wallet';
 import { CryptoIcon } from '../../components/CryptoIcon';
-import { useToken } from '../../core/AppProvider/TokenProvider';
+import { FacebookWebView } from '../../components/Modals/FacebookWebView';
+import { FixedContent } from '../../components/Modals/FixedContent';
+import { RoundedButton } from '../../components/RoundedButton';
+import { grid, typo } from '../../components/Styles';
 import { useLocalize } from '../../core/AppProvider/LocalizeProvider';
-
-import { Send } from './Send';
-import { Receive } from './Receive';
-import { Market } from './Market';
 import { usePrice } from '../../core/AppProvider/PriceProvider';
+import { useToken } from '../../core/AppProvider/TokenProvider';
+import { COLORS } from '../../theme/colors';
+import { price } from '../../utils/autoRound';
 import { MoonPayWidget } from '../Moonpay/MoonPayWidget';
+import { TransferAction } from '../Wallet';
+import { Market } from './Market';
+import { Receive } from './Receive';
+import { Send } from './Send';
 
 const s = StyleSheet.create({
   header: {
@@ -87,6 +86,7 @@ const Token = ({ route }) => {
   const refTransactionHistory = useRef();
   const refSend = useRef();
   const refReceived = useRef();
+  const navigation = useNavigation();
 
   const {
     symbol = '$$$',
@@ -229,11 +229,16 @@ const Token = ({ route }) => {
             quantity={quantitySend}
             e_usd={e_usd}
             urlRedirect={redirect}
+            navigation={navigation}
           />
         </FixedContent>
 
         <FixedContent ref={refReceived}>
-          <Receive token={account} />
+          <Receive
+            token={account}
+            navigation={navigation}
+            refReceived={refReceived}
+          />
         </FixedContent>
 
         <FacebookWebView

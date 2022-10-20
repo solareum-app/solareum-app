@@ -1,6 +1,6 @@
 {
   "name": "solareum",
-  "version": "2.23.2",
+  "version": "2.23.3",
   "private": true,
   "scripts": {
     "postinstall": "rn-nodeify --install --hack --yarn && yarn run cp:superstruct && yarn run cp:solana && yarn run cp:crypto && npx jetify && npx pod-install",
@@ -16,9 +16,11 @@
     "check-types": "tsc -p tsconfig.json",
     "lint": "npm run check-types && npm run lint:eslint -- . --ext .js,.jsx,.ts,.tsx",
     "lint:eslint": "eslint --ignore-path .gitignore",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
+    "@fioprotocol/fiosdk": "^1.7.0",
     "@project-serum/serum": "^0.13.33",
     "@project-serum/token": "^0.0.1-alpha.3",
     "@react-native-async-storage/async-storage": "^1.15.4",
@@ -51,6 +53,7 @@
     "buffer-layout": "^1.2.0",
     "console-browserify": "^1.1.0",
     "constants-browserify": "^1.0.0",
+    "create-hash": "^1.2.0",
     "date-fns": "^2.23.1",
     "dns.js": "^1.0.1",
     "domain-browser": "^1.1.1",

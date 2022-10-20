@@ -25,6 +25,7 @@ export enum Routes {
   MoonPay = 'MoonPay',
   Restore = 'Restore',
   Distribution = 'Staking',
+  AddressManagement = 'Address Management',
 }
 
 export default Routes;
