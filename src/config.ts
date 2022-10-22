@@ -1,8 +1,8 @@
-export const MAINNET_URL = 'https://api.mainnet-beta.solana.com';
+export const MAINNET_URL = 'https://solana-api.projectserum.com';
 export const FIO_PROTOCOOL_TESTNET =
   'https://fiotestnet.blockpane.com/v1/chain/';
 export const FIO_PROTOCOOL_MAINNET = 'https://fio.blockpane.com/v1/chain/';
-// export const MAINNET_URL = 'https://solana-api.projectserum.com';
+// export const MAINNET_URL = 'https://api.mainnet-beta.solana.com';
 
 // DEV
 // export const XSB_PATH = 'https://xsb-stg.solareum.app/api/v1';
